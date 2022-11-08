@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Button, Row } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
-import { NavBar } from "../components/navBar";
+import { HikeGrid } from "./../components/hikeList";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,14 +13,12 @@ const Home = () => {
         <h1>Home</h1>
       </Row>
       <ul></ul>
-          <Container>
-            <Row>
-              <Button variant="white" size="lg" style={{backgroundColor: "#00706c"}} onClick={() => { navigate('/hiker') }}>
-                <h3 className="text-white">Hiker</h3>
-              </Button>
-            </Row>
-          </Container>
-         
+      <Row>
+        {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
+          <h3 className="text-white">Hiker</h3>
+        </Button>*/}
+        <HikeGrid/>
+      </Row>
     </Container>
   );
 }

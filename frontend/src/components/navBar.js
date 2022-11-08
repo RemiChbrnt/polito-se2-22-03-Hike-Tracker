@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Navbar } from "react-bootstrap";
 import { useNavigate, useParams } from 'react-router-dom'
 
-function NavBar(props) {
+function NavBar() {
 
     const navigate = useNavigate();
     return (
@@ -12,7 +12,7 @@ function NavBar(props) {
             <Row>
                 <Navbar expand="lg" style={{ backgroundColor: "#00706c" }} variant="dark">
                     <Container fluid>
-                        <Navbar.Brand>
+                        <Navbar.Brand href="/">
                             <h1><i className="bi bi-compass"></i>{" "}Hike Tracker</h1>
                         </Navbar.Brand>
                         <div>
