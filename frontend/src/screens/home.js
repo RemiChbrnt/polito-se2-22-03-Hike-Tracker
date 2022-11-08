@@ -7,12 +7,11 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <Container fluid>
+    <Container>
       <ul></ul>
       <Row>
-        <h1>Home</h1>
+        <h1>Hike List</h1>
       </Row>
-      <ul></ul>
       <Row>
         {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
           <h3 className="text-white">Hiker</h3>
