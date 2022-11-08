@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Button, Row } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
+import { NavBar } from "../components/navBar";
 
 const Home = () => {
   const navigate = useNavigate();
