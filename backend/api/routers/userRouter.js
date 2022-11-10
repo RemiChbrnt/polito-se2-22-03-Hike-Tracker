@@ -42,8 +42,6 @@ userRouter.get('/skuitems/sku/:id',
             return res.status(data.status).json(data.body)
         }
         return res.status(data.status).end()
-    });
+    })
 
-
-
-module.exports = userRouter;
+    module.exports=router
