@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 
 
-const Hiker = () => {
+const Hiker = ({setProps}) => {
 
   const navigate = useNavigate();
 

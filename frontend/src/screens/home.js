@@ -3,7 +3,7 @@ import { Col, Container, Button, Row, Input } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { NavBar } from "../components/navBar";
 
-const Home = () => {
+const Home = ({setProps}) => {
   const navigate = useNavigate();
 
   return (

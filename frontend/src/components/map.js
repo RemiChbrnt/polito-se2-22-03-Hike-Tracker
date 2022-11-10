@@ -18,7 +18,7 @@ const Map = () => {
         iconSize: [104, 158]
     });
     return (
-        <MapContainer center={startPosition} zoom={13} scrollWheelZoom={false} style={{width: 1000, height: 800}} >
+        <MapContainer center={startPosition} zoom={12} scrollWheelZoom={false} style={{width: 500, height: 400}} >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

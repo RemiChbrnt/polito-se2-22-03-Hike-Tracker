@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
 
-const HikeDetail = () => {
+const HikeDetail = ({props, setProps}) => {
 
+  console.log(props);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -13,8 +14,8 @@ const HikeDetail = () => {
     <Container>
         <Row>
             <Col md={10}>
-            <h1>Hike {params.hikeId}</h1>
-            <h1>{}</h1>
+            <h1>Hike "{props.hikeTitle}"</h1>
+            <h4>#{params.hikeId}</h4>
 
             </Col>
             <Col md={2}>
@@ -23,9 +24,36 @@ const HikeDetail = () => {
             </div>
             </Col>
         </Row>
-        <Container styke={{width: 1000, height: 800}}>
+        <Row>
+        <Col>
+            
+            <h3>
+                Length : {props.hikeLength} km
+            </h3>
+            <h3>
+                Ascent : {props.hikeAscent} m 
+            </h3>
+            <h3>
+                Expected time : {props.hikeExpTime} hours
+            </h3>
+            <h3>
+                Difficulty : {props.hikeDifficulty}
+            </h3>
+            <h3>
+                Description 
+            </h3>
+            <h4>
+                {props.hikeDescription}
+            </h4>
+            <h3>
+
+            </h3>
+
+        </Col>
+        <Col>
             <Map/>
-        </Container>
+        </Col>
+        </Row>
     </Container>
 
   );
