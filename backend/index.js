@@ -22,12 +22,16 @@ exports.databasePath = './db/HikeTrackerDb.db'
 // const hikeRouter = require('./api/routers/hikeRouter');
 // app.use(apiUrl, hikeRouter);
 
-// const userRouter = require('./api/routers/userRouter');
-// app.use(apiUrl, userRouter);
-
 const app = express();
+
+
+
+
 app.use(morgan('dev'));
 app.use(express.json());
+
+const userRouter = require('./api/routers/userRouter');
+app.use(apiUrl, userRouter);
 
 /* CORS setup */
 const corsOptions = {

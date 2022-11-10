@@ -10,7 +10,7 @@ const db = new sqlite.Database(dbPath, (err) => {
 
 
 
-exports.login = async (email, password) => {
+async function login(email, password) {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM user WHERE email = ?`;
         db.get(query, [email], (err, row) => {
@@ -43,7 +43,7 @@ exports.login = async (email, password) => {
 
 
 
-exports.signup = async (email, fullName, password, role, phoneNumber) => {
+async function signup(email, fullName, password, role, phoneNumber) {
     return new Promise((resolve, reject) => {
         const sql = "";
         let salt = crypto.randomBytes(32).toString('base64');
@@ -250,3 +250,4 @@ exports.deleteSKUItem = async (rfid) => {
 }
 
 
+module.exports = { login, signup }

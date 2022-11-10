@@ -1,148 +1,193 @@
-// 'use strict'
+'use strict'
 
-// class SkuItemService {
-//     constructor(dao) {
-//         this.dao = dao
-//     }
+class userService {
 
-//     getSkuItems=async ()=>{
-//         try {
-//             const skus = await this.dao.getSKUItems()
-//             const skuDTO = skus.map((r) => ({
-//                 RFID: r.RFID,
-//                 SKUId: r.SKUId,
-//                 Available: r.Avaiable,
-//                 DateOfStock: r.DateOfStock,
-//              }))
-//             return {
-//             ok: true,
-//             status: 200,
-//             body: skuDTO
-//             }
-//         } catch(e) {
+    constructor(DAO) {
+        this.DAO = DAO;
+    }
 
-//             return {
-//             ok: false,
-//             status: 500
-//             }
-//         }
-//     }
+    login = async (user) => {
+        try {
+            console.log("service user " + user);
+            const user = await this.DAO.login(user.email, user.password);
+            return {
+                ok: true,
+                status: 201,
+                body: user
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
 
-//     getSKUItemsById=async (id)=>{
-//         try {
-//             const skus=await this.dao.getSKUItemsById(id)
-//             const message = skus.map((r) => ({
-//                 RFID: r.RFID,
-//                 SKUId: r.SKUId,
-//                 DateOfStock: r.DateOfStock,
-//              }))
-//             return {
-//             ok: true,
-//             status: 200,
-//             body: message
-//             }
-//         } catch(e) {
+        }
+    }
 
-//             return {
-//             ok: false,
-//             status: e
-//             }
-//         }
-//     }
+    // createSkuItem= async (RFID, SKUId, DateOfStock)=>{
+    //     try{
+    //         const response=await this.dao.createSKUItem(
+    //             RFID,
+    //             SKUId,
+    //             DateOfStock,
+    //         )
+    //         return {
+    //         ok: true,
+    //         status: 201,
+    //         }
+    //     }catch(e){
 
-//     getSKUItemsByRfid=async (id)=>{
-//         try {
-//             const sku=await this.dao.getSKUItemsByRfid(id)
-//             const message = {
-//                 RFID: sku.RFID,
-//                 SKUId: sku.SKUId,
-//                 Available: sku.Avaiable,
-//                 DateOfStock: sku.DateOfStock,
-//              }
-//             return {
-//             ok: true,
-//             status: 200,
-//             body: message
-//             }
-//         } catch(e) {
+    //         return {
+    //         ok: false,
+    //         status: e
+    //         }
+    //     }
+    // }
 
-//             return {
-//             ok: false,
-//             status: e
-//             }
-//         }
-//     }
 
-//     createSkuItem= async (RFID, SKUId, DateOfStock)=>{
-//         try{
-//             const response=await this.dao.createSKUItem(
-//                 RFID,
-//                 SKUId,
-//                 DateOfStock,
-//             )
-//             return {
-//             ok: true,
-//             status: 201,
-//             }
-//         }catch(e){
+    // constructor(dao) {
+    //     this.dao = dao
+    // }
 
-//             return {
-//             ok: false,
-//             status: e
-//             }
-//         }
-//     }
+    // getSkuItems=async ()=>{
+    //     try {
+    //         const skus = await this.dao.getSKUItems()
+    //         const skuDTO = skus.map((r) => ({
+    //             RFID: r.RFID,
+    //             SKUId: r.SKUId,
+    //             Available: r.Avaiable,
+    //             DateOfStock: r.DateOfStock,
+    //          }))
+    //         return {
+    //         ok: true,
+    //         status: 200,
+    //         body: skuDTO
+    //         }
+    //     } catch(e) {
 
-//     editSkuItem= async (oldRFID,RFID,available,DateOfStock)=>{
-//         try{
-//             const response=await this.dao.editSKUItem(
-//                 oldRFID,
-//                 RFID,
-//                 available,
-//                 DateOfStock
-//             )
-//             return {
-//             ok: true,
-//             status: 200,
-//             }
-//         }catch(e){
+    //         return {
+    //         ok: false,
+    //         status: 500
+    //         }
+    //     }
+    // }
 
-//             if (e === 'id not found') {
-//                 return{
-//                     ok: false,
-//                     status: 404
-//                 }
-//             }
-//             return {
-//             ok: false,
-//             status: 503
-//             }
-//         }
-//     }
+    // getSKUItemsById=async (id)=>{
+    //     try {
+    //         const skus=await this.dao.getSKUItemsById(id)
+    //         const message = skus.map((r) => ({
+    //             RFID: r.RFID,
+    //             SKUId: r.SKUId,
+    //             DateOfStock: r.DateOfStock,
+    //          }))
+    //         return {
+    //         ok: true,
+    //         status: 200,
+    //         body: message
+    //         }
+    //     } catch(e) {
 
-//     deleteSkuItem= async (rfid)=>{
-//         try{
-//             const response=await this.dao.deleteSKUItem(
-//                 rfid
-//             )
-//             return {
-//             ok: true,
-//             status: 204,
-//             }
-//         }catch(e){
+    //         return {
+    //         ok: false,
+    //         status: e
+    //         }
+    //     }
+    // }
 
-//             if (e === 'id not found') {
-//                 return{
-//                     ok: false,
-//                     status: 404
-//                 }
-//             }
-//             return {
-//             ok: false,
-//             status: 503
-//             }
-//         }
-//     }
-// }
+    // getSKUItemsByRfid=async (id)=>{
+    //     try {
+    //         const sku=await this.dao.getSKUItemsByRfid(id)
+    //         const message = {
+    //             RFID: sku.RFID,
+    //             SKUId: sku.SKUId,
+    //             Available: sku.Avaiable,
+    //             DateOfStock: sku.DateOfStock,
+    //          }
+    //         return {
+    //         ok: true,
+    //         status: 200,
+    //         body: message
+    //         }
+    //     } catch(e) {
 
-// module.exports = SkuItemService
+    //         return {
+    //         ok: false,
+    //         status: e
+    //         }
+    //     }
+    // }
+
+    // createSkuItem= async (RFID, SKUId, DateOfStock)=>{
+    //     try{
+    //         const response=await this.dao.createSKUItem(
+    //             RFID,
+    //             SKUId,
+    //             DateOfStock,
+    //         )
+    //         return {
+    //         ok: true,
+    //         status: 201,
+    //         }
+    //     }catch(e){
+
+    //         return {
+    //         ok: false,
+    //         status: e
+    //         }
+    //     }
+    // }
+
+    // editSkuItem= async (oldRFID,RFID,available,DateOfStock)=>{
+    //     try{
+    //         const response=await this.dao.editSKUItem(
+    //             oldRFID,
+    //             RFID,
+    //             available,
+    //             DateOfStock
+    //         )
+    //         return {
+    //         ok: true,
+    //         status: 200,
+    //         }
+    //     }catch(e){
+
+    //         if (e === 'id not found') {
+    //             return{
+    //                 ok: false,
+    //                 status: 404
+    //             }
+    //         }
+    //         return {
+    //         ok: false,
+    //         status: 503
+    //         }
+    //     }
+    // }
+
+    // deleteSkuItem= async (rfid)=>{
+    //     try{
+    //         const response=await this.dao.deleteSKUItem(
+    //             rfid
+    //         )
+    //         return {
+    //         ok: true,
+    //         status: 204,
+    //         }
+    //     }catch(e){
+
+    //         if (e === 'id not found') {
+    //             return{
+    //                 ok: false,
+    //                 status: 404
+    //             }
+    //         }
+    //         return {
+    //         ok: false,
+    //         status: 503
+    //         }
+    //     }
+    // }
+}
+
+module.exports = userService

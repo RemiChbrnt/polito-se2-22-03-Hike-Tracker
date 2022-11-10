@@ -2,13 +2,13 @@ import { Form, Button, Dropdown } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { signup } from '../../../backend/api/DAOs/userDAO';
+import userDAO from "../../../backend/UserDAO/userDAO.js"
 
 
 const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
     try {
-        // let user = await API.signup(email, password, fullName, role, phoneNumber);        
-        return true;
+        let user = await signup(email, password, fullName, role, phoneNumber);
+        return user;
 
     } catch (err) {
         console.log(err);
@@ -32,7 +32,7 @@ function SignupForm() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        let result = await signup(email, fullName, password, role, phoneNumber);
+        let result = await handlerSignup(email, fullName, password, role, phoneNumber);
 
         if (result !== false)
             navigate(`/home`);

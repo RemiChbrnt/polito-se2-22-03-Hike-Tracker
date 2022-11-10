@@ -2,12 +2,14 @@ import { Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { login } from "../../../backend/UserDAO/userDAO.js"
+
 
 
 const handlerLogin = async (username, password) => {
     try {
-        // let user = await API.login(username, password);        
-        return true;
+        let user = login(username, password);
+        return user;
 
     } catch (err) {
         console.log(err);
