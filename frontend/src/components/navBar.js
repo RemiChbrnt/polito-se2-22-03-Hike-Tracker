@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Navbar } from "react-bootstrap";
 import { useNavigate, useParams } from 'react-router-dom'
 
-function NavBar() {
+function NavBar(props) {
 
     const navigate = useNavigate();
     return (
@@ -16,11 +16,14 @@ function NavBar() {
                             <h1><i className="bi bi-compass"></i>{" "}Hike Tracker</h1>
                         </Navbar.Brand>
                         <div>
-                            <Row>
+                            {!props.loggedIn && <Row>
                                 <Col>
                                     <Button onClick={() => { navigate('/login') }} variant='success'><i className="bi bi-box-arrow-in-right"></i> Log-In {" "}</Button>
                                 </Col>
-                            </Row>
+                                <Col>
+                                    <Button onClick={() => { navigate('/signup') }} variant='success'><i className="bi bi-box-arrow-in-right"></i> Sign-Up{" "}</Button>
+                                </Col>
+                            </Row>}
                         </div>
                     </Container>
                 </Navbar>

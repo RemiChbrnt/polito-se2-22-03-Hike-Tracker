@@ -9,23 +9,26 @@ import API from './API';
 
 
 function App() {
-  return (
-    <div>
-      <BrowserRouter>
-      <NavBar/>
-        <Routes>
-            {routes.map((route) => {
-                return (<Route
-                    key={route.key}
-                    path={route.path}
-                    element={route.screen}
-                />);
-                })
-            }
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    return (
+        <div>
+            <BrowserRouter>
+                <NavBar loggedIn={loggedIn} />
+                <Routes>
+                    {routes.map((route) => {
+                        return (<Route
+                            key={route.key}
+                            path={route.path}
+                            element={route.screen}
+                        />);
+                    })
+                    }
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;

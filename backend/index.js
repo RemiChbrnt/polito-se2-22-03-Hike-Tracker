@@ -19,8 +19,8 @@ const session = require('express-session');
 exports.databasePath = './db/HikeTrackerDb.db'
 
 // TODO: add routers and services
-const hikeRouter = require('./api/routers/hikeRouter');
-app.use(apiUrl, hikeRouter);
+// const hikeRouter = require('./api/routers/hikeRouter');
+// app.use(apiUrl, hikeRouter);
 
 const userRouter = require('./api/routers/userRouter');
 app.use(apiUrl, userRouter);
@@ -39,9 +39,9 @@ app.use(cors(corsOptions));
 
 /* express-session setup */
 app.use(session({
-    secret : 'software engineldenring speedrun [ANY%][NO GLITCH][EPIC]',
-    resave : false,
-    saveUninitialized : false
+    secret: 'software engineldenring speedrun [ANY%][NO GLITCH][EPIC]',
+    resave: false,
+    saveUninitialized: false
 }));
 /* ---------------------------------------*/
 
@@ -50,7 +50,7 @@ passport.use(new LocalStrategy(
     async function verify(email, password, callback) {
         const user = await userDAO.getUser(email, password);
 
-        if(!user)
+        if (!user)
             return callback(null, false, 'Wrong username or password'); // LOGIN FAILURE
 
         return callback(null, user); // LOGIN SUCCESS
@@ -86,29 +86,29 @@ passport.deserializeUser(function (user, callback) {
  */
 
 const isLoggedIn = (req, res, next) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         return next();
     }
-    return res.status(401).json({ error : 'Not logged in' });
+    return res.status(401).json({ error: 'Not logged in' });
 }
 /* --------------------------------------------------------- */
 
 /* AUTHENTICATION */
 /* Login */
-app.post(PREFIX + '/login', passport.authenticate('local'), (req,res) => {
+app.post(PREFIX + '/login', passport.authenticate('local'), (req, res) => {
     res.status(201).json(req.user);
 });
 
 /* Get currently logged user's info */
-app.get(PREFIX + '/session/current', (req,res) => {
-    if(req.isAuthenticated())
+app.get(PREFIX + '/session/current', (req, res) => {
+    if (req.isAuthenticated())
         res.json(req.user);
     else
-        res.status(401).json({ error : 'Not authenticated' });
+        res.status(401).json({ error: 'Not authenticated' });
 });
 
 /* Logout */
-app.delete(PREFIX + '/session/current', (req,res) => {
+app.delete(PREFIX + '/session/current', (req, res) => {
     req.logout(() => {
         res.end();
     });
@@ -184,28 +184,28 @@ app.post(PREFIX + '/add', isLoggedIn, [
     //body('watchdate').isISO8601(),
     //body('rating').isNumeric(),
     //body('user').isNumeric()
-    ], async (req,res) => {
-        const errors = validationResult(req);
-        if(!errors.isEmpty()) {
-            /* Errors in the request, return 400 */
-            return res.status(400).json({ errors : errors.array() });
-        }
-
-        /* Then, reformat the favorite attribute, since the DB uses 0 and 1
-         * instead of false and true respectively.
-         */
-
-        if(req.body.favorite === 'true') { req.body.favorite = 1; }
-        else if(req.body.favorite === 'false' || req.body.favorite === undefined) { req.body.favorite = 0; }
-
-        const film_to_add = req.body;
-        try {
-            await filmDAO.addFilm(film_to_add);
-            res.end();
-        } catch(e) {
-            res.status(400).json({ error : e });
-        }
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        /* Errors in the request, return 400 */
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    /* Then, reformat the favorite attribute, since the DB uses 0 and 1
+     * instead of false and true respectively.
+     */
+
+    if (req.body.favorite === 'true') { req.body.favorite = 1; }
+    else if (req.body.favorite === 'false' || req.body.favorite === undefined) { req.body.favorite = 0; }
+
+    const film_to_add = req.body;
+    try {
+        await filmDAO.addFilm(film_to_add);
+        res.end();
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+}
 );
 
 app.put(PREFIX + '/update/:id', isLoggedIn, async (req, res) => {
@@ -216,14 +216,14 @@ app.put(PREFIX + '/update/:id', isLoggedIn, async (req, res) => {
      */
     const film_to_update = {
         ...req.body,
-        id : req.params.id
+        id: req.params.id
     };
 
     try {
         await filmDAO.updateFilm(film_to_update);
         res.end();
     } catch (e) {
-        res.status(500).json({ error : e });
+        res.status(500).json({ error: e });
     }
 });
 
@@ -232,18 +232,18 @@ app.delete(PREFIX + '/delete/:id', isLoggedIn, [
 ], async (req, res) => {
     const id = req.params.id;
     const errors = validationResult(req);
-        if(!errors.isEmpty()) {
-            /* Errors in the request, return 400 */
-            return res.status(400).json({ errors : errors.array() });
-        }
-
-        try {
-            await filmDAO.removeFilm(id);
-            res.end();
-        } catch(e) {
-            res.status(400).json({ error : e });
-        }
+    if (!errors.isEmpty()) {
+        /* Errors in the request, return 400 */
+        return res.status(400).json({ errors: errors.array() });
     }
+
+    try {
+        await filmDAO.removeFilm(id);
+        res.end();
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+}
 );
 
 app.get(PREFIX + '/get/:id', isLoggedIn, async (req, res) => {
@@ -251,11 +251,11 @@ app.get(PREFIX + '/get/:id', isLoggedIn, async (req, res) => {
     try {
         const film = await filmDAO.getFilmById(id);
         res.json(film);
-    } catch(e) {
-        res.status(400).json({ error : e });
+    } catch (e) {
+        res.status(400).json({ error: e });
     }
 });
 
-app.listen(SERVER_PORT, () => { console.log(`Server running on port ${SERVER_PORT}`)});
+app.listen(SERVER_PORT, () => { console.log(`Server running on port ${SERVER_PORT}`) });
 
 module.exports = app
