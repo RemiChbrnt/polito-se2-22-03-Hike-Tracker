@@ -1,21 +1,29 @@
 'use strict'
 const sqlite = require('sqlite3')
 const crypto = require('crypto');
-const dbPath = '../../db/HikeTrackerDb.db';
+const dbPath = 'HikeTrackerDb.db';
 const db = new sqlite.Database(dbPath, (err) => {
+
     if (err) throw err
     db.run("PRAGMA foreign_keys = ON")
+
 })
 
 
 
 
-async function login(email, password) {
+exports.login = async (email, password) => {
+
+
+
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM user WHERE email = ?`;
-        db.get(query, [email], (err, row) => {
-            if (err)
+        console.log("a " + email);
+        const sql = "SELECT * FROM Users";
+        db.get(sql, [email], (err, row) => {
+            if (err) {
+                console.log("errore " + err);
                 reject(err);
+            }
             else if (row === undefined)
                 resolve(false); // User not found
             else {
@@ -43,7 +51,9 @@ async function login(email, password) {
 
 
 
-async function signup(email, fullName, password, role, phoneNumber) {
+exports.signup = async (email, fullName, password, role, phoneNumber) => {
+
+
     return new Promise((resolve, reject) => {
         const sql = "";
         let salt = crypto.randomBytes(32).toString('base64');
@@ -250,4 +260,4 @@ exports.deleteSKUItem = async (rfid) => {
 }
 
 
-module.exports = { login, signup }
+// module.exports = { login, signup }
