@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import { Col, Container, Row, Button} from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 

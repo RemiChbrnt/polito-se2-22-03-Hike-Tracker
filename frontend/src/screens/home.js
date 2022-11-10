@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Button, Row } from 'react-bootstrap';
+import { Col, Container, Button, Row, Input } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { NavBar } from "../components/navBar";
 
@@ -17,6 +17,9 @@ const Home = () => {
             <Row>
               <Button variant="white" size="lg" style={{backgroundColor: "#00706c"}} onClick={() => { navigate('/hiker') }}>
                 <h3 className="text-white">Hiker</h3>
+              </Button>
+              <Button variant="white" size="lg" style={{backgroundColor: "#00706c"}} onClick={() => { navigate('/hike-detail-azerazer',{testparam:15}) }}>
+                <h3 className="text-white">HikeDetail</h3>
               </Button>
             </Row>
           </Container>
