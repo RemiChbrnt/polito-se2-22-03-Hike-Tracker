@@ -16,7 +16,7 @@ const session = require('express-session');
 /* ------------------------------------------------------------------- */
 
 /* DB init */
-// exports.databasePath = './db/HikeTrackerDb.db'
+exports.databasePath = './db/HikeTrackerDb.db'
 
 // TODO: add routers and services
 // const hikeRouter = require('./api/routers/hikeRouter');
@@ -32,7 +32,7 @@ app.use(express.json());
 
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
-app.use(apiUrl, userRouter);
+app.use(userRouter);
 app.use(apiUrl, hikeRouter);
 /* CORS setup */
 const corsOptions = {
