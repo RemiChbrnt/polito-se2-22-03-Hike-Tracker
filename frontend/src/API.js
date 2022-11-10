@@ -49,7 +49,7 @@ async function getAllHikes() {
     const response = await fetch(URL + '/hikes', { credentials: 'include' });
     const hikesJson = await response.json();
     if (response.ok) {
-      return riddlesJson.map((r) => ({ title:r.title, 
+      return hikesJson.map((r) => ({ title:r.title, 
         length:r.length, 
         expTime:r.expTime, 
         ascent:r.ascent, 
