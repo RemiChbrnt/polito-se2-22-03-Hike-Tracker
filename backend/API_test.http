@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/v2/login
+Content-Type: application/json
+
+{
+   "username" : "testuser@polito.it",
+   "password" : "password"
+}
+
+###
+
+GET http://localhost:3001/api/v2/all/3

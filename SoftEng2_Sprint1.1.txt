@@ -1,0 +1,99 @@
+Prerequisites
+{
+-set up base js project with routing
+-define a general structure for the project
+-define basic db structure
+-define APIs names and purposes
+}
+
+Parallel work
+{
+-define table to store huts, parking lots on a db
+-define table to store hiker performances (low prio)
+}
+
+User story 1 
+{
+-define table to store hikes on a db
+-link db to the project
+-implement a landing page
+-implement functions that connect to the db
+-implement APIs
+-testing functions ??? hate this one
+}
+
+User story 2
+{
+-fake auth?
+-implement a landing page
+-implement functions that add a new hike
+-implement APIs
+-testing functions
+}
+
+User story 3
+{
+-real login page
+-packages and APIs
+-define few users into the db
+-landing pages for all the roles (hiker page, local guide page, ...)
+-testing functions
+}
+
+User story 4
+{
+-extend the landing page with a map*
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
+User story 5
+{
+-extend the landing page to add huts  as local guide
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
+User story 6
+{
+-extend the landing page to add parking lots as local guide
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
+User story 7 
+{
+-extend the landing page to search for huts as hiker
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
+User story 8
+{
+-extend the landing page to set parking-huts as start/arrival points as local guide
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
+User story 9
+{
+-extend the landing page to link a hut to a hike as local guide
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
+User story 10
+{
+-db support for hiker
+-extend the landing page to record performance as hiker (just a form)
+-implement functions that connect to the db
+-implement APIs
+-testing functions
+}
+
