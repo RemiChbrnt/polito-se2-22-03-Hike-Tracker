@@ -7,7 +7,7 @@ const apiUrl = '/api';
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-// const userDAO = require('./UserDAO.js'); TODO: add DAOs
+const userDAO = require('./api/DAOs/userDAO.js');
 // const hikeDAO = require('./HikeDAO.js'); TODO: add DAOs
 const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
@@ -24,9 +24,6 @@ exports.databasePath = './db/HikeTrackerDb.db'
 
 const app = express();
 
-
-
-
 app.use(morgan('dev'));
 app.use(express.json());
 
@@ -34,6 +31,7 @@ const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
 app.use(userRouter);
 app.use(apiUrl, hikeRouter);
+
 /* CORS setup */
 const corsOptions = {
     origin: 'http://localhost:3000',

@@ -28,16 +28,21 @@ exports.login = async (email, password) => {
                 }
 
 
-                /* User found. Now check whether the hash matches */
-                // crypto.scrypt(password, row.salt, 32, function (err, hashedPassword) {
-                //     if (err)
-                //         reject(err);                    
+            /* User found. Now check whether the hash matches */
+            crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
+                if (err)
+                    reject(err);                    
 
-                //     if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword)))
-                //         resolve(false); // Hash doesn't match, wrong password
-                //     else
-                //         resolve(user);
-                // });
+                if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))){
+                    console.log("Login failed - Wrong password");
+                    resolve(false); // Hash doesn't match, wrong password
+                }
+                else
+                    {
+                        console.log("Login successful");
+                        resolve(user);
+                    }
+            });
 
                 resolve(user);
             }
