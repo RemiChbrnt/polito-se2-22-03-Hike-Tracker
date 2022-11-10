@@ -1,12 +1,12 @@
 'use strict'
 const sqlite = require('sqlite3')
 const crypto = require('crypto');
-const dbPath = require('../../server').databasePath
+const dbPath = '../../db/HikeTrackerDb.db';
 const db = new sqlite.Database(dbPath, (err) => {
     if (err) throw err
     db.run("PRAGMA foreign_keys = ON")
 })
-const SkuDao = require('./skuDao')
+
 
 
 

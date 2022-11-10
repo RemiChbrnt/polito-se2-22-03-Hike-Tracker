@@ -22,8 +22,8 @@ exports.databasePath = './db/HikeTrackerDb.db'
 // const hikeRouter = require('./api/routers/hikeRouter');
 // app.use(apiUrl, hikeRouter);
 
-const userRouter = require('./api/routers/userRouter');
-app.use(apiUrl, userRouter);
+// const userRouter = require('./api/routers/userRouter');
+// app.use(apiUrl, userRouter);
 
 const app = express();
 app.use(morgan('dev'));
@@ -95,12 +95,12 @@ const isLoggedIn = (req, res, next) => {
 
 /* AUTHENTICATION */
 /* Login */
-app.post(PREFIX + '/login', passport.authenticate('local'), (req, res) => {
+app.post(apiUrl + '/login', passport.authenticate('local'), (req, res) => {
     res.status(201).json(req.user);
 });
 
 /* Get currently logged user's info */
-app.get(PREFIX + '/session/current', (req, res) => {
+app.get(apiUrl + '/session/current', (req, res) => {
     if (req.isAuthenticated())
         res.json(req.user);
     else
@@ -108,14 +108,14 @@ app.get(PREFIX + '/session/current', (req, res) => {
 });
 
 /* Logout */
-app.delete(PREFIX + '/session/current', (req, res) => {
+app.delete(apiUrl + '/session/current', (req, res) => {
     req.logout(() => {
         res.end();
     });
 });
 /* --------------------------------------------------------- */
 
-app.get(PREFIX + '/all/:user', isLoggedIn, (req, res) => {
+app.get(apiUrl + '/all/:user', isLoggedIn, (req, res) => {
     filmDAO.loadAll(req.params.user).then(
         (value) => {
             res.json(value);
@@ -127,7 +127,7 @@ app.get(PREFIX + '/all/:user', isLoggedIn, (req, res) => {
     )
 });
 
-app.get(PREFIX + '/favorites/:user', isLoggedIn, (req, res) => {
+app.get(apiUrl + '/favorites/:user', isLoggedIn, (req, res) => {
     filmDAO.loadFavorites(req.params.user).then(
         (value) => {
             res.json(value);
@@ -139,7 +139,7 @@ app.get(PREFIX + '/favorites/:user', isLoggedIn, (req, res) => {
     )
 });
 
-app.get(PREFIX + '/recent/:user', isLoggedIn, (req, res) => {
+app.get(apiUrl + '/recent/:user', isLoggedIn, (req, res) => {
     filmDAO.loadRecent(req.params.user).then(
         (value) => {
             res.json(value);
@@ -151,7 +151,7 @@ app.get(PREFIX + '/recent/:user', isLoggedIn, (req, res) => {
     )
 });
 
-app.get(PREFIX + '/top/:user', isLoggedIn, (req, res) => {
+app.get(apiUrl + '/top/:user', isLoggedIn, (req, res) => {
     filmDAO.loadTopRated(req.params.user).then(
         (value) => {
             res.json(value);
@@ -163,7 +163,7 @@ app.get(PREFIX + '/top/:user', isLoggedIn, (req, res) => {
     )
 });
 
-app.get(PREFIX + '/unseen/:user', isLoggedIn, (req, res) => {
+app.get(apiUrl + '/unseen/:user', isLoggedIn, (req, res) => {
     filmDAO.loadNotSeen(req.params.user).then(
         (value) => {
             res.json(value);
@@ -175,7 +175,7 @@ app.get(PREFIX + '/unseen/:user', isLoggedIn, (req, res) => {
     )
 });
 
-app.post(PREFIX + '/add', isLoggedIn, [
+app.post(apiUrl + '/add', isLoggedIn, [
     /* First, check if the body contains a valid film. We do so
      * with the express-validator middleware.
      */
@@ -208,7 +208,7 @@ app.post(PREFIX + '/add', isLoggedIn, [
 }
 );
 
-app.put(PREFIX + '/update/:id', isLoggedIn, async (req, res) => {
+app.put(apiUrl + '/update/:id', isLoggedIn, async (req, res) => {
     /* The actual film to update is retrieved and
      * inserted in the request body, except for the ID
      * which I add to the body because it is needed to
@@ -227,7 +227,7 @@ app.put(PREFIX + '/update/:id', isLoggedIn, async (req, res) => {
     }
 });
 
-app.delete(PREFIX + '/delete/:id', isLoggedIn, [
+app.delete(apiUrl + '/delete/:id', isLoggedIn, [
     param('id').isNumeric()
 ], async (req, res) => {
     const id = req.params.id;
@@ -246,7 +246,7 @@ app.delete(PREFIX + '/delete/:id', isLoggedIn, [
 }
 );
 
-app.get(PREFIX + '/get/:id', isLoggedIn, async (req, res) => {
+app.get(apiUrl + '/get/:id', isLoggedIn, async (req, res) => {
     const id = req.params.id;
     try {
         const film = await filmDAO.getFilmById(id);

@@ -16,7 +16,7 @@ const handlerLogin = async (username, password) => {
 };
 
 
-function LoginForm() {
+function LoginForm(props) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -29,8 +29,10 @@ function LoginForm() {
 
         let result = await handlerLogin(email, password);
 
-        if (result !== false)
+        if (result !== false) {
+            props.setLoggedIn(true);
             navigate(`/home`);
+        }
         else
             setError(true);
     }
