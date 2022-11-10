@@ -31,8 +31,9 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 const userRouter = require('./api/routers/userRouter');
+const hikeRouter = require('./api/routers/hikeRouter');
 app.use(apiUrl, userRouter);
-
+app.use(apiUrl, hikeRouter);
 /* CORS setup */
 const corsOptions = {
     origin: 'http://localhost:3000',

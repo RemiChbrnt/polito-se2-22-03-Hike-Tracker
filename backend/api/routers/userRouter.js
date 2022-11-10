@@ -41,3 +41,5 @@ router.get('/skuitems/sku/:id',
         }
         return res.status(data.status).end()
     })
+
+    module.exports=router
