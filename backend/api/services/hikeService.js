@@ -33,17 +33,15 @@ class HikeService {
 
     createHike= async (newHike)=>{
         try{
-            const response=await this.dao.createHike(
-                newHike
-            )
+            const response = await this.dao.createHike(newHike)
             return {
-            ok: true,
-            status: 201,
+                ok: true,
+                status: 201,
             }
-        }catch(e){
+        } catch(e) {
             return {
-            ok: false,
-            status: e
+                ok: false,
+                status: 400
             }
         }
     }

@@ -31,11 +31,25 @@ const db = new sqlite.Database(dbPath, (err) => {
       })
    }
 
-   exports.createHike=async()=> {
+   exports.createHike=async(hike)=> {
     return new Promise((resolve, reject) => {
-       const sql = ''
-       db.all(sql, [], async (err, rows) => {
-          //toDO
+       const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description) VALUES(?,?,?,?,?,1,2,?)';
+       db.run(sql, [
+         hike.title,
+         hike.length,
+         hike.expTime,
+         hike.ascent,
+         hike.difficulty,
+         hike.description
+       ], async (err, rows) => {
+         if(err){
+            reject(400);
+            return;
+         }
+         else {
+            resolve(201);
+            return;
+         }
        })
     })
  }
