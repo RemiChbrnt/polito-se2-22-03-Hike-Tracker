@@ -15,7 +15,7 @@ function App() {
     return (
         <div>
             <BrowserRouter>
-                <NavBar loggedIn={loggedIn} />
+                <NavBar />
                 <Routes>
                     {routes.map((route) => {
                         return (<Route

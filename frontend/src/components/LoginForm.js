@@ -2,13 +2,13 @@ import { Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { login } from "../../../backend/UserDAO/userDAO.js"
+import API from "../API";
 
 
 
 const handlerLogin = async (username, password) => {
     try {
-        let user = login(username, password);
+        let user = API.login(username, password);
         return user;
 
     } catch (err) {
@@ -32,7 +32,6 @@ function LoginForm(props) {
         let result = await handlerLogin(email, password);
 
         if (result !== false) {
-            props.setLoggedIn(true);
             navigate(`/home`);
         }
         else

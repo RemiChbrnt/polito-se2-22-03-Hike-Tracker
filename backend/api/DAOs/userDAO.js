@@ -1,11 +1,13 @@
 'use strict'
 const sqlite = require('sqlite3')
 const crypto = require('crypto');
-const dbPath = 'HikeTrackerDb.db';
+const dbPath = './db/HikeTrackerDb.db';
+
+
 const db = new sqlite.Database(dbPath, (err) => {
 
     if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
+    db.run("PRAGMA foreign_keys = ON");
 
 })
 
@@ -15,10 +17,9 @@ const db = new sqlite.Database(dbPath, (err) => {
 exports.login = async (email, password) => {
 
 
-
     return new Promise((resolve, reject) => {
         console.log("a " + email);
-        const sql = "SELECT * FROM Users";
+        const sql = `SELECT * FROM Users WHERE email = ?`;
         db.get(sql, [email], (err, row) => {
             if (err) {
                 console.log("errore " + err);
@@ -28,21 +29,24 @@ exports.login = async (email, password) => {
                 resolve(false); // User not found
             else {
                 const user = {
-                    id: row.id,
+                    // id: row.rowid,
                     email: row.email,
-                    fullname: row.fullName
+                    fullName: row.fullname
                 }
 
-                /* User found. Now check whether the hash matches */
-                crypto.scrypt(password, row.salt, 32, function (err, hashedPassword) {
-                    if (err)
-                        reject(err);
 
-                    if (!crypto.timingSafeEqual(Buffer.from(row.hashed_password, 'base64'), hashedPassword))
-                        resolve(false); // Hash doesn't match, wrong password
-                    else
-                        resolve(user);
-                });
+                /* User found. Now check whether the hash matches */
+                // crypto.scrypt(password, row.salt, 32, function (err, hashedPassword) {
+                //     if (err)
+                //         reject(err);                    
+
+                //     if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword)))
+                //         resolve(false); // Hash doesn't match, wrong password
+                //     else
+                //         resolve(user);
+                // });
+
+                resolve(user);
             }
         });
     });

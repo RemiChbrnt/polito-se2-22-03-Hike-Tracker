@@ -1,6 +1,6 @@
 'use strict'
 
-class userService {
+class UserService {
 
     constructor(DAO) {
         this.DAO = DAO;
@@ -8,12 +8,12 @@ class userService {
 
     login = async (user) => {
         try {
-            console.log("service user " + user);
-            const user = await this.DAO.login(user.email, user.password);
+            console.log("service user " + JSON.stringify(user));
+            let user1 = await this.DAO.login(user.email, user.password);
             return {
                 ok: true,
                 status: 201,
-                body: user
+                body: user1
             };
         }
         catch (e) {
@@ -190,4 +190,4 @@ class userService {
     // }
 }
 
-module.exports = userService
+module.exports = UserService
