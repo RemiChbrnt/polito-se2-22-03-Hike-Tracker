@@ -14,23 +14,55 @@ const db = new sqlite.Database(dbPath, (err) => {
                reject(503)
                return
             }
-            let list = rows.map((r) => {
+            const res = await Promise.all(
+               rows.map(async (r) => {
+               const startLocation=await this.getLocationById(r.startPt);
+               const endLocation=await this.getLocationById(r.endPt);
+               const refLocations= await this.getReferenceLocations(r.id);
                return {
+                id:r.id,
                 title:r.title, 
                 length:r.length, 
                 expTime:r.expTime, 
                 ascent:r.ascent, 
                 difficulty:r.difficulty, 
-                startPt:r.startPt, 
-                endPt:r.endPt, 
-                description:r.description
+                startPt:startLocation, 
+                endPt:endLocation, 
+                description:r.description,
+                referencePoints:refLocations,
                }
             })
-            resolve(list)
+            )
+            resolve(res)
          })
       })
    }
-
+   exports.getReferenceLocations=async(id)=> {
+      return new Promise((resolve, reject) => {
+         const sql = 'SELECT * \
+                     from Locations \
+                     where id in ( select locationId from HikesReferencePoints where hikeId=?)'
+         db.all(sql, [id], async (err, rows) => {
+            if (err) {
+               console.log(err)
+               return null;
+            }
+            resolve(rows)
+         })
+      })
+   }
+   exports.getLocationById=async(id)=> {
+      return new Promise((resolve, reject) => {
+         const sql = 'SELECT * from Locations where id=?'
+         db.get(sql, [id], async (err, rows) => {
+            if (err) {
+               console.log(err)
+               return null;
+            }
+            resolve(rows)
+         })
+      })
+   }
    exports.createHike=async()=> {
     return new Promise((resolve, reject) => {
        const sql = ''
