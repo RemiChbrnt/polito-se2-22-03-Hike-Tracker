@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Button, Row, Input } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
-import { NavBar } from "../components/navBar";
+import { HikeGrid } from "./../components/hikeList";
 
 const Home = ({setProps}) => {
   const navigate = useNavigate();
 
   return (
-    <Container fluid>
+    <Container>
       <ul></ul>
       <Row>
-        <h1>Home</h1>
+        <h1>Hike List</h1>
       </Row>
       <ul></ul>
           <Container>
@@ -24,6 +24,12 @@ const Home = ({setProps}) => {
             </Row>
           </Container>
          
+      <Row>
+        {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
+          <h3 className="text-white">Hiker</h3>
+        </Button>*/}
+        <HikeGrid/>
+      </Row>
     </Container>
   );
 }

@@ -1,9 +1,12 @@
 // Route parameters for navigation
 import HikeDetail from "../screens/hikeDetail.js";
+import { LoginForm } from "../components/LoginForm.js";
+import { SignupForm } from "../components/SignupForm.js";
 import Hiker from "../screens/hiker.js";
 import Home from "../screens/home.js";
 
-const routes=[
+
+const routes = [
     {
         path: "/",
         key: "Home",
@@ -23,7 +26,21 @@ const routes=[
         key: "hike-detail",
         screen: function(props, setProps){
             return <HikeDetail props={props} setProps={setProps}/>
-        } 
+        }
+    }, 
+    {
+        path: "/login",
+        key: "login",
+        screen: function(props, setProps){
+            return <LoginForm setProps={setProps}/>
+        }
+    },
+    {
+        path: "/signup",
+        key: "signup",
+        screen: function(props, setProps){
+            return <SignupForm setProps={setProps}/>
+        }
     }
     
 ]

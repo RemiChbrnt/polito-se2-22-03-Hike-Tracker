@@ -2,12 +2,11 @@ import logo from './logo.svg';
 import './App.css';
 
 import routes from './routes/routes';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
 import { NavBar } from "./components/navBar";
 import HikeDetail from './screens/hikeDetail';
-
+import API from './API';
 
 
 function App() {
