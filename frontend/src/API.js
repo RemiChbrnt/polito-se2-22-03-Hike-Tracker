@@ -22,7 +22,7 @@ async function login(email, password) {
         })
     });
     const user = await response.json();
-    console.log("user " + user);
+    console.log("user " + JSON.stringify(user));
     if (response.ok) {
         return user;
     } else {
@@ -32,10 +32,16 @@ async function login(email, password) {
 
 
 
-async function signup() {
-    const response = await fetch(URL + '/signup', { credentials: 'include' });
+async function signup(body) {
+    const response = await fetch(URL + '/signup', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
     const user = await response.json();
-    console.log("user " + user);
     if (response.ok) {
         return user;
     } else {

@@ -14,17 +14,28 @@ userRouter.post('/api/login', async (req, res) => {
 
     const user = await service.login(req.body);
 
-    if (user.ok) {
-        console.log("if " + JSON.stringify(user));
+    if (user.ok)
         return res.status(user.status).json(user.body);
-    }
-    else {
-        console.log("else " + JSON.stringify(user));
-        return res.status(user.status).end;
-    }
+
+    return res.status(user.status).end;
+
+});
+
+
+
+userRouter.post('/api/signup', async (req, res) => {
+
+    const user = await service.signup(req.body);
+
+    if (user.ok)
+        return res.status(user.status).json(user.body);
+
+    return res.status(user.status).end;
 
 
 });
+
+
 
 
 userRouter.get('/skuitems/sku/:id',
@@ -44,4 +55,4 @@ userRouter.get('/skuitems/sku/:id',
         return res.status(data.status).end()
     })
 
-    module.exports=userRouter
+module.exports = userRouter

@@ -32,7 +32,7 @@ function LoginForm(props) {
         let result = await handlerLogin(email, password);
 
         if (result !== false) {
-            navigate(`/home`);
+            navigate(`/`);
         }
         else
             setError(true);
