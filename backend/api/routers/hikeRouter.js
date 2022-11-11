@@ -4,8 +4,8 @@ const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDao');
 const mockHikeDao=require('../mockDAOs/mockHikeDAO');
 
-// const service = new HikeService(HikeDao)
-const service = new HikeService(mockHikeDao);
+const service = new HikeService(HikeDao)
+// const service = new HikeService(mockHikeDao);
 
 const router = express.Router()
 

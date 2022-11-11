@@ -66,14 +66,15 @@ const db = new sqlite.Database(dbPath, (err) => {
 
    exports.createHike=async(hike)=> {
     return new Promise((resolve, reject) => {
-       const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description) VALUES(?,?,?,?,?,1,2,?)';
+       const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, author) VALUES(?,?,?,?,?,1,2,?,?)';
        db.run(sql, [
          hike.title,
          hike.length,
          hike.expTime,
          hike.ascent,
          hike.difficulty,
-         hike.description
+         hike.description,
+         hike.author
        ], async (err, rows) => {
          if(err){
             reject(400);

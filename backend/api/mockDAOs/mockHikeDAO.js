@@ -1,3 +1,3 @@
 // import {jest} from "@jest/globals"
 
-exports.getHikes=jest.fn(); 
+//exports.getHikes=jest.fn(); 
