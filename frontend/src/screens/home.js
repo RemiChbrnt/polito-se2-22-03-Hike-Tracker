@@ -18,9 +18,6 @@ const Home = ({setProps}) => {
               <Button variant="white" size="lg" style={{backgroundColor: "#00706c"}} onClick={() => { navigate('/hiker') }}>
                 <h3 className="text-white">Hiker</h3>
               </Button>
-              <Button variant="white" size="lg" style={{backgroundColor: "#00706c"}} onClick={() => { navigate('/hike-detail-azerazer',{testparam:15}) }}>
-                <h3 className="text-white">HikeDetail</h3>
-              </Button>
             </Row>
           </Container>
          
@@ -28,7 +25,7 @@ const Home = ({setProps}) => {
         {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
           <h3 className="text-white">Hiker</h3>
         </Button>*/}
-        <HikeGrid/>
+        <HikeGrid setProps={setProps}/>
       </Row>
     </Container>
   );
