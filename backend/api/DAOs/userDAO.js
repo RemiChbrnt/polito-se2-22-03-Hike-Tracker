@@ -1,40 +1,48 @@
 'use strict'
 const sqlite = require('sqlite3')
 const crypto = require('crypto');
-const dbPath = "..\..\db\HikeTrackerDb.db"
+const dbPath = "./db/HikeTrackerDb.db"
 const db = new sqlite.Database(dbPath, (err) => {
+
     if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
+    db.run("PRAGMA foreign_keys = ON");
+
 })
 
-
-
-
-async function login(email, password) {
+exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM user WHERE email = ?`;
-        db.get(query, [email], (err, row) => {
-            if (err)
+        console.log("a " + email);
+        const sql = `SELECT * FROM Users WHERE email = ?`;
+        db.get(sql, [email], (err, row) => {
+            if (err) {
+                console.log("errore " + err);
                 reject(err);
+            }
             else if (row === undefined)
                 resolve(false); // User not found
             else {
                 const user = {
-                    id: row.id,
+                    // id: row.rowid,
                     email: row.email,
-                    fullname: row.fullName
+                    fullName: row.fullname
                 }
 
-                /* User found. Now check whether the hash matches */
-                crypto.scrypt(password, row.salt, 32, function (err, hashedPassword) {
-                    if (err)
-                        reject(err);
 
-                    if (!crypto.timingSafeEqual(Buffer.from(row.hashed_password, 'base64'), hashedPassword))
-                        resolve(false); // Hash doesn't match, wrong password
-                    else
+            /* User found. Now check whether the hash matches */
+            crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
+                if (err)
+                    reject(err);                    
+
+                if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))){
+                    console.log("Login failed - Wrong password");
+                    resolve(false); // Hash doesn't match, wrong password
+                }
+                else
+                    {
+                        console.log("Login successful");
                         resolve(user);
-                });
+                    }
+            });
             }
         });
     });
@@ -43,7 +51,9 @@ async function login(email, password) {
 
 
 
-async function signup(email, fullName, password, role, phoneNumber) {
+exports.signup = async (email, fullName, password, role, phoneNumber) => {
+
+
     return new Promise((resolve, reject) => {
         const sql = "";
         let salt = crypto.randomBytes(32).toString('base64');
@@ -250,4 +260,4 @@ exports.deleteSKUItem = async (rfid) => {
 }
 
 
-module.exports = { login, signup }
+// module.exports = { login, signup }

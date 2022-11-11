@@ -18,11 +18,11 @@ const { body, param, validationResult } = require('express-validator');
 
    router.post('/hikes',[], async (req, res) => {
     //validation
-    const errors=validationResult(req);
+/*     const errors=validationResult(req);
     if (!errors.isEmpty()) {
        return res.status(422).json({ errors: errors.array() });
     }
-
+ */
     const newHike=req.body
     const data=await service.createHike(newHike)
     if(data.ok) {

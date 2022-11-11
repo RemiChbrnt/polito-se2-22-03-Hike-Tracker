@@ -1,31 +1,33 @@
 'use strict';
 
 const express = require('express');
-const UserService = require('../services/userService');
+const UserService = require('../services/UserService');
 const userDAO = require('../DAOs/userDAO');
 
 const service = new UserService(userDAO);
-const router = express.Router();
+const userRouter = express.Router();
 const { body, param, validationResult } = require('express-validator');
 
 // TODO: inspiration
 
-router.post('/login', async (req, res) => {
-    const user = await service.login(req.user);
+userRouter.post('/login', async (req, res) => {
 
-    console.log("user router " + req.user);
+    const user = await service.login(req.body);
 
     if (user.ok) {
+        console.log("if " + JSON.stringify(user));
         return res.status(user.status).json(user.body);
     }
-    else
+    else {
+        console.log("else " + JSON.stringify(user));
         return res.status(user.status).end;
+    }
 
 
 });
 
 
-router.get('/skuitems/sku/:id',
+userRouter.get('/skuitems/sku/:id',
     [param('id').isNumeric(),
     ], async (req, res) => {
         const id = req.params.id;
@@ -42,4 +44,4 @@ router.get('/skuitems/sku/:id',
         return res.status(data.status).end()
     })
 
-    module.exports=router
+    module.exports=userRouter
