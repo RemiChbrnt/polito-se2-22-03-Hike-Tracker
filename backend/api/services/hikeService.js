@@ -9,6 +9,7 @@ class HikeService {
         try {
             const hikes = await this.dao.getHikes()
             const message = hikes.map((r) => ({
+                id:r.id,
                 title:r.title, 
                 length:r.length, 
                 expTime:r.expTime, 
@@ -16,7 +17,8 @@ class HikeService {
                 difficulty:r.difficulty, 
                 startPt:r.startPt, 
                 endPt:r.endPt, 
-                description:r.description
+                description:r.description,
+                referencePoints:r.referencePoints
              }))
             return {
             ok: true,
