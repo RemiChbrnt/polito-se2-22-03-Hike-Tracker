@@ -3,10 +3,11 @@ import { MapContainer, TileLayer, useMap, Marker, Popup} from 'react-leaflet';
 import * as L from 'leaflet';
 
 const Map = (props) => {
-    const startPosition = [45.079300, 7.675558];
-    const finishPosition = [45.056300, 7.715558];
+    const startPt = JSON.parse(props.startPt);
+    const endPt = JSON.parse(props.endPt);
     const [windowSize, setWindowSize] = useState(getWindowSize());
     
+
     function getWindowSize() {
         const {innerWidth, innerHeight} = window;
         return {innerWidth, innerHeight};
@@ -21,17 +22,17 @@ const Map = (props) => {
         iconSize: [104, 158]
     });
     return (
-        <MapContainer center={props.startPt} zoom={12} scrollWheelZoom={false} style={{width: windowSize.innerWidth/2.5, height: windowSize.innerHeight/1.5}} >
+        <MapContainer center={[startPt.latitude, startPt.longitude]} zoom={12} scrollWheelZoom={false} style={{width: windowSize.innerWidth/2.5, height: windowSize.innerHeight/1.5}} >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                    <Marker position={props.startPt} icon={startIcon}>
+                    <Marker position={[startPt.latitude, startPt.longitude]} icon={startIcon}>
                         <Popup>
                             Starting point<br />
                         </Popup>
                     </Marker>
-                    <Marker position={props.endPt} icon={finishIcon}>
+                    <Marker position={[endPt.latitude, endPt.longitude]} icon={finishIcon}>
                         <Popup>
                             Finish point<br />
                         </Popup>

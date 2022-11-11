@@ -6,7 +6,7 @@ import Map from "../components/map.js";
 
 const HikeDetail = ({props, setProps}) => {
 
-  console.log(props);
+  const hike = JSON.parse(props.hike);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -14,7 +14,7 @@ const HikeDetail = ({props, setProps}) => {
     <Container>
         <Row>
             <Col md={10}>
-            <h1>Hike "{props.hikeTitle}"</h1>
+            <h1>Hike "{hike.title}"</h1>
             <h4>#{params.hikeId}</h4>
             </Col>
             <Col md={2}>
@@ -26,22 +26,22 @@ const HikeDetail = ({props, setProps}) => {
         <Row style={{flex:1, marginTop: "2%", alignItems:"center"}}>
             <Col>
                 <h3>
-                    Length : {props.hikeLength} km
+                    Length : {hike.length} km
                 </h3>
                 <h3>
-                    Ascent : {props.hikeAscent} m 
+                    Ascent : {hike.ascent} m 
                 </h3>
                 <h3>
-                    Expected time : {props.hikeExpTime} hours
+                    Expected time : {hike.expTime} hours
                 </h3>
                 <h3>
-                    Difficulty : {props.hikeDifficulty}
+                    Difficulty : {hike.difficulty}
                 </h3>
                 <h3>
                     Description 
                 </h3>
                 <h4>
-                    {props.hikeDescription}
+                    {hike.description}
                 </h4>
                 <h3>
 
@@ -49,7 +49,7 @@ const HikeDetail = ({props, setProps}) => {
 
             </Col>
             <Col>
-                <Map startPt={props.hikeStartPt} endPt={props.hikeEndPt}/>
+                <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)}/>
             </Col>
         </Row>
     </Container>
