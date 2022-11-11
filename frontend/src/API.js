@@ -22,7 +22,7 @@ async function login(email, password) {
         })
     });
     const user = await response.json();
-    console.log("user " + user);
+    console.log("user " + JSON.stringify(user));
     if (response.ok) {
         return user;
     } else {
@@ -30,10 +30,18 @@ async function login(email, password) {
     }
 }
 
-async function signup() {
-    const response = await fetch(URL + '/signup', { credentials: 'include' });
+
+
+async function signup(body) {
+    const response = await fetch(URL + '/signup', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
     const user = await response.json();
-    console.log("user " + user);
     if (response.ok) {
         return user;
     } else {
@@ -49,19 +57,20 @@ async function getAllHikes() {
     const response = await fetch(URL + '/hikes', { credentials: 'include' });
     const hikesJson = await response.json();
     if (response.ok) {
-      return hikesJson.map((r) => ({ title:r.title, 
-        length:r.length, 
-        expTime:r.expTime, 
-        ascent:r.ascent, 
-        difficulty:r.difficulty, 
-        startPt:r.startPt, 
-        endPt:r.endPt, 
-        description:r.description 
-    }))
+        return hikesJson.map((r) => ({
+            title: r.title,
+            length: r.length,
+            expTime: r.expTime,
+            ascent: r.ascent,
+            difficulty: r.difficulty,
+            startPt: r.startPt,
+            endPt: r.endPt,
+            description: r.description
+        }))
     } else {
-      throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+        throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
-  }
+}
 
 const API = { login, signup, getAllHikes };
 export default API;

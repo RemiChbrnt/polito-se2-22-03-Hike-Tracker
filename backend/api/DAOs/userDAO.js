@@ -11,8 +11,8 @@ const db = new sqlite.Database(dbPath, (err) => {
 
 exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {
-        console.log("a " + email);
-        const sql = `SELECT * FROM Users WHERE email = ?`;
+        const sql =
+            `SELECT * FROM Users WHERE email = ?`;
         db.get(sql, [email], (err, row) => {
             if (err) {
                 console.log("errore " + err);
@@ -28,21 +28,20 @@ exports.login = async (email, password) => {
                 }
 
 
-            /* User found. Now check whether the hash matches */
-            crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
-                if (err)
-                    reject(err);                    
+                /* User found. Now check whether the hash matches */
+                crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
+                    if (err)
+                        reject(err);
 
-                if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))){
-                    console.log("Login failed - Wrong password");
-                    resolve(false); // Hash doesn't match, wrong password
-                }
-                else
-                    {
+                    if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))) {
+                        console.log("Login failed - Wrong password");
+                        resolve(false); // Hash doesn't match, wrong password
+                    }
+                    else {
                         console.log("Login successful");
                         resolve(user);
                     }
-            });
+                });
             }
         });
     });
@@ -52,48 +51,55 @@ exports.login = async (email, password) => {
 
 
 exports.signup = async (email, fullName, password, role, phoneNumber) => {
-
+    let salt, hash;
 
     return new Promise((resolve, reject) => {
-        const sql = "";
-        let salt = crypto.randomBytes(32).toString('base64');
-        const hash = crypto.pbkdf2(password, salt, 10000);
+        crypto.randomBytes(24, async (err, buf) => {
+            if (err) reject(err);
+
+            salt = buf.toString("base64");
+            resolve(salt);
+        })
+    }).then(() => new Promise((resolve, reject) => {
+
+        crypto.scrypt(password, salt, 128, function (err, hashedPassword) {
+            if (err) reject(err);
+
+            hash = hashedPassword.toString("base64");
+            resolve(hash);
+        })
+    })).then(() => new Promise((resolve, reject) => {
 
         if (phoneNumber !== undefined) {
-            sql = `INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err, row) => {
+
+            //TABLE USERS MUST BE UPDATED TO STORE THE PHONE NUMBER
+
+
+            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
+            // db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
+            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
+            db.run(query, [email, fullName, hash, salt, role], (err) => {
                 if (err)
-                    reject(false);
+                    reject(err);
                 else {
-                    const user = {
-                        id: row.id,
-                        email: row.email,
-                        fullname: row.fullName
-                    }
-
-                    resolve(user);
-
+                    console.log("ciao");
+                    resolve(true);
                 }
             });
         }
         else {
-            sql = `INSERT INTO user VALUES(?, ?, ?, ?, ?, NULL)`;
-
-            db.run(query, [email, fullName, hash, salt, role], (err, row) => {
+            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
+            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
+            db.run(query, [email, fullName, hash, salt, role], (err) => {
                 if (err)
-                    reject(false);
+                    reject(err);
                 else {
-                    const user = {
-                        id: row.id,
-                        email: row.email,
-                        fullname: row.fullName
-                    }
-
-                    resolve(user);
+                    resolve(true);
                 }
             });
         }
-    });
+    }));
+
 }
 
 
