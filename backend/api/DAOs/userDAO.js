@@ -42,8 +42,6 @@ exports.login = async (email, password) => {
                         resolve(user);
                     }
                 });
-
-                resolve(user);
             }
         });
     });

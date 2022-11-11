@@ -10,7 +10,7 @@ const { body, param, validationResult } = require('express-validator');
 
 // TODO: inspiration
 
-userRouter.post('/api/login', async (req, res) => {
+userRouter.post('/login', async (req, res) => {
 
     const user = await service.login(req.body);
 
@@ -23,7 +23,7 @@ userRouter.post('/api/login', async (req, res) => {
 
 
 
-userRouter.post('/api/signup', async (req, res) => {
+userRouter.post('/signup', async (req, res) => {
 
     const user = await service.signup(req.body);
 
