@@ -5,9 +5,11 @@ import routes from './routes/routes';
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { NavBar } from "./components/navBar";
-import HikeDetail from './screens/hikeDetail';
+import { HikeFilterForm } from './components/hikeFilterForm';
+import { HikeDetail } from './screens/hikeDetail';
 import Home from "./screens/home.js";
 import API from './API';
+
 
 
 function App() {
@@ -38,8 +40,8 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Routes>
-          <Route path='/' element={<Home hikes={hikes}/>}
-          />
+          <Route path='/' element={<Home hikes={hikes}/>}/>
+          {/*<Route path='/hike-filter-form' element={<HikeFilterForm/>}/>*/}
           {routes.map((route) => {
             return (<Route
               key={route.key}

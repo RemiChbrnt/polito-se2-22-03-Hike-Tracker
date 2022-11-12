@@ -3,8 +3,6 @@ import HikeDetail from "../screens/hikeDetail.js";
 import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import Hiker from "../screens/hiker.js";
-import Home from "../screens/home.js";
-
 
 const routes = [
     /*{
