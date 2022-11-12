@@ -7,13 +7,13 @@ import Home from "../screens/home.js";
 
 
 const routes = [
-    {
+    /*{
         path: "/",
         key: "Home",
         screen: function(props, setProps){
             return <Home setProps={setProps}/>
         } 
-    },
+    },*/
     {
         path: "/hiker",
         key: "hiker",

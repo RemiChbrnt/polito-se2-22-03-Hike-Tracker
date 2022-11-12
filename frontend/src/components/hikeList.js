@@ -3,7 +3,7 @@ import { Card, Row, Col, ListGroup, Container } from 'react-bootstrap';
 function HikeGrid(props) {
 
   //Dummy array for beginning
-  let hikes = [
+  /*let hikes = [
     {
       "title": "Sentiero per il Rocciamelone",
       "length": 9.0,
@@ -34,13 +34,13 @@ function HikeGrid(props) {
       "endPt": 2,
       "description": "Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti)."
     }
-  ]
+  ]*/
 
   return (
     <Container fluid>
       <Row xs={1} md={2} className="g-4">
         {
-          hikes.map(hike => <HikeCard hike={hike} key={hike.title} />)
+          props.hikes.map(hike => <HikeCard hike={hike} key={hike.id} />)
         }
       </Row>
       <ul></ul>
