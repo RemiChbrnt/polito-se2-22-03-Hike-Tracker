@@ -26,7 +26,7 @@ const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
 
 
 
-function SignupForm(props) {
+function SignupForm({ props, setProps }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -93,13 +93,13 @@ function SignupForm(props) {
                             <Form.Select required={true}
                                 onChange={ev => { setRole(ev.target.value) }}>
                                 <option value="hiker">Hiker</option>
-                                <option value="localGuide">Local Guide</option>
-                                <option value="hutWorker">Hut worker</option>
-                                <option value="emergencyOperator">Emergency operator</option>
+                                <option value="guide">Local Guide</option>
+                                <option value="hutworker">Hut worker</option>
+                                <option value="emergency">Emergency operator</option>
                             </Form.Select>
                         </Form.Group>
 
-                        {(role === "hutWorker" || role === "localGuide") &&
+                        {(role === "hutworker" || role === "guide") &&
                             <Form.Group controlId="email">
                                 <Form.Label>Phone number</Form.Label>
                                 <Form.Control type="text" placeholder="Phone number" required={true}

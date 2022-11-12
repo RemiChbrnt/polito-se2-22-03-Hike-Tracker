@@ -18,7 +18,7 @@ const handlerLogin = async (username, password) => {
 };
 
 
-function LoginForm(props) {
+function LoginForm({ props, setProps }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,6 +32,12 @@ function LoginForm(props) {
         let result = await handlerLogin(email, password);
 
         if (result !== false) {
+            let temp = {};
+            if (props !== null)
+                temp = props;
+
+            temp.user = result;
+            setProps(temp);
             navigate(`/`);
         }
         else
@@ -84,11 +90,11 @@ function LoginForm(props) {
             <ul></ul>
             <Row className="justify-content-md-center">
                 <Col md="auto">
-                <h3 className="text-center">Are you new here? Create your account</h3>
-                <ul></ul>
-                <div className="d-grid gap-2">
-                    <Button onClick={() => { navigate('/signup') }} variant='outline-success' size='lg'>Sign-Up</Button>
-                </div>
+                    <h3 className="text-center">Are you new here? Create your account</h3>
+                    <ul></ul>
+                    <div className="d-grid gap-2">
+                        <Button onClick={() => { navigate('/signup') }} variant='outline-success' size='lg'>Sign-Up</Button>
+                    </div>
                 </Col>
             </Row>
         </Container>

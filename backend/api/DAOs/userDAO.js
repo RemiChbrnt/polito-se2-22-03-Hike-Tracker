@@ -24,7 +24,8 @@ exports.login = async (email, password) => {
                 const user = {
                     // id: row.rowid,
                     email: row.email,
-                    fullName: row.fullname
+                    fullName: row.fullname,
+                    role: row.role
                 }
 
 
@@ -94,7 +95,13 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
                 if (err)
                     reject(err);
                 else {
-                    resolve(true);
+                    const user = {
+                        email: email,
+                        fullName: fullname,
+                        role: role
+                    }
+
+                    resolve(user);
                 }
             });
         }
