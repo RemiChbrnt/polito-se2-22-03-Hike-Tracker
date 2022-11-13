@@ -5,9 +5,9 @@ class HikeService {
         this.dao = dao
     }
 
-    getHikes=async ()=>{
+    getHikes=async (query)=>{
         try {
-            const hikes = await this.dao.getHikes()
+            const hikes = await this.dao.getHikes(query)
             const message = hikes.map((r) => ({
                 id:r.id,
                 title:r.title, 
