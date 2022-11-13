@@ -32,9 +32,8 @@ function LoginForm({ props, setProps }) {
         let result = await handlerLogin(email, password);
 
         if (result !== false) {
-            let temp = {};
-            if (props !== null)
-                temp = props;
+            let temp;
+            (props !== null) ? temp = props : temp = {};
 
             temp.user = result;
             setProps(temp);

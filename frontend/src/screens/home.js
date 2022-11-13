@@ -10,11 +10,34 @@ import EmergencyOperator from "./../screens/emergencyOperator"
 const Home = ({ props, setProps }) => {
     const navigate = useNavigate();
 
-    console.log("props " + JSON.stringify(props));
-
     return (
         <Container>
             <ul></ul>
+            {(props !== null && props.user !== undefined) && (
+
+                (props.user.role === "hutworker") &&
+                <Row>
+                    <h2>Hut Worker</h2>
+                    <HutWorker />
+                </Row>
+
+                ||
+
+                (props.user.role === "guide") &&
+                <Row>
+                    <h2>Local Guide</h2>
+                    <LocalGuide />
+                </Row>
+
+                ||
+
+                (props.user.role === "emergency") &&
+                <Row>
+                    <h2>Emergency Operator</h2>
+                    <EmergencyOperator />
+                </Row>
+            )}
+
             <Row>
                 <h1>Hike List</h1>
             </Row>
@@ -27,38 +50,12 @@ const Home = ({ props, setProps }) => {
                 </Row>
             </Container>
 
-            {(props === null ||
-                props.user === undefined ||
-                props.user.role === "hiker") &&
-                <Row>
-                    {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
+            <Row>
+                {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
                         <h3 className="text-white">Hiker</h3>
                         </Button>*/}
-                    <HikeGrid setProps={setProps} />
-                </Row>}
-
-            {(props !== null && props.user !== undefined) && (
-
-                (props.user.role === "hutworker") &&
-                <Row>
-                    <HutWorker />
-                </Row>
-
-                ||
-
-                (props.user.role === "guide") &&
-                <Row>
-                    <LocalGuide />
-                </Row>
-
-                ||
-
-                (props.user.role === "emergency") &&
-                <Row>
-                    <EmergencyOperator />
-                </Row>
-            )
-            }
+                <HikeGrid setProps={setProps} />
+            </Row>
 
         </Container>
     );
