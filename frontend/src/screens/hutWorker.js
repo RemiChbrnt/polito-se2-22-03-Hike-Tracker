@@ -18,42 +18,44 @@ const HutWorker = ({ setProps }) => {
     return (
         <Container fluid>
             <ul></ul>
-            <Row>
-                <Button onClick={() => {
-                    setShowFormDescribeHut(false);
-                    setShowFormAddHut(false);
-                    setShowFormAddHutPhotos(false)
-                    setShowFormHikeCondition(true);
-                }}>Update condition of hikes connected to the hut</Button>
-            </Row>
-            <ul></ul>
-            <Row>
-                <Button onClick={() => {
-                    setShowFormHikeCondition(false);
-                    setShowFormAddHut(false);
-                    setShowFormAddHutPhotos(false)
-                    setShowFormDescribeHut(true);
-                }}>Add information on the hut</Button>
-            </Row>
-            <ul></ul>
-            <Row>
-                <Button onClick={() => {
-                    setShowFormHikeCondition(false);
-                    setShowFormDescribeHut(false);
-                    setShowFormAddHutPhotos(false)
-                    setShowFormAddHut(true);
-                }}>Add hut</Button>
-            </Row>
-            <ul></ul>
-            <Row>
-                <Button onClick={() => {
-                    setShowFormHikeCondition(false);
-                    setShowFormDescribeHut(false);
-                    setShowFormAddHut(false);
-                    setShowFormAddHutPhotos(true)
-                }}>Add hut photos</Button>
-            </Row>
-            <ul></ul>
+            <Container style={{ width: "40vw" }}>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormDescribeHut(false);
+                        setShowFormAddHut(false);
+                        setShowFormAddHutPhotos(false)
+                        setShowFormHikeCondition(true);
+                    }}>Update condition of hikes connected to the hut</Button>
+                </Row>
+                <ul></ul>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormHikeCondition(false);
+                        setShowFormAddHut(false);
+                        setShowFormAddHutPhotos(false)
+                        setShowFormDescribeHut(true);
+                    }}>Add information on the hut</Button>
+                </Row>
+                <ul></ul>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormHikeCondition(false);
+                        setShowFormDescribeHut(false);
+                        setShowFormAddHutPhotos(false)
+                        setShowFormAddHut(true);
+                    }}>Add hut</Button>
+                </Row>
+                <ul></ul>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormHikeCondition(false);
+                        setShowFormDescribeHut(false);
+                        setShowFormAddHut(false);
+                        setShowFormAddHutPhotos(true)
+                    }}>Add hut photos</Button>
+                </Row>
+                <ul></ul>
+            </Container>
             <Row>
                 {showFormHikeCondition &&
                     <div></div>

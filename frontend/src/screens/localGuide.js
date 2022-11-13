@@ -21,29 +21,31 @@ const LocalGuide = ({ setProps }) => {
         <Container fluid>
             <ul></ul>
 
-            <Row>
-                <Button onClick={() => {
-                    setShowFormParkingLot(false);
-                    setShowFormLinkHutToHike(false);
-                    setShowFormHike(true);
-                }}>Add hike description</Button>
-            </Row>
-            <ul></ul>
-            <Row>
-                <Button onClick={() => {
-                    setShowFormHike(false);
-                    setShowFormLinkHutToHike(false);
-                    setShowFormParkingLot(true);
-                }}>Add parking lot</Button>
-            </Row>
-            <ul></ul>
-            <Row>
-                <Button onClick={() => {
-                    setShowFormHike(false);
-                    setShowFormParkingLot(false);
-                    setShowFormLinkHutToHike(true);
-                }}>Link hut to hike</Button>
-            </Row>
+            <Container style={{ width: "40vw" }}>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormParkingLot(false);
+                        setShowFormLinkHutToHike(false);
+                        setShowFormHike(true);
+                    }}>Add hike description</Button>
+                </Row>
+                <ul></ul>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormHike(false);
+                        setShowFormLinkHutToHike(false);
+                        setShowFormParkingLot(true);
+                    }}>Add parking lot</Button>
+                </Row>
+                <ul></ul>
+                <Row>
+                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c", color: "white" }} onClick={() => {
+                        setShowFormHike(false);
+                        setShowFormParkingLot(false);
+                        setShowFormLinkHutToHike(true);
+                    }}>Link hut to hike</Button>
+                </Row>
+            </Container>
             <ul></ul>
             <Row>
                 {showFormHike &&
