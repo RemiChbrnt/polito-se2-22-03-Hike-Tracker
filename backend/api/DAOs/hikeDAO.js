@@ -58,6 +58,7 @@ const db = new sqlite.Database(dbPath, (err) => {
    }
 
    exports.generateFilters=(query)=> {
+      console.log(query);
       let filters=""
       if(query.minLength!==undefined || query.maxLength!==undefined ||
          query.minAscent!==undefined || query.maxAscent!==undefined ||
