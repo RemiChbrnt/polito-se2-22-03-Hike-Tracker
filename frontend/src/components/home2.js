@@ -4,11 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { HikeGrid } from "./../components/hikeList";
 import {HikeFilterForm} from "./../components/hikeFilterForm";
 
+function Home({setProps}) {
 
-const Home = ({setProps}) => {
-  
   const [show, setShow] = useState(false);
-  const [filters, setFilters] = useState("[]");
+  const [filters, setFilters] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ const Home = ({setProps}) => {
         {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
           <h3 className="text-white">Hiker</h3>
         </Button>*/}
-        <HikeGrid setProps={setProps} filters={filters}/>
+        <HikeGrid setProps={setProps}/>
       </Row>
 
       <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
@@ -39,6 +38,7 @@ const Home = ({setProps}) => {
           <HikeFilterForm setShow={setShow} setFilters={setFilters}/>
         </Modal.Body>
       </Modal>
+
     </Container>
   );
 }

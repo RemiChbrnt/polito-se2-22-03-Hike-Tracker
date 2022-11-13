@@ -52,9 +52,16 @@ async function signup(body) {
 
 /* hikes API */
 
-async function getAllHikes() {
+async function getAllHikes(filters) {
     // call: GET /api/hikes
-    const response = await fetch(URL + '/hikes', { credentials: 'include' });
+    let params = "?";
+    JSON.parse(filters).forEach(filter => {
+        params = params + filter.key + "=" + filter.value +"&";
+    });
+    params = params.slice(0, params.length-1);
+    const response = await fetch(URL + '/hikes'+ params, { 
+        credentials: 'include',
+    });
     const hikesJson = await response.json();
     if (response.ok) {
         return hikesJson.map((r) => ({
