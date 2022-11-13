@@ -3,6 +3,7 @@ import HikeDetail from "../screens/hikeDetail.js";
 import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import Hiker from "../screens/hiker.js";
+import LocalGuide from "../screens/localGuide.js";
 import Home from "../screens/home.js";
 
 
@@ -12,6 +13,13 @@ const routes = [
         key: "Home",
         screen: function(props, setProps){
             return <Home setProps={setProps}/>
+        } 
+    },
+    {
+        path: "/localGuide",
+        key: "localGuide",
+        screen: function(props, setProps){
+            return <LocalGuide setProps={setProps}/>
         } 
     },
     {
