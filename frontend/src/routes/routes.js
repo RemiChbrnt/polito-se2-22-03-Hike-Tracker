@@ -8,7 +8,7 @@ import Home from "../screens/home.js";
 
 
 const routes = [
-    {
+    /*{
         path: "/",
         key: "Home",
         screen: function (props, setProps) {
@@ -21,7 +21,7 @@ const routes = [
         screen: function(props, setProps){
             return <LocalGuide setProps={setProps}/>
         } 
-    },
+    },*/
     {
         path: "/hiker",
         key: "hiker",
@@ -35,22 +35,24 @@ const routes = [
         screen: function (props, setProps) {
             return <HikeDetail props={props} setProps={setProps} />
         }
-    },
+    }
+]
+
+const userRoutes = [
     {
         path: "/login",
         key: "login",
-        screen: function (props, setProps) {
-            return <LoginForm props={props} setProps={setProps} />
+        screen: function (user, setUser) {
+            return <LoginForm user={user} setUser={setUser} />
         }
     },
     {
         path: "/signup",
         key: "signup",
-        screen: function (props, setProps) {
-            return <SignupForm props={props} setProps={setProps} />
+        screen: function (user, setUser) {
+            return <SignupForm user={user} setUser={setUser} />
         }
     }
-
 ]
 
-export default routes;
+export { routes, userRoutes };

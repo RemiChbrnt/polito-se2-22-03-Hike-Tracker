@@ -54,17 +54,21 @@ async function signup(body) {
 
 async function getAllHikes(filters) {
     // call: GET /api/hikes
-    let params = "?";
-    JSON.parse(filters).forEach(filter => {
-        params = params + filter.key + "=" + filter.value +"&";
-    });
-    params = params.slice(0, params.length-1);
-    const response = await fetch(URL + '/hikes'+ params, { 
+    let params = "";
+    if (filters !== undefined) {
+        params = "?";
+        JSON.parse(filters).forEach(filter => {
+            params = params + filter.key + "=" + filter.value + "&";
+        });
+        params = params.slice(0, params.length - 1);
+    }
+    const response = await fetch(URL + '/hikes' + params, {
         credentials: 'include',
     });
     const hikesJson = await response.json();
     if (response.ok) {
         return hikesJson.map((r) => ({
+            id: r.id,
             title: r.title,
             length: r.length,
             expTime: r.expTime,
@@ -72,7 +76,8 @@ async function getAllHikes(filters) {
             difficulty: r.difficulty,
             startPt: r.startPt,
             endPt: r.endPt,
-            description: r.description
+            description: r.description,
+            referencePoints: r.refLocations
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore

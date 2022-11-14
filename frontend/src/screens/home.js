@@ -9,7 +9,8 @@ import LocalGuide from "./../screens/localGuide"
 import EmergencyOperator from "./../screens/emergencyOperator"
 
 
-const Home = ({ props, setProps }) => {
+
+const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
@@ -19,7 +20,7 @@ const Home = ({ props, setProps }) => {
     return (
         <Container>
             <ul></ul>
-            {(props !== null && props.user !== undefined) && (
+            {(props !== undefined && props.user !== undefined) && (
 
                 (props.user.role === "hutworker") &&
                 <Row>
@@ -54,12 +55,24 @@ const Home = ({ props, setProps }) => {
                     <Button onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
                 </Col>
             </Row>
+            {/*<ul></ul>
+      <Container>
+        <Row>
+          <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
+            <h3 className="text-white">Hiker</h3>
+          </Button>
+          <ul></ul>
+          <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hike-detail-azerazer', { testparam: 15 }) }}>
+            <h3 className="text-white">HikeDetail</h3>
+          </Button>
+        </Row>
+  </Container>*/}
             <ul></ul>
             <Row>
                 {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
           <h3 className="text-white">Hiker</h3>
         </Button>*/}
-                <HikeGrid setProps={setProps} filters={filters} />
+                <HikeGrid hikes={props.hikes} filters={filters} setProps={props.setProps} />
             </Row>
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
@@ -69,6 +82,15 @@ const Home = ({ props, setProps }) => {
                 <Modal.Body>
                     <HikeFilterForm setShow={setShow} setFilters={setFilters} />
                 </Modal.Body>
+                <Modal.Footer>
+
+                    <Button variant="danger" onClick={() => setShow(false)} size="lg">
+                        Back
+                    </Button>
+                    <Button variant="success" onClick={() => setShow(false)} size="lg">
+                        Confirm
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </Container>
     );

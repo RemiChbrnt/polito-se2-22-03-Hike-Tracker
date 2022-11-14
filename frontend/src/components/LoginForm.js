@@ -1,7 +1,6 @@
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import API from "../API";
 
 
@@ -18,7 +17,7 @@ const handlerLogin = async (username, password) => {
 };
 
 
-function LoginForm({ props, setProps }) {
+function LoginForm({ user, setUser }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,11 +31,7 @@ function LoginForm({ props, setProps }) {
         let result = await handlerLogin(email, password);
 
         if (result !== false) {
-            let temp;
-            (props !== null) ? temp = props : temp = {};
-
-            temp.user = result;
-            setProps(temp);
+            setUser(result);
             navigate(`/`);
         }
         else

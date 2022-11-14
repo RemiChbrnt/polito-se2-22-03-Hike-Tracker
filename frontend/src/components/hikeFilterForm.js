@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap';
 
 function HikeFilterForm(props) {
@@ -17,42 +17,42 @@ function HikeFilterForm(props) {
         event.stopPropagation();
         props.setShow(false);
         let filters = [];
-        if(difficulty != ""){
-            filters.push({key: "difficulty", value: difficulty.toLocaleLowerCase()});
+        if (difficulty != "") {
+            filters.push({ key: "difficulty", value: difficulty.toLocaleLowerCase() });
         }
-        if(region != ""){
-            filters.push({key: "province", value: region.toLocaleLowerCase()});
+        if (region != "") {
+            filters.push({ key: "province", value: region.toLocaleLowerCase() });
         }
-        if(minLength != undefined){
-            filters.push({key: "minLength", value: minLength});
+        if (minLength != undefined) {
+            filters.push({ key: "minLength", value: minLength });
         }
-        if(maxLength != undefined){
-            filters.push({key: "maxLength", value: maxLength});
+        if (maxLength != undefined) {
+            filters.push({ key: "maxLength", value: maxLength });
         }
-        if(minAscent != undefined){
-            filters.push({key: "minAscent", value: minAscent});
+        if (minAscent != undefined) {
+            filters.push({ key: "minAscent", value: minAscent });
         }
-        if(maxAscent != undefined){
-            filters.push({key: "maxAscent", value: maxAscent});
+        if (maxAscent != undefined) {
+            filters.push({ key: "maxAscent", value: maxAscent });
         }
-        if(minTime != undefined){
-            filters.push({key: "minTime", value: minTime});
+        if (minTime != undefined) {
+            filters.push({ key: "minTime", value: minTime });
         }
-        if(maxTime != undefined){
-            filters.push({key: "maxTime", value: maxTime});
+        if (maxTime != undefined) {
+            filters.push({ key: "maxTime", value: maxTime });
         }
 
         props.setFilters(JSON.stringify(filters));
     }
-    
+
     return (
         <Container>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Form.Group>
                         <Form.Select value={difficulty}
-                                onChange={e => setDifficulty(e.target.value)} 
-                                aria-label="difficulty" size="lg">
+                            onChange={e => setDifficulty(e.target.value)}
+                            aria-label="difficulty" size="lg">
                             <option>Select the Difficulty</option>
                             <option value="Turist">Turist</option>
                             <option value="Hiker">Hiker</option>
@@ -65,8 +65,8 @@ function HikeFilterForm(props) {
                 <Row>
                     <Form.Group>
                         <Form.Select value={region}
-                                onChange={e => setRegion(e.target.value)}
-                                aria-label="region" size="lg">
+                            onChange={e => setRegion(e.target.value)}
+                            aria-label="region" size="lg">
                             <option>Select the Region</option>
                             <option value="Abruzzo">Abruzzo</option>
                             <option value="Basilicata">Basilicata</option>
@@ -97,7 +97,7 @@ function HikeFilterForm(props) {
                     <Col>
                         <Form.Group>
                             <h5>Minimum Length (km): </h5>
-                            <Form.Control 
+                            <Form.Control
                                 value={minLength}
                                 onChange={e => setMinLength(e.target.value)}
                                 type='number' placeholder="Minimum Length" size="lg" />
@@ -106,7 +106,7 @@ function HikeFilterForm(props) {
                     <Col>
                         <Form.Group>
                             <h5>Maximum Length (km): </h5>
-                            <Form.Control 
+                            <Form.Control
                                 value={maxLength}
                                 onChange={e => setMaxLength(e.target.value)}
                                 type='number' placeholder="Maximum Length" size="lg" />
@@ -119,7 +119,7 @@ function HikeFilterForm(props) {
                     <Col>
                         <Form.Group>
                             <h5>Minimum Ascent (m): </h5>
-                            <Form.Control 
+                            <Form.Control
                                 value={minAscent}
                                 onChange={e => setMinAscent(e.target.value)}
                                 type='number' placeholder="Minimum Ascent" size="lg" />
@@ -128,7 +128,7 @@ function HikeFilterForm(props) {
                     <Col>
                         <Form.Group>
                             <h5>Maximum Ascent (m): </h5>
-                            <Form.Control 
+                            <Form.Control
                                 value={maxAscent}
                                 onChange={e => setMaxAscent(e.target.value)}
                                 type='number' placeholder="Maximum Ascent" size="lg" />
@@ -141,7 +141,7 @@ function HikeFilterForm(props) {
                     <Col>
                         <Form.Group>
                             <h5>Minimum Time (hours): </h5>
-                            <Form.Control 
+                            <Form.Control
                                 value={minTime}
                                 onChange={e => setMinTime(e.target.value)}
                                 type='number' placeholder="Minimum Time" size="lg" />
@@ -150,16 +150,16 @@ function HikeFilterForm(props) {
                     <Col>
                         <Form.Group>
                             <h5>Maximum Time (hours): </h5>
-                            <Form.Control 
+                            <Form.Control
                                 value={maxTime}
                                 onChange={e => setMaxTime(e.target.value)}
                                 type='number' placeholder="Maximum Time" size="lg" />
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row style={{width: "100%", marginTop: "2%"}}>
-                    <Col/>
-                    <Col/>
+                <Row style={{ width: "100%", marginTop: "2%" }}>
+                    <Col />
+                    <Col />
                     <Col>
                         <Button variant="danger" onClick={() => props.setShow(false)} size="lg">
                             Back
@@ -171,7 +171,7 @@ function HikeFilterForm(props) {
                         </Button>
                     </Col>
                 </Row>
-            </Form> 
+            </Form>
             <ul></ul>
         </Container>
     );

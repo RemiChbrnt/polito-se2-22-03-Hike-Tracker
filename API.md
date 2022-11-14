@@ -11,9 +11,11 @@ Date: 10 Nov 2022
 
 ## Hikes
 
-### GET
 
-#### **/api/hikes**
+
+### `/api/hikes`
+
+#### GET
 
 - **Returns an array containing all Hikes**.
 - **Request body**: none.
@@ -101,6 +103,27 @@ Date: 10 Nov 2022
 - **Permissions allowed**:  Anyone (visitor)
 - **Error responses**: `500 Internal Server Error` (generic error).
 
+#### POST 
+
+- **Creates a new entry in the Hikes table.**
+- **Request body:** a JSON item representing the new hike. The item shold have the following fields:
+    - `title`: the title of the hike
+    - `length`: the length of the hike, expressed in kms
+    - `expTime`: the expected time to complete the hike, expressed in hours
+    - `ascent`: the heigth difference between the hike's starting point and end point
+    - `difficulty`: the suggested difficulty for the hike, which should be a string containing either "tourist", "hiker" or "pro"
+    - `description`: an optional field containing a textual description of the hike
+    - `author`: the email of the user that created the hike
+
+- **Permissions allowed**: registered users (Hikers)
+
+- **Responses**
+    - `201 Created`: the hike was correctly created and is now in the database.
+        - **Body**: none
+- **Error responses**
+    - `400 Bad request`: the hike was not created
+        - **Body**: none
+
 
 ## User
 
@@ -119,3 +142,4 @@ Date: 10 Nov 2022
 - **Response body**: none.
 - **Permissions allowed**:  Anyone (visitor)
 - **Error responses**: `500 Internal Server Error` (generic error).
+
