@@ -82,15 +82,6 @@ const Home = (props) => {
                 <Modal.Body>
                     <HikeFilterForm setShow={setShow} setFilters={setFilters} />
                 </Modal.Body>
-                <Modal.Footer>
-
-                    <Button variant="danger" onClick={() => setShow(false)} size="lg">
-                        Back
-                    </Button>
-                    <Button variant="success" onClick={() => setShow(false)} size="lg">
-                        Confirm
-                    </Button>
-                </Modal.Footer>
             </Modal>
         </Container>
     );

@@ -16,25 +16,10 @@ function App() {
 
     const [user, setUser] = useState();
 
-    const [props, setProps] = useState({
-        hikeTitle: "Sentiero per il Rocciamelone",
-        hikeDifficulty: "pro",
-        hikeLength: 9,
-        hikeExpTime: 6.5,
-        hikeAscent: 1352,
-        hikeDescription: "A beautiful hike and some more text to see how the display happens. A beautiful hike and some more text to see how the display happens.A beautiful hike and some more text to see how the display happens.A beautiful hike and some more text to see how the display happens.A beautiful hike and some more text to see how the display happens.",
-
-    });
+    const [props, setProps] = useState([]);
 
     const [hikes, setHikes] = useState([]); /* State thst contains the hikes list */
 
-    useEffect(() => {
-        API.getAllHikes().then((hikes) => {
-            setHikes(hikes);
-            console.log(hikes);
-        });
-
-    }, []);
 
 
     return (
