@@ -19,8 +19,8 @@ const handlerLogin = async (username, password) => {
 
 function LoginForm({ user, setUser }) {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState('antonio.fracassa@live.it');
+    const [password, setPassword] = useState('testPassword2');
     const [error, setError] = useState(false);
 
     let navigate = useNavigate();
@@ -56,14 +56,14 @@ function LoginForm({ user, setUser }) {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="email">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" placeholder="Email" required={true}
+                            <Form.Control type="email" placeholder="Email" value={email} required={true}
                                 onChange={ev => { setEmail(ev.target.value) }}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" required={true}
+                            <Form.Control type="password" placeholder="Password" value={password} required={true}
                                 onChange={ev => { setPassword(ev.target.value) }}
                             />
                         </Form.Group>

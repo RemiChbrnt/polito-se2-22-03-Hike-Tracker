@@ -2,7 +2,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Container, Row, Col, Button, Navbar, Dropdown } from "react-bootstrap";
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
+import { SideBar } from "./sideBar";
 
 function NavBar(props) {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ function NavBar(props) {
                         </Navbar.Brand>
 
 
-                        {!props.loggedIn ?
+                        {props.user === undefined ?
                             <Row>
                                 <Col>
                                 <Button onClick={() => { navigate('/login') }} style={{ backgroundColor: "#00706c" }} variant="none"><h1><i className="bi bi-person-circle text-white"></i></h1></Button>
@@ -28,7 +29,7 @@ function NavBar(props) {
                             :
                             <Row>
                                 <Col>
-                                    <Button onClick={() => { /*logout function*/ }} variant='warning'><i className="bi bi-box-arrow-in-right"></i> Sign-Out{" "}</Button>
+                                    <SideBar user={props.user} setUser={props.setUser}/>
                                 </Col>
                             </Row>
                         }

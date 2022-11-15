@@ -19,11 +19,10 @@ function App() {
     const [props, setProps] = useState([]);
 
 
-
     return (
         <div>
             <BrowserRouter>
-                <NavBar />
+                <NavBar user={user} setUser={setUser}/>
                 <Routes>
                     <Route path='/' element={<Home user={user} setProps={setProps} />} />
                     {/*<Route path='/hike-filter-form' element={<HikeFilterForm/>}/>*/}
