@@ -6,14 +6,13 @@ class UserService {
         this.DAO = DAO;
     }
 
-    login = async (user) => {
+    login = async (body) => {
         try {
-            console.log("service user " + JSON.stringify(user));
-            let user1 = await this.DAO.login(user.email, user.password);
+            let user = await this.DAO.login(body.email, body.password);
             return {
                 ok: true,
                 status: 201,
-                body: user1
+                body: user
             };
         }
         catch (e) {
@@ -23,7 +22,32 @@ class UserService {
             };
 
         }
-    }
+    };
+
+
+
+
+    signup = async (body) => {
+        try {
+            let user = await this.DAO.signup(body.email, body.fullName, body.password, body.role, body.phoneNumber);
+            return {
+                ok: true,
+                status: 201,
+                body: user
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
+
+        }
+    };
+
+
+
+
 
     // createSkuItem= async (RFID, SKUId, DateOfStock)=>{
     //     try{

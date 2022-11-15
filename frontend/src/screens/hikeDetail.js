@@ -6,7 +6,7 @@ import Map from "../components/map.js";
 
 const HikeDetail = ({props, setProps}) => {
 
-  console.log(props);
+  const hike = JSON.parse(props.hike);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -14,9 +14,8 @@ const HikeDetail = ({props, setProps}) => {
     <Container>
         <Row>
             <Col md={10}>
-            <h1>Hike "{props.hikeTitle}"</h1>
+            <h1>Hike "{hike.title}"</h1>
             <h4>#{params.hikeId}</h4>
-
             </Col>
             <Col md={2}>
             <div className="d-grid gap-2">
@@ -24,35 +23,34 @@ const HikeDetail = ({props, setProps}) => {
             </div>
             </Col>
         </Row>
-        <Row>
-        <Col>
-            
-            <h3>
-                Length : {props.hikeLength} km
-            </h3>
-            <h3>
-                Ascent : {props.hikeAscent} m 
-            </h3>
-            <h3>
-                Expected time : {props.hikeExpTime} hours
-            </h3>
-            <h3>
-                Difficulty : {props.hikeDifficulty}
-            </h3>
-            <h3>
-                Description 
-            </h3>
-            <h4>
-                {props.hikeDescription}
-            </h4>
-            <h3>
+        <Row style={{flex:1, marginTop: "2%", alignItems:"center"}}>
+            <Col>
+                <h3>
+                    Length : {hike.length} km
+                </h3>
+                <h3>
+                    Ascent : {hike.ascent} m 
+                </h3>
+                <h3>
+                    Expected time : {hike.expTime} hours
+                </h3>
+                <h3>
+                    Difficulty : {hike.difficulty}
+                </h3>
+                <h3>
+                    Description 
+                </h3>
+                <h4>
+                    {hike.description}
+                </h4>
+                <h3>
 
-            </h3>
+                </h3>
 
-        </Col>
-        <Col>
-            <Map/>
-        </Col>
+            </Col>
+            <Col>
+                <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)}/>
+            </Col>
         </Row>
     </Container>
 

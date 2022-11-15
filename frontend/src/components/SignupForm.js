@@ -2,13 +2,19 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// import userDAO from "../../../backend/UserDAO/userDAO.js"
 import API from "../API";
 
 
 const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
     try {
-        let user = await API.signup(email, password, fullName, role, phoneNumber);
+        let body = {
+            email: email,
+            password: password,
+            fullName: fullName,
+            role: role,
+            phoneNumber: phoneNumber
+        }
+        let user = await API.signup(body);
 
         return user;
 
@@ -20,12 +26,12 @@ const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
 
 
 
-function SignupForm(props) {
+function SignupForm({ props, setProps }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fullName, setFullName] = useState("");
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState("hiker");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState(false);
 
@@ -35,10 +41,10 @@ function SignupForm(props) {
         e.preventDefault();
 
         let result = await handlerSignup(email, fullName, password, role, phoneNumber);
-        props.setLoggedIn(true);
+        // props.setLoggedIn(true);
 
         if (result !== false)
-            navigate(`/home`);
+            navigate(`/`);
         else
             setError(true);
     }
@@ -59,7 +65,7 @@ function SignupForm(props) {
             <ul></ul>
             <Row className="justify-content-md-center">
                 <Col md="auto">
-                <h2 className="text-center">Sign-Up</h2>
+                    <h2 className="text-center">Sign-Up</h2>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="email">
                             <Form.Label>Email</Form.Label>
@@ -87,13 +93,13 @@ function SignupForm(props) {
                             <Form.Select required={true}
                                 onChange={ev => { setRole(ev.target.value) }}>
                                 <option value="hiker">Hiker</option>
-                                <option value="localGuide">Local Guide</option>
-                                <option value="hutWorker">Hut worker</option>
-                                <option value="emergencyOperator">Emergency operator</option>
+                                <option value="guide">Local Guide</option>
+                                <option value="hutworker">Hut worker</option>
+                                <option value="emergency">Emergency operator</option>
                             </Form.Select>
                         </Form.Group>
 
-                        {(role === "hutWorker" || role === "localGuide") &&
+                        {(role === "hutworker" || role === "guide") &&
                             <Form.Group controlId="email">
                                 <Form.Label>Phone number</Form.Label>
                                 <Form.Control type="text" placeholder="Phone number" required={true}
@@ -112,10 +118,10 @@ function SignupForm(props) {
                                 <Button type="submit" variant='success' size='lg'>Sign-Up</Button>
                             </Col>
                         </Row>
-                </Form>
-            </Col>
-        </Row>
-        </Container >
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 
