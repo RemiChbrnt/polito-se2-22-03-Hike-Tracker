@@ -18,9 +18,9 @@ const routes = [
     {
         path: "/localGuide",
         key: "localGuide",
-        screen: function(props, setProps){
-            return <LocalGuide setProps={setProps}/>
-        } 
+        screen: function (props, setProps) {
+            return <LocalGuide setProps={setProps} />
+        }
     },*/
     {
         path: "/hiker",

@@ -55,24 +55,10 @@ const Home = (props) => {
                     <Button onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
                 </Col>
             </Row>
-            {/*<ul></ul>
-      <Container>
-        <Row>
-          <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
-            <h3 className="text-white">Hiker</h3>
-          </Button>
-          <ul></ul>
-          <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hike-detail-azerazer', { testparam: 15 }) }}>
-            <h3 className="text-white">HikeDetail</h3>
-          </Button>
-        </Row>
-  </Container>*/}
+
             <ul></ul>
             <Row>
-                {/*<Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/hiker') }}>
-          <h3 className="text-white">Hiker</h3>
-        </Button>*/}
-                <HikeGrid hikes={props.hikes} filters={filters} setProps={props.setProps} />
+                <HikeGrid filters={filters} setProps={props.setProps} />
             </Row>
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">

@@ -18,8 +18,6 @@ function App() {
 
     const [props, setProps] = useState([]);
 
-    const [hikes, setHikes] = useState([]); /* State thst contains the hikes list */
-
 
 
     return (
@@ -27,7 +25,7 @@ function App() {
             <BrowserRouter>
                 <NavBar />
                 <Routes>
-                    <Route path='/' element={<Home user={user} hikes={hikes} setProps={setProps} />} />
+                    <Route path='/' element={<Home user={user} setProps={setProps} />} />
                     {/*<Route path='/hike-filter-form' element={<HikeFilterForm/>}/>*/}
                     {routes.map((route) => {
                         return (<Route

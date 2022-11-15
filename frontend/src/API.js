@@ -33,6 +33,8 @@ async function login(email, password) {
 
 
 async function signup(body) {
+    console.log("body.fullname " + body.fullName);
+    console.log("body " + JSON.stringify(body));
     const response = await fetch(URL + '/signup', {
         method: "POST",
         headers: {

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import API from "../API";
 
 
-const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
+const handlerSignup = async (email, fullName, password, role, phoneNumber) => {
     try {
         let body = {
             email: email,
