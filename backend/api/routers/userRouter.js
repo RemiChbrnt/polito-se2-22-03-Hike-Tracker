@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const UserService = require('../services/UserService');
+const UserService = require('../services/userService');
 const userDAO = require('../DAOs/userDAO');
 
 const service = new UserService(userDAO);
