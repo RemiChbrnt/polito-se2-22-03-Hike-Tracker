@@ -86,5 +86,49 @@ async function getAllHikes(filters) {
     }
 }
 
-const API = { login, signup, getAllHikes };
+
+
+
+
+
+
+
+/* hut API */
+
+async function getHuts(filters) {
+    // call: GET /api/hut    
+    let params = "";
+    if (filters !== undefined) {
+        params = "?";
+        JSON.parse(filters).forEach(filter => {
+            params = params + filter.key + "=" + filter.value + "&";
+        });
+        params = params.slice(0, params.length - 1);
+    }
+    const response = await fetch(URL + '/huts' + params, {
+        credentials: 'include',
+    });
+    const hutsJson = await response.json();
+    if (response.ok) {
+        return hutsJson.map((r) => ({
+            id: r.id,
+            name: r.name,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            country: r.country,
+            province: r.province,
+            town: r.town,
+            address: r.address,
+            altitude: r.altitude
+        }))
+    } else {
+        throw hutsJson;
+    }
+}
+
+
+
+
+
+const API = { login, signup, getAllHikes, getHuts };
 export default API;
