@@ -19,7 +19,7 @@ const Home = (props) => {
 
     return (
         <Container>
-            <ul></ul>
+            {/*<ul></ul>
             {(props !== undefined && props.user !== undefined) && (
 
                 (props.user.role === "hutworker") &&
@@ -44,7 +44,7 @@ const Home = (props) => {
                     <EmergencyOperator />
                 </Row>
             )}
-            <ul></ul>
+            <ul></ul>*/}
 
 
             <Row>
