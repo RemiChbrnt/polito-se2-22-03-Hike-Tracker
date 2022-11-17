@@ -5,6 +5,7 @@ import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddPointForm } from "../components/addPointForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
+import { HutListPage } from "../screens/hutListPage";
 import Hiker  from "../screens/hiker.js";
 import LocalGuide from "../screens/localGuide.js";
 import Home from "../screens/home.js";
@@ -58,6 +59,13 @@ const routes = [
         key: "link-hut-to-hike",
         screen: function (props, setProps) {
             return <LinkHutToHike props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/hut-list",
+        key: "hut-list",
+        screen: function (props, setProps) {
+            return <HutListPage props={props} setProps={setProps} />
         }
     }
 

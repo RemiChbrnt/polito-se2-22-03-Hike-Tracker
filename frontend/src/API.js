@@ -87,12 +87,6 @@ async function getAllHikes(filters) {
 }
 
 
-
-
-
-
-
-
 /* hut API */
 
 async function getHuts(filters) {

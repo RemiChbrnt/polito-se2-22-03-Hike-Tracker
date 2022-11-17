@@ -1,12 +1,11 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Container, Row, Col, Button, Navbar, Dropdown, Offcanvas, NavDropdown, Nav, Form } from "react-bootstrap";
-import { useNavigate, useParams } from 'react-router-dom'
+import { Container, Button, Navbar, Offcanvas, Nav } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom'
 
 function SideBar(props) {
     const navigate = useNavigate();
-    console.log("role ", props.user.role )
 
     return (
         <Container>
@@ -71,6 +70,8 @@ function SideBar(props) {
                                         : props.user.role === "hiker" ?
                                             <Offcanvas.Body> {/*HIKER*/}
                                                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                                                    <Nav.Link onClick={() => { navigate('/hut-list') }} style={{ color: "white" }}><h5>Hut list</h5></Nav.Link>
+                                                    <ul></ul>
                                                     <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                                 </Nav>
                                             </Offcanvas.Body>

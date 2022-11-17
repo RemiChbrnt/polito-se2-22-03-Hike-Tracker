@@ -52,6 +52,7 @@ const HikeDetail = ({props, setProps}) => {
                 <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)}/>
             </Col>
         </Row>
+        <ul></ul>
     </Container>
 
   );
