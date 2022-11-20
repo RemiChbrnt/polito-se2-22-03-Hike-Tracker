@@ -31,7 +31,7 @@ function ActiveForm(props){
     const [description, setDescription] = useState("");
 
     //----- TO DO -----
-    const addHike = async (title, latitude, longitude, country, province, town, altitude, beds, food, description) => {
+    const addHut = async (title, latitude, longitude, country, province, town, altitude, beds, food, description) => {
         try {
             let params=JSON.stringify({title:title, latitude:latitude, longitude:longitude, country:country, province:province, town:town, altitude:altitude, beds:beds, food:food, description:description})
             console.log("params:"+params);
@@ -48,7 +48,7 @@ function ActiveForm(props){
     const handlerSubmit = async (e) => {
         e.preventDefault();
         props.setForm(true);
-        let result = await addHike(title, latitude, longitude, country, province, town, altitude, beds, food, description);
+        let result = await addHut(title, latitude, longitude, country, province, town, altitude, beds, food, description);
         if(result !== false){
             props.setSuccess(true);
         }
