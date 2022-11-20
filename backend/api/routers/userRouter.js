@@ -72,7 +72,7 @@ userRouter.get('/user', async (req, res) => {
 
         if(id==="hiker"){
             //connection to database function
-            const data = await service.getPreferences(req.user.email)
+            const data = await service.getPreferences("maurizio.merluzzo@donkeykong.com")
             if (data.ok) {
                 return res.status(data.status).json(data)
             }
