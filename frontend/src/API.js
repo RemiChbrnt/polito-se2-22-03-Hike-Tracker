@@ -104,7 +104,7 @@ async function addHut(params) {
 }
 
 async function addParking(params) {
-    const response = await fetch(URL + '/addParking', {
+    const response = await fetch(URL + '/parking', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',

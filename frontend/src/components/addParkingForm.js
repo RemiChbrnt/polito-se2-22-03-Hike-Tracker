@@ -31,9 +31,9 @@ function ActiveForm(props){
     const [description, setDescription] = useState("");
 
     //----- TO DO -----
-    const addParking = async (title, latitude, longitude, country, province, town, address, altitude, description) => {
+    const addParking = async (title, latitude, longitude, country, province, town, address, altitude, description, lotsNumber) => {
         try {
-            let params=JSON.stringify({title:title, latitude:latitude, longitude:longitude, country:country, province:province, town:town, address:address, altitude:altitude, description:description})
+            let params=JSON.stringify({name:title, latitude:latitude, longitude:longitude, country:country, province:province, town:town, address:address, altitude:altitude, description:description, lotsNumber:lotsNumber})
             let res=API.addParking(params);
             return res;
 

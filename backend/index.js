@@ -37,8 +37,10 @@ app.use(cors(corsOptions));
 
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
+const locationRouter = require('./api/routers/locationRouter');
 app.use(apiUrl, userRouter);
 app.use(apiUrl, hikeRouter);
+app.use(apiUrl, locationRouter);
 
 /* express-session setup */
 app.use(session({
