@@ -34,11 +34,11 @@ async function login(email, password){
                         reject(err);
 
                     if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))) {
-                        console.log("Login failed - Wrong password");
+                        // console.log("Login failed - Wrong password");
                         resolve(false); // Hash doesn't match, wrong password
                     }
                     else {
-                        console.log("Login successful");
+                        // console.log("Login successful");
                         resolve(user);
                     }
                 });
@@ -82,7 +82,6 @@ async function signup (email, fullName, password, role, phoneNumber) {
                 if (err)
                     reject(err);
                 else {
-                    console.log("ciao");
                     resolve(true);
                 }
             });
@@ -102,16 +101,70 @@ async function signup (email, fullName, password, role, phoneNumber) {
 
 }
 
+async function createPreferences (email,ascent,duration) {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Preferences (email, duration, ascent) VALUES (?,?,?)'
+        db.run(sql, [email,duration,ascent], async (err, rows) => {
+            if (err) {
+                console.log(err)
+                reject(503)
+                return
+            }
+            const prefs={
+                "email":email,
+                "ascent":ascent,
+                "duration":duration,
+            }
+            resolve(prefs)
+        })
+    })
+}
+
+async function getPreferences (email){
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Preferences WHERE email=?'
+        db.get(sql, [email], async (err, row) => {
+            if (err) {
+                reject(503)
+                return
+            }
+            if(row===undefined) {
+                resolve({})
+                return
+            }
+            
+            const prefs={
+                "email":row.email,
+                "ascent":row.ascent,
+                "duration":row.duration,
+            }
+            resolve(prefs)
+        })
+    })
+}
+
 async function clearDatabase() {
    return new Promise((resolve, reject) => {
        const sql = 'DELETE FROM Users where email != "maurizio.merluzzo@donkeykong.com"'
        db.run(sql, [], async (err, rows) => {
+        if(err) console.log(err)
            if(err)
                reject();
-           else
-               resolve();
+           else{
+              const sql1='DELETE FROM Preferences'
+              db.run(sql1, [], async (err, rows) => {
+                if(err) console.log(err)
+                   if(err)
+                       reject();
+                   else{
+                       resolve();
+                   }   
+               })
+           }   
        })
    })
 }
 
-module.exports = { login, signup, clearDatabase }
+
+
+module.exports = { login, signup, getPreferences, createPreferences , clearDatabase }

@@ -1,2 +1,2 @@
-// exports.getHikes=jest.fn(); 
-// exports.createHike=jest.fn();
+exports.getHikes=jest.fn(); 
+exports.createHike=jest.fn();
