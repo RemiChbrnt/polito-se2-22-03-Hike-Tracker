@@ -6,6 +6,7 @@ import { AddHikeForm } from "../components/addHikeForm";
 import { AddPointForm } from "../components/addPointForm";
 import { AddHutForm } from "../components/addHutForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
+import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
 
 import Hiker  from "../screens/hiker.js";
@@ -32,6 +33,13 @@ const routes = [
         key: "hiker",
         screen: function (props, setProps) {
             return <Hiker setProps={setProps} />
+        }
+    },
+    {
+        path: "/hiker/personal-page",
+        key: "hiker-personal-page",
+        screen: function(props, setProps) {
+            return <HikerPersonalPage props={props} setProps={setProps}/>
         }
     },
     {
