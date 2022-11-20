@@ -156,7 +156,7 @@ function ActiveForm(props){
                     </Form.Group>
                 </div>
                 <div className="form-group mt-3">
-                    <Form.Group className="mb-3" controlId="hikeDescription">
+                    <Form.Group className="mb-3" controlId="hutDescription">
                         <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
                         <Form.Control as="textarea" rows={2}
                             onChange={ev => {setDescription(ev.target.value); }}
@@ -190,7 +190,7 @@ function ActiveForm(props){
         <div className="display-container">
                 <p className="text-center">Your submission has been sent successfully!</p>
                 <div className="d-grid gap-2 mt-1">
-                    <Nav.Link onClick={() => {navigate('/');props.setSuccess(false); props.setForm(false); }} style={{ color: "black" }} active>CLOSE</Nav.Link>
+                    <Button type="submit" className="guideBtn" borderless="true"><Nav.Link onClick={() => {navigate('/');props.setSuccess(false); props.setForm(false); }} style={{ color: "white" }} active>CLOSE</Nav.Link></Button>
                 </div>
         </div>
     );
