@@ -88,6 +88,36 @@ async function getAllHikes(filters) {
 
 
 
+async function setHikeStartPoint(id, startPt) {
+    // call: PUT /api/:hike/:startPt
+    const response = await fetch(URL + '/hike-startPt/' + id + '/' + startPt, {
+        credentials: 'include',
+    });
+    const result = await response.json();
+    if (response.ok)
+        return result;
+    else
+        throw result;
+
+}
+
+
+
+async function setHikeEndPoint(id, endPt) {
+    // call: PUT /api/:hike/:endPt    
+    const response = await fetch(URL + '/hike-endPt/' + id + '/' + endPt, {
+        credentials: 'include',
+    });
+    const result = await response.json();
+    if (response.ok)
+        return result;
+    else
+        throw result;
+
+}
+
+
+
 
 
 
@@ -130,5 +160,5 @@ async function getHuts(filters) {
 
 
 
-const API = { login, signup, getAllHikes, getHuts };
+const API = { login, signup, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts };
 export default API;

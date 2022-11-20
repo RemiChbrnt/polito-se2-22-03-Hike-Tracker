@@ -165,3 +165,49 @@ exports.createHike = async (hike) => {
     })
 }
 
+
+
+exports.setHikeStartPoint = async (hike) => {
+    console.log("hike " + JSON.stringify(hike));
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET startPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.startPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
+
+
+exports.setHikeEndPoint = async (hike) => {
+    console.log("hike " + JSON.stringify(hike));
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET endPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.endPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
