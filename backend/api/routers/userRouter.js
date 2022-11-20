@@ -43,8 +43,11 @@ userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
 
     const user = await service.login(req.body);
 
-    if (user.ok)
+    if (user.ok){
+        req.session.user = user.body;
+        console.log("LOGIN AS " + req.session.user);
         return res.status(user.status).json(user.body);
+    }
 
     return res.status(user.status).end;
 
@@ -104,7 +107,7 @@ userRouter.get('/user', isLoggedIn, async (req, res) => {
 
         if(id==="hiker"){
             //connection to database function
-            const data = await service.getPreferences(req.session.email);
+            const data = await service.getPreferences(req.session.user.email);
             if (data.ok) {
                 return res.status(data.status).json(data)
             }
