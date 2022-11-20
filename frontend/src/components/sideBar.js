@@ -28,6 +28,7 @@ function SideBar(props) {
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
                                     <Nav.Link onClick={() => { navigate('/add-hike-description') }} style={{ color: "white" }} active><h5>Add hike description</h5></Nav.Link>
                                     <Nav.Link onClick={() => { navigate('/add-parking-lot') }} style={{ color: "white" }}><h5>Add parking lot</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/add-hut') }} style={{ color: "white" }}><h5>Add hut</h5></Nav.Link>
                                     <Nav.Link onClick={() => { navigate('/add-hike-description') }} style={{ color: "white" }}><h5>Link hut to hike</h5></Nav.Link>
                                     <ul></ul>
                                     <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>

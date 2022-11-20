@@ -48,23 +48,29 @@ h4{
   color: #fff;
 }
 
-.form-container {
-  justify-content: center;
-  margin:auto;
-  align-items: center; 
-  height: 90vh;
-}
-
 .hike-form {
-  width: 420px;
+  width: 500px;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
   background-color: white;
 }
 
 .hike-form-group{
-  padding:50px;
+  padding:40px;
 }
 .asterisk-required {
   color:red;
+}
+
+.form-container {
+  justify-content: center;
+  margin:auto;
+  align-items: center; 
+  height: auto;
+}
+.display-container {
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: white;
+  padding:40px;
 }

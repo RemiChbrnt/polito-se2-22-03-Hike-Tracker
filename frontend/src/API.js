@@ -86,5 +86,22 @@ async function getAllHikes(filters) {
     }
 }
 
-const API = { login, signup, getAllHikes };
+async function addHut(params) {
+    const response = await fetch(URL + '/addHut', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: params
+    });
+    let res = await response.json();
+    if (response.ok) {
+        return res;
+    } else {
+        throw res;  
+    }
+}
+
+const API = { login, signup, getAllHikes, addHut};
 export default API;
