@@ -2,7 +2,6 @@
 const express = require('express');
 const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDAO');
-const mockHikeDao = require('../mockDAOs/mockHikeDAO');
 
 const service = new HikeService(HikeDao)
 // const service = new HikeService(mockHikeDao);
