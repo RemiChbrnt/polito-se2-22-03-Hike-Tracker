@@ -3,6 +3,7 @@ import HikeDetail from "../screens/hikeDetail.js";
 import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
+import { AddParkingForm } from "../components/addParkingForm";
 import { AddPointForm } from "../components/addPointForm";
 import { AddHutForm } from "../components/addHutForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
@@ -69,7 +70,17 @@ const routes = [
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (props, setProps) {
-            return <AddPointForm props={props} setProps={setProps} />
+            return (
+                <Container>
+                    <Row >
+                        <Col></Col>
+                        <Col>
+                            <AddParkingForm props={props} setProps={setProps} />
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Container>
+            );
         }
     },
     {

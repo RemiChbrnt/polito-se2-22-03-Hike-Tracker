@@ -97,11 +97,27 @@ async function addHut(params) {
     });
     let res = await response.json();
     if (response.ok) {
-        return res;
+        return true;
     } else {
         throw res;  
     }
 }
 
-const API = { login, signup, getAllHikes, addHut};
+async function addParking(params) {
+    const response = await fetch(URL + '/addParking', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: params
+    });
+    let res = await response.json();
+    if (response.ok) {
+        return true;
+    } else {
+        throw res;  
+    }
+}
+const API = { login, signup, getAllHikes, addHut, addParking};
 export default API;
