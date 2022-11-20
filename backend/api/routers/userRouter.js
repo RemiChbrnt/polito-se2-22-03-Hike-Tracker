@@ -38,21 +38,50 @@ userRouter.post('/signup', async (req, res) => {
 
 
 
-userRouter.get('/skuitems/sku/:id',
-    [param('id').isNumeric(),
+userRouter.post('/user',
+    [
+        body('email').isEmail(),
+        body('ascent').isFloat(),
+        body('duration').isFloat(),
     ], async (req, res) => {
-        const id = req.params.id;
+        
         //validation
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
-        //connection to database function
-        const data = await service.getSKUItemsById(id)
-        if (data.ok) {
-            return res.status(data.status).json(data.body)
+
+        const id = req.query.role; // e.g. /user?role=hiker
+
+        if(id==="hiker"){
+            //connection to database function
+            const data = await service.createPreferences(req.body)
+            if (data.ok) {
+                return res.status(data.status).json(data.body)
+            }
+            return res.status(data.status).end()
+        }else if(id==="guide"){
+
+        }else{
+            return res.status(403).json({ errors: "Invalid role selection" });
         }
-        return res.status(data.status).end()
+    })
+
+userRouter.get('/user', async (req, res) => {
+        const id = req.query.role; // e.g. /user?role=hiker
+
+        if(id==="hiker"){
+            //connection to database function
+            const data = await service.getPreferences(req.user.email)
+            if (data.ok) {
+                return res.status(data.status).json(data)
+            }
+            return res.status(data.status).end()
+        }else if(id==="guide"){
+
+        }else{
+            return res.status(403).json({ errors: "Invalid role selection" });
+        }
     })
 
 module.exports = userRouter

@@ -110,7 +110,45 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 }
 
 
+exports.createPreferences = async (email,ascent,duration) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Preferences (email, duration, ascent) VALUES (?,?,?)'
+        db.run(sql, [email,duration,ascent], async (err, rows) => {
+            if (err) {
+                reject(503)
+                return
+            }
+            const prefs={
+                "email":email,
+                "ascent":ascent,
+                "duration":duration,
+            }
+            resolve(prefs)
+        })
+    })
+}
 
+exports.getPreferences = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM Preferences WHERE email=?'
+        db.get(sql, [email], async (err, row) => {
+            if (err) {
+                reject(503)
+                return
+            }
+            if(row===undefined) {
+                resolve({})
+                return
+            }
+            const prefs={
+                "email":row.email,
+                "ascent":row.ascent,
+                "duration":row.duration,
+            }
+            resolve(prefs)
+        })
+    })
+}
 
 
 
