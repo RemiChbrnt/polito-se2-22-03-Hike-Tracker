@@ -6,18 +6,22 @@ const HikerPersonalPage = (props) => {
     
     const [isLoading, setIsLoading] = useState(true);
     const [preferences, setPreferences] = useState(undefined);
+    const [loggedUser, setLoggedUser] = useState(false);
 
     useEffect(() => {
-        async function getPreferences(mail) {
-            const prefs = await API.getPreferences(mail);
+        async function getUserInfoAndPreferences() {
+            const user = await API.getUserInfo();
+            console.log("LOGGED USER IS " + user.fullName + " WITH MAIL " + user.email);
+            setLoggedUser(user);
+            const prefs = await API.getPreferences(loggedUser.email);
             if(Object.keys(prefs.body).length === 0)
                 setPreferences(undefined);
             else
                 setPreferences(prefs.body);
-            
             setIsLoading(false);
+
         }
-        getPreferences("maurizio.merluzzo@donkeykong.com"); // TODO: get preferences from actual current user
+        getUserInfoAndPreferences();
     }, []);
 
     return <>
@@ -25,7 +29,7 @@ const HikerPersonalPage = (props) => {
             {
                 isLoading ? <h3>Loading preferences...</h3> : 
                 preferences === undefined ?
-                    <EmptyPrefsCard preferences={preferences} setPreferences={setPreferences}/> :
+                    <EmptyPrefsCard preferences={preferences} setPreferences={setPreferences} userEmail={loggedUser.email}/> :
                     <PrefsCard duration={preferences.duration} ascent={preferences.ascent}/>
             }
         </Container>
@@ -50,6 +54,7 @@ function EmptyPrefsCard(props) {
         </Card>
         {
             showForm && <PreferencesForm 
+                userEmail={props.userEmail}
                 preferences={props.preferences}
                 setPreferences={props.setPreferences}
                 setShowForm={setShowForm}/>
@@ -77,9 +82,8 @@ function PreferencesForm(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // TODO: set preferences to actual current user
         const newPrefs = {
-            "email": "maurizio.merluzzo@donkeykong.com",
+            "email": props.userEmail.toString(),
             "duration": duration,
             "ascent": ascent
         }

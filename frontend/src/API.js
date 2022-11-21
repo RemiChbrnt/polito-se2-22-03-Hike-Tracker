@@ -51,6 +51,17 @@ async function signup(body) {
     }
 }
 
+const getUserInfo = async () => {
+    const response = await fetch(URL + '/session/current', {
+        credentials : 'include'
+    });
+    const user = await response.json();
+    if(response.ok) {
+        return user;
+    } else {
+        throw user;
+    }
+};
 
 /* hikes API */
 
@@ -130,5 +141,5 @@ async function createPreferences(preferences) {
         throw res;
 }
 
-const API = { login, signup, getAllHikes, addHut, getPreferences, createPreferences };
+const API = { login, signup, getUserInfo, getAllHikes, addHut, getPreferences, createPreferences };
 export default API;
