@@ -121,7 +121,7 @@ async function createPreferences(preferences) {
             'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: preferences
+        body: JSON.stringify(preferences)
     });
     let res = await response.json();
     if (response.ok)
