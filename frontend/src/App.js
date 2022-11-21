@@ -29,7 +29,7 @@ function App() {
                         return (<Route
                             key={route.key}
                             path={route.path}
-                            element={route.screen(props, setProps)}
+                            element={route.screen(user, props, setProps)}
                         />);
                     })
                     }

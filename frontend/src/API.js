@@ -86,5 +86,42 @@ async function getAllHikes(filters) {
     }
 }
 
-const API = { login, signup, getAllHikes };
+async function createHike(body) {
+    console.log("body " + JSON.stringify(body));
+    const response = await fetch(URL + '/hikes', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    const hike = await response.json();
+    if (response.ok) {
+        console.log(hike)
+        return hike;
+    } else {
+        throw hike;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+async function createLocation(body) {
+    // console.log("body " + JSON.stringify(body));
+    const response = await fetch(URL + '/locations', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    const location = await response.json();
+    if (response.ok) {
+        return location;
+    } else {
+        throw location;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+const API = { login, signup, getAllHikes, createHike, createLocation};
 export default API;

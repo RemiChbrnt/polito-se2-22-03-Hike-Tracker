@@ -4,10 +4,7 @@ import * as L from 'leaflet';
 import toGeoJson from '@mapbox/togeojson'
 import { DOMParser } from 'xmldom'
 
-const GPXTrack = (props) => {
-
-    console.log(props);
-    
+const GPXTrack = (props) => {    
     const map = useMap();
     if (props.file != undefined){
         if (props.file != null){
@@ -17,6 +14,15 @@ const GPXTrack = (props) => {
             reader.onloadend =() => {
                 var gpx = new DOMParser().parseFromString(reader.result);
                 var converted = toGeoJson.gpx(gpx);
+                
+                console.log("test");
+                console.log(converted);
+                // console.log(JSON.stringify(converted));
+                var startPointCoordinates = converted.features[0].geometry.coordinates[0];
+                var endPointCoordinates = converted.features[0].geometry.coordinates[converted.features[0].geometry.coordinates.length-1];
+
+                console.log(startPointCoordinates);
+                console.log(endPointCoordinates);
                 new L.geoJSON(converted).addTo(map);
             
             }
