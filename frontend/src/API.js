@@ -105,9 +105,6 @@ async function addHut(params) {
 
 async function getPreferences(email) {
     const response = await fetch(URL + '/user?role=hiker', {
-        headers: {
-            'Access-Control-Allow-Headers': '*'
-        },
         credentials: 'include'
     });
     let res = await response.json();
@@ -117,5 +114,21 @@ async function getPreferences(email) {
         throw res;
 }
 
-const API = { login, signup, getAllHikes, addHut, getPreferences };
+async function createPreferences(preferences) {
+    const response = await fetch(URL + '/user?role=hiker', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: preferences
+    });
+    let res = await response.json();
+    if (response.ok)
+        return res;
+    else
+        throw res;
+}
+
+const API = { login, signup, getAllHikes, addHut, getPreferences, createPreferences };
 export default API;
