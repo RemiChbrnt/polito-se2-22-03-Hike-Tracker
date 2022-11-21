@@ -79,6 +79,8 @@ async function getAllHikes(filters) {
             startPt: r.startPt,
             endPt: r.endPt,
             description: r.description,
+            track: r.track,
+            author: r.author,
             referencePoints: r.refLocations
         }))
     } else {
