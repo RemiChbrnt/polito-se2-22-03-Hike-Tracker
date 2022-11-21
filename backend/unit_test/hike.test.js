@@ -1,4 +1,4 @@
-const mockHikeDAO = require('../api/mockDAOs/mockHikeDAO');
+const mockHikeDAO = require('./mockDAOs/mockHikeDAO');
 const HikeService = require('../api/services/hikeService');
 const service = new HikeService(mockHikeDAO);
 
