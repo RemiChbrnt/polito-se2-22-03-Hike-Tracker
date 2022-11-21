@@ -7,6 +7,7 @@ function HutListPage(props){
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
+    console.log("filters", filters);
 
     return(
         <Container>
@@ -26,7 +27,7 @@ function HutListPage(props){
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Search</Modal.Title>
+                    <Modal.Title>Search for Hut</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <HutFilterForm setShow={setShow} setFilters={setFilters} />
