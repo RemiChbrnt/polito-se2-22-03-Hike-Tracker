@@ -149,9 +149,9 @@ function ActiveForm(props){
                     <Form.Group className="mb-3" controlId="hutFood">
                         <Form.Label><b>Food supply</b> <b className="asterisk-required">*</b></Form.Label>
                         <Form.Select required onChange={ev => {setFood(ev.target.value); }}>
-                            <option value="None">None</option>
-                            <option value="Buffet">Buffet</option>
-                            <option value="Restaurant">Restaurant</option>
+                            <option value="none">None</option>
+                            <option value="buffet">Buffet</option>
+                            <option value="restaurant">Restaurant</option>
                         </Form.Select>
                     </Form.Group>
                 </div>
