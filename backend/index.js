@@ -7,7 +7,7 @@ const apiUrl = '/api';
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const userDAO = require('./api/DAOs/userDAO.js');
+//const userDAO = require('./api/DAOs/userDAO.js');
 // const hikeDAO = require('./HikeDAO.js'); TODO: add DAOs
 const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
@@ -51,7 +51,7 @@ app.use(session({
 /* ---------------------------------------*/
 
 /* -------- AUTHENTICATION SETUP -------- */
-passport.use(new LocalStrategy(
+/* passport.use(new LocalStrategy(
     async function verify(email, password, callback) {
         const user = await userDAO.getUser(email, password);
 
@@ -60,7 +60,7 @@ passport.use(new LocalStrategy(
 
         return callback(null, user); // LOGIN SUCCESS
     }
-));
+)); */
 
 app.use(passport.authenticate('session'));
 /* --------------------------------------------------------------------------------------- */

@@ -51,6 +51,17 @@ async function signup(body) {
     }
 }
 
+const getUserInfo = async () => {
+    const response = await fetch(URL + '/session/current', {
+        credentials: 'include'
+    });
+    const user = await response.json();
+    if (response.ok) {
+        return user;
+    } else {
+        throw user;
+    }
+};
 
 /* hikes API */
 
@@ -160,5 +171,50 @@ async function getHuts(filters) {
 
 
 
-const API = { login, signup, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts };
+
+async function addHut(params) {
+    const response = await fetch(URL + '/addHut', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: params
+    });
+    let res = await response.json();
+    if (response.ok) {
+        return res;
+    } else {
+        throw res;
+    }
+}
+
+async function getPreferences(email) {
+    const response = await fetch(URL + '/user?role=hiker', {
+        credentials: 'include'
+    });
+    let res = await response.json();
+    if (response.ok)
+        return res;
+    else
+        throw res;
+}
+
+async function createPreferences(preferences) {
+    const response = await fetch(URL + '/user?role=hiker', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(preferences)
+    });
+    let res = await response.json();
+    if (response.ok)
+        return res;
+    else
+        throw res;
+}
+
+const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, addHut, getPreferences, createPreferences };
 export default API;

@@ -4,9 +4,12 @@ import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddPointForm } from "../components/addPointForm";
+import { AddHutForm } from "../components/addHutForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
+import HikerPersonalPage from "../screens/HikerPersonalPage";
+import { Container, Row, Col } from 'react-bootstrap';
+
 import Hiker  from "../screens/hiker.js";
-import LocalGuide from "../screens/localGuide.js";
 import Home from "../screens/home.js";
 
 
@@ -33,6 +36,13 @@ const routes = [
         }
     },
     {
+        path: "/hiker/personal-page",
+        key: "hiker-personal-page",
+        screen: function(props, setProps) {
+            return <HikerPersonalPage props={props} setProps={setProps}/>
+        }
+    },
+    {
         path: "/hike-detail-:hikeId",
         key: "hike-detail",
         screen: function (props, setProps) {
@@ -47,12 +57,36 @@ const routes = [
         }
     },
     {
+        path: "/add-hut",
+        key: "add-hut",
+        screen: function (props, setProps) {
+            return (
+                <Container>
+                    <Row >
+                        <Col></Col>
+                        <Col>
+                            <AddHutForm props={props} setProps={setProps} />
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Container>
+            );
+        }
+    }, 
+    {
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (props, setProps) {
             return <AddPointForm props={props} setProps={setProps} />
         }
-    }, 
+    },
+    {
+        path: "/add-hike",
+        key: "add-hike",
+        screen: function (props, setProps) {
+            return <AddPointForm props={props} setProps={setProps} />
+        }
+    },
     {
         path: "/link-hut-to-hike",
         key: "link-hut-to-hike",
