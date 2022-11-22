@@ -65,15 +65,15 @@ router.put('/hike-startPt/:id/:startPt', [
     param('startPt').exists().isInt(),
 ], async (req, res) => {
 
-    console.log("req.params " + JSON.stringify(req.params));
-    //check if the user is a local guide
+    if (req.session.user === undefined || req.session.user.role !== "guide")
+        return res.status(400).json({ error: "Unauthorized" });
 
     const errors = validationResult(req);
     if (!errors.isEmpty())
         return res.status(422).json({ errors: errors.array() });
 
     const data = await service.setHikeStartPoint(req.params);
-    console.log("data " + JSON.stringify(data));
+
     if (data.ok)
         return res.status(data.status).json(data.body);
 
@@ -86,22 +86,17 @@ router.put('/hike-endPt/:id/:endPt', [
     param('endPt').exists().isInt(),
 ], async (req, res) => {
 
-    console.log("req.params " + JSON.stringify(req.params));
-
-    //check if the user is a local guide
+    if (req.session.user === undefined || req.session.user.role !== "guide")
+        return res.status(400).json({ error: "Unauthorized" });
 
     const errors = validationResult(req);
     if (!errors.isEmpty())
         return res.status(422).json({ errors: errors.array() });
 
     const data = await service.setHikeEndPoint(req.params);
-    console.log("data " + JSON.stringify(data));
-    if (data.ok) {
-        console.log("ciao " + JSON.stringify(data));
+
+    if (data.ok)
         return res.status(data.status).json(data.body);
-    }
-
-
 
     return res.status(data.status).end()
 })

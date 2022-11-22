@@ -17,7 +17,13 @@ class HutService {
                 province: r.province,
                 town: r.town,
                 address: r.address,
-                altitude: r.altitude
+                altitude: r.altitude,
+                numberOfBeds: r.numberOfBeds,
+                food: r.food,
+                description: r.description,
+                openingTime: r.openingTime,
+                closingTime: r.closingTime,
+                cost: r.cost
             }))
             return {
                 ok: true,

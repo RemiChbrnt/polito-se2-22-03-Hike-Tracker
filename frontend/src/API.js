@@ -97,8 +97,12 @@ async function getAllHikes(filters) {
     }
 }
 
-
-
+/**
+ * Function to set the StartPt field of an hike in the database
+ * @param {*} id: the hike's id
+ * @param {*} startPt: the location's id that it has to be set as the StartPt
+ * @returns status 200 if succesful, 400 otherwise
+ */
 async function setHikeStartPoint(id, startPt) {
     // call: PUT /api/:hike/:startPt
     const response = await fetch(URL + '/hike-startPt/' + id + '/' + startPt, {
@@ -113,6 +117,12 @@ async function setHikeStartPoint(id, startPt) {
 }
 
 
+/**
+ * Function to set the EndPt field of an hike in the database
+ * @param {*} id: the hike's id
+ * @param {*} endPt: the location's id that it has to be set as the EndPt
+ * @returns status 200 if succesful, 400 otherwise
+ */
 
 async function setHikeEndPoint(id, endPt) {
     // call: PUT /api/:hike/:endPt    
@@ -136,8 +146,13 @@ async function setHikeEndPoint(id, endPt) {
 
 /* hut API */
 
+/**
+ * Function to get the huts, based on some filtering 
+ * @param {*} filters object containing the key-value pairs for filtering
+ * @returns array of "hut" objects, containing the fields id, name, country, province, town, address, altitude
+ */
 async function getHuts(filters) {
-    // call: GET /api/hut    
+    // call: GET /api/huts    
     let params = "";
     if (filters !== undefined) {
         params = "?";
@@ -154,8 +169,8 @@ async function getHuts(filters) {
         return hutsJson.map((r) => ({
             id: r.id,
             name: r.name,
-            latitude: r.latitude,
-            longitude: r.longitude,
+            // latitude: r.latitude,
+            // longitude: r.longitude,
             country: r.country,
             province: r.province,
             town: r.town,

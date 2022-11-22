@@ -11,7 +11,10 @@ exports.getHuts = async (query) => {
     console.log("query: " + JSON.stringify(query));
     console.log("Object.entries(query).length " + Object.entries(query).length);
     return new Promise((resolve, reject) => {
-        let sql = 'SELECT * from Locations WHERE type="hut"'
+        let sql =
+            `SELECT * from Locations
+            LEFT JOIN Huts ON Locations.id = Huts.locationId
+            WHERE type="hut"`
         let filters = "";
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateFilters(query);
@@ -22,23 +25,8 @@ exports.getHuts = async (query) => {
                 reject();
                 return;
             }
-            console.log("rows " + JSON.stringify(rows));
-            const res = await Promise.all(
-                rows.map(async (r) => {
-                    return {
-                        id: r.id,
-                        name: r.name,
-                        latitude: r.latitude,
-                        longitude: r.longitude,
-                        country: r.country,
-                        province: r.province,
-                        town: r.town,
-                        address: r.address,
-                        altitude: r.altitude
-                    }
-                })
-            )
-            resolve(res);
+
+            resolve(rows);
         })
     })
 }

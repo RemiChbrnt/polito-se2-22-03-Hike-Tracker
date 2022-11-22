@@ -9,12 +9,12 @@ const service = new HutService(HutDao)
 
 const router = express.Router()
 
-const { query, body, validationResult } = require('express-validator/check');
+const { query, body, validationResult } = require('express-validator');
 
 router.get('/huts', [
     query('name').optional().isString({ min: 0 }),
-    query('latitude').optional().isFloat({ min: 0 }),
-    query('longitude').optional().isFloat({ min: 0 }),
+    // query('latitude').optional().isFloat({ min: 0 }),
+    // query('longitude').optional().isFloat({ min: 0 }),
     query('country').optional().isString({ min: 0 }),
     query('province').optional().isString({ min: 0 }),
     query('town').optional().isString({ min: 0 }),
@@ -22,6 +22,10 @@ router.get('/huts', [
     query('altitude').optional().isFloat()
 ],
     async (req, res) => {
+
+        if (req.session.user === undefined || req.session.user.role !== "hiker")
+            return res.status(400).json({ error: "Unauthorized" });
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
