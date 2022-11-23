@@ -60,7 +60,7 @@ const routes = [
     {
         path: "/add-hut",
         key: "add-hut",
-        screen: function (props, setProps) {
+        screen: function (user, props, setProps) {
             return (
                 <Container>
                     <Row >
@@ -77,10 +77,7 @@ const routes = [
     {
         path: "/add-parking-lot",
         key: "add-parking-lot",
-<<<<<<< HEAD
         screen: function (user, props, setProps) {
-=======
-        screen: function (props, setProps) {
             return (
                 <Container>
                     <Row >
@@ -97,8 +94,7 @@ const routes = [
     {
         path: "/add-hike",
         key: "add-hike",
-        screen: function (props, setProps) {
->>>>>>> xiaoSprint2H6
+        screen: function (user, props, setProps) {
             return <AddPointForm props={props} setProps={setProps} />
         }
     },

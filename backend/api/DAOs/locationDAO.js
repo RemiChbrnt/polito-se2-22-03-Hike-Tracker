@@ -1,11 +1,6 @@
 'use strict'
 const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.addParking = async (newParking) => {
     return new Promise((resolve, reject) => {
