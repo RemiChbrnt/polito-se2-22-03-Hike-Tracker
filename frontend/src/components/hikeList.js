@@ -20,43 +20,6 @@ function HikeGrid(props) {
         }).catch(error => console.log(error));
     }, [props.filters])
 
-    //Dummy array for beginning
-    // let hikes = [
-    //   {
-    //     "id": "A2eh89DL3PAcliu",
-    //     "title": "Sentiero per il Rocciamelone",
-    //     "length": 9.0,
-    //     "expTime": 6.5,
-    //     "ascent": 1353.0,
-    //     "difficulty": "pro",
-    //     "startPt": [45.079300, 7.675558],
-    //     "endPt": [45.056300, 7.715558],
-    //     "description": "Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti)."
-    //   },
-    //   {
-    //     "id": "acp093HAakjh33",
-    //     "title": "Sentiero del Bosco",
-    //     "length": 9.0,
-    //     "expTime": 6.5,
-    //     "ascent": 1353.0,
-    //     "difficulty": "pro",
-    //     "startPt": [45.079300, 7.675558],
-    //     "endPt": [45.056300, 7.715558],
-    //     "description": "Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti)."
-    //   },
-    //   {
-    //     "id": "32Wpoj2d0z5FJh",
-    //     "title": "Sentiero della Motagna",
-    //     "length": 9.0,
-    //     "expTime": 6.5,
-    //     "ascent": 1353.0,
-    //     "difficulty": "pro",
-    //     "startPt": [45.079300, 7.675558],
-    //     "endPt": [45.056300, 7.715558],
-    //     "description": "Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti)."
-    //   },
-    // ]
-
     return (
         <Container fluid>
             {isLoading ?

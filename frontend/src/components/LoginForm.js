@@ -19,8 +19,8 @@ const handlerLogin = async (username, password) => {
 
 function LoginForm({ user, setUser }) {
 
-    const [email, setEmail] = useState('antonio.fracassa@live.it');
-    const [password, setPassword] = useState('testPassword2');
+    const [email, setEmail] = useState('maurizio.merluzzo@donkeykong.com');
+    const [password, setPassword] = useState('testPassword1');
     const [error, setError] = useState(false);
 
     let navigate = useNavigate();

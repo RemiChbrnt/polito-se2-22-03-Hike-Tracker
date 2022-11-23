@@ -138,12 +138,6 @@ async function setHikeEndPoint(id, endPt) {
 }
 
 
-
-
-
-
-
-
 /* hut API */
 
 /**
