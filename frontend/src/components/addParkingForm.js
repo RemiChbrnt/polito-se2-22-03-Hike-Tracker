@@ -8,7 +8,6 @@ function AddParkingForm() {
     const [form, setForm]=useState(false);
     const [error, setError]=useState(false); 
     const [success, setSuccess]=useState(false);
-    console.log(error);
     return (
         <Container>
             {!form && <ActiveForm setForm={setForm} setError={setError} setSuccess={setSuccess}/>}
@@ -26,14 +25,14 @@ function ActiveForm(props){
     const [country, setCountry]=useState(""); 
     const [province, setProvince]=useState(""); 
     const [town, setTown]=useState(""); 
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState(null);
     const [altitude, setAltitude]=useState(""); 
     const [description, setDescription] = useState("");
-
+    const [lotsNumber, setLotsNumber]=useState(0);
     //----- TO DO -----
     const addParking = async (title, latitude, longitude, country, province, town, address, altitude, description, lotsNumber) => {
         try {
-            let params=JSON.stringify({name:title, latitude:latitude, longitude:longitude, country:country, province:province, town:town, address:address, altitude:altitude, description:description, lotsNumber:lotsNumber})
+            let params=JSON.stringify({name:title, latitude:latitude, longitude:longitude, country:country, province:province, town:town, address:address, altitude:altitude, description:description, lotsNumber:lotsNumber});
             let res=API.addParking(params);
             return res;
 
@@ -47,7 +46,7 @@ function ActiveForm(props){
     const handlerSubmit = async (e) => {
         e.preventDefault();
         props.setForm(true);
-        let result = await addParking(title, latitude, longitude, country, province, town, address, altitude, description);
+        let result = await addParking(title, latitude, longitude, country, province, town, address, altitude, description, lotsNumber);
         if(result !== false){
             props.setSuccess(true);
         }
@@ -128,8 +127,8 @@ function ActiveForm(props){
                 <Col>
                     <div className="form-group mt-3">
                         <Form.Group controlId='parkingAddress'>
-                            <Form.Label><b>Address</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="text" placeholder="Enter town" required
+                            <Form.Label><b>Address</b></Form.Label>
+                            <Form.Control type="text" placeholder="Enter town"
                                 onChange={ev => {setAddress(ev.target.value); }}
                             />
                         </Form.Group>
@@ -143,7 +142,15 @@ function ActiveForm(props){
                                 onChange={ev => {setAltitude(ev.target.value); }}
                             />
                         </Form.Group>
-                    </div>
+                </div>
+                <div className="form-group mt-3">
+                        <Form.Group className="mb-3" controlId="lotsNumber">
+                            <Form.Label><b>N. Lots</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control type="number" placeholder="Enter number of lots"
+                                onChange={ev => {setLotsNumber(ev.target.value); }}
+                            />
+                        </Form.Group>
+                </div>
                 <div className="form-group mt-3">
                     <Form.Group className="mb-3" controlId="parkingDescription">
                         <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
@@ -179,7 +186,7 @@ function ActiveForm(props){
         <div className="display-container">
                 <p className="text-center">Your submission has been sent successfully!</p>
                 <div className="d-grid gap-2 mt-1">
-                    <Nav.Link onClick={() => {navigate('/');props.setSuccess(false); props.setForm(false); }} style={{ color: "black" }} active>CLOSE</Nav.Link>
+                    <Button type="submit" className="guideBtn" borderless="true"><Nav.Link onClick={() => {navigate('/');props.setSuccess(false); props.setForm(false); }} style={{ color: "white" }} active>CLOSE</Nav.Link></Button>
                 </div>
         </div>
     );
