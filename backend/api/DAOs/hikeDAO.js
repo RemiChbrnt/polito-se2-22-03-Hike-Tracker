@@ -1,20 +1,15 @@
 'use strict'
-const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
         let sql = 'SELECT * from Hikes'
         const filters = this.generateFilters(query);
         sql = sql + filters
-        console.log(sql)
+        // console.log(sql)
         db.all(sql, [], async (err, rows) => {
             if (err) {
+                console.log("err" + err)
                 reject()
                 return
             }
@@ -58,42 +53,6 @@ exports.filterByLocation = (query, hikes) => {
 }
 
 exports.generateFilters = (query) => {
-    let filters = ""
-    if (query.minLength !== undefined || query.maxLength !== undefined ||
-        query.minAscent !== undefined || query.maxAscent !== undefined ||
-        query.minTime !== undefined || query.maxTime !== undefined ||
-        query.difficulty !== undefined) {
-        // test for an empty query, this looks awful but we cannot check for an empty object since
-        // there are also fields for the locations that are used later on.   
-        filters = " where"
-        if (query.minLength !== undefined) filters = filters + ` length > ${query.minLength} AND`
-        if (query.maxLength !== undefined) filters = filters + ` length < ${query.maxLength} AND`
-        if (query.minAscent !== undefined) filters = filters + ` ascent > ${query.minAscent} AND`
-        if (query.maxAscent !== undefined) filters = filters + ` ascent < ${query.maxAscent} AND`
-        if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
-        if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
-        if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
-        filters = filters + " 1"
-    }
-    return filters;
-}
-exports.filterByLocation = (query, hikes) => {
-    return hikes.filter((hike) => {
-        if (query.country !== undefined) {
-            if (hike.startPt.country.toLowerCase() !== query.country.toLowerCase()) return false
-        }
-        if (query.province !== undefined) {
-            if (hike.startPt.province.toLowerCase() !== query.province.toLowerCase()) return false
-        }
-        if (query.town !== undefined) {
-            if (hike.startPt.town.toLowerCase() !== query.town.toLowerCase()) return false
-        }
-        return true
-    });
-}
-
-exports.generateFilters = (query) => {
-    console.log(query);
     let filters = ""
     if (query.minLength !== undefined || query.maxLength !== undefined ||
         query.minAscent !== undefined || query.maxAscent !== undefined ||
@@ -165,3 +124,60 @@ exports.createHike = async (hike) => {
     })
 }
 
+
+
+exports.setHikeStartPoint = async (hike) => {
+    console.log("hike " + JSON.stringify(hike));
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET startPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.startPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
+
+
+exports.setHikeEndPoint = async (hike) => {
+    console.log("hike " + JSON.stringify(hike));
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET endPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.endPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
+exports.clearDatabase = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Hikes'
+        db.run(sql, [], async (err, rows) => {
+            if (err)
+                reject();
+            else
+                resolve();
+        })
+    })
+}

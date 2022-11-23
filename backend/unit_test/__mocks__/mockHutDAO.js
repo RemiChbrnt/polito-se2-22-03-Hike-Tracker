@@ -1,0 +1,1 @@
+exports.getHuts = jest.fn();
