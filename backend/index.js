@@ -23,9 +23,6 @@ const session = require('express-session');
 
 const app = express();
 
-app.use(morgan('dev'));
-app.use(express.json());
-
 /* CORS setup */
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -34,12 +31,17 @@ const corsOptions = {
 app.use(cors(corsOptions));
 /* ---------------------------------- */
 
+app.use(morgan('dev'));
+app.use(express.json());
+
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
 const hutRouter = require('./api/routers/hutRouter');
+const locationRouter = require('./api/routers/locationRouter');
 app.use(apiUrl, userRouter);
 app.use(apiUrl, hikeRouter);
 app.use(apiUrl, hutRouter);
+app.use(apiUrl, locationRouter);
 
 /* express-session setup */
 app.use(session({
