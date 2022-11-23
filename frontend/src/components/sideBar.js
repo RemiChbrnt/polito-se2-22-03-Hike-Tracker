@@ -71,8 +71,18 @@ function SideBar(props) {
                                         </Offcanvas.Body>
                                         : props.user.role === "hiker" ?
                                             <Offcanvas.Body> {/*HIKER*/}
-                                                <Nav className="justify-content-end flex-grow-1 pe-3">
-                                                    <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                <Nav className="justify-content-end flex-grow-1 pe-1">
+                                                    <Container fluid>
+                                                            <Row>
+                                                                <Col lg="auto">
+                                                                    <h1 onClick={() => { navigate('/hiker/personal-page') }}><i class="bi bi-gear-fill text-white"></i></h1>
+                                                                </Col>
+                                                                <Col>
+                                                                    <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                                </Col>
+                                                            </Row>
+                                                        
+                                                    </Container>
                                                 </Nav>
                                             </Offcanvas.Body>
                                             : false

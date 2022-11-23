@@ -7,16 +7,15 @@ const apiUrl = '/api';
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const userDAO = require('./api/DAOs/userDAO.js');
+//const userDAO = require('./api/DAOs/userDAO.js');
 // const hikeDAO = require('./HikeDAO.js'); TODO: add DAOs
 const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+
 /* ------------------------------------------------------------------- */
 
-/* DB init */
-exports.databasePath = './db/HikeTrackerDb.db'
 
 // TODO: add routers and services
 // const hikeRouter = require('./api/routers/hikeRouter');
@@ -38,10 +37,11 @@ app.use(express.json());
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
 const locationRouter = require('./api/routers/locationRouter');
+const hutRouter = require('./api/routers/hutRouter');
 app.use(apiUrl, userRouter);
 app.use(apiUrl, hikeRouter);
+app.use(apiUrl, hutRouter);
 app.use(apiUrl, locationRouter);
-
 /* express-session setup */
 app.use(session({
     secret: 'software engineldenring speedrun [ANY%][NO GLITCH][EPIC]',
@@ -51,7 +51,7 @@ app.use(session({
 /* ---------------------------------------*/
 
 /* -------- AUTHENTICATION SETUP -------- */
-passport.use(new LocalStrategy(
+/* passport.use(new LocalStrategy(
     async function verify(email, password, callback) {
         const user = await userDAO.getUser(email, password);
 
@@ -60,7 +60,7 @@ passport.use(new LocalStrategy(
 
         return callback(null, user); // LOGIN SUCCESS
     }
-));
+)); */
 
 app.use(passport.authenticate('session'));
 /* --------------------------------------------------------------------------------------- */
@@ -120,6 +120,8 @@ app.delete(apiUrl + '/session/current', (req, res) => {
 });
 /* --------------------------------------------------------- */
 
-app.listen(SERVER_PORT, () => { console.log(`Server running on port ${SERVER_PORT}`) });
+app.listen(SERVER_PORT, () => {
+    console.log(`Server running on port ${SERVER_PORT}`)
+});
 
 module.exports = app

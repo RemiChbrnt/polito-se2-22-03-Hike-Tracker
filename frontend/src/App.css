@@ -49,6 +49,7 @@ h4{
 }
 
 .hike-form {
+  flex: 1;
   width: 500px;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   border-radius: 8px;
@@ -58,6 +59,13 @@ h4{
 .hike-form-group{
   padding:40px;
 }
+
+.form-group{
+  flex:1;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .asterisk-required {
   color:red;
 }

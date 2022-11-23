@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+<<<<<<< HEAD
+    "@mapbox/togeojson": "^0.16.0",
+    "xmldom": "^0.6.0"
+=======
+    "use-api": "^1.0.2"
+>>>>>>> xiaoSprint2H6
+  }
+}

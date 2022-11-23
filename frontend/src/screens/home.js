@@ -7,8 +7,6 @@ import { HikeFilterForm } from "./../components/hikeFilterForm";
 import HutWorker from "./../screens/hutWorker"
 import EmergencyOperator from "./../screens/emergencyOperator"
 
-
-
 const Home = (props) => {
 
     const [show, setShow] = useState(false);
