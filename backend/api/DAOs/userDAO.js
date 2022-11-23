@@ -1,7 +1,7 @@
 'use strict'
 
 const crypto = require('crypto');
-const db = require('../../index').database
+const db = require('../../db/db')
 
 exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {

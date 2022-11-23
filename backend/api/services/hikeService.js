@@ -26,6 +26,7 @@ class HikeService {
             body: message
             }
         } catch(e) {
+            console.log(e)
             return {
             ok: false,
             status: 500

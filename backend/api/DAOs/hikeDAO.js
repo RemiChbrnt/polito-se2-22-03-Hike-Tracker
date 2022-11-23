@@ -1,5 +1,5 @@
 'use strict'
-const db = require('../../index').database
+const db = require('../../db/db')
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
@@ -9,6 +9,7 @@ exports.getHikes = async (query) => {
         // console.log(sql)
         db.all(sql, [], async (err, rows) => {
             if (err) {
+                console.log("err"+err)
                 reject()
                 return
             }
