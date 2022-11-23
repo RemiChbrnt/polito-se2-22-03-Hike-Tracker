@@ -1,20 +1,15 @@
 'use strict'
-const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
         let sql = 'SELECT * from Hikes'
         const filters = this.generateFilters(query);
         sql = sql + filters
-        console.log(sql)
+        // console.log(sql)
         db.all(sql, [], async (err, rows) => {
             if (err) {
+                console.log("err" + err)
                 reject()
                 return
             }
@@ -79,20 +74,6 @@ exports.generateFilters = (query) => {
         filters = filters + " 1"
     }
     return filters;
-}
-exports.filterByLocation = (query, hikes) => {
-    return hikes.filter((hike) => {
-        if (query.country !== undefined) {
-            if (hike.startPt.country.toLowerCase() !== query.country.toLowerCase()) return false
-        }
-        if (query.province !== undefined) {
-            if (hike.startPt.province.toLowerCase() !== query.province.toLowerCase()) return false
-        }
-        if (query.town !== undefined) {
-            if (hike.startPt.town.toLowerCase() !== query.town.toLowerCase()) return false
-        }
-        return true
-    });
 }
 
 exports.getReferenceLocations = async (id) => {
@@ -177,3 +158,60 @@ exports.createHike = async (hike) => {
     })
 }
 
+
+
+exports.setHikeStartPoint = async (hike) => {
+    console.log("hike " + JSON.stringify(hike));
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET startPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.startPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
+
+
+exports.setHikeEndPoint = async (hike) => {
+    console.log("hike " + JSON.stringify(hike));
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET endPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.endPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
+exports.clearDatabase = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Hikes'
+        db.run(sql, [], async (err, rows) => {
+            if (err)
+                reject();
+            else
+                resolve();
+        })
+    })
+}

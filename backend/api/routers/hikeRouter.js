@@ -2,14 +2,13 @@
 const express = require('express');
 const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDAO');
-const mockHikeDao = require('../mockDAOs/mockHikeDAO');
 
 const service = new HikeService(HikeDao)
 // const service = new HikeService(mockHikeDao);
 
 const router = express.Router()
 
-const { query, body, validationResult } = require('express-validator/check');
+const { query, body, param, validationResult } = require('express-validator');
 
 router.get('/hikes', [
     query('minLength').optional().isFloat({ min: 0 }),
@@ -81,5 +80,50 @@ router.post('/locations', [
     }
     return res.status(locId.status).end()
 })
+
+
+
+router.put('/hike-startPt/:id/:startPt', [
+    param('id').exists().isInt(),
+    param('startPt').exists().isInt(),
+], async (req, res) => {
+
+    if (req.session.user === undefined || req.session.user.role !== "guide")
+        return res.status(400).json({ error: "Unauthorized" });
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    const data = await service.setHikeStartPoint(req.params);
+
+    if (data.ok)
+        return res.status(data.status).json(data.body);
+
+    return res.status(data.status).end()
+})
+
+
+router.put('/hike-endPt/:id/:endPt', [
+    param('id').exists().isInt(),
+    param('endPt').exists().isInt(),
+], async (req, res) => {
+
+    if (req.session.user === undefined || req.session.user.role !== "guide")
+        return res.status(400).json({ error: "Unauthorized" });
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    const data = await service.setHikeEndPoint(req.params);
+
+    if (data.ok)
+        return res.status(data.status).json(data.body);
+
+    return res.status(data.status).end()
+})
+
+
 
 module.exports = router

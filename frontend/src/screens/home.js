@@ -5,7 +5,6 @@ import { HikeGrid } from "./../components/hikeList";
 import { HikeFilterForm } from "./../components/hikeFilterForm";
 
 import HutWorker from "./../screens/hutWorker"
-import LocalGuide from "./../screens/localGuide"
 import EmergencyOperator from "./../screens/emergencyOperator"
 
 const Home = (props) => {
