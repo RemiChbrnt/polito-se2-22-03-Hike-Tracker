@@ -13,9 +13,8 @@ const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
-/* ------------------------------------------------------------------- */
 
-/* DB init */
+/* ------------------------------------------------------------------- */
 
 
 // TODO: add routers and services
@@ -120,6 +119,8 @@ app.delete(apiUrl + '/session/current', (req, res) => {
 });
 /* --------------------------------------------------------- */
 
-app.listen(SERVER_PORT, () => { console.log(`Server running on port ${SERVER_PORT}`) });
+app.listen(SERVER_PORT, () => {
+    console.log(`Server running on port ${SERVER_PORT}`)
+});
 
 module.exports = app
