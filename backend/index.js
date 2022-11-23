@@ -16,7 +16,7 @@ const session = require('express-session');
 /* ------------------------------------------------------------------- */
 
 /* DB init */
-exports.databasePath = './db/HikeTrackerDb.db'
+
 
 // TODO: add routers and services
 // const hikeRouter = require('./api/routers/hikeRouter');

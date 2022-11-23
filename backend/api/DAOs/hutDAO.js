@@ -1,11 +1,5 @@
 'use strict'
-const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.getHuts = async (query) => {
     console.log("query: " + JSON.stringify(query));
@@ -43,4 +37,17 @@ exports.generateFilters = (query) => {
     if (query.altitude !== undefined) filters = filters + ` altitude = ${query.altitude} AND`
     filters = filters + " 1"
     return filters;
+}
+
+
+exports.clearDatabase = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Huts'
+        db.run(sql, [], async (err, rows) => {
+            if (err)
+                reject();
+            else
+                resolve();
+        })
+    })
 }

@@ -1,11 +1,5 @@
 'use strict'
-const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
@@ -211,3 +205,14 @@ exports.setHikeEndPoint = async (hike) => {
 }
 
 
+exports.clearDatabase = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Hikes'
+        db.run(sql, [], async (err, rows) => {
+            if (err)
+                reject();
+            else
+                resolve();
+        })
+    })
+}

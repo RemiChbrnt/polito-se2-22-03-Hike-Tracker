@@ -1,15 +1,8 @@
 'use strict'
-const sqlite = require('sqlite3')
 const crypto = require('crypto');
-const dbPath = "./db/testingHikeTrackerDb.db"
-const db = new sqlite.Database(dbPath, (err) => {
+const db = require('../../db/db');
 
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON");
-
-})
-
-async function login(email, password){
+async function login(email, password) {
     return new Promise((resolve, reject) => {
         const sql =
             `SELECT * FROM Users WHERE email = ?`;
@@ -50,7 +43,7 @@ async function login(email, password){
 
 
 
-async function signup (email, fullName, password, role, phoneNumber) {
+async function signup(email, fullName, password, role, phoneNumber) {
     let salt, hash;
 
     return new Promise((resolve, reject) => {
@@ -77,8 +70,8 @@ async function signup (email, fullName, password, role, phoneNumber) {
 
             let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
             db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-            // let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-            // db.run(query, [email, fullName, hash, salt, role], (err) => {
+                // let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
+                // db.run(query, [email, fullName, hash, salt, role], (err) => {
                 if (err)
                     reject(err);
                 else {
@@ -101,26 +94,26 @@ async function signup (email, fullName, password, role, phoneNumber) {
 
 }
 
-async function createPreferences (email,ascent,duration) {
+async function createPreferences(email, ascent, duration) {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO Preferences (email, duration, ascent) VALUES (?,?,?)'
-        db.run(sql, [email,duration,ascent], async (err, rows) => {
+        db.run(sql, [email, duration, ascent], async (err, rows) => {
             if (err) {
                 console.log(err)
                 reject(503)
                 return
             }
-            const prefs={
-                "email":email,
-                "ascent":ascent,
-                "duration":duration,
+            const prefs = {
+                "email": email,
+                "ascent": ascent,
+                "duration": duration,
             }
             resolve(prefs)
         })
     })
 }
 
-async function getPreferences (email){
+async function getPreferences(email) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM Preferences WHERE email=?'
         db.get(sql, [email], async (err, row) => {
@@ -128,15 +121,15 @@ async function getPreferences (email){
                 reject(503)
                 return
             }
-            if(row===undefined) {
+            if (row === undefined) {
                 resolve({})
                 return
             }
-            
-            const prefs={
-                "email":row.email,
-                "ascent":row.ascent,
-                "duration":row.duration,
+
+            const prefs = {
+                "email": row.email,
+                "ascent": row.ascent,
+                "duration": row.duration,
             }
             resolve(prefs)
         })
@@ -144,27 +137,27 @@ async function getPreferences (email){
 }
 
 async function clearDatabase() {
-   return new Promise((resolve, reject) => {
-       const sql = 'DELETE FROM Users where email != "maurizio.merluzzo@donkeykong.com"'
-       db.run(sql, [], async (err, rows) => {
-        if(err) console.log(err)
-           if(err)
-               reject();
-           else{
-              const sql1='DELETE FROM Preferences'
-              db.run(sql1, [], async (err, rows) => {
-                if(err) console.log(err)
-                   if(err)
-                       reject();
-                   else{
-                       resolve();
-                   }   
-               })
-           }   
-       })
-   })
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Users where email != "maurizio.merluzzo@donkeykong.com"'
+        db.run(sql, [], async (err, rows) => {
+            if (err) console.log(err)
+            if (err)
+                reject();
+            else {
+                const sql1 = 'DELETE FROM Preferences'
+                db.run(sql1, [], async (err, rows) => {
+                    if (err) console.log(err)
+                    if (err)
+                        reject();
+                    else {
+                        resolve();
+                    }
+                })
+            }
+        })
+    })
 }
 
 
 
-module.exports = { login, signup, getPreferences, createPreferences , clearDatabase }
+module.exports = { login, signup, getPreferences, createPreferences, clearDatabase }
