@@ -159,7 +159,7 @@ function ActiveForm(props){
                     <Form.Group className="mb-3" controlId="hutDescription">
                         <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
                         <Form.Control as="textarea" rows={2}
-                            onChange={ev => {setDescription(ev.target.value); }}
+                            onChange={ev => {setDescription(ev.target.value); }}  required
                         />
                     </Form.Group>
                 </div>

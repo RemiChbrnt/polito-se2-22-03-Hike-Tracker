@@ -103,5 +103,29 @@ async function addHut(params) {
     }
 }
 
-const API = { login, signup, getAllHikes, addHut};
+async function getHuts(userId) {
+
+    const response = await fetch(URL+'/api/plans/${userId}', {method: 'GET', credentials: 'include'});
+    const hutsJson = await response.json();
+    if (response.ok) {
+        return hutsJson.map((r) => ({
+            id: r.id,
+            name: r.name,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            country: r.country,
+            province: r.province,
+            town: r.town,
+            altitude: r.altitude,
+            beds: r.beds,
+            food: r.food,
+            description:r.description
+        }))
+    } else {
+        throw hutsJson; 
+    }
+}
+
+
+const API = { login, signup, getAllHikes, addHut, getHuts};
 export default API;

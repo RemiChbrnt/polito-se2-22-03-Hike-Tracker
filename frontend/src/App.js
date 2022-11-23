@@ -16,7 +16,11 @@ function App() {
 
     const [user, setUser] = useState();
     const [props, setProps] = useState([]);
+    //const [props, setProps] = useState({user:user});
 
+    // useEffect(()=>{
+    //     setProps({...props,user:user});
+    // },[user]);
 
     return (
         <div>
