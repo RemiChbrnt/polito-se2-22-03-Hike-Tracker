@@ -6,6 +6,13 @@ CREATE TABLE IF NOT EXISTS "HikesReferencePoints" (
 	FOREIGN KEY("hikeId") REFERENCES "Hikes"("id") ON UPDATE CASCADE ON DELETE CASCADE,
 	PRIMARY KEY("hikeId","locationId")
 );
+CREATE TABLE "HikesHaveHuts" (
+	"hikeId"	INTEGER,
+	"locationId"	INTEGER,
+	PRIMARY KEY("hikeId","locationId"),
+	FOREIGN KEY("hikeId") REFERENCES "Hikes"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY("locationId") REFERENCES "Locations"("id") ON DELETE CASCADE ON UPDATE CASCADE
+)
 CREATE TABLE IF NOT EXISTS "Locations" (
 	"id"	INTEGER NOT NULL,
 	"name"	TEXT NOT NULL,
