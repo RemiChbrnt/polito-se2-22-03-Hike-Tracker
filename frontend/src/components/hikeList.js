@@ -28,7 +28,7 @@ function HikeGrid(props) {
                     {(hikes.length === 0) ? <h2>No match found with the specified filters...</h2> :
                         <Row xs={1} md={2} className="g-4">
                             {
-                                hikes.map((hike, index) => <HikeCard hike={hike} key={index} setProps={props.setProps} />)
+                                hikes.map((hike, index) => <HikeCard hike={hike} key={index} user={props.user} setProps={props.setProps} />)
                             }
                         </Row>
                     }
@@ -44,7 +44,7 @@ function HikeCard(props) {
     const hike = JSON.parse(props.hike);
 
     const showDetail = (() => {
-        props.setProps({ hike: props.hike });
+        props.setProps({ hike: props.hike, user: props.user });
         navigate("/hike-detail-" + hike.title);
     });
 

@@ -57,7 +57,7 @@ const Home = (props) => {
 
             <ul></ul>
             <Row>
-                <HikeGrid filters={filters} setProps={props.setProps} />
+                <HikeGrid filters={filters} user={props.user} setProps={props.setProps} />
             </Row>
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
