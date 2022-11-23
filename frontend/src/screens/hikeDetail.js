@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row, Button } from 'react-bootstrap';
+import { Col, Container, Row, Button, Collapse, Form } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
@@ -9,6 +9,16 @@ const HikeDetail = ({ props, setProps }) => {
     const hike = JSON.parse(props.hike);
     const navigate = useNavigate();
     const params = useParams();
+
+    const [openStart, setOpenStart] = useState(false);
+    const [openEnd, setOpenEnd] = useState(false);
+    const [startPoint, setStartPoint] = useState();
+    const [endPoint, setEndPoint] = useState();
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+    }
 
     return (
         <Container>
@@ -25,22 +35,65 @@ const HikeDetail = ({ props, setProps }) => {
             </Row>
             <ul></ul>
             {(props.user !== undefined && props.user.role === "guide") ?
-                <Row>
-                    <Col>
-                    {hike.startPt === undefined ?
-                            <Button variant="success" size="lg" onClick={() => {  }}><h4 className="text-white"> Add Start Point</h4></Button>
-                            :
-                            false
-                        }
-                    </Col>
-                    <Col> 
-                        {hike.endPt === undefined ?
-                            <Button variant="success" size="lg" onClick={() => {  }}><h4 className="text-white"> Add End Point</h4></Button>
-                            :
-                            false
-                        }
-                    </Col>
-                </Row>
+                <div>
+                    <Row>
+                        <Col>
+                            {(hike.startPt === undefined && openEnd !== true) ?
+                                <Button onClick={() => { setOpenStart(!openStart) }}
+                                    aria-controls="example-collapse-text"
+                                    aria-expanded={openStart} variant="success" size="lg"><h4 className="text-white"> Add Start Point</h4></Button>
+                                :
+                                (hike.startPt === undefined && openEnd === true) ?
+                                    <Button onClick={() => { setOpenStart(!openStart) }}
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={openStart} variant="success" size="lg" disabled><h4 className="text-white"> Add Start Point</h4></Button>
+                                    :
+                                    false
+                            }
+                        </Col>
+                        <Col>
+                            {(hike.endPt === undefined && openStart !== true) ?
+                                <Button onClick={() => { setOpenEnd(!openEnd) }}
+                                    aria-controls="example-collapse-text"
+                                    aria-expanded={openEnd} variant="success" size="lg"><h4 className="text-white"> Add End Point</h4></Button>
+                                :
+                                (hike.endPt === undefined && openStart === true) ?
+                                    <Button onClick={() => { setOpenEnd(!openEnd) }}
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={openEnd} variant="success" size="lg" disabled><h4 className="text-white"> Add End Point</h4></Button>
+                                    :
+                                    false
+                            }
+                        </Col>
+                    </Row>
+                    <ul></ul>
+                    <Row>
+                        <Collapse in={openStart}>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group>
+                                    <Form.Select value={startPoint}
+                                        onChange={e => setStartPoint(e.target.value)}
+                                        aria-label="region" size="lg">
+                                        <option>Select the Start Pont</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Form>
+                        </Collapse>
+
+                        <Collapse in={openEnd}>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group>
+                                    <Form.Select value={endPoint}
+                                        onChange={e => setEndPoint(e.target.value)}
+                                        aria-label="region" size="lg">
+                                        <option>Select the End Pont</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Form>
+                        </Collapse>
+                    </Row>
+                    <ul></ul>
+                </div>
                 :
                 false
             }
