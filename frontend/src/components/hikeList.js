@@ -82,7 +82,7 @@ function HikeCard(props) {
 
     const showDetail = (() => {
         props.setProps({ hike: props.hike });
-        navigate("/hike-detail-" + hike.title);
+        navigate("/hike-detail-" + hike.id);
     });
 
     return (

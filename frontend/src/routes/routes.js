@@ -28,35 +28,35 @@ const routes = [
     {
         path: "/hiker",
         key: "hiker",
-        screen: function (props, setProps) {
+        screen: function (user, props, setProps) {
             return <Hiker setProps={setProps} />
         }
     },
     {
         path: "/hike-detail-:hikeId",
         key: "hike-detail",
-        screen: function (props, setProps) {
+        screen: function (user, props, setProps) {
             return <HikeDetail props={props} setProps={setProps} />
         }
     },
     {
         path: "/add-hike-description",
         key: "add-hike-description",
-        screen: function (props, setProps) {
-            return <AddHikeForm props={props} setProps={setProps} />
+        screen: function (user, props, setProps) {
+            return <AddHikeForm user={user} props={props} setProps={setProps} />
         }
     },
     {
         path: "/add-parking-lot",
         key: "add-parking-lot",
-        screen: function (props, setProps) {
+        screen: function (user, props, setProps) {
             return <AddPointForm props={props} setProps={setProps} />
         }
     }, 
     {
         path: "/link-hut-to-hike",
         key: "link-hut-to-hike",
-        screen: function (props, setProps) {
+        screen: function (user, props, setProps) {
             return <LinkHutToHike props={props} setProps={setProps} />
         }
     }

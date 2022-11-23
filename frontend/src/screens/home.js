@@ -8,8 +8,6 @@ import HutWorker from "./../screens/hutWorker"
 import LocalGuide from "./../screens/localGuide"
 import EmergencyOperator from "./../screens/emergencyOperator"
 
-
-
 const Home = (props) => {
 
     const [show, setShow] = useState(false);

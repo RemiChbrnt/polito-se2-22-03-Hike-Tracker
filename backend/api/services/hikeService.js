@@ -18,6 +18,8 @@ class HikeService {
                 startPt:r.startPt, 
                 endPt:r.endPt, 
                 description:r.description,
+                track: r.track,
+                author:r.author,
                 referencePoints:r.referencePoints
              }))
             return {
@@ -35,10 +37,27 @@ class HikeService {
 
     createHike= async (newHike)=>{
         try{
-            const response = await this.dao.createHike(newHike)
+            const hike = await this.dao.createHike(newHike)
             return {
                 ok: true,
                 status: 201,
+                body: hike
+            }
+        } catch(e) {
+            return {
+                ok: false,
+                status: 400
+            }
+        }
+    }
+
+    createLocation= async (newLocation)=>{
+        try{
+            const location = await this.dao.createLocation(newLocation)
+            return {
+                ok: true,
+                status: 201,
+                body: location
             }
         } catch(e) {
             return {

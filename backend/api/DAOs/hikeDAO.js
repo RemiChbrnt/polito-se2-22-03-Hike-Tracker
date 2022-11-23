@@ -33,6 +33,8 @@ exports.getHikes = async (query) => {
                         startPt: startLocation,
                         endPt: endLocation,
                         description: r.description,
+                        track: r.track,
+                        author: r.author,
                         referencePoints: refLocations,
                     }
                 })
@@ -73,6 +75,7 @@ exports.generateFilters = (query) => {
         if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
         if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
         if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
+        if (query.author !== undefined) filters = filters + ` author = "${query.difficulty}" AND`
         filters = filters + " 1"
     }
     return filters;
@@ -90,28 +93,6 @@ exports.filterByLocation = (query, hikes) => {
         }
         return true
     });
-}
-
-exports.generateFilters = (query) => {
-    console.log(query);
-    let filters = ""
-    if (query.minLength !== undefined || query.maxLength !== undefined ||
-        query.minAscent !== undefined || query.maxAscent !== undefined ||
-        query.minTime !== undefined || query.maxTime !== undefined ||
-        query.difficulty !== undefined) {
-        // test for an empty query, this looks awful but we cannot check for an empty object since
-        // there are also fields for the locations that are used later on.   
-        filters = " where"
-        if (query.minLength !== undefined) filters = filters + ` length > ${query.minLength} AND`
-        if (query.maxLength !== undefined) filters = filters + ` length < ${query.maxLength} AND`
-        if (query.minAscent !== undefined) filters = filters + ` ascent > ${query.minAscent} AND`
-        if (query.maxAscent !== undefined) filters = filters + ` ascent < ${query.maxAscent} AND`
-        if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
-        if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
-        if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
-        filters = filters + " 1"
-    }
-    return filters;
 }
 
 exports.getReferenceLocations = async (id) => {
@@ -141,24 +122,55 @@ exports.getLocationById = async (id) => {
     })
 }
 
-exports.createHike = async (hike) => {
+exports.createLocation = async (location) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, author) VALUES(?,?,?,?,?,1,2,?,?)';
+        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, country, province, town, address, altitude) VALUES(?,?,?,?,?,?,?,?,?)';
+        db.run(sql, [
+            location.name,
+            location.type,
+            location.latitude,
+            location.longitude,
+            location.country,
+            location.province,
+            location.town,
+            location.address,
+            location.altitude
+        ], function (err, rows) {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve({id: this.lastID});
+                return;
+            }
+        })
+    })
+}
+
+exports.createHike = async (hike) => {
+    console.log(hike);
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, track, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
             hike.title,
             hike.length,
             hike.expTime,
             hike.ascent,
             hike.difficulty,
+            hike.startPt,
+            hike.endPt,
             hike.description,
+            hike.track,
             hike.author
-        ], async (err, rows) => {
+        ], function (err, rows) {
             if (err) {
+                console.log(err);
                 reject(400);
                 return;
             }
             else {
-                resolve(201);
+                resolve({id: this.lastID});
                 return;
             }
         })
