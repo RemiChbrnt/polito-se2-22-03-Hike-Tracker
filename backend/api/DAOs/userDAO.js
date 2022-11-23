@@ -306,7 +306,7 @@ exports.deleteSKUItem = async (rfid) => {
 
 exports.clearDatabase = async () => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM Users'
+        const sql = 'DELETE FROM Users WHERE email!="maurizio.merluzzo@donkeykong.com"'
         db.run(sql, [], async (err, rows) => {
             if (err)
                 reject();

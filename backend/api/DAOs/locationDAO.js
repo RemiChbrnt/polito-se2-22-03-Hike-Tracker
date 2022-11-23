@@ -1,11 +1,5 @@
 'use strict'
-const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.addParking = async (newParking) => {
     return new Promise((resolve, reject) => {
@@ -19,7 +13,7 @@ exports.addParking = async (newParking) => {
             newParking.province,
             newParking.town,
             newParking.address
-        ], async function (err){
+        ], async function (err) {
             if (err) {
                 reject(400);
                 return;
@@ -30,7 +24,7 @@ exports.addParking = async (newParking) => {
                     this.lastID,
                     newParking.description,
                     newParking.lotsNumber
-                ], async function (err){
+                ], async function (err) {
                     if (err) {
                         //revert in case of error
                         db.run('DELETE FROM Locations WHERE id=?', [this.lastID]);
@@ -41,6 +35,25 @@ exports.addParking = async (newParking) => {
                         resolve(201);
                         return;
                     }
+                })
+            }
+        })
+    })
+}
+
+exports.clearDatabase = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Locations WHERE id>2'
+        db.run(sql, [], async (err, rows) => {
+            if (err)
+                reject();
+            else {
+                const sql = 'DELETE FROM ParkingLots WHERE locationId>2'
+                db.run(sql, [], async (err, rows) => {
+                    if (err)
+                        reject();
+                    else
+                        resolve();
                 })
             }
         })
