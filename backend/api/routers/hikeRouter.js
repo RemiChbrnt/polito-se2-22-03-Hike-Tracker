@@ -8,7 +8,7 @@ const service = new HikeService(HikeDao)
 
 const router = express.Router()
 
-const { query, body, validationResult } = require('express-validator/check');
+const { query, body, validationResult } = require('express-validator');
 
 router.get('/hikes', [
     query('minLength').optional().isFloat({ min: 0 }),

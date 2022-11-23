@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
-  },
+    "start": "SET NODE_ENV=development& nodemon index.js",
+    "test": "SET NODE_ENV=test& jest --coverage"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {

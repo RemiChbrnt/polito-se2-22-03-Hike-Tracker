@@ -1,10 +1,11 @@
 const { createHike, getHikes, clearDatabase } = require('../__mocks__/mockHikeDAO')
+const HikeDao = require('../../api/DAOs/hikeDAO');
 const SECONDS = 1000;
 jest.setTimeout(20 * SECONDS);
 
 describe('Hikes API tests', () => {
     beforeEach(() => {
-        clearDatabase();
+        HikeDao.clearDatabase();
     });
 
     test('createHike should create a new entry in the Db and return status 201', async () => {
@@ -21,7 +22,7 @@ describe('Hikes API tests', () => {
             "author" : "maurizio.merluzzo@donkeykong.com"
         };
 
-        return createHike(newHike).then(status => expect(status).toBe(201));
+        return HikeDao.createHike(newHike).then(status => expect(status).toBe(201));
     });
 
     test('getHikes should retrieve the complete list of hikes in the database', async () => {
@@ -38,8 +39,8 @@ describe('Hikes API tests', () => {
             "author" : "maurizio.merluzzo@donkeykong.com"
         };
 
-        await createHike(newHike);
-        const hikes = await getHikes();
+        await HikeDao.createHike(newHike);
+        const hikes = await HikeDao.getHikes({});
         return expect(hikes.length).toBe(1);
     })
 })

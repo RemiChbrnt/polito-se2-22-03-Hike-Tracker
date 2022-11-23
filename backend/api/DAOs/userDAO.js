@@ -1,13 +1,7 @@
 'use strict'
-const sqlite = require('sqlite3')
+
 const crypto = require('crypto');
-const dbPath = "./db/HikeTrackerDb.db"
-const db = new sqlite.Database(dbPath, (err) => {
-
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON");
-
-})
+const db = require('../../index').database
 
 exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {

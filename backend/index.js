@@ -13,10 +13,24 @@ const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+const sqlite = require('sqlite3')
 /* ------------------------------------------------------------------- */
 
 /* DB init */
-exports.databasePath = './db/HikeTrackerDb.db'
+
+let dbPath = "";
+if (process.env.NODE_ENV === 'development') {
+    dbPath = './db/HikeTrackerDb.db'
+}
+if (process.env.NODE_ENV === 'test') {
+    dbPath = './db/testingHikeTrackerDb.db'
+}
+const database = new sqlite.Database(dbPath, (err) => {
+    if (err) throw err
+    database.run("PRAGMA foreign_keys = ON")
+})
+
+
 
 // TODO: add routers and services
 // const hikeRouter = require('./api/routers/hikeRouter');
@@ -118,6 +132,8 @@ app.delete(apiUrl + '/session/current', (req, res) => {
 });
 /* --------------------------------------------------------- */
 
-app.listen(SERVER_PORT, () => { console.log(`Server running on port ${SERVER_PORT}`) });
+app.listen(SERVER_PORT, () => { 
+    // console.log(`Server running on port ${SERVER_PORT}`) 
+});
 
-module.exports = app
+module.exports = {app, database}
