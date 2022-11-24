@@ -12,9 +12,10 @@ function LinkHutToHike(props) {
     const [loggedIn, setLoggedIn]=useState(false);
     const [hutId, setHutId]=useState('');
     const [hikes, setHikes]=useState([]); 
+    const [userEmail, setUserEmail]=useState(''); 
 
     const getHutsByUserId = async () => {
-        //const huts = await API.getHutsByUserId(currentUserId);
+        //const huts = await API.getHutsByUserId(userEmail);
         const hutsList = [{id: 1, name:"Rifugio La Riposa", latitude: "45.1788097585636", longitude: "7.08152295397762", country:"Italy", province:"TO", town:"Mompantero", altitude: "1000", beds:"1", food: "None", description:"Il Rifugio La Riposa si trova in località Riposa, Mompantero di Susa, a 2185 m di altitudine ed è raggiungibile anche in auto."}]
         setHuts(hutsList);
     };
@@ -22,8 +23,10 @@ function LinkHutToHike(props) {
     useEffect(() => {
       const checkAuth = async () => {
         const user = await API.getUserInfo(); 
-        if (user)
+        if (user){
           setLoggedIn(true);
+          setUserEmail(user.email); 
+        }
         return user;
       };
       const getHikes = async()=>{
