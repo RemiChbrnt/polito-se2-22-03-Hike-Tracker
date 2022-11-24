@@ -99,6 +99,22 @@ async function getAllHikes(filters) {
     }
 }
 
+async function getHikesList() {
+    // call: GET /api/hikes
+    const response = await fetch(URL + '/hikes', {
+        credentials: 'include',
+    });
+    const hikesJson = await response.json();
+    if (response.ok) {
+        return hikesJson.map((r) => ({
+            id: r.id,
+            title: r.title,
+        }))
+    } else {
+        throw hikesJson; 
+    }
+}
+
 
 async function createHike(body) {
     console.log("body " + JSON.stringify(body));
@@ -220,10 +236,6 @@ async function getHuts(filters) {
 }
 
 
-
-
-
-
 async function addHut(params) {
     const response = await fetch(URL + '/addHut', {
         method: "POST",
@@ -259,7 +271,7 @@ async function addParking(params) {
 }
 
 async function getHutsByUserId(userId) {
-    const response = await fetch(URL+'/api/huts/${userId}', {method: 'GET', credentials: 'include'});
+    const response = await fetch(URL+`/api/huts/${userId}`, {method: 'GET', credentials: 'include'});
     const hutsJson = await response.json();
     if (response.ok) {
         return hutsJson.map((r) => ({
@@ -306,5 +318,22 @@ async function createPreferences(preferences) {
     else
         throw res;
 }
-const API = { login, signup, addParking, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsByUserId, addHut, getPreferences, createPreferences, createHike, createLocation };
+
+async function linkHut(params) {
+    const response = await fetch(URL + '/linkHut', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: params
+    });
+    let res = await response.json();
+    if (response.ok) {
+        return true;
+    } else {
+        throw res;
+    }
+}
+const API = { login, signup, addParking, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsByUserId, addHut, linkHut, getPreferences, createPreferences, createHike, createLocation, getHikesList };
 export default API;

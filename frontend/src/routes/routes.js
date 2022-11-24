@@ -102,7 +102,7 @@ const routes = [
         path: "/link-hut-to-hike",
         key: "link-hut-to-hike",
         screen: function (user, props, setProps) {
-            return <LinkHutToHike props={props} setProps={setProps} />
+            return <LinkHutToHike user={user} props={props} setProps={setProps} />
         }
     }
 

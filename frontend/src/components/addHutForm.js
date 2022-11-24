@@ -34,7 +34,6 @@ function ActiveForm(props){
     const addHut = async (title, latitude, longitude, country, province, town, altitude, beds, food, description) => {
         try {
             let params=JSON.stringify({title:title, latitude:latitude, longitude:longitude, country:country, province:province, town:town, altitude:altitude, beds:beds, food:food, description:description})
-            console.log("params:"+params);
             let res= API.addHut(params);
             return res;
 

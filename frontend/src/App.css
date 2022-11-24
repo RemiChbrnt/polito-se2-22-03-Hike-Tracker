@@ -96,6 +96,7 @@ h4{
 
 .tableHeader{
   background-color: #00706c;
+  padding:0;
 }
 
 .infoHidden{
@@ -108,4 +109,14 @@ h4{
 
 .extraInfo{
   text-align: justify;
+}
+
+.hutTableHeader{
+  color: white;
+  text-align: center;
+}
+
+.icons-style{
+  font-size: 22px;
+
 }

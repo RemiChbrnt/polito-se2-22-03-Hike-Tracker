@@ -9,21 +9,46 @@ import API from "../API";
 function LinkHutToHike(props) {
     const [form, setForm]=useState(false);
     const [huts, setHuts]=useState([]); 
-    const getHuts = async () => {
-        //const huts = await API.getHuts(currentUserId);
-        const hutsList = [{id: 1, name:"prova 1", latitude: "1", longitude: "1", country:"Italy", province:"Turin", town:"Turin", altitude: "1000", beds:"1", food: "None", description:"hello"}, {id: 2, name:"prova 1", latitude: "1", longitude: "1", country:"Italy", province:"Turin", town:"Turin", altitude: "1000", beds:"1", food: "None", description:"hello"} ]
+    const [loggedIn, setLoggedIn]=useState(false);
+    const [hutId, setHutId]=useState('');
+    const [hikes, setHikes]=useState([]); 
+
+    const getHutsByUserId = async () => {
+        //const huts = await API.getHutsByUserId(currentUserId);
+        const hutsList = [{id: 1, name:"Rifugio La Riposa", latitude: "45.1788097585636", longitude: "7.08152295397762", country:"Italy", province:"TO", town:"Mompantero", altitude: "1000", beds:"1", food: "None", description:"Il Rifugio La Riposa si trova in località Riposa, Mompantero di Susa, a 2185 m di altitudine ed è raggiungibile anche in auto."}]
         setHuts(hutsList);
     };
 
     useEffect(() => {
-            getHuts();
-      },[]);
+      const checkAuth = async () => {
+        const user = await API.getUserInfo(); 
+        if (user)
+          setLoggedIn(true);
+        return user;
+      };
+      const getHikes = async()=>{
+        const hikes = await API.getHikesList(); 
+        setHikes(hikes); 
+      }
+      checkAuth().then(user=>{
+        if(user){
+          getHutsByUserId();
+          getHikes();
+        }
+      });
+    }, [loggedIn, props.user]);
+
 
     return (
-
-        <div className="container-fluid myTable">
-            <HutsTable huts={huts} form={form}></HutsTable>
-        </div>
+      	<>{!form && 
+          <div className="container-fluid myTable">
+              <HutsTable huts={huts} setForm={setForm} setHutId={setHutId}></HutsTable>
+          </div>
+        }
+        {form &&
+          <LinkForm setForm={setForm} hikes={hikes} hutId={hutId}/>
+        }
+        </>
 
     );
 }
@@ -34,18 +59,20 @@ function HutsTable(props) {
         <Table hover className="table">
             <thead className="tableHeader">
               <tr>
-                <th style={{width:'17%'}}>NAME</th>
-                <th style={{width:'32%'}}>COORDINATES</th>
-                <th style={{width:'16%'}}>COUNTRY</th>
-                <th style={{width:'10%'}}>PROVINCE</th>
-                <th style={{width:'16%'}}>TOWN</th>
-                <th style={{width:'16%'}}>INFO</th>
-                {props.form && <th style={{width:'6%'}}></th>}
+                <th className = "hutTableHeader" style={{width:'14%'}}>NAME</th>
+                <th className = "hutTableHeader" style={{width:'14%'}}>LATITUDE</th>
+                <th className = "hutTableHeader" style={{width:'14%'}}>LONGITUDE</th>
+                <th className = "hutTableHeader" style={{width:'10%'}}>ALTITUDE</th>
+                <th className = "hutTableHeader" style={{width:'10%'}}>COUNTRY</th>
+                <th className = "hutTableHeader" style={{width:'8%'}}>PROVINCE</th>
+                <th className = "hutTableHeader" style={{width:'12%'}}>TOWN</th>
+                <th className = "hutTableHeader" style={{width:'7%'}}>INFO</th>
+                <th className = "hutTableHeader" style={{width:'20%'}}>LINK A HIKE</th>
               </tr>
             </thead>
             <tbody>
                 {
-                  props.huts.map((h, index) => {console.log(h, index); return <HutRow key={index} hut={h} form={props.form}/>})
+                  props.huts.map((h, index) => {return <HutRow key={index} hut={h} setForm={props.setForm} setHutId={props.setHutId}/>})
                 }
             </tbody>
         </Table>
@@ -54,21 +81,17 @@ function HutsTable(props) {
 
 function HutRow(props) {
     const [show, setShow] = useState(false);
-    console.log(props)
-    console.log(props.hut)
-    console.log(props.hut.id)
 
       return (
         <>
           <tr>
-              <HutData hut={props.hut} show={show} setShow={setShow} form={props.form}/>
+              <HutData hut={props.hut} show={show} setShow={setShow} setForm={props.setForm} setHutId={props.setHutId}/>
           </tr>
           <tr></tr>
           <tr id={props.hut.id} className={show? "infoVisible" : "infoHidden"}>
-              <td colSpan={7} className="extraInfo">
-              <p><h6><b>Altitude:</b></h6>{props.hut.altitude}</p>
-              <p><h6><b>Beds:</b></h6>{props.hut.beds}</p>
-              <p><h6><b>Food:</b></h6>{props.hut.food}</p>
+              <td colSpan={10} className="extraInfo">
+              <p><b>Beds: </b>{props.hut.beds}</p>
+              <p><b>Food: </b>{props.hut.food}</p>
               <h6><b>Description</b></h6>
               <p>{props.hut.description}</p>
               </td>
@@ -79,23 +102,87 @@ function HutRow(props) {
 
   function HutData(props) {
 
+    const activateForm = (hutId) => {
+      props.setForm(true); 
+      props.setHutId(hutId);
+    };
+
     return (
         <>
-            <td>{props.hut.name}</td>
-            <td>{props.hut.latitude},{props.hut.longitude}</td>
-            <td>{props.hut.country}</td>
-            <td>{props.hut.province}</td>
-            <td>{props.hut.town}</td>
-            <td>
-              <button className="btn" type="button" onClick={(x) => props.setShow(!props.show)}>
+            <td style={{textAlign:'center'}}>{props.hut.name}</td>
+            <td style={{textAlign:'center'}}>{props.hut.latitude}</td>
+            <td style={{textAlign:'center'}}>{props.hut.longitude}</td>
+            <td style={{textAlign:'center'}}>{props.hut.altitude}</td>
+            <td style={{textAlign:'center'}}>{props.hut.country}</td>
+            <td style={{textAlign:'center'}}>{props.hut.province}</td>
+            <td style={{textAlign:'center'}}>{props.hut.town}</td>
+            <td style={{textAlign:'center'}}>
+              <button className="btn" type="button" onClick={() => props.setShow(!props.show)}>
                 <i className="bi bi-info-circle"></i>
+              </button>
+            </td>
+            <td style={{textAlign:'center'}}>
+              <button className="btn" type="button" onClick={() => activateForm(props.hut.id)}>
+                <i className="icons-style bi bi-link"></i>
               </button>
             </td>
         </>
     );
 }
   
+function LinkForm(props){
 
+  const [hikeId, setHikeId]=useState(''); 
+  //----- TO DO -----
+  const linkHut = async (hutId, hikeId) => {
+      try {
+          let params=JSON.stringify({locationId:hutId, hikeId:hikeId})
+          let res= API.linkHut(params);
+          return res;
 
+      } catch (err) {
+          console.log(err);
+          return false;
+      }
+
+  };
+
+  const handlerSubmit = async (e) => {
+      e.preventDefault();
+      props.setForm(false);
+      let result = await linkHut(props.hutId, hikeId);
+      // if(result !== false){
+      //     props.setSuccess(true);
+      // }
+      // else{
+      //     props.setError(true); 
+      // }
+
+  };
+
+  return(
+    <Container>
+      <Row >
+          <Col></Col>
+          <Col>
+            <Form onSubmit={handlerSubmit} className="hike-form">
+              <div className="hike-form-group">
+                  <Form.Group className="mb-3" controlId="hutFood">
+                      <Form.Label><b>Select a hike to link</b> <b className="asterisk-required">*</b></Form.Label>
+                      <Form.Select required onChange={ev => {setHikeId(ev.target.value);}}>
+                      {props.hikes.map((h) => {return <option key={h.id} value={h.id}>{h.title}</option>})}
+                      </Form.Select>
+                  </Form.Group>
+                  <div className="d-grid gap-2 mt-3">
+                    <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
+                  </div>
+              </div>
+            </Form>
+            </Col>
+            <Col></Col>
+      </Row>
+    </Container>
+  );
+}
 
 export { LinkHutToHike };

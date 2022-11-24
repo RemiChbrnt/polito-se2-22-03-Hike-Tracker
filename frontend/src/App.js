@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 
 import { routes, userRoutes } from './routes/routes';
@@ -16,11 +15,6 @@ function App() {
 
     const [user, setUser] = useState();
     const [props, setProps] = useState([]);
-    //const [props, setProps] = useState({user:user});
-
-    // useEffect(()=>{
-    //     setProps({...props,user:user});
-    // },[user]);
 
     return (
         <div>
