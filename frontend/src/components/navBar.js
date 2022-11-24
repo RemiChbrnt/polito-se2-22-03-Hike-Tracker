@@ -25,18 +25,15 @@ function NavBar(props) {
                             location.pathname === "/login" ?
                                 false
                                 :
-                                <Row>
-                                    <Col>
-                                        <h1 onClick={() => { navigate('/login') }} ><i className="bi bi-person-circle text-white" style={{ cursor: "pointer" }}></i>{" "}</h1>
-                                    </Col>
-                                </Row>
+                                <Navbar.Text className="justify-content-end">
+                                    <h1 onClick={() => { navigate('/login') }} ><i className="bi bi-person-circle text-white" style={{ cursor: "pointer" }}></i>{" "}</h1>
+                                </Navbar.Text>
                             :
                             <Row>
                                 <Col>
                                     <SideBar user={props.user} setUser={props.setUser} />
                                 </Col>
-                            </Row>
-                        }
+                            </Row>                        }
 
 
                     </Container>

@@ -38,12 +38,12 @@ const HikeDetail = ({ props, setProps }) => {
                 <div>
                     <Row>
                         <Col>
-                            {(hike.startPt === undefined && openEnd !== true) ?
+                            {(hike.startPt !== undefined && openEnd !== true) ?
                                 <Button onClick={() => { setOpenStart(!openStart) }}
                                     aria-controls="example-collapse-text"
                                     aria-expanded={openStart} variant="success" size="lg"><h4 className="text-white"> Add Start Point</h4></Button>
                                 :
-                                (hike.startPt === undefined && openEnd === true) ?
+                                (hike.startPt !== undefined && openEnd === true) ?
                                     <Button onClick={() => { setOpenStart(!openStart) }}
                                         aria-controls="example-collapse-text"
                                         aria-expanded={openStart} variant="success" size="lg" disabled><h4 className="text-white"> Add Start Point</h4></Button>
@@ -52,12 +52,12 @@ const HikeDetail = ({ props, setProps }) => {
                             }
                         </Col>
                         <Col>
-                            {(hike.endPt === undefined && openStart !== true) ?
+                            {(hike.endPt !== undefined && openStart !== true) ?
                                 <Button onClick={() => { setOpenEnd(!openEnd) }}
                                     aria-controls="example-collapse-text"
                                     aria-expanded={openEnd} variant="success" size="lg"><h4 className="text-white"> Add End Point</h4></Button>
                                 :
-                                (hike.endPt === undefined && openStart === true) ?
+                                (hike.endPt !== undefined && openStart === true) ?
                                     <Button onClick={() => { setOpenEnd(!openEnd) }}
                                         aria-controls="example-collapse-text"
                                         aria-expanded={openEnd} variant="success" size="lg" disabled><h4 className="text-white"> Add End Point</h4></Button>
