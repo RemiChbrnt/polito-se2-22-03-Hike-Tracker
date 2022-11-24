@@ -149,9 +149,9 @@ function ActiveForm(props){
                     <Form.Group className="mb-3" controlId="hutFood">
                         <Form.Label><b>Food supply</b> <b className="asterisk-required">*</b></Form.Label>
                         <Form.Select required onChange={ev => {setFood(ev.target.value); }}>
-                            <option value="None">None</option>
-                            <option value="Buffet">Buffet</option>
-                            <option value="Restaurant">Restaurant</option>
+                            <option value="none">None</option>
+                            <option value="buffet">Buffet</option>
+                            <option value="restaurant">Restaurant</option>
                         </Form.Select>
                     </Form.Group>
                 </div>
@@ -190,7 +190,7 @@ function ActiveForm(props){
         <div className="display-container">
                 <p className="text-center">Your submission has been sent successfully!</p>
                 <div className="d-grid gap-2 mt-1">
-                    <Nav.Link onClick={() => {navigate('/');props.setSuccess(false); props.setForm(false); }} style={{ color: "black" }} active>CLOSE</Nav.Link>
+                    <Button type="submit" className="guideBtn" borderless="true"><Nav.Link onClick={() => {navigate('/');props.setSuccess(false); props.setForm(false); }} style={{ color: "white" }} active>CLOSE</Nav.Link></Button>
                 </div>
         </div>
     );

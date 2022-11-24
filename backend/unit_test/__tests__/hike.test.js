@@ -21,7 +21,7 @@ describe('Hikes API tests', () => {
             "author": "maurizio.merluzzo@donkeykong.com"
         };
         const res= await HikeDao.createHike(newHike);
-        return expect(res).toEqual(201)
+        return expect(res.id!==undefined).toBe(true)
     });
 
     test('getHikes should retrieve the complete list of hikes in the database', async () => {

@@ -90,10 +90,50 @@ async function getAllHikes(filters) {
             startPt: r.startPt,
             endPt: r.endPt,
             description: r.description,
+            track: r.track,
+            author: r.author,
             referencePoints: r.refLocations
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+
+async function createHike(body) {
+    console.log("body " + JSON.stringify(body));
+    const response = await fetch(URL + '/hikes', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    const hike = await response.json();
+    if (response.ok) {
+        console.log(hike)
+        return hike;
+    } else {
+        throw hike;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+async function createLocation(body) {
+    // console.log("body " + JSON.stringify(body));
+    const response = await fetch(URL + '/locations', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    const location = await response.json();
+    if (response.ok) {
+        return location;
+    } else {
+        throw location;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
 }
 
@@ -136,9 +176,6 @@ async function setHikeEndPoint(id, endPt) {
         throw result;
 
 }
-
-
-
 
 
 
@@ -247,5 +284,5 @@ async function createPreferences(preferences) {
     else
         throw res;
 }
-const API = { login, signup, addParking, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, addHut, getPreferences, createPreferences };
+const API = { login, signup, addParking, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, addHut, getPreferences, createPreferences, createHike, createLocation };
 export default API;

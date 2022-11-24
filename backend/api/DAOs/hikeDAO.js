@@ -28,6 +28,8 @@ exports.getHikes = async (query) => {
                         startPt: startLocation,
                         endPt: endLocation,
                         description: r.description,
+                        track: r.track,
+                        author: r.author,
                         referencePoints: refLocations,
                     }
                 })
@@ -68,6 +70,7 @@ exports.generateFilters = (query) => {
         if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
         if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
         if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
+        if (query.author !== undefined) filters = filters + ` author = "${query.difficulty}" AND`
         filters = filters + " 1"
     }
     return filters;
@@ -100,24 +103,54 @@ exports.getLocationById = async (id) => {
     })
 }
 
+exports.createLocation = async (location) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, country, province, town, address, altitude) VALUES(?,?,?,?,?,?,?,?,?)';
+        db.run(sql, [
+            location.name,
+            location.type,
+            location.latitude,
+            location.longitude,
+            location.country,
+            location.province,
+            location.town,
+            location.address,
+            location.altitude
+        ], function (err, rows) {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve({id: this.lastID});
+                return;
+            }
+        })
+    })
+}
+
 exports.createHike = async (hike) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, author) VALUES(?,?,?,?,?,1,2,?,?)';
+        const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, track, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
             hike.title,
             hike.length,
             hike.expTime,
             hike.ascent,
             hike.difficulty,
+            hike.startPt,
+            hike.endPt,
             hike.description,
+            hike.track,
             hike.author
-        ], async (err, rows) => {
+        ], function (err, rows) {
             if (err) {
+                console.log(err);
                 reject(400);
                 return;
             }
             else {
-                resolve(201);
+                resolve({id: this.lastID});
                 return;
             }
         })
@@ -127,7 +160,6 @@ exports.createHike = async (hike) => {
 
 
 exports.setHikeStartPoint = async (hike) => {
-    console.log("hike " + JSON.stringify(hike));
     return new Promise((resolve, reject) => {
         const sql = `UPDATE Hikes SET startPt = ? WHERE id = ?`;
         db.run(sql, [
@@ -150,7 +182,6 @@ exports.setHikeStartPoint = async (hike) => {
 
 
 exports.setHikeEndPoint = async (hike) => {
-    console.log("hike " + JSON.stringify(hike));
     return new Promise((resolve, reject) => {
         const sql = `UPDATE Hikes SET endPt = ? WHERE id = ?`;
         db.run(sql, [
