@@ -43,13 +43,14 @@ const HikeDetail = ({props, setProps}) => {
                 <h4>
                     {hike.description}
                 </h4>
-                <h3>
-
-                </h3>
+                <h5 style={{marginTop: "2%"}}>
+                    Click on the map markers for more information !
+                </h5>
+                
 
             </Col>
             <Col>
-                <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)}/>
+                <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)} file={hike.track}/>
             </Col>
         </Row>
     </Container>

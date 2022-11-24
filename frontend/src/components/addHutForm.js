@@ -35,8 +35,8 @@ function ActiveForm(props) {
         try {
             let params = JSON.stringify({ name: name, latitude: latitude, longitude: longitude, country: country, province: province, town: town, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description })
             console.log("params:" + params);
-            API.addHut(params);
-            return true;
+            let res = API.addHut(params);
+            return res;
 
         } catch (err) {
             console.log(err);

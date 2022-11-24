@@ -90,10 +90,50 @@ async function getAllHikes(filters) {
             startPt: r.startPt,
             endPt: r.endPt,
             description: r.description,
+            track: r.track,
+            author: r.author,
             referencePoints: r.refLocations
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+
+async function createHike(body) {
+    console.log("body " + JSON.stringify(body));
+    const response = await fetch(URL + '/hikes', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    const hike = await response.json();
+    if (response.ok) {
+        console.log(hike)
+        return hike;
+    } else {
+        throw hike;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+async function createLocation(body) {
+    // console.log("body " + JSON.stringify(body));
+    const response = await fetch(URL + '/locations', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    const location = await response.json();
+    if (response.ok) {
+        return location;
+    } else {
+        throw location;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
 }
 
@@ -136,9 +176,6 @@ async function setHikeEndPoint(id, endPt) {
         throw result;
 
 }
-
-
-
 
 
 
@@ -226,7 +263,24 @@ async function addHut(params) {
     });
     let res = await response.json();
     if (response.ok) {
-        return res;
+        return true;
+    } else {
+        throw res;
+    }
+}
+
+async function addParking(params) {
+    const response = await fetch(URL + '/parking', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: params
+    });
+    let res = await response.json();
+    if (response.ok) {
+        return true;
     } else {
         throw res;
     }
@@ -259,5 +313,5 @@ async function createPreferences(preferences) {
         throw res;
 }
 
-const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, addHut, getPreferences, createPreferences };
+const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, addHut, addParking, getPreferences, createPreferences, createHike, createLocation };
 export default API;
