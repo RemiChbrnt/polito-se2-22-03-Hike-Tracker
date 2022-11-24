@@ -7,25 +7,19 @@ const apiUrl = '/api';
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-//const userDAO = require('./api/DAOs/userDAO.js');
-// const hikeDAO = require('./HikeDAO.js'); TODO: add DAOs
 const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
+
 /* ------------------------------------------------------------------- */
 
-/* DB init */
-exports.databasePath = './db/HikeTrackerDb.db'
 
 // TODO: add routers and services
 // const hikeRouter = require('./api/routers/hikeRouter');
 // app.use(apiUrl, hikeRouter);
 
 const app = express();
-
-app.use(morgan('dev'));
-app.use(express.json());
 
 /* CORS setup */
 const corsOptions = {
@@ -35,12 +29,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 /* ---------------------------------- */
 
+app.use(morgan('dev'));
+app.use(express.json());
+
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
-const hutRouter = require('./api/routers/hutRouter');
+const locationRouter = require('./api/routers/locationRouter');
 app.use(apiUrl, userRouter);
 app.use(apiUrl, hikeRouter);
-app.use(apiUrl, hutRouter);
+app.use(apiUrl, locationRouter);
 
 /* express-session setup */
 app.use(session({
@@ -120,6 +117,8 @@ app.delete(apiUrl + '/session/current', (req, res) => {
 });
 /* --------------------------------------------------------- */
 
-app.listen(SERVER_PORT, () => { console.log(`Server running on port ${SERVER_PORT}`) });
+app.listen(SERVER_PORT, () => {
+    console.log(`Server running on port ${SERVER_PORT}`)
+});
 
 module.exports = app

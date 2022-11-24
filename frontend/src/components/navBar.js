@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Navbar, Dropdown } from "react-bootstrap";
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { SideBar } from "./sideBar";
+import Logo from '../images/Logo.png';
 
 function NavBar(props) {
     const navigate = useNavigate();
@@ -15,9 +16,8 @@ function NavBar(props) {
                 <Navbar expand="lg" style={{ backgroundColor: "#00706c" }} variant="dark">
                     <Container fluid>
 
-
-                        <Navbar.Brand>
-                            <h1 style={{ cursor: "pointer" }} onClick={() => { navigate('/') }} ><i className="bi bi-compass"></i>{" "}Hike Tracker</h1>
+                        <Navbar.Brand style={{ cursor: "pointer" }} onClick={() => { navigate('/') }}>
+                            <img src={Logo} style={{height: 100}} alt="logo"/>
                         </Navbar.Brand>
 
 
