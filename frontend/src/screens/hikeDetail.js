@@ -3,6 +3,7 @@ import { Col, Container, Row, Button, Collapse, Form } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
+import API from '../API.js';
 
 const HikeDetail = ({ props, setProps }) => {
 
@@ -14,10 +15,48 @@ const HikeDetail = ({ props, setProps }) => {
     const [openEnd, setOpenEnd] = useState(false);
     const [startPoint, setStartPoint] = useState();
     const [endPoint, setEndPoint] = useState();
+    const [locationList, setLocationList] = useState([]);
 
-    const handleSubmit = (event) => {
+    console.log("StartPoint", startPoint);
+    console.log("EndPoint", endPoint);
+
+    /*useEffect(() => {
+        API.getHutsAndParkingLots().then(res => {
+            setHikes([]);
+            res.forEach((hike, index) => {
+                setHikes(hikes => [...hikes, JSON.stringify(hike)]);
+            });
+            // console.log(hikes);
+            setIsLoading(false);
+        }).catch(error => console.log(error));
+    }, [props.filters])*/
+
+    const handleStartSubmit = (event) => {
         event.preventDefault();
+        event.stopPropagation();
+        setOpenStart(false);
+        if(startPoint!==undefined){
+            console.log("CIAOCIAO")
+            API.setHikeStartPoint(hike.id, startPoint).then().catch(error => console.log(error));
+        }
+        else
+        {
+            //Messaggio di errore
+        }
+          
+    }
 
+    const handleArrivalSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setOpenEnd(false);
+        if(endPoint!==undefined){
+            API.setHikeEndPoint(hike.id, endPoint).then().catch(error => console.log(error))
+        }
+        else
+        {
+            //Messaggio di errore
+        }
     }
 
     return (
@@ -39,12 +78,12 @@ const HikeDetail = ({ props, setProps }) => {
                     <Row>
                         <Col>
                             {(hike.startPt !== undefined && openEnd !== true) ?
-                                <Button onClick={() => { setOpenStart(!openStart) }}
+                                <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                     aria-controls="example-collapse-text"
                                     aria-expanded={openStart} variant="success" size="lg"><h4 className="text-white"> Add Start Point</h4></Button>
                                 :
                                 (hike.startPt !== undefined && openEnd === true) ?
-                                    <Button onClick={() => { setOpenStart(!openStart) }}
+                                    <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                         aria-controls="example-collapse-text"
                                         aria-expanded={openStart} variant="success" size="lg" disabled><h4 className="text-white"> Add Start Point</h4></Button>
                                     :
@@ -53,12 +92,12 @@ const HikeDetail = ({ props, setProps }) => {
                         </Col>
                         <Col>
                             {(hike.endPt !== undefined && openStart !== true) ?
-                                <Button onClick={() => { setOpenEnd(!openEnd) }}
+                                <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                     aria-controls="example-collapse-text"
                                     aria-expanded={openEnd} variant="success" size="lg"><h4 className="text-white"> Add End Point</h4></Button>
                                 :
                                 (hike.endPt !== undefined && openStart === true) ?
-                                    <Button onClick={() => { setOpenEnd(!openEnd) }}
+                                    <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                         aria-controls="example-collapse-text"
                                         aria-expanded={openEnd} variant="success" size="lg" disabled><h4 className="text-white"> Add End Point</h4></Button>
                                     :
@@ -69,26 +108,58 @@ const HikeDetail = ({ props, setProps }) => {
                     <ul></ul>
                     <Row>
                         <Collapse in={openStart}>
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleStartSubmit}>
                                 <Form.Group>
+                                    <h5>Select Start Point: </h5>
                                     <Form.Select value={startPoint}
                                         onChange={e => setStartPoint(e.target.value)}
                                         aria-label="region" size="lg">
-                                        <option>Select the Start Pont</option>
+                                        <option value={undefined}>Select the Start Point</option>
+                                        {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
                                     </Form.Select>
                                 </Form.Group>
+                                <ul></ul>
+                                <Row>
+                                    <Col md={10} xs={8}>
+                                        <Button variant="danger" onClick={() => {setStartPoint(); setOpenStart(false)}} size="lg">
+                                            Back
+                                        </Button>
+                                    </Col>
+                                    <Col md={2} xs={4}>
+                                        <Button variant="success" type="submit" size="lg">
+                                            Confirm
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <ul></ul>
                             </Form>
                         </Collapse>
 
                         <Collapse in={openEnd}>
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleArrivalSubmit}>
                                 <Form.Group>
+                                    <h5>Select Arrival Point: </h5>
                                     <Form.Select value={endPoint}
                                         onChange={e => setEndPoint(e.target.value)}
                                         aria-label="region" size="lg">
-                                        <option>Select the End Pont</option>
+                                        <option value={undefined}>Select the Arrival Pont</option>
+                                        {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
                                     </Form.Select>
                                 </Form.Group>
+                                <ul></ul>
+                                <Row>
+                                    <Col md={10} xs={8}>
+                                        <Button variant="danger" onClick={() => {}} size="lg">
+                                            Back
+                                        </Button>
+                                    </Col>
+                                    <Col md={2} xs={4}>
+                                        <Button variant="success" type="submit" size="lg">
+                                            Confirm
+                                        </Button>
+                                    </Col>
+                                </Row>
+                                <ul></ul>
                             </Form>
                         </Collapse>
                     </Row>
