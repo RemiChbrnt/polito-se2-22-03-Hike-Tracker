@@ -122,7 +122,7 @@ exports.createLocation = async (location) => {
                 return;
             }
             else {
-                resolve({id: this.lastID});
+                resolve({ id: this.lastID });
                 return;
             }
         })
@@ -151,7 +151,7 @@ exports.createHike = async (hike) => {
                 return;
             }
             else {
-                resolve({id: this.lastID});
+                resolve({ id: this.lastID });
                 return;
             }
         })

@@ -165,7 +165,7 @@ exports.clearDatabase = async () => {
         })
     }).then(() => {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM Locations'
+            const sql = 'DELETE FROM ParkingLots'
             db.run(sql, [], async (err) => {
                 if (err)
                     reject();
@@ -175,7 +175,7 @@ exports.clearDatabase = async () => {
         })
     }).then(() => {
         return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM ParkingLots'
+            const sql = 'DELETE FROM Locations WHERE id != 1 AND id != 2'
             db.run(sql, [], async (err) => {
                 if (err)
                     reject();
