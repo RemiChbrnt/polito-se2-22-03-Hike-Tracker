@@ -8,8 +8,18 @@ const service = new locationService(locationDAO);
 const router = express.Router();
 const { body, param, validationResult } = require('express-validator');
 
-router.post('/parking', [], async (req, res) => {
-
+router.post('/parking', [
+    body('name').exists().isString(),
+    body('latitude').exists().isFloat(),
+    body('longitude').exists().isFloat(),
+    body('country').optional().isString(),
+    body('province').optional().isString(),
+    body('town').optional().isString(),
+    body('address').optional().isString(),
+    body('altitude').optional().isFloat(),
+    body('lotsNumber').optional().isInt({min:0}),
+    body('description').optional().isString(),
+], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
