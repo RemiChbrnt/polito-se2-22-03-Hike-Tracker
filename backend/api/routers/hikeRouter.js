@@ -47,7 +47,6 @@ router.post('/hikes', [
     body('description').exists().isString(),
     body('author').exists().isEmail()
 ], async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -67,7 +66,6 @@ router.post('/locations', [
     body('latitude').exists().isFloat(),
     body('longitude').exists().isFloat()
 ], async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });

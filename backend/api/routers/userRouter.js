@@ -40,7 +40,6 @@ userRouter.use(session({
 
 userRouter.use(passport.authenticate('session'));
 userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
-
     const user = await service.login(req.body);
 
     if (user.ok){
@@ -62,9 +61,7 @@ userRouter.get('/session/current', (req, res) => {
 });
 
 userRouter.post('/signup', async (req, res) => {
-
     const user = await service.signup(req.body);
-
     if (user.ok)
         return res.status(user.status).json(user.body);
 

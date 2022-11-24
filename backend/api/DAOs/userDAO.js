@@ -69,10 +69,10 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
             //TABLE USERS MUST BE UPDATED TO STORE THE PHONE NUMBER
 
 
-            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
-            // db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role], (err) => {
+            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
+            // let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
+            // db.run(query, [email, fullName, hash, salt, role], (err) => {
                 if (err)
                     reject(err);
                 else {
