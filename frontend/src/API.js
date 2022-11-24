@@ -169,8 +169,8 @@ async function getHuts(filters) {
         return hutsJson.map((r) => ({
             id: r.id,
             name: r.name,
-            // latitude: r.latitude,
-            // longitude: r.longitude,
+            latitude: r.latitude,
+            longitude: r.longitude,
             country: r.country,
             province: r.province,
             town: r.town,
@@ -179,6 +179,34 @@ async function getHuts(filters) {
         }))
     } else {
         throw hutsJson;
+    }
+}
+
+/**
+ * Function to get all the huts and the parking lots
+ * @returns array of "location" objects, containing the fields id, name, type, country, province, town, address, altitude
+ */
+async function getHutsAndParkingLots() {
+    // call: GET /api/huts-and-parking-lots
+    const response = await fetch(URL + '/huts-and-parking-lots', {
+        credentials: 'include',
+    });
+    const resultsJson = await response.json();
+    if (response.ok) {
+        return resultsJson.map((r) => ({
+            id: r.id,
+            name: r.name,
+            type: r.type,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            country: r.country,
+            province: r.province,
+            town: r.town,
+            address: r.address,
+            altitude: r.altitude
+        }))
+    } else {
+        throw resultsJson;
     }
 }
 
@@ -231,5 +259,5 @@ async function createPreferences(preferences) {
         throw res;
 }
 
-const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, addHut, getPreferences, createPreferences };
+const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, addHut, getPreferences, createPreferences };
 export default API;

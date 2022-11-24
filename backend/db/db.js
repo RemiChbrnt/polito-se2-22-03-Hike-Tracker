@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === 'development') {
 if (process.env.NODE_ENV === 'test') {
     dbPath = './testingHikeTrackerDb.db'
 }
+
 const DBSOURCE = path.join(__dirname, dbPath);
 const database = new sqlite.Database(DBSOURCE, (err) => {
     if (err) throw err

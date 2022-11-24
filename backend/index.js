@@ -7,8 +7,6 @@ const apiUrl = '/api';
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-//const userDAO = require('./api/DAOs/userDAO.js');
-// const hikeDAO = require('./HikeDAO.js'); TODO: add DAOs
 const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -36,11 +34,9 @@ app.use(express.json());
 
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
-const hutRouter = require('./api/routers/hutRouter');
 const locationRouter = require('./api/routers/locationRouter');
 app.use(apiUrl, userRouter);
 app.use(apiUrl, hikeRouter);
-app.use(apiUrl, hutRouter);
 app.use(apiUrl, locationRouter);
 
 /* express-session setup */

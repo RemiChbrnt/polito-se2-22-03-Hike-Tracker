@@ -1,16 +1,70 @@
 'use strict';
-const sqlite = require('sqlite3');
-const dbPath = require('../../index').databasePath;
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-});
+const db = require('../../db/db');
+
+exports.getHuts = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql =
+            `SELECT * from Locations
+            LEFT JOIN Huts ON Locations.id = Huts.locationId
+            WHERE type="hut"`
+        let filters = "";
+
+        if (Object.entries(query).length !== 0)    //check if the query has any parameters
+            filters = this.generateHutFilters(query);
+        sql = sql + filters;
+        db.all(sql, [], async (err, rows) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+
+            resolve(rows);
+        })
+    })
+}
+
+exports.generateHutFilters = (query) => {
+    let filters = " AND";
+    if (query.name !== undefined) filters = filters + ` name LIKE '%${query.name}%' AND`
+    if (query.latitude !== undefined) filters = filters + ` latitude = ${query.latitude} AND`
+    if (query.longitude !== undefined) filters = filters + ` longitude = ${query.longitude} AND`
+    if (query.country !== undefined) filters = filters + ` country = '${query.country}' AND`
+    if (query.province !== undefined) filters = filters + ` province   = '${query.province}' AND`
+    if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
+    if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
+    if (query.altitude !== undefined) filters = filters + ` altitude = ${query.altitude} AND`
+    filters = filters + " 1"
+    return filters;
+}
+
+
+
+exports.getHutsAndParkingLots = async () => {
+    return new Promise((resolve, reject) => {
+        let sql =
+            `SELECT * from Locations            
+            WHERE type="hut" OR type="parkinglot"`
+
+        db.all(sql, [], async (err, rows) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+
+            resolve(rows);
+        })
+    })
+}
+
+
 
 exports.addHut = async (newHut) => {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address) VALUES(?,"hut",?,?,?,?,?,?,?)';
         db.run(sql, [
-            newHut.title,
+            newHut.name,
             newHut.latitude,
             newHut.longitude,
             newHut.altitude,
@@ -19,7 +73,7 @@ exports.addHut = async (newHut) => {
             newHut.town,
             newHut.address
         ], async function (err) {
-            if(err){
+            if (err) {
                 console.log(err);
                 reject(400);
                 return;
@@ -29,11 +83,12 @@ exports.addHut = async (newHut) => {
                 const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description) VALUES (?,?,?,?)';
                 db.run(sql2, [
                     lastLocationID,
-                    newHut.beds,
+                    newHut.numberOfBeds,
                     newHut.food,
                     newHut.description
-                ], async function(err) {
-                    if(err){
+                ], async function (err) {
+                    if (err) {
+                        console.log(err);
                         // Revert to keep database coherent          
                         db.run('DELETE FROM Locations WHERE id = ?', [lastLocationID]);
                         reject(400);
@@ -46,4 +101,45 @@ exports.addHut = async (newHut) => {
             }
         })
     })
-} 
+}
+
+
+
+
+
+
+
+
+
+
+exports.clearDatabase = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Huts'
+        db.run(sql, [], async (err) => {
+            if (err)
+                reject();
+            else
+                resolve();
+        })
+    }).then(() => {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM Locations'
+            db.run(sql, [], async (err) => {
+                if (err)
+                    reject();
+                else
+                    resolve();
+            })
+        })
+    }).then(() => {
+        return new Promise((resolve, reject) => {
+            const sql = 'DELETE FROM ParkingLots'
+            db.run(sql, [], async (err) => {
+                if (err)
+                    reject();
+                else
+                    resolve();
+            })
+        })
+    })
+}
