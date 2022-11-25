@@ -1,5 +1,7 @@
 // import { post } from "../../backend";
 
+import { resolvePath } from "react-router-dom";
+
 /**
  * All the API calls
  */
@@ -145,14 +147,20 @@ async function createLocation(body) {
  */
 async function setHikeStartPoint(id, startPt) {
     // call: PUT /api/:hike/:startPt
+    
     const response = await fetch(URL + '/hike-startPt/' + id + '/' + startPt, {
+        method: "PUT",
         credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+          },
     });
-    const result = await response.json();
     if (response.ok)
-        return result;
-    else
+        return null;        
+    else{
+        const result = await response.json();
         throw result;
+    }
 
 }
 
@@ -167,13 +175,18 @@ async function setHikeStartPoint(id, startPt) {
 async function setHikeEndPoint(id, endPt) {
     // call: PUT /api/:hike/:endPt    
     const response = await fetch(URL + '/hike-endPt/' + id + '/' + endPt, {
+        method: "PUT",
         credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+          },
     });
-    const result = await response.json();
     if (response.ok)
-        return result;
-    else
+        return null;        
+    else{
+        const result = await response.json();
         throw result;
+    }
 
 }
 

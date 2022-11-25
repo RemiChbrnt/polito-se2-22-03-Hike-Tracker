@@ -16,9 +16,8 @@ const HikeDetail = ({ props, setProps }) => {
     const [startPoint, setStartPoint] = useState();
     const [endPoint, setEndPoint] = useState();
     const [locationList, setLocationList] = useState([]);
-
-    console.log("StartPoint", startPoint);
-    console.log("EndPoint", endPoint);
+    const [startPointHike, setStartPointHike] = useState(hike.startPt);
+    const [endPointHike, setEndPointHike] = useState(hike.endPt);
 
     /*useEffect(() => {
         API.getHutsAndParkingLots().then(res => {
@@ -36,8 +35,8 @@ const HikeDetail = ({ props, setProps }) => {
         event.stopPropagation();
         setOpenStart(false);
         if(startPoint!==undefined){
-            console.log("CIAOCIAO")
             API.setHikeStartPoint(hike.id, startPoint).then().catch(error => console.log(error));
+            setStartPointHike(locationList.find(location => location.id === parseInt(startPoint, 10) ));
         }
         else
         {
@@ -51,7 +50,8 @@ const HikeDetail = ({ props, setProps }) => {
         event.stopPropagation();
         setOpenEnd(false);
         if(endPoint!==undefined){
-            API.setHikeEndPoint(hike.id, endPoint).then().catch(error => console.log(error))
+            API.setHikeEndPoint(hike.id, endPoint).then().catch(error => console.log(error));
+            setEndPointHike(locationList.find(location => location.id === parseInt(endPoint, 10) ));
         }
         else
         {
@@ -194,7 +194,7 @@ const HikeDetail = ({ props, setProps }) => {
 
                 </Col>
                 <Col>
-                    <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)} />
+                    <Map startPt={JSON.stringify(startPointHike)} endPt={JSON.stringify(endPointHike)} />
                 </Col>
             </Row>
             <ul></ul>
