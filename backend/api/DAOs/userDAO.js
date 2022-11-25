@@ -68,8 +68,6 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 
             query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
             db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-                // let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-                // db.run(query, [email, fullName, hash, salt, role], (err) => {
                 if (err)
                     reject(err);
                 else
@@ -79,7 +77,6 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
         }
         else {
             query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
-            // let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
             db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
                 if (err)
                     reject(err);

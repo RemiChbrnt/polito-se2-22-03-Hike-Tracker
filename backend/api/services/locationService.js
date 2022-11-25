@@ -5,15 +5,15 @@ class LocationService {
         this.dao = dao
     }
 
-    addParking= async (newParking)=>{
-        try{
+    addParking = async (newParking) => {
+        try {
             const response = await this.dao.addParking(newParking)
             return {
                 ok: true,
                 status: 201,
-                body:{}
+                body: {}
             }
-        } catch(e) {
+        } catch (e) {
             return {
                 ok: false,
                 status: e
@@ -93,6 +93,24 @@ class LocationService {
                 ok: true,
                 status: 201,
                 body: {}
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+
+
+    addLocation = async (newLocation) => {
+        try {
+            console.log("new location " + JSON.stringify(newLocation));
+            const response = await this.dao.addLocation(newLocation);
+            return {
+                ok: true,
+                status: 201,
+                body: response
             }
         } catch (e) {
             return {

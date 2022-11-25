@@ -45,9 +45,9 @@ class UserService {
         }
     };
 
-    createPreferences = async (body) => {
+    createPreferences = async (req) => {
         try {
-            let prefs = await this.DAO.createPreferences(body.email, body.ascent, body.duration);
+            let prefs = await this.DAO.createPreferences(req.user.email, req.body.ascent, req.body.duration);
             return {
                 ok: true,
                 status: 201,

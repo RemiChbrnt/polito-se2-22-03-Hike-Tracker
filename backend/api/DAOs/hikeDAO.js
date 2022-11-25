@@ -15,9 +15,9 @@ exports.getHikes = async (query) => {
             }
             const res = await Promise.all(
                 rows.map(async (r) => {
-                    const startLocation = await this.getLocationById(r.startPt);
-                    const endLocation = await this.getLocationById(r.endPt);
-                    const refLocations = await this.getReferenceLocations(r.id);
+                    const startLocation = await getLocationById(r.startPt);
+                    const endLocation = await getLocationById(r.endPt);
+                    const refLocations = await getReferenceLocations(r.id);
                     return {
                         id: r.id,
                         title: r.title,
@@ -39,6 +39,39 @@ exports.getHikes = async (query) => {
         })
     })
 }
+
+
+
+const getLocationById = async function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from Locations where id=?'
+        db.get(sql, [id], async (err, row) => {
+            if (err) {
+                console.log(err)
+                return null;
+            }
+            resolve(row)
+        })
+    })
+}
+
+const getReferenceLocations = async function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * \
+                     from Locations \
+                     where id in ( select locationId from HikesReferencePoints where hikeId=?)'
+        db.all(sql, [id], async (err, rows) => {
+            if (err) {
+                console.log(err)
+                return null;
+            }
+            resolve(rows)
+        })
+    })
+}
+
+
+
 exports.filterByLocation = (query, hikes) => {
     return hikes.filter((hike) => {
         if (query.country !== undefined) {
@@ -76,58 +109,10 @@ exports.generateFilters = (query) => {
     return filters;
 }
 
-exports.getReferenceLocations = async (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * \
-                     from Locations \
-                     where id in ( select locationId from HikesReferencePoints where hikeId=?)'
-        db.all(sql, [id], async (err, rows) => {
-            if (err) {
-                console.log(err)
-                return null;
-            }
-            resolve(rows)
-        })
-    })
-}
-exports.getLocationById = async (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from Locations where id=?'
-        db.get(sql, [id], async (err, row) => {
-            if (err) {
-                console.log(err)
-                return null;
-            }
-            resolve(row)
-        })
-    })
-}
 
-exports.createLocation = async (location) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, country, province, town, address, altitude) VALUES(?,?,?,?,?,?,?,?,?)';
-        db.run(sql, [
-            location.name,
-            location.type,
-            location.latitude,
-            location.longitude,
-            location.country,
-            location.province,
-            location.town,
-            location.address,
-            location.altitude
-        ], function (err, rows) {
-            if (err) {
-                reject(400);
-                return;
-            }
-            else {
-                resolve({ id: this.lastID });
-                return;
-            }
-        })
-    })
-}
+
+
+
 
 exports.createHike = async (hike) => {
     return new Promise((resolve, reject) => {

@@ -51,21 +51,21 @@ class HikeService {
         }
     }
 
-    createLocation = async (newLocation) => {
-        try {
-            const location = await this.dao.createLocation(newLocation)
-            return {
-                ok: true,
-                status: 201,
-                body: location
-            }
-        } catch (e) {
-            return {
-                ok: false,
-                status: 400
-            }
-        }
-    }
+    // createLocation = async (newLocation) => {
+    //     try {
+    //         const location = await this.dao.createLocation(newLocation)
+    //         return {
+    //             ok: true,
+    //             status: 201,
+    //             body: location
+    //         }
+    //     } catch (e) {
+    //         return {
+    //             ok: false,
+    //             status: 400
+    //         }
+    //     }
+    // }
 
 
     setHikeStartPoint = async (query) => {

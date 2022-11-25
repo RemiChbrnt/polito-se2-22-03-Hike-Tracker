@@ -25,17 +25,18 @@ function ActiveForm(props) {
     const [country, setCountry] = useState("");
     const [province, setProvince] = useState("");
     const [town, setTown] = useState("");
+    const [address, setAddress] = useState("");
     const [altitude, setAltitude] = useState("");
     const [numberOfBeds, setNumberOfBeds] = useState(0);
     const [food, setFood] = useState("none");
     const [description, setDescription] = useState("");
 
     //----- TO DO -----
-    const addHut = async (name, latitude, longitude, country, province, town, altitude, numberOfBeds, food, description) => {
+    const addHut = async (name, latitude, longitude, country, province, town, address, altitude, numberOfBeds, food, description) => {
         try {
-            let params = JSON.stringify({ name: name, latitude: latitude, longitude: longitude, country: country, province: province, town: town, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description })
+            let params = ({ name: name, type: "hut", latitude: latitude, longitude: longitude, country: country, province: province, town: town, address: address, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description })
             console.log("params:" + params);
-            let res = API.addHut(params);
+            let res = API.createLocation(params);
             return res;
 
         } catch (err) {
@@ -48,7 +49,7 @@ function ActiveForm(props) {
     const handlerSubmit = async (e) => {
         e.preventDefault();
         props.setForm(true);
-        let result = await addHut(name, latitude, longitude, country, province, town, altitude, numberOfBeds, food, description);
+        let result = await addHut(name, latitude, longitude, country, province, town, address, altitude, numberOfBeds, food, description);
         if (result !== false) {
             props.setSuccess(true);
         }
@@ -128,14 +129,26 @@ function ActiveForm(props) {
                     </Col>
                     <Col>
                         <div className="form-group mt-3">
-                            <Form.Group className="mb-3" controlId="hutAltitude">
-                                <Form.Label><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="number" placeholder="Enter Altitude" required
-                                    onChange={ev => { setAltitude(ev.target.value); }}
+                            <Form.Group controlId='parkingAddress'>
+                                <Form.Label><b>Address</b></Form.Label>
+                                <Form.Control type="text" placeholder="Enter town"
+                                    onChange={ev => { setAddress(ev.target.value); }}
                                 />
                             </Form.Group>
                         </div>
                     </Col>
+                    <Row>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group className="mb-3" controlId="hutAltitude">
+                                    <Form.Label><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
+                                    <Form.Control type="number" placeholder="Enter Altitude" required
+                                        onChange={ev => { setAltitude(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                    </Row>
                 </Row>
                 <div className="form-group mt-3">
                     <Form.Group className="mb-3" controlId="hutBeds">

@@ -59,18 +59,19 @@ exports.getHutsAndParkingLots = async () => {
 }
 
 
-exports.addHut = async (newHut) => {
+exports.addLocation = async (newLocation) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address) VALUES(?,"hut",?,?,?,?,?,?,?)';
+        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address) VALUES(?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
-            newHut.name,
-            newHut.latitude,
-            newHut.longitude,
-            newHut.altitude,
-            newHut.country,
-            newHut.province,
-            newHut.town,
-            newHut.address
+            newLocation.name,
+            newLocation.type,
+            newLocation.latitude,
+            newLocation.longitude,
+            newLocation.altitude,
+            newLocation.country,
+            newLocation.province,
+            newLocation.town,
+            newLocation.address
         ], async function (err) {
             if (err) {
                 console.log(err);
@@ -78,26 +79,38 @@ exports.addHut = async (newHut) => {
                 return;
             }
             else {
+                if (newLocation.type === "hut")
+                    addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description)
+                if (newLocation.type === "parkinglot")
+                    addParking(this.lastID, newLocation.lotsNumber, newLocation.description)
+                newLocation.id = this.lastID;
+                resolve(newLocation);
+                return;
+            }
+        })
+    })
+}
 
-                const lastLocationID = this.lastID;
-                const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description) VALUES (?,?,?,?)';
-                db.run(sql2, [
-                    lastLocationID,
-                    newHut.numberOfBeds,
-                    newHut.food,
-                    newHut.description
-                ], async function (err) {
-                    if (err) {
-                        console.log(err);
-                        // Revert to keep database coherent          
-                        db.run('DELETE FROM Locations WHERE id = ?', [lastLocationID]);
-                        reject(400);
-                        return;
-                    } else {
-                        resolve(201);
-                        return;
-                    }
-                })
+
+const addHut = async function (id, numberOfBeds, food, description) {
+    return new Promise((resolve, reject) => {
+
+        const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description) VALUES (?,?,?,?)';
+        db.run(sql2, [
+            id,
+            numberOfBeds,
+            food,
+            description
+        ], async function (err) {
+            if (err) {
+                console.log(err);
+                // Revert to keep database coherent          
+                db.run('DELETE FROM Locations WHERE id = ?', [id]);
+                reject(400);
+                return;
+            } else {
+                resolve(201);
+                return;
             }
         })
     })
@@ -106,42 +119,23 @@ exports.addHut = async (newHut) => {
 
 
 
-exports.addParking = async (newParking) => {
+const addParking = async function (id, lotsNumber, description) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address) VALUES(?,"parkinglot",?,?,?,?,?,?,?)';
+        const sql = 'INSERT INTO ParkingLots(locationID, description, lotsNumber) VALUES(?,?,?)';
         db.run(sql, [
-            newParking.name,
-            newParking.latitude,
-            newParking.longitude,
-            newParking.altitude,
-            newParking.country,
-            newParking.province,
-            newParking.town,
-            newParking.address
+            id,
+            description,
+            lotsNumber
         ], async function (err) {
             if (err) {
-                console.log(err);
+                //revert in case of error
+                db.run('DELETE FROM Locations WHERE id=?', [id]);
                 reject(400);
                 return;
             }
             else {
-                const sql2 = 'INSERT INTO ParkingLots(locationID, description, lotsNumber) VALUES(?,?,?)';
-                db.run(sql2, [
-                    this.lastID,
-                    newParking.description,
-                    newParking.lotsNumber
-                ], async function (err) {
-                    if (err) {
-                        //revert in case of error
-                        db.run('DELETE FROM Locations WHERE id=?', [this.lastID]);
-                        reject(400);
-                        return;
-                    }
-                    else {
-                        resolve(201);
-                        return;
-                    }
-                })
+                resolve(201);
+                return;
             }
         })
     })

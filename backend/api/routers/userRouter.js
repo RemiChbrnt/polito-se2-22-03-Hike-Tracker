@@ -14,7 +14,7 @@ const { body, param, validationResult } = require('express-validator');
 
 passport.use(new LocalStrategy({
     usernameField: 'email'
-    },
+},
     async function verify(email, password, callback) {
         const user = await userDAO.login(email, password);
 
@@ -42,9 +42,9 @@ userRouter.use(passport.authenticate('session'));
 userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
     const user = await service.login(req.body);
 
-    if (user.ok){
-        req.session.user = user.body;
-        console.log("LOGIN AS " + req.session.user);
+    if (user.ok) {
+        // req.user = user.body;
+        console.log("LOGIN AS " + JSON.stringify(req.user));
         return res.status(user.status).json(user.body);
     }
 
@@ -61,7 +61,7 @@ userRouter.get('/session/current', (req, res) => {
 });
 
 userRouter.post('/signup', async (req, res) => {
-    const user = await service.signup(req.body);
+    let user = await service.signup(req.body);
     if (user.ok)
         return res.status(user.status).json(user.body);
 
@@ -70,50 +70,43 @@ userRouter.post('/signup', async (req, res) => {
 
 });
 
-userRouter.post('/user',
+userRouter.post('/preferences',
     [
-        body('email').isEmail(),
         body('ascent').isFloat(),
         body('duration').isFloat(),
     ], isLoggedIn, async (req, res) => {
-        
+
         //validation
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ errors: errors.array() });
         }
 
-        const id = req.query.role; // e.g. /user?role=hiker
 
-        if(id==="hiker"){
+        if (req.user.role === "hiker") {
             //connection to database function
-            const data = await service.createPreferences(req.body)
+            const data = await service.createPreferences(req)
             if (data.ok) {
                 return res.status(data.status).json(data.body)
             }
             return res.status(data.status).end()
-        }else if(id==="guide"){
-
-        }else{
+        } else
             return res.status(403).json({ errors: "Invalid role selection" });
-        }
+
     })
 
-userRouter.get('/user', isLoggedIn, async (req, res) => {
-        const id = req.query.role; // e.g. /user?role=hiker
+userRouter.get('/preferences', isLoggedIn, async (req, res) => {
 
-        if(id==="hiker"){
-            //connection to database function
-            const data = await service.getPreferences(req.session.user.email);
-            if (data.ok) {
-                return res.status(data.status).json(data)
-            }
-            return res.status(data.status).end()
-        }else if(id==="guide"){
-
-        }else{
-            return res.status(403).json({ errors: "Invalid role selection" });
+    if (req.user.role === "hiker") {
+        //connection to database function
+        const data = await service.getPreferences(req.user.email);
+        if (data.ok) {
+            return res.status(data.status).json(data)
         }
-    })
+        return res.status(data.status).end()
+    }
+    else
+        return res.status(403).json({ errors: "Invalid role selection" });
+})
 
 module.exports = userRouter

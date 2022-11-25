@@ -1,12 +1,14 @@
 const LocationDao = require('../../api/DAOs/locationDao');
 const LocationService = require('../../api/services/locationService');
+const { resetLocations } = require('../../db/dbreset');
 const service = new LocationService(LocationDao);
 
 const SECONDS = 1000;
-jest.setTimeout(20 * SECONDS);
+jest.setTimeout(5 * SECONDS);
 
 const validHuts = [{
     name: "hut 1",
+    type: "hut",
     latitude: 45,
     longitude: 45,
     country: "Italy",
@@ -20,6 +22,7 @@ const validHuts = [{
 },
 {
     name: "hut 2",
+    type: "hut",
     latitude: 24.8439,
     longitude: 12.294552,
     country: "England",
@@ -34,63 +37,50 @@ const validHuts = [{
 
 const invalidHuts = [{
     name: "hut 3",
-    latitude: 90.245262,
+    type: "hut",
+    latitude: "spifbvsptdifszè",
     longitude: 0.68654,
     country: "Germany",
     province: "DU",
     town: 111,
     address: "address z",
     altitude: "asdvAR",
-    food: "i don't know",
+    numberOfBeds: "soudfhbvaoe",
+    food: "spithbspzitfgb",
     description: 1
 },
 {
-    name: "hut 4",
+    name: "hut 3",
+    type: "hut",
+    latitude: "sohfbos",
     longitude: 0.68654,
-    country: "Italy",
-    province: 23,
-    town: "some town",
-    address: "addressssss",
-    altitude: 90,
-    numberOfBeds: "x number of beds",
-    food: "buffet",
+    country: 239829,
+    province: "DU",
+    town: 111,
+    address: "address z",
+    altitude: "asdvAR",
+    numberOfBeds: 0,
+    food: "i don't know",
     description: 1
-}]
+}];
 
 
 
 
 describe("Hut tests", () => {
     beforeAll(async () => {
-        await LocationDao.clearDatabase();
+        await resetLocations();
     })
 
 
     test('Create valid hut 1', async () => {
-        const result = await LocationDao.addHut(validHuts[0]);
+        const result = await LocationDao.addLocation(validHuts[0]);
         return expect(result).toEqual(201);
     });
 
     test('Create valid hut 2', async () => {
-        const result = await LocationDao.addHut(validHuts[1]);
+        const result = await LocationDao.addLocation(validHuts[1]);
         return expect(result).toEqual(201);
-    });
-
-    test('Create invalid hut 1', async () => {
-        try {
-            const result = await LocationDao.addHut(invalidHuts[0]);
-        } catch (err) {
-            return expect(err).toEqual(400);
-        }
-    });
-
-    test('Create invalid hut 2', async () => {
-        try {
-            const result = await LocationDao.addHut(invalidHuts[1]);
-        } catch (err) {
-            return expect(err).toEqual(400);
-        }
-
     });
 
 
@@ -98,9 +88,9 @@ describe("Hut tests", () => {
 
         const result = await LocationDao.getHuts({});
 
-        let retrievedValidHuts = validHuts;
-        retrievedValidHuts[0].type = "hut";
-        retrievedValidHuts[1].type = "hut";
+        console.log("result " + JSON.stringify(result));
+
+
 
         return expect(result).toEqual(expect.arrayContaining([expect.objectContaining({
             name: expect.any(String),
@@ -142,12 +132,13 @@ describe("Hut tests", () => {
 
 describe('Parking lot tests', () => {
     beforeEach(async () => {
-        await LocationDao.clearDatabase();
+        await resetLocations();
     });
 
     test('The operation of creating a new parking should complete without errors', async () => {
         const newParking = {
             "name": "Park La Maria",
+            "type": "parkinglot",
             "latitude": 45,
             "longitude": 17,
             "altitude": 1300,
@@ -158,13 +149,14 @@ describe('Parking lot tests', () => {
             "description": "bla bla bla",
             "lotsNumber": 14
         };
-        const res = await LocationDao.addParking(newParking);
+        const res = await LocationDao.addLocation(newParking);
         expect(res).toBe(201);
     });
 
     test('The operation of creating a new parking should fail in case of missing coordinates', async () => {
         const newParking = {
             "name": "Park La Maria",
+            "type": "parkinglot",
             "latitude": 45,
             "longitude": null,
             "altitude": 1300,
@@ -175,9 +167,12 @@ describe('Parking lot tests', () => {
             "description": "bla bla bla",
             "lotsNumber": 14
         };
-        await LocationDao.addParking(newParking).catch((err) => {
-            expect(err).toBe(400);
-        });
+        try {
+            const result = await LocationDao.addLocation(newParking);
+        } catch (err) {
+            console.log("err " + err);
+            return expect(err).toEqual(400);
+        }
     });
 })
 
