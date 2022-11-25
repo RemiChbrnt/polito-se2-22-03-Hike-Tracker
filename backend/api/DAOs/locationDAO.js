@@ -33,7 +33,8 @@ exports.generateHutFilters = (query) => {
     if (query.province !== undefined) filters = filters + ` province   = '${query.province}' AND`
     if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
     if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
-    if (query.altitude !== undefined) filters = filters + ` altitude = ${query.altitude} AND`
+    if (query.minAltitude !== undefined) filters = filters + ` altitude >= ${query.minAltitude} AND`
+    if (query.maxAltitude !== undefined) filters = filters + ` altitude <= ${query.maxAltitude} AND`
     filters = filters + " 1"
     return filters;
 }

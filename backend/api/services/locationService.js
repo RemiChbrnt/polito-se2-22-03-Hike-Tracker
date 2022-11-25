@@ -5,24 +5,9 @@ class LocationService {
         this.dao = dao
     }
 
-    addParking = async (newParking) => {
-        try {
-            const response = await this.dao.addParking(newParking)
-            return {
-                ok: true,
-                status: 201,
-                body: {}
-            }
-        } catch (e) {
-            return {
-                ok: false,
-                status: e
-            }
-        }
-    }
-
     getHuts = async (query) => {
         try {
+            console.log("query " + JSON.stringify(query));
             const huts = await this.dao.getHuts(query)
             const message = huts.map((r) => ({
                 id: r.id,
@@ -79,25 +64,6 @@ class LocationService {
             return {
                 ok: false,
                 status: 500
-            }
-        }
-    }
-
-
-
-    addHut = async (newHut) => {
-        try {
-            console.log("new hut " + JSON.stringify(newHut));
-            const response = await this.dao.addHut(newHut);
-            return {
-                ok: true,
-                status: 201,
-                body: {}
-            }
-        } catch (e) {
-            return {
-                ok: false,
-                status: e
             }
         }
     }

@@ -3,13 +3,12 @@ import { Col, Container, Button, Row, Modal } from 'react-bootstrap';
 import { HutGrid } from "./../components/hutList";
 import { HutFilterForm } from "./../components/hutFilterForm";
 
-function HutListPage(props){
+function HutListPage(props) {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
-    console.log("filters", filters);
 
-    return(
+    return (
         <Container>
             <Row>
                 <Col md={10}>
