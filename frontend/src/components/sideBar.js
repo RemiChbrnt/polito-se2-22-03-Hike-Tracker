@@ -50,7 +50,7 @@ function SideBar(props) {
 
                                     <Nav.Link onClick={() => { navigate('/link-hut-to-hike') }} onMouseOver={() => { setOver('link-hut-to-hike') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/link-hut-to-hike' || over === 'link-hut-to-hike') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Link hut to hike</h5></Nav.Link>
                                     <ul></ul>
-                                    <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                    <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                 </Nav>
                             </Offcanvas.Body>
                             :
@@ -62,7 +62,7 @@ function SideBar(props) {
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <ul></ul>
-                                        <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                        <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                     </Nav>
                                 </Offcanvas.Body>
                                 :
@@ -74,7 +74,7 @@ function SideBar(props) {
                                             <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR EMERGENCY</h5></Nav.Link>
                                             <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR EMERGENCY</h5></Nav.Link>
                                             <ul></ul>
-                                            <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                            <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                         </Nav>
                                     </Offcanvas.Body>
                                     : props.user.role === "manager" ?
@@ -85,7 +85,7 @@ function SideBar(props) {
                                                 <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
                                                 <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
                                                 <ul></ul>
-                                                <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                             </Nav>
                                         </Offcanvas.Body>
                                         : props.user.role === "hiker" ?
@@ -96,7 +96,7 @@ function SideBar(props) {
 
                                                     <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hut list</h5></Nav.Link>
                                                     <ul></ul>
-                                                    <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                    <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                                 </Nav>
                                             </Offcanvas.Body>
                                             : false
