@@ -256,43 +256,6 @@ async function createLocation(body) {
 }
 
 
-// async function addHut(params) {
-//     const response = await fetch(URL + '/hut', {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         credentials: 'include',
-//         body: params
-//     });
-//     let res = await response.json();
-//     if (response.ok) {
-//         return true;
-//     } else {
-//         throw res;
-//     }
-// }
-
-// async function addParking(params) {
-//     const response = await fetch(URL + '/parking', {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         credentials: 'include',
-//         body: params
-//     });
-//     let res = await response.json();
-//     if (response.ok) {
-//         return true;
-//     } else {
-//         throw res;
-//     }
-// }
-
-
-
-
 async function getPreferences() {
     const response = await fetch(URL + '/preferences', {
         credentials: 'include'

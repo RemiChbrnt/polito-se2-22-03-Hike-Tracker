@@ -53,6 +53,7 @@ const HikeDetail = ({props, setProps}) => {
                 <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)} file={hike.track}/>
             </Col>
         </Row>
+        <ul></ul>
     </Container>
 
   );

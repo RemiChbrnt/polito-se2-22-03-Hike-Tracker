@@ -10,7 +10,8 @@ import { LinkHutToHike } from "../components/linkHutToHike";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
 
-import Hiker  from "../screens/hiker.js";
+import { HutListPage } from "../screens/hutListPage";
+import Hiker from "../screens/hiker.js";
 import Home from "../screens/home.js";
 
 
@@ -39,8 +40,8 @@ const routes = [
     {
         path: "/hiker/personal-page",
         key: "hiker-personal-page",
-        screen: function(props, setProps) {
-            return <HikerPersonalPage props={props} setProps={setProps}/>
+        screen: function (props, setProps) {
+            return <HikerPersonalPage props={props} setProps={setProps} />
         }
     },
     {
@@ -73,7 +74,7 @@ const routes = [
                 </Container>
             );
         }
-    }, 
+    },
     {
         path: "/add-parking-lot",
         key: "add-parking-lot",
@@ -103,6 +104,13 @@ const routes = [
         key: "link-hut-to-hike",
         screen: function (user, props, setProps) {
             return <LinkHutToHike props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/hut-list",
+        key: "hut-list",
+        screen: function (props, setProps) {
+            return <HutListPage props={props} setProps={setProps} />
         }
     }
 
