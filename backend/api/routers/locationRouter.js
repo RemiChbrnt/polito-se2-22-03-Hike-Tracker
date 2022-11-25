@@ -3,14 +3,13 @@
 const express = require('express');
 const locationService = require('../services/locationService');
 const locationDAO = require('../DAOs/locationDAO');
-
 const service = new locationService(locationDAO);
 const router = express.Router();
 const { body, param, query, validationResult } = require('express-validator');
+const isLoggedIn = require("../middleware/authentication");
 
 
-
-router.get('/huts', [
+router.get('/huts', isLoggedIn, [
     query('name').optional({ nullable: true }).isString({ min: 0 }),
     query('country').optional({ nullable: true }).isString({ min: 0 }),
     query('province').optional({ nullable: true }).isString({ min: 0 }),
@@ -28,8 +27,8 @@ router.get('/huts', [
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
         }
-        console.log("req.query " + JSON.stringify(req.query));
-        const data = await service.getHuts(req.query)
+
+        const data = await service.getHuts(req.query, req.user.email);
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
@@ -49,7 +48,7 @@ router.get('/huts-and-parking-lots',
             return res.status(400).json({ error: errors.array() });
         }
 
-        const data = await service.getHutsAndParkingLots();
+        const data = await service.getHutsAndParkingLots(req.user.email);
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
@@ -58,7 +57,7 @@ router.get('/huts-and-parking-lots',
 
 
 
-router.post('/locations', [
+router.post('/locations', isLoggedIn, [
     body('name').exists().isString(),
     body('type').exists().isIn(['hut', 'parkinglot', 'generic']),
     body('latitude').exists().isFloat({ min: 0 }),
@@ -78,14 +77,51 @@ router.post('/locations', [
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const data = await service.addLocation(req.body);
+    const data = await service.addLocation(req.body, req.user.email);
     if (data.ok)
         return res.status(data.status).json(data.body);
 
     return res.status(data.status).end();
 });
 
+router.get('/hutsList/:userId', isLoggedIn, [
+    param('userId').exists().isEmail(),
+],
+    async (req, res) => {
 
+        if (req.user === undefined || req.user.role !== "guide" || req.user.email !== req.params.userId) { //userId = email
+            return res.status(400).json({ error: "Unauthorized" });
+        }
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const data = await service.getHutsByUserId(req.params.userId)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    })
+
+router.post('/linkHut', isLoggedIn, [
+    body('locationId').exists().isNumeric(),
+    body('hikeId').exists().isNumeric(),
+], async (req, res) => {
+
+    console.log(req.body)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const newLink = req.body
+    const response = await service.linkHut(newLink)
+    if (response.ok) {
+        return res.status(response.status).json(response.body)
+    }
+    return res.status(response.status).end();
+})
 
 
 module.exports = router;

@@ -74,19 +74,20 @@ describe("Hut tests", () => {
 
 
     test('Create valid hut 1', async () => {
-        const result = await LocationDao.addLocation(validHuts[0]);
+        const result = await LocationDao.addLocation(validHuts[0], "antonio.fracassa@live.it");
+        console.log("result " + JSON.stringify(result));
         return expect(result).toEqual(validHuts[0]);
     });
 
     test('Create valid hut 2', async () => {
-        const result = await LocationDao.addLocation(validHuts[1]);
+        const result = await LocationDao.addLocation(validHuts[1], "antonio.fracassa@live.it");
         return expect(result).toEqual(validHuts[1]);
     });
 
 
     test('Valid get all valid huts', async () => {
 
-        const result = await LocationDao.getHuts({});
+        const result = await LocationDao.getHuts({}, "antonio.fracassa@live.it");
 
         console.log("result " + JSON.stringify(result));
 
@@ -102,6 +103,7 @@ describe("Hut tests", () => {
             town: expect.any(String),
             address: expect.any(String),
             altitude: expect.any(Number),
+            author: expect.stringMatching("antonio.fracassa@live.it"),
             numberOfBeds: expect.any(Number),
             food: expect.any(String),
             description: expect.any(String)
@@ -109,18 +111,18 @@ describe("Hut tests", () => {
     });
 
     test('Valid get valid hut 1', async () => {
-        const result = await LocationDao.getHuts(validHuts[0]);
-        return expect(result[0]).toEqual(expect.objectContaining(validHuts[0]));
+        const result = await LocationDao.getHuts(validHuts[0], "antonio.fracassa@live.it");
+        return expect(result[0]).toEqual(expect.objectContaining(validHuts[0]), "antonio.fracassa@live.it");
     });
 
     test('Valid get valid hut 2', async () => {
-        const result = await LocationDao.getHuts(validHuts[1]);
-        return expect(result[0]).toEqual(expect.objectContaining(validHuts[1]));
+        const result = await LocationDao.getHuts(validHuts[1], "antonio.fracassa@live.it");
+        return expect(result[0]).toEqual(expect.objectContaining(validHuts[1]), "antonio.fracassa@live.it");
     });
 
     test('Invalid get hut 2', async () => {
         try {
-            const result = await LocationDao.getHuts(invalidHuts[0]);
+            const result = await LocationDao.getHuts(invalidHuts[0], "antonio.fracassa@live.it");
         } catch (err) {
             console.log("err " + err);
             return expect(err).toEqual(400);
@@ -182,18 +184,18 @@ describe('Parking lot tests', () => {
 
 
     test('Create valid parking lot 1', async () => {
-        const res = await LocationDao.addLocation(validParkingLot[0]);
+        const res = await LocationDao.addLocation(validParkingLot[0], "antonio.fracassa@live.it");
         return expect(res).toEqual(expect.objectContaining(validParkingLot[0]));
     });
 
     test('Create valid parking lot 2', async () => {
-        const res = await LocationDao.addLocation(validParkingLot[1]);
+        const res = await LocationDao.addLocation(validParkingLot[1], "antonio.fracassa@live.it");
         return expect(res).toEqual(expect.objectContaining(validParkingLot[1]));
     });
 
     test('Create invalid parking lot (missing coordinates)', async () => {
         try {
-            const result = await LocationDao.addLocation(invalidParkingLot);
+            const result = await LocationDao.addLocation(invalidParkingLot, "antonio.fracassa@live.it");
         } catch (err) {
             console.log("err " + err);
             return expect(err).toEqual(400);

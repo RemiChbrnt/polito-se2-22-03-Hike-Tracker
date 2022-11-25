@@ -99,6 +99,22 @@ async function getAllHikes(filters) {
     }
 }
 
+async function getHikesList() {
+    // call: GET /api/hikes
+    const response = await fetch(URL + '/hikes', {
+        credentials: 'include',
+    });
+    const hikesJson = await response.json();
+    if (response.ok) {
+        return hikesJson.map((r) => ({
+            id: r.id,
+            title: r.title,
+        }))
+    } else {
+        throw hikesJson;
+    }
+}
+
 
 async function createHike(body) {
 
@@ -255,6 +271,28 @@ async function createLocation(body) {
     }
 }
 
+async function getHutsByUserId(userId) {
+    const response = await fetch(URL + `/api/huts/${userId}`, { method: 'GET', credentials: 'include' });
+    const hutsJson = await response.json();
+    if (response.ok) {
+        return hutsJson.map((r) => ({
+            id: r.id,
+            name: r.name,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            country: r.country,
+            province: r.province,
+            town: r.town,
+            altitude: r.altitude,
+            beds: r.beds,
+            food: r.food,
+            description: r.description
+        }))
+    } else {
+        throw hutsJson;
+    }
+
+}
 
 async function getPreferences() {
     const response = await fetch(URL + '/preferences', {
@@ -283,5 +321,21 @@ async function createPreferences(preferences) {
         throw res;
 }
 
-const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation };
+async function linkHut(params) {
+    const response = await fetch(URL + '/linkHut', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: params
+    });
+    let res = await response.json();
+    if (response.ok) {
+        return true;
+    } else {
+        throw res;
+    }
+}
+const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId };
 export default API;

@@ -83,16 +83,6 @@ passport.deserializeUser(function (user, callback) {
      */
 });
 
-/* The isLoggedIn middleware will be passed to every protected API,
- * in order to prevent unauthenticated users to access them.
- */
-
-const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    return res.status(401).json({ error: 'Not logged in' });
-}
 /* --------------------------------------------------------- */
 
 /* AUTHENTICATION */

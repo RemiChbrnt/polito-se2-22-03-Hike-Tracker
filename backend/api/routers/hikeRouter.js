@@ -2,7 +2,7 @@
 const express = require('express');
 const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDAO');
-
+const isLoggedIn = require("../middleware/authentication");
 const service = new HikeService(HikeDao)
 // const service = new HikeService(mockHikeDao);
 
@@ -36,7 +36,7 @@ router.get('/hikes', [
         return res.status(data.status).end()
     })
 
-router.post('/hikes', [
+router.post('/hikes', isLoggedIn, [
     body('title').exists().isString(),
     body('length').exists().isFloat({ min: 0 }),
     body('expTime').exists().isFloat({ min: 0 }),
@@ -82,7 +82,7 @@ router.post('/hikes', [
 
 
 
-router.put('/hike-startPt/:id/:startPt', [
+router.put('/hike-startPt/:id/:startPt', isLoggedIn, [
     param('id').exists().isInt(),
     param('startPt').exists().isInt(),
 ], async (req, res) => {
@@ -103,7 +103,7 @@ router.put('/hike-startPt/:id/:startPt', [
 })
 
 
-router.put('/hike-endPt/:id/:endPt', [
+router.put('/hike-endPt/:id/:endPt', isLoggedIn, [
     param('id').exists().isInt(),
     param('endPt').exists().isInt(),
 ], async (req, res) => {

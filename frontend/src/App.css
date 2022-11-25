@@ -82,3 +82,41 @@ h4{
   background-color: white;
   padding:40px;
 }
+
+.myTable{
+  padding-top:40px;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+
+}
+
+.table > :not(:first-child) {
+  border-top: 0 !important;
+}
+
+.tableHeader{
+  background-color: #00706c;
+  padding:0;
+}
+
+.infoHidden{
+  display:none;
+}
+
+.infoVisible{
+  background-color: #00000006;
+}
+
+.extraInfo{
+  text-align: justify;
+}
+
+.hutTableHeader{
+  color: white;
+  text-align: center;
+}
+
+.icons-style{
+  font-size: 22px;
+
+}

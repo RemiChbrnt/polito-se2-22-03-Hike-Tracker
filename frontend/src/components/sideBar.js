@@ -96,6 +96,9 @@ function SideBar(props) {
 
                                                     <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hut list</h5></Nav.Link>
                                                     <ul></ul>
+
+                                                    <Nav.Link onClick={() => { navigate('/hiker/personal-page') }}><i class="bi bi-gear-fill text-white"></i></Nav.Link>
+
                                                     <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                                 </Nav>
                                             </Offcanvas.Body>

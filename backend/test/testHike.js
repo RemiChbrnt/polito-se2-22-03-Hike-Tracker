@@ -88,6 +88,6 @@ describe('Testing all the operations on hikes', function () {
     it('GET /api/hikes', async () => {
         const result = await agent
             .get('/api/hikes')
-        expect(result.body.length>=1).equal(true)
+        expect(result.body.length >= 1).equal(true)
     })
 })

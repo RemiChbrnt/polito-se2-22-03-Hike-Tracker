@@ -11,6 +11,7 @@ const session = require('express-session');
 const service = new UserService(userDAO);
 const userRouter = express.Router();
 const { body, param, validationResult } = require('express-validator');
+const isLoggedIn = require("../middleware/authentication");
 
 passport.use(new LocalStrategy({
     usernameField: 'email'
@@ -25,12 +26,6 @@ passport.use(new LocalStrategy({
     }
 ));
 
-const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    return res.status(401).json({ error: 'Not logged in' });
-}
 
 userRouter.use(session({
     secret: 'software engineldenring speedrun [ANY%][NO GLITCH][EPIC]',
@@ -70,7 +65,7 @@ userRouter.post('/signup', async (req, res) => {
 
 });
 
-userRouter.post('/preferences',
+userRouter.post('/preferences', isLoggedIn,
     [
         body('ascent').isFloat(),
         body('duration').isFloat(),

@@ -35,7 +35,6 @@ function ActiveForm(props) {
     const addHut = async (name, latitude, longitude, country, province, town, address, altitude, numberOfBeds, food, description) => {
         try {
             let params = ({ name: name, type: "hut", latitude: latitude, longitude: longitude, country: country, province: province, town: town, address: address, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description })
-            console.log("params:" + params);
             let res = API.createLocation(params);
             return res;
 
@@ -170,7 +169,7 @@ function ActiveForm(props) {
                 </div>
                 <div className="form-group mt-3">
                     <Form.Group className="mb-3" controlId="hutDescription">
-                        <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Label><b>Description</b></Form.Label>
                         <Form.Control as="textarea" rows={2}
                             onChange={ev => { setDescription(ev.target.value); }}
                         />
