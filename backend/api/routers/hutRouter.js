@@ -20,7 +20,7 @@ router.get('/huts', [
     query('town').optional().isString({ min: 0 }),
     query('address').optional().isString({ min: 0 }),
     query('altitude').optional().isFloat()
-],
+    ],
     async (req, res) => {
 
         if (req.session.user === undefined || req.session.user.role !== "hiker")
@@ -38,7 +38,42 @@ router.get('/huts', [
         return res.status(data.status).end()
     })
 
+    router.get('/huts/:userId', [
+        param('userId').exists().isEmail(),
+        ],
+        async (req, res) => {
+    
+            if (req.session.user === undefined || req.session.user.role !== "guide" || req.session.user.email !== req.params.userId)
+                return res.status(400).json({ error: "Unauthorized" });
+    
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ error: errors.array() });
+            }
+    
+            const data = await service.getHutsByUserId(req.params.userId)
+            if (data.ok) {
+                return res.status(data.status).json(data.body)
+            }
+            return res.status(data.status).end()
+        })
 
-
+    router.post('/linkHut', [
+        body('locationId').exists().isString(),
+        body('hikeId').exists().isString(),
+    ], async (req, res) => {
+    
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+    
+        const newLink = req.body
+        const response = await service.linkHut(newLink)
+        if (response.ok) {
+            return res.status(locId.status).json(response.body)
+        }
+        return res.status(response.status).end();
+    })
 
 module.exports = router;

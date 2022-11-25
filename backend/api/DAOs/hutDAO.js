@@ -25,6 +25,42 @@ exports.getHuts = async (query) => {
     })
 }
 
+exports.getHutsByUserId = async (userId) => {
+    return new Promise((resolve, reject) => {
+        const sql =
+            `SELECT * from Locations
+             LEFT JOIN Huts ON Locations.id = Huts.locationId
+             WHERE type="hut" AND author=? `
+        db.get(sql, [userId], async (err, rows) => {
+            if (err) {
+                reject();
+                return;
+            }else if (rows === undefined) { resolve(false); }
+            else {
+                resolve(rows);
+            }
+        })
+    })
+}
+
+exports.linkHut = async (hikeId, locationId) => {
+    console.log(hike);
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO HikesHaveHuts(hikeId, locationId) VALUES(?,?)';
+        db.run(sql, [hikeId, locationId], function (err, rows) {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                resolve({id: this.lastID});
+                return;
+            }
+        })
+    })
+}
+
 exports.generateFilters = (query) => {
     let filters = " AND";
     if (query.name !== undefined) filters = filters + ` name LIKE '%${query.name}%' AND`
