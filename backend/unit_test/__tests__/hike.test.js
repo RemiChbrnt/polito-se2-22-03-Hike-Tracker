@@ -10,7 +10,7 @@ describe('Hikes API tests', () => {
 
     test('createHike should create a new entry in the Db and return status 201', async () => {
         const newHike = {
-            "id": 1,
+            "id": 3,
             "title": "testingHikeCreation",
             "length": 1273.2,
             "expTime": 10.2,
@@ -27,7 +27,7 @@ describe('Hikes API tests', () => {
 
     test('getHikes should retrieve the complete list of hikes in the database', async () => {
         const newHike = {
-            "id": 1,
+            "id": 2,
             "title": "testingHikeCreation",
             "length": 1273.2,
             "expTime": 10.2,
@@ -41,6 +41,6 @@ describe('Hikes API tests', () => {
 
         await HikeDao.createHike(newHike);
         const hikes = await HikeDao.getHikes({});
-        return expect(hikes.length).toBe(1);
+        return expect(hikes.length).toBe(2);
     })
 })

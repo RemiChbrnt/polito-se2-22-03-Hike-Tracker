@@ -49,6 +49,9 @@ router.post('/hikes', [
 ], async (req, res) => {
     const errors = validationResult(req);
     console.log("hike query " + JSON.stringify(req.body));
+
+    if(req.user.role!=='guide')
+        return res.status(403).json({ errors: "Only guides can access this feature" });
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }

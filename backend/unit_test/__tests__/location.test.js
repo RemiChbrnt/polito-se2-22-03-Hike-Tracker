@@ -127,8 +127,30 @@ describe("Hut tests", () => {
         }
 
     });
-});
 
+
+    test('Link a hut to a hike', async () => {
+        try {
+            const location = await LocationDao.getHutsByUserId("antonio.fracassa@live.it");
+            const locationToLink = location[0].id;
+            const result = await LocationDao.linkHut(1,locationToLink);
+            expect(result.id !== undefined).toBe(true);
+
+        } catch (err) {
+            console.log("err " + err);
+        }
+    });
+
+    test('Link a hut to a hike with non existing hike', async () => {
+        try {
+            
+            const locationToLink = 4316;
+            await LocationDao.linkHut(1,locationToLink);
+        } catch (err) {
+            expect(err).toBe(400);
+        }
+    });
+});
 
 
 
@@ -182,24 +204,25 @@ describe('Parking lot tests', () => {
 
 
     test('Create valid parking lot 1', async () => {
-        const res = await LocationDao.addLocation(validParkingLot[0]);
+        const res = await LocationDao.addLocation(validParkingLot[0],"antonio.fracassa@live.it");
         return expect(res).toEqual(expect.objectContaining(validParkingLot[0]));
     });
 
     test('Create valid parking lot 2', async () => {
-        const res = await LocationDao.addLocation(validParkingLot[1]);
+        const res = await LocationDao.addLocation(validParkingLot[1],"antonio.fracassa@live.it");
         return expect(res).toEqual(expect.objectContaining(validParkingLot[1]));
     });
 
     test('Create invalid parking lot (missing coordinates)', async () => {
         try {
-            const result = await LocationDao.addLocation(invalidParkingLot);
+            await LocationDao.addLocation(invalidParkingLot,"antonio.fracassa@live.it");
         } catch (err) {
-            console.log("err " + err);
             return expect(err).toEqual(400);
         }
     });
 
 
 })
+
+
 

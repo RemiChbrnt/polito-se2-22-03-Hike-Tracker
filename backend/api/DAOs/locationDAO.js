@@ -155,7 +155,6 @@ exports.getHutsByUserId = async (email) => {
                 return;
             }else if (rows === undefined) { resolve(false); }
             else {
-                console.log(rows)
                 resolve(rows);
             }
         })

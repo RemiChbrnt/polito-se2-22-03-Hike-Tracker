@@ -4,7 +4,7 @@ const db = require('../db/db');
 
 const resetHikes = async function () {
     return new Promise((resolve, reject) => {
-        const sql = "DELETE FROM Hikes"
+        const sql = "DELETE FROM Hikes WHERE id > 1"
         db.all(sql, [], async (err) => {
             if (err)
                 reject(err);
