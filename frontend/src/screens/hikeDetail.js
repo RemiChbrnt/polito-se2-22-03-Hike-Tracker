@@ -18,7 +18,11 @@ const HikeDetail = ({ props, setProps }) => {
     const [locationList, setLocationList] = useState([]);
     const [startPointHike, setStartPointHike] = useState(hike.startPt);
     const [endPointHike, setEndPointHike] = useState(hike.endPt);
+    const [error, setError] = useState(false);
 
+    console.log("error", error)
+    console.log("CIao", isNaN(parseInt(startPoint, 10)));   
+    
     /*useEffect(() => {
         API.getHutsAndParkingLots().then(res => {
             setHikes([]);
@@ -33,14 +37,15 @@ const HikeDetail = ({ props, setProps }) => {
     const handleStartSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        setOpenStart(false);
-        if(startPoint!==undefined){
+        if(!isNaN(parseInt(startPoint, 10))){
             API.setHikeStartPoint(hike.id, startPoint).then().catch(error => console.log(error));
             setStartPointHike(locationList.find(location => location.id === parseInt(startPoint, 10) ));
+            setOpenStart(false);
+            setError(false);
         }
         else
         {
-            //Messaggio di errore
+            setError(true);
         }
           
     }
@@ -48,14 +53,15 @@ const HikeDetail = ({ props, setProps }) => {
     const handleArrivalSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        setOpenEnd(false);
-        if(endPoint!==undefined){
+        if(!isNaN(parseInt(endPoint, 10))){
             API.setHikeEndPoint(hike.id, endPoint).then().catch(error => console.log(error));
             setEndPointHike(locationList.find(location => location.id === parseInt(endPoint, 10) ));
+            setOpenEnd(false);
+            setError(false);
         }
         else
         {
-            //Messaggio di errore
+            setError(true);
         }
     }
 
@@ -78,12 +84,12 @@ const HikeDetail = ({ props, setProps }) => {
                     <Row>
                         <Col>
                             {(hike.startPt !== undefined && openEnd !== true) ?
-                                <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
+                                <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); setError(false); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                     aria-controls="example-collapse-text"
                                     aria-expanded={openStart} variant="success" size="lg"><h4 className="text-white"> Add Start Point</h4></Button>
                                 :
                                 (hike.startPt !== undefined && openEnd === true) ?
-                                    <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
+                                    <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); setError(false); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                         aria-controls="example-collapse-text"
                                         aria-expanded={openStart} variant="success" size="lg" disabled><h4 className="text-white"> Add Start Point</h4></Button>
                                     :
@@ -92,12 +98,12 @@ const HikeDetail = ({ props, setProps }) => {
                         </Col>
                         <Col>
                             {(hike.endPt !== undefined && openStart !== true) ?
-                                <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
+                                <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); setError(false); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                     aria-controls="example-collapse-text"
                                     aria-expanded={openEnd} variant="success" size="lg"><h4 className="text-white"> Add End Point</h4></Button>
                                 :
                                 (hike.endPt !== undefined && openStart === true) ?
-                                    <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
+                                    <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); setError(false); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
                                         aria-controls="example-collapse-text"
                                         aria-expanded={openEnd} variant="success" size="lg" disabled><h4 className="text-white"> Add End Point</h4></Button>
                                     :
@@ -119,9 +125,15 @@ const HikeDetail = ({ props, setProps }) => {
                                     </Form.Select>
                                 </Form.Group>
                                 <ul></ul>
+                                {error === true ?
+                                <h5>Errore nella selezione</h5>
+                                :
+                                false
+                                }
+                                <ul></ul>
                                 <Row>
                                     <Col md={10} xs={8}>
-                                        <Button variant="danger" onClick={() => {setStartPoint(); setOpenStart(false)}} size="lg">
+                                        <Button variant="danger" onClick={() => {setStartPoint(); setOpenStart(false); setError(false);}} size="lg">
                                             Back
                                         </Button>
                                     </Col>
@@ -146,6 +158,12 @@ const HikeDetail = ({ props, setProps }) => {
                                         {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
                                     </Form.Select>
                                 </Form.Group>
+                                <ul></ul>
+                                {error === true ?
+                                <h5>Errore nella selezione</h5>
+                                :
+                                false
+                                }
                                 <ul></ul>
                                 <Row>
                                     <Col md={10} xs={8}>
