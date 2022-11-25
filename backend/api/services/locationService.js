@@ -5,25 +5,9 @@ class LocationService {
         this.dao = dao
     }
 
-    addParking = async (newParking) => {
+    getHuts = async (query, email) => {
         try {
-            const response = await this.dao.addParking(newParking)
-            return {
-                ok: true,
-                status: 201,
-                body: {}
-            }
-        } catch (e) {
-            return {
-                ok: false,
-                status: e
-            }
-        }
-    }
-
-    getHuts = async (query) => {
-        try {
-            const huts = await this.dao.getHuts(query)
+            const huts = await this.dao.getHuts(query, email);
             const message = huts.map((r) => ({
                 id: r.id,
                 name: r.name,
@@ -55,9 +39,9 @@ class LocationService {
     }
 
 
-    getHutsAndParkingLots = async () => {
+    getHutsAndParkingLots = async (email) => {
         try {
-            const result = await this.dao.getHutsAndParkingLots()
+            const result = await this.dao.getHutsAndParkingLots(email)
             const message = result.map((r) => ({
                 id: r.id,
                 name: r.name,
@@ -84,29 +68,9 @@ class LocationService {
     }
 
 
-
-    addHut = async (newHut) => {
+    addLocation = async (newLocation, email) => {
         try {
-            console.log("new hut " + JSON.stringify(newHut));
-            const response = await this.dao.addHut(newHut);
-            return {
-                ok: true,
-                status: 201,
-                body: {}
-            }
-        } catch (e) {
-            return {
-                ok: false,
-                status: e
-            }
-        }
-    }
-
-
-    addLocation = async (newLocation) => {
-        try {
-            console.log("new location " + JSON.stringify(newLocation));
-            const response = await this.dao.addLocation(newLocation);
+            const response = await this.dao.addLocation(newLocation, email);
             return {
                 ok: true,
                 status: 201,
@@ -121,9 +85,9 @@ class LocationService {
     }
 
     
-    getHutsByUserId = async (userId) => {
+    getHutsByUserId = async (email) => {
         try {
-            const huts = await this.dao.getHutsByUserId(userId)
+            const huts = await this.dao.getHutsByUserId(email)
             const message = huts.map((r) => ({
                 id: r.id,
                 name: r.name,

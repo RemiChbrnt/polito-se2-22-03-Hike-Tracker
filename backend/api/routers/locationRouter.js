@@ -3,7 +3,6 @@
 const express = require('express');
 const locationService = require('../services/locationService');
 const locationDAO = require('../DAOs/locationDAO');
-
 const service = new locationService(locationDAO);
 const router = express.Router();
 const { body, param, query, validationResult } = require('express-validator');
@@ -20,6 +19,7 @@ router.get('/huts', [
 ],
     async (req, res) => {
 
+        console.log('aaaaaaaaaaaaaaa')
         if (req.user === undefined || req.user.role !== "hiker")
             return res.status(400).json({ error: "Unauthorized" });
 
@@ -28,7 +28,7 @@ router.get('/huts', [
             return res.status(400).json({ error: errors.array() });
         }
 
-        const data = await service.getHuts(req.query)
+        const data = await service.getHuts(req.query, req.user.email);
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
@@ -48,7 +48,7 @@ router.get('/huts-and-parking-lots',
             return res.status(400).json({ error: errors.array() });
         }
 
-        const data = await service.getHutsAndParkingLots();
+        const data = await service.getHutsAndParkingLots(req.user.email);
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
@@ -77,21 +77,21 @@ router.post('/locations', [
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const data = await service.addLocation(req.body);
+    const data = await service.addLocation(req.body, req.user.email);
     if (data.ok)
         return res.status(data.status).json(data.body);
 
     return res.status(data.status).end();
 });
 
-router.get('/huts/:userId', [
+router.get('/hutsList/:userId', [
     param('userId').exists().isEmail(),
     ],
     async (req, res) => {
 
-        if (req.session.user === undefined || req.session.user.role !== "guide" || req.session.user.email !== req.params.userId)
+        if (req.user === undefined || req.user.role !== "guide" || req.user.email !== req.params.userId){ //userId = email
             return res.status(400).json({ error: "Unauthorized" });
-
+        }
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
@@ -104,11 +104,12 @@ router.get('/huts/:userId', [
         return res.status(data.status).end()
     })
 
-router.post('/linkHut', [
-    body('locationId').exists().isString(),
-    body('hikeId').exists().isString(),
+router.post('/linkHut',[
+    body('locationId').exists().isNumeric(),
+    body('hikeId').exists().isNumeric(),
 ], async (req, res) => {
 
+    console.log(req.body)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -117,7 +118,7 @@ router.post('/linkHut', [
     const newLink = req.body
     const response = await service.linkHut(newLink)
     if (response.ok) {
-        return res.status(locId.status).json(response.body)
+        return res.status(response.status).json(response.body)
     }
     return res.status(response.status).end();
 })
