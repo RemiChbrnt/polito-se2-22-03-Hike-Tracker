@@ -7,8 +7,6 @@ const apiUrl = '/api';
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-//const userDAO = require('./api/DAOs/userDAO.js');
-// const hikeDAO = require('./HikeDAO.js'); TODO: add DAOs
 const { validationResult, body, param } = require('express-validator');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -37,11 +35,10 @@ app.use(express.json());
 const userRouter = require('./api/routers/userRouter');
 const hikeRouter = require('./api/routers/hikeRouter');
 const locationRouter = require('./api/routers/locationRouter');
-const hutRouter = require('./api/routers/hutRouter');
 app.use(apiUrl, userRouter);
 app.use(apiUrl, hikeRouter);
-app.use(apiUrl, hutRouter);
 app.use(apiUrl, locationRouter);
+
 /* express-session setup */
 app.use(session({
     secret: 'software engineldenring speedrun [ANY%][NO GLITCH][EPIC]',
@@ -69,7 +66,7 @@ app.use(passport.authenticate('session'));
 /* Here we decide which information should be stored during each session.
  * To do so, we use the serializeUser() and deserializeUser() methods,
  * which take the specified subset of user information and store them
- * on req.session.passport (or retrieves them, with deserializeUser()).
+ * on req.passport (or retrieves them, with deserializeUser()).
  * Note that the deserializeUser() can only access the information
  * that have been serialized, and uses them to return a User object,
  * which will be accessible to every authenticated request to the server. 

@@ -16,10 +16,20 @@ function App() {
     const [user, setUser] = useState();
     const [props, setProps] = useState([]);
 
+    useEffect(() => {
+        async function getUserSession() {
+            const user = await API.getUserInfo();
+            setUser(user);
+        }
+
+        getUserSession();
+    }, [])
+
+
     return (
         <div>
             <BrowserRouter>
-                <NavBar user={user} setUser={setUser}/>
+                <NavBar user={user} setUser={setUser} />
                 <Routes>
                     <Route path='/' element={<Home user={user} setProps={setProps} />} />
                     {/*<Route path='/hike-filter-form' element={<HikeFilterForm/>}/>*/}

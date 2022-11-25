@@ -45,7 +45,7 @@ exports.login = async (email, password) => {
 
 
 exports.signup = async (email, fullName, password, role, phoneNumber) => {
-    let salt, hash;
+    let salt, hash, query;
 
     return new Promise((resolve, reject) => {
         crypto.randomBytes(24, async (err, buf) => {
@@ -66,25 +66,18 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 
         if (phoneNumber !== undefined) {
 
-            //TABLE USERS MUST BE UPDATED TO STORE THE PHONE NUMBER
-
-
-            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
-            // db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role], (err) => {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
                 if (err)
                     reject(err);
-                else {
-                    console.log("ciao");
+                else
                     resolve(true);
-                }
+
             });
         }
         else {
-            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
-            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role], (err) => {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
                 if (err)
                     reject(err);
                 else {
@@ -146,15 +139,23 @@ exports.getPreferences = async (email) => {
 
 exports.clearDatabase = async () => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM Users'
+        const sql = 'DELETE FROM Users WHERE email!="maurizio.merluzzo@donkeykong.com"'
         db.run(sql, [], async (err, rows) => {
+            if (err) console.log(err)
             if (err)
                 reject();
-            else
-                resolve();
+            else {
+                const sql1 = 'DELETE FROM Preferences'
+                db.run(sql1, [], async (err, rows) => {
+                    if (err) console.log(err)
+                    if (err)
+                        reject();
+                    else {
+                        resolve();
+                    }
+                })
+            }
         })
     })
 }
 
-
-// module.exports = { login, signup }

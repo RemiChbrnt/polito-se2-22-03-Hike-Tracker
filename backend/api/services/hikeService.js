@@ -10,18 +10,18 @@ class HikeService {
             const hikes = await this.dao.getHikes(query)
             const message = hikes.map((r) => ({
                 id: r.id,
-                title: r.title, 
-                length: r.length, 
-                expTime: r.expTime, 
-                ascent: r.ascent, 
-                difficulty: r.difficulty, 
-                startPt: r.startPt, 
-                endPt: r.endPt, 
+                title: r.title,
+                length: r.length,
+                expTime: r.expTime,
+                ascent: r.ascent,
+                difficulty: r.difficulty,
+                startPt: r.startPt,
+                endPt: r.endPt,
                 description: r.description,
                 track: r.track,
                 author: r.author,
                 referencePoints: r.referencePoints
-             }))
+            }))
             return {
                 ok: true,
                 status: 200,
@@ -35,29 +35,13 @@ class HikeService {
         }
     }
 
-    createHike= async (newHike)=>{
-        try{
+    createHike = async (newHike) => {
+        try {
             const hike = await this.dao.createHike(newHike)
             return {
                 ok: true,
                 status: 201,
                 body: hike
-            }
-        } catch(e) {
-            return {
-                ok: false,
-                status: 400
-            }
-        }
-    }
-
-    createLocation= async (newLocation)=>{
-        try{
-            const location = await this.dao.createLocation(newLocation)
-            return {
-                ok: true,
-                status: 201,
-                body: location
             }
         } catch (e) {
             return {
@@ -66,6 +50,22 @@ class HikeService {
             }
         }
     }
+
+    // createLocation = async (newLocation) => {
+    //     try {
+    //         const location = await this.dao.createLocation(newLocation)
+    //         return {
+    //             ok: true,
+    //             status: 201,
+    //             body: location
+    //         }
+    //     } catch (e) {
+    //         return {
+    //             ok: false,
+    //             status: 400
+    //         }
+    //     }
+    // }
 
 
     setHikeStartPoint = async (query) => {
