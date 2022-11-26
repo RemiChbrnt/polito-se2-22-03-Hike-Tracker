@@ -12,10 +12,8 @@ exports.getHuts = async (query) => {
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
         sql = sql + filters;
-        console.log("sql " + sql);
         db.all(sql, [], async (err, rows) => {
             if (err) {
-                console.log("rows " + rows[0]);
                 console.log(err);
                 reject(400);
                 return;
