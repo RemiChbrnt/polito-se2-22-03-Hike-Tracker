@@ -1,4 +1,4 @@
-import { Col, Row, Table, ListGroup, Form, Button, Container} from 'react-bootstrap';
+import { Col, Row, Table, ListGroup, Form, Button, Container, Nav} from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,20 +12,23 @@ function LinkHutToHike(props) {
     const [loggedIn, setLoggedIn]=useState(false);
     const [hutId, setHutId]=useState('');
     const [hikes, setHikes]=useState([]); 
-    const [userEmail, setUserEmail]=useState(''); 
+    
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
 
-    const getHutsByUserId = async () => {
+    const getHutsByUserId = async (userEmail) => {
         const hutsList = await API.getHutsByUserId(userEmail);
         //const hutsList = [{id: 1, name:"Rifugio La Riposa", latitude: "45.1788097585636", longitude: "7.08152295397762", country:"Italy", province:"TO", town:"Mompantero", altitude: "1000", beds:"1", food: "None", description:"Il Rifugio La Riposa si trova in località Riposa, Mompantero di Susa, a 2185 m di altitudine ed è raggiungibile anche in auto."}]
         setHuts(hutsList);
     };
 
     useEffect(() => {
+      let email=''; 
       const checkAuth = async () => {
         const user = await API.getUserInfo(); 
         if (user){
           setLoggedIn(true);
-          setUserEmail(user.email); 
+          email=user.email; 
         }
         return user;
       };
@@ -35,7 +38,7 @@ function LinkHutToHike(props) {
       }
       checkAuth().then(user=>{
         if(user){
-          getHutsByUserId();
+          getHutsByUserId(email);
           getHikes();
         }
       });
@@ -43,14 +46,17 @@ function LinkHutToHike(props) {
 
 
     return (
-      	<>{!form && 
+      	<>{!form && !error && !success &&
           <div className="container-fluid myTable">
               <HutsTable huts={huts} setForm={setForm} setHutId={setHutId}></HutsTable>
           </div>
         }
-        {form &&
-          <LinkForm setForm={setForm} hikes={hikes} hutId={hutId}/>
+        {form && !error && !success && 
+          <LinkForm setForm={setForm} hikes={hikes} hutId={hutId} setError={setError} setSuccess={setSuccess}/>
         }
+
+        {!form && error && <ErrorDisplay setError={setError} setForm={setForm} />}
+        {!form && success && <SuccessDisplay setSuccess={setSuccess} setForm={setForm}/>}
         </>
 
     );
@@ -135,12 +141,12 @@ function HutRow(props) {
   
 function LinkForm(props){
 
-  const [hikeId, setHikeId]=useState(''); 
+  const [hikeId, setHikeId]=useState(1); 
   //----- TO DO -----
   const linkHut = async (hutId, hikeId) => {
       try {
-          let params=JSON.stringify({locationId:hutId, hikeId:hikeId})
-          let res= API.linkHut(params);
+          let params=({locationId:hutId, hikeId:hikeId})
+          let res= API.linkHut(params).then(res=>{return true}).catch(error=>{return false});
           return res;
 
       } catch (err) {
@@ -154,12 +160,13 @@ function LinkForm(props){
       e.preventDefault();
       props.setForm(false);
       let result = await linkHut(props.hutId, hikeId);
-    //   if(result !== false){
-    //       props.setSuccess(true);
-    //   }
-    //   else{
-    //       props.setError(true); 
-    //   }
+
+      if(result){
+          props.setSuccess(true);
+      }
+      else{
+          props.setError(true); 
+      }
 
   };
 
@@ -188,4 +195,29 @@ function LinkForm(props){
   );
 }
 
+function ErrorDisplay(props) {
+
+  return (
+      <div className="display-container">
+          <p className="text-center">There was an error trying to send your request. Please try again.</p>
+          <div className="d-grid gap-2 mt-1">
+              <Button type="submit" className="guideBtn" borderless="true" onClick={() => { props.setError(false); props.setForm(false); }}>RETRY</Button>
+          </div>
+      </div>
+  );
+}
+
+function SuccessDisplay(props) {
+  const navigate = useNavigate();
+
+  return (
+      <div className="display-container">
+          <p className="text-center">Your submission has been sent successfully!</p>
+          <div className="d-grid gap-2 mt-1">
+              <Button type="submit" className="guideBtn" borderless="true"><Nav.Link onClick={() => { navigate('/'); props.setSuccess(false); props.setForm(false); }} style={{ color: "white" }} active>CLOSE</Nav.Link></Button>
+          </div>
+      </div>
+  );
+
+}
 export { LinkHutToHike };

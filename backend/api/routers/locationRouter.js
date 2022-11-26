@@ -19,7 +19,6 @@ router.get('/huts', [
 ],
     async (req, res) => {
 
-        console.log('aaaaaaaaaaaaaaa')
         if (req.user === undefined || req.user.role !== "hiker")
             return res.status(400).json({ error: "Unauthorized" });
 
@@ -98,6 +97,7 @@ router.get('/hutsList/:userId', [
         }
 
         const data = await service.getHutsByUserId(req.params.userId)
+        console.log('here')
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
@@ -108,8 +108,6 @@ router.post('/linkHut',[
     body('locationId').exists().isNumeric(),
     body('hikeId').exists().isNumeric(),
 ], async (req, res) => {
-
-    console.log(req.body)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });

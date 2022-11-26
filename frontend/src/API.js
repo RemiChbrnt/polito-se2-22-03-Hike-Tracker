@@ -272,7 +272,7 @@ async function createLocation(body) {
 }
 
 async function getHutsByUserId(userId) {
-    const response = await fetch(URL+`/api/huts/${userId}`, {method: 'GET', credentials: 'include'});
+    const response = await fetch(URL+`/hutsList/`+userId, {method: 'GET', credentials: 'include'});
     const hutsJson = await response.json();
     if (response.ok) {
         return hutsJson.map((r) => ({
@@ -328,14 +328,13 @@ async function linkHut(params) {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: params
+        body: JSON.stringify(params)
     });
-    let res = await response.json();
     if (response.ok) {
         return true;
     } else {
-        throw res;
+        throw false;
     }
 }
-const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId };
+const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId,  getHikesList };
 export default API;

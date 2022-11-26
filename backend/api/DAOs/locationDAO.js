@@ -155,7 +155,6 @@ exports.getHutsByUserId = async (email) => {
                 return;
             }else if (rows === undefined) { resolve(false); }
             else {
-                console.log(rows)
                 resolve(rows);
             }
         })
@@ -164,16 +163,27 @@ exports.getHutsByUserId = async (email) => {
 
 exports.linkHut = async (hikeId, locationId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO HikesHaveHuts(hikeId, locationId) VALUES(?,?)';
-        db.run(sql, [hikeId, locationId], function (err, rows) {
-            if (err) {
-                console.log(err);
-                reject(400);
-                return;
-            }
-            else {
-                resolve({id: this.lastID});
-                return;
+        const sql1='SELECT * FROM HikesHaveHuts WHERE hikeId=? AND locationId=?'; 
+        db.all(sql1, [hikeId, locationId], function(err, rows){
+            if(err){
+                reject(err); 
+                return; 
+            }else if(rows.length===0){
+                const sql2 = 'INSERT INTO HikesHaveHuts(hikeId, locationId) VALUES(?,?)';
+                db.run(sql2, [hikeId, locationId], function (err, rows) {
+                    if (err) {
+                        console.log(err);
+                        reject(400);
+                        return;
+                    }
+                    else {
+                        resolve({id: this.lastID});
+                        return;
+                    }
+                })
+            }else if(rows.length!==0){
+                reject(415);
+                return; 
             }
         })
     })
