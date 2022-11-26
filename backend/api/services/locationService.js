@@ -8,6 +8,12 @@ class LocationService {
     getHuts = async (query) => {
         try {
             const huts = await this.dao.getHuts(query);
+            if (huts.length === 0)
+                return {
+                    ok: true,
+                    status: 404,
+                    body: "No hut found"
+                }
             const message = huts.map((r) => ({
                 id: r.id,
                 name: r.name,
