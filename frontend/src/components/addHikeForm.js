@@ -213,14 +213,23 @@ function AddHikeForm(props) {
 
 
     return (
-        <Container>
-            <h2>Add a New Hike !</h2>
-            <div className="center">
-                <div className="column">
+        <Container style={{ flex: 1 }}>
+            <Row>
+                <Row>
+                    <h1>Add new hike</h1>
+                </Row>
+                <ul></ul>
+                <Row>
                     <b> Upload a GPX Track for the hike </b>
+                </Row>
+                <Row>
                     <input type="file" name="file" onChange={ev => handleFile(ev)} />
                     {invalidFileFormat && <h5 style={{ color: "#f00" }}>WARNING : Invalid format, try with a .gpx </h5>}
-                </div>
+                </Row>
+            </Row>
+            <ul></ul>
+
+            <Row>
                 <Form onSubmit={handlerSubmit} className="hike-form mt-3">
                     <Col className="form-group">
                         <Form.Label><b>Hike Title</b> <b className="asterisk-required">*</b></Form.Label>
@@ -231,13 +240,13 @@ function AddHikeForm(props) {
                     </Col>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Length (km)</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Label><b>Length</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control type="number" placeholder="Enter length" required
                                 onChange={ev => { setLength(ev.target.value); }}
                             />
                         </Col>
                         <Col>
-                            <Form.Label><b>Expected Time (hours)</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Label><b>Expected Time</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control type="number" placeholder="Enter expected time" required
                                 onChange={ev => { setExpTime(ev.target.value); }}
                             />
@@ -245,7 +254,7 @@ function AddHikeForm(props) {
                     </Row>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Ascent (m)</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Label><b>Ascent</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control type="number" placeholder="Enter ascent" required
                                 onChange={ev => { setAscent(ev.target.value); }}
                             />
@@ -259,15 +268,17 @@ function AddHikeForm(props) {
                             </Form.Select>
                         </Col>
                     </Row>
-                    <div className="form-group mt-3">
+                    <Row className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="hikeDescription">
                             <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control as="textarea" rows={2}
                                 onChange={ev => { setDescription(ev.target.value); }}
                             />
                         </Form.Group>
-                    </div>
-                    <div className="form-group mt-3">
+                    </Row>
+                    <ul></ul>
+
+                    <Row className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="hikeStartPt">
                             <Form.Label><b>Start Point</b></Form.Label>
                             <Row>
@@ -369,8 +380,9 @@ function AddHikeForm(props) {
                                 </Row>
                             </div>}
                         </Form.Group>
-                    </div>
-                    <div className="form-group mt-3">
+                    </Row>
+                    <ul></ul>
+                    <Row className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="hikeEndPt">
                             <Form.Label><b>End Point</b></Form.Label>
                             <Row>
@@ -471,12 +483,16 @@ function AddHikeForm(props) {
                                 </Row>
                             </div>}
                         </Form.Group>
-                    </div>
-                    <div className="d-grid gap-2 mt-3">
+                    </Row>
+                    <ul></ul>
+                    <Row className="d-grid gap-2 mt-3">
                         <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
-                    </div>
+                    </Row>
+                    <ul></ul>
                 </Form>
-            </div>
+                <ul></ul>
+            </Row>
+            <ul></ul>
         </Container>
     );
 }
