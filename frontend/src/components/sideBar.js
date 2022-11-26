@@ -44,7 +44,7 @@ function SideBar(props) {
 
                                     <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hike list</h5></Nav.Link>
 
-                                    <Nav.Link onClick={() => { navigate('/add-hike-description') }} onMouseOver={() => { setOver('add-hike-description') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hike-description' || over === 'add-hike-description') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add hike description</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/add-hike-description') }} onMouseOver={() => { setOver('add-hike-description') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hike-description' || over === 'add-hike-description') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add new hike</h5></Nav.Link>
 
                                     <Nav.Link onClick={() => { navigate('/add-parking-lot') }} onMouseOver={() => { setOver('add-parking-lot') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-parking-lot' || over === 'add-parking-lot') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add parking lot</h5></Nav.Link>
 
