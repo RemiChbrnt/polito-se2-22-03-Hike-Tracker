@@ -185,15 +185,3 @@ exports.setHikeEndPoint = async (hike) => {
     })
 }
 
-
-exports.clearDatabase = async () => {
-    return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM Hikes'
-        db.run(sql, [], async (err, rows) => {
-            if (err)
-                reject();
-            else
-                resolve();
-        })
-    })
-}

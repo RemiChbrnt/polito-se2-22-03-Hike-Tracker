@@ -129,8 +129,30 @@ describe("Hut tests", () => {
         }
 
     });
-});
 
+
+    test('Link a hut to a hike', async () => {
+        try {
+            const location = await LocationDao.getHutsByUserId("antonio.fracassa@live.it");
+            const locationToLink = location[0].id;
+            const result = await LocationDao.linkHut(1,locationToLink);
+            expect(result.id !== undefined).toBe(true);
+
+        } catch (err) {
+            console.log("err " + err);
+        }
+    });
+
+    test('Link a hut to a hike with non existing hike', async () => {
+        try {
+            
+            const locationToLink = 4316;
+            await LocationDao.linkHut(1,locationToLink);
+        } catch (err) {
+            expect(err).toBe(400);
+        }
+    });
+});
 
 
 
@@ -195,13 +217,14 @@ describe('Parking lot tests', () => {
 
     test('Create invalid parking lot (missing coordinates)', async () => {
         try {
-            const result = await LocationDao.addLocation(invalidParkingLot, "antonio.fracassa@live.it");
+            await LocationDao.addLocation(invalidParkingLot,"antonio.fracassa@live.it");
         } catch (err) {
-            console.log("err " + err);
             return expect(err).toEqual(400);
         }
     });
 
 
 })
+
+
 
