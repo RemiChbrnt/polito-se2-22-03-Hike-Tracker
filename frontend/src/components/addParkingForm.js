@@ -57,113 +57,116 @@ function ActiveForm(props) {
     };
 
     return (
-        <Form onSubmit={handlerSubmit} className="hike-form">
-            <div className="hike-form-group">
-                <Row>
+        <Container>
+            <h2>Add a new Parking Lot !</h2>
+            <Form onSubmit={handlerSubmit} className="hike-form">
+                <div className="hike-form-group">
+                    <Row>
+                        <div className="form-group mt-3">
+                            <Form.Group controlId='parkingTitle'>
+                                <Form.Label><b>Title</b> <b className="asterisk-required">*</b></Form.Label>
+                                <Form.Control type="text" placeholder="Enter title" required
+                                    onChange={ev => { setTitle(ev.target.value); }}
+                                />
+                            </Form.Group>
+                        </div>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group className="mb-3" controlId="parkingLatitude">
+                                    <Form.Label><b>Latitude</b> <b className="asterisk-required">*</b></Form.Label>
+                                    <Form.Control type="text" placeholder="Enter latitude" required
+                                        onChange={ev => { setLatitude(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group className="mb-3" controlId="parkingLongitude">
+                                    <Form.Label><b>Longitude</b> <b className="asterisk-required">*</b></Form.Label>
+                                    <Form.Control type="text" placeholder="Enter Longitude" required
+                                        onChange={ev => { setLongitude(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group controlId='parkingCountry'>
+                                    <Form.Label><b>Country</b> <b className="asterisk-required">*</b></Form.Label>
+                                    <Form.Control type="text" placeholder="Enter country" required
+                                        onChange={ev => { setCountry(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group controlId='parkingProvince'>
+                                    <Form.Label><b>Province</b> <b className="asterisk-required">*</b></Form.Label>
+                                    <Form.Control type="text" placeholder="Enter province" required
+                                        onChange={ev => { setProvince(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group controlId='parkingTown'>
+                                    <Form.Label><b>Town</b> <b className="asterisk-required">*</b></Form.Label>
+                                    <Form.Control type="text" placeholder="Enter town" required
+                                        onChange={ev => { setTown(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                        <Col>
+                            <div className="form-group mt-3">
+                                <Form.Group controlId='parkingAddress'>
+                                    <Form.Label><b>Address</b></Form.Label>
+                                    <Form.Control type="text" placeholder="Enter town"
+                                        onChange={ev => { setAddress(ev.target.value); }}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </Col>
+                    </Row>
                     <div className="form-group mt-3">
-                        <Form.Group controlId='parkingTitle'>
-                            <Form.Label><b>Title</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="text" placeholder="Enter title" required
-                                onChange={ev => { setTitle(ev.target.value); }}
+                        <Form.Group className="mb-3" controlId="parkingAltitude">
+                            <Form.Label><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control type="number" placeholder="Enter Altitude" required
+                                onChange={ev => { setAltitude(ev.target.value); }}
                             />
                         </Form.Group>
                     </div>
-                </Row>
-                <Row>
-                    <Col>
-                        <div className="form-group mt-3">
-                            <Form.Group className="mb-3" controlId="parkingLatitude">
-                                <Form.Label><b>Latitude</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter latitude" required
-                                    onChange={ev => { setLatitude(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="form-group mt-3">
-                            <Form.Group className="mb-3" controlId="parkingLongitude">
-                                <Form.Label><b>Longitude</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter Longitude" required
-                                    onChange={ev => { setLongitude(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <div className="form-group mt-3">
-                            <Form.Group controlId='parkingCountry'>
-                                <Form.Label><b>Country</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter country" required
-                                    onChange={ev => { setCountry(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="form-group mt-3">
-                            <Form.Group controlId='parkingProvince'>
-                                <Form.Label><b>Province</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter province" required
-                                    onChange={ev => { setProvince(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <div className="form-group mt-3">
-                            <Form.Group controlId='parkingTown'>
-                                <Form.Label><b>Town</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter town" required
-                                    onChange={ev => { setTown(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                    <Col>
-                        <div className="form-group mt-3">
-                            <Form.Group controlId='parkingAddress'>
-                                <Form.Label><b>Address</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter town"
-                                    onChange={ev => { setAddress(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Col>
-                </Row>
-                <div className="form-group mt-3">
-                    <Form.Group className="mb-3" controlId="parkingAltitude">
-                        <Form.Label><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control type="number" placeholder="Enter Altitude" required
-                            onChange={ev => { setAltitude(ev.target.value); }}
-                        />
-                    </Form.Group>
+                    <div className="form-group mt-3">
+                        <Form.Group className="mb-3" controlId="lotsNumber">
+                            <Form.Label><b>N. Lots</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control type="number" placeholder="Enter number of lots"
+                                onChange={ev => { setLotsNumber(ev.target.value); }}
+                            />
+                        </Form.Group>
+                    </div>
+                    <div className="form-group mt-3">
+                        <Form.Group className="mb-3" controlId="parkingDescription">
+                            <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control as="textarea" rows={2}
+                                onChange={ev => { setDescription(ev.target.value); }}
+                            />
+                        </Form.Group>
+                    </div>
+                    <div className="d-grid gap-2 mt-3">
+                        <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
+                    </div>
                 </div>
-                <div className="form-group mt-3">
-                    <Form.Group className="mb-3" controlId="lotsNumber">
-                        <Form.Label><b>N. Lots</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control type="number" placeholder="Enter number of lots"
-                            onChange={ev => { setLotsNumber(ev.target.value); }}
-                        />
-                    </Form.Group>
-                </div>
-                <div className="form-group mt-3">
-                    <Form.Group className="mb-3" controlId="parkingDescription">
-                        <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control as="textarea" rows={2}
-                            onChange={ev => { setDescription(ev.target.value); }}
-                        />
-                    </Form.Group>
-                </div>
-                <div className="d-grid gap-2 mt-3">
-                    <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
-                </div>
-            </div>
-        </Form>
+            </Form>
+        </Container>
     );
 }
 
