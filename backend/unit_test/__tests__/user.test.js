@@ -1,10 +1,11 @@
-const { login, signup, clearDatabase, getPreferences, createPreferences } = require('../../api/DAOs/userDAO')
+const { login, signup, getPreferences, createPreferences } = require('../../api/DAOs/userDAO')
+const { resetUsers } = require('../../db/dbreset');
 const SECONDS = 1000;
 jest.setTimeout(20 * SECONDS);
 
 describe('User API tests', () => {
     beforeEach(() => {
-        clearDatabase();
+        resetUsers();
     });
 
     test('signup should create a new entry in the Db and return true', async () => {

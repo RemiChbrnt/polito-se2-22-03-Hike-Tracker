@@ -10,8 +10,8 @@ function HutFilterForm(props) {
     const [province, setProvince] = useState("");
     const [town, setTown] = useState("");
     const [address, setAddress] = useState("");
-    const [minAltitude, setMinAltitude] = useState();
-    const [maxAltitude, setMaxAltitude] = useState();
+    const [minAltitude, setMinAltitude] = useState("");
+    const [maxAltitude, setMaxAltitude] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -39,11 +39,11 @@ function HutFilterForm(props) {
         if (address !== "") {
             filters.push({ key: "address", value: address.toLocaleLowerCase() });
         }
-        if (maxAltitude !== undefined) {
-            filters.push({ key: "altitude", value: maxAltitude });
+        if (maxAltitude !== "") {
+            filters.push({ key: "maxAltitude", value: maxAltitude });
         }
-        if (minAltitude !== undefined) {
-            filters.push({ key: "altitude", value: minAltitude });
+        if (minAltitude !== "") {
+            filters.push({ key: "minAltitude", value: minAltitude });
         }
 
         props.setFilters(JSON.stringify(filters));

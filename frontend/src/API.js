@@ -101,9 +101,25 @@ async function getAllHikes(filters) {
     }
 }
 
+async function getHikesList() {
+    // call: GET /api/hikes
+    const response = await fetch(URL + '/hikes', {
+        credentials: 'include',
+    });
+    const hikesJson = await response.json();
+    if (response.ok) {
+        return hikesJson.map((r) => ({
+            id: r.id,
+            title: r.title,
+        }))
+    } else {
+        throw hikesJson;
+    }
+}
+
 
 async function createHike(body) {
-    console.log("body " + JSON.stringify(body));
+
     const response = await fetch(URL + '/hikes', {
         method: "POST",
         headers: {
@@ -118,24 +134,6 @@ async function createHike(body) {
         return hike;
     } else {
         throw hike;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
-    }
-}
-
-async function createLocation(body) {
-    // console.log("body " + JSON.stringify(body));
-    const response = await fetch(URL + '/locations', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(body)
-    });
-    const location = await response.json();
-    if (response.ok) {
-        return location;
-    } else {
-        throw location;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
 }
 
@@ -194,7 +192,7 @@ async function setHikeEndPoint(id, endPt) {
 
 
 
-/* hut API */
+/* location API */
 
 /**
  * Function to get the huts, based on some filtering 
@@ -261,46 +259,56 @@ async function getHutsAndParkingLots() {
 }
 
 
+/**
+ * 
+ * @param {*} body contains the body to add a new location; depending on the type it creates either just a location or a huts or a parking lot
+ * @returns the location created on success, 401 on error
+ */
+async function createLocation(body) {
 
-
-
-
-async function addHut(params) {
-    const response = await fetch(URL + '/addHut', {
+    const response = await fetch(URL + '/locations', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: params
+        body: JSON.stringify(body)
     });
-    let res = await response.json();
+
+    const location = await response.json();
+
     if (response.ok) {
-        return true;
+        return location;
     } else {
-        throw res;
+        throw location;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
 }
 
-async function addParking(params) {
-    const response = await fetch(URL + '/parking', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: params
-    });
-    let res = await response.json();
+async function getHutsByUserId(userId) {
+    const response = await fetch(URL + `/hutsList/` + userId, { method: 'GET', credentials: 'include' });
+    const hutsJson = await response.json();
     if (response.ok) {
-        return true;
+        return hutsJson.map((r) => ({
+            id: r.id,
+            name: r.name,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            country: r.country,
+            province: r.province,
+            town: r.town,
+            altitude: r.altitude,
+            beds: r.beds,
+            food: r.food,
+            description: r.description
+        }))
     } else {
-        throw res;
+        throw hutsJson;
     }
+
 }
 
-async function getPreferences(email) {
-    const response = await fetch(URL + '/user?role=hiker', {
+async function getPreferences() {
+    const response = await fetch(URL + '/preferences', {
         credentials: 'include'
     });
     let res = await response.json();
@@ -311,7 +319,7 @@ async function getPreferences(email) {
 }
 
 async function createPreferences(preferences) {
-    const response = await fetch(URL + '/user?role=hiker', {
+    const response = await fetch(URL + '/preferences', {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -326,5 +334,20 @@ async function createPreferences(preferences) {
         throw res;
 }
 
-const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, addHut, addParking, getPreferences, createPreferences, createHike, createLocation };
+async function linkHut(params) {
+    const response = await fetch(URL + '/linkHut', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(params)
+    });
+    if (response.ok) {
+        return true;
+    } else {
+        throw false;
+    }
+}
+const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
 export default API;

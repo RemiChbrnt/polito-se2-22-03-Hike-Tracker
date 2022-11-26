@@ -1,18 +1,18 @@
 'use strict';
 const db = require('../../db/db');
 
-exports.getHuts = async (query) => {
+exports.getHuts = async (query, email) => {
     return new Promise((resolve, reject) => {
         let sql =
             `SELECT * from Locations
             LEFT JOIN Huts ON Locations.id = Huts.locationId
-            WHERE type="hut"`
+            WHERE type="hut" AND author = ?`
         let filters = "";
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
         sql = sql + filters;
-        db.all(sql, [], async (err, rows) => {
+        db.all(sql, [email], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
@@ -33,20 +33,21 @@ exports.generateHutFilters = (query) => {
     if (query.province !== undefined) filters = filters + ` province   = '${query.province}' AND`
     if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
     if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
-    if (query.altitude !== undefined) filters = filters + ` altitude = ${query.altitude} AND`
+    if (query.minAltitude !== undefined) filters = filters + ` altitude >= ${query.minAltitude} AND`
+    if (query.maxAltitude !== undefined) filters = filters + ` altitude <= ${query.maxAltitude} AND`
     filters = filters + " 1"
     return filters;
 }
 
 
 
-exports.getHutsAndParkingLots = async () => {
+exports.getHutsAndParkingLots = async (email) => {
     return new Promise((resolve, reject) => {
         let sql =
             `SELECT * from Locations            
-            WHERE type="hut" OR type="parkinglot"`
+            WHERE (type="hut" OR type="parkinglot") AND author=?`
 
-        db.all(sql, [], async (err, rows) => {
+        db.all(sql, [email], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
@@ -59,19 +60,20 @@ exports.getHutsAndParkingLots = async () => {
 }
 
 
-
-exports.addHut = async (newHut) => {
+exports.addLocation = async (newLocation, email) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address) VALUES(?,"hut",?,?,?,?,?,?,?)';
+        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
-            newHut.name,
-            newHut.latitude,
-            newHut.longitude,
-            newHut.altitude,
-            newHut.country,
-            newHut.province,
-            newHut.town,
-            newHut.address
+            newLocation.name,
+            newLocation.type,
+            newLocation.latitude,
+            newLocation.longitude,
+            newLocation.altitude,
+            newLocation.country,
+            newLocation.province,
+            newLocation.town,
+            newLocation.address,
+            email
         ], async function (err) {
             if (err) {
                 console.log(err);
@@ -79,26 +81,38 @@ exports.addHut = async (newHut) => {
                 return;
             }
             else {
+                if (newLocation.type === "hut")
+                    addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description)
+                if (newLocation.type === "parkinglot")
+                    addParking(this.lastID, newLocation.lotsNumber, newLocation.description)
+                newLocation.id = this.lastID;
+                resolve(newLocation);
+                return;
+            }
+        })
+    })
+}
 
-                const lastLocationID = this.lastID;
-                const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description) VALUES (?,?,?,?)';
-                db.run(sql2, [
-                    lastLocationID,
-                    newHut.numberOfBeds,
-                    newHut.food,
-                    newHut.description
-                ], async function (err) {
-                    if (err) {
-                        console.log(err);
-                        // Revert to keep database coherent          
-                        db.run('DELETE FROM Locations WHERE id = ?', [lastLocationID]);
-                        reject(400);
-                        return;
-                    } else {
-                        resolve(201);
-                        return;
-                    }
-                })
+
+const addHut = async function (id, numberOfBeds, food, description) {
+    return new Promise((resolve, reject) => {
+
+        const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description) VALUES (?,?,?,?)';
+        db.run(sql2, [
+            id,
+            numberOfBeds,
+            food,
+            description
+        ], async function (err) {
+            if (err) {
+                console.log(err);
+                // Revert to keep database coherent          
+                db.run('DELETE FROM Locations WHERE id = ?', [id]);
+                reject(400);
+                return;
+            } else {
+                resolve(201);
+                return;
             }
         })
     })
@@ -107,81 +121,71 @@ exports.addHut = async (newHut) => {
 
 
 
-exports.addParking = async (newParking) => {
+const addParking = async function (id, lotsNumber, description) {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address) VALUES(?,"parkinglot",?,?,?,?,?,?,?)';
+        const sql = 'INSERT INTO ParkingLots(locationID, description, lotsNumber) VALUES(?,?,?)';
         db.run(sql, [
-            newParking.name,
-            newParking.latitude,
-            newParking.longitude,
-            newParking.altitude,
-            newParking.country,
-            newParking.province,
-            newParking.town,
-            newParking.address
+            id,
+            description,
+            lotsNumber
         ], async function (err) {
             if (err) {
-                console.log(err);
+                //revert in case of error
+                db.run('DELETE FROM Locations WHERE id=?', [id]);
                 reject(400);
                 return;
             }
             else {
-                const sql2 = 'INSERT INTO ParkingLots(locationID, description, lotsNumber) VALUES(?,?,?)';
-                db.run(sql2, [
-                    this.lastID,
-                    newParking.description,
-                    newParking.lotsNumber
-                ], async function (err) {
+                resolve(201);
+                return;
+            }
+        })
+    })
+}
+
+
+exports.getHutsByUserId = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql =
+            `SELECT * from Locations
+             LEFT JOIN Huts ON Locations.id = Huts.locationId
+             WHERE type="hut" AND author=? `
+        db.all(sql, [email], async (err, rows) => {
+            if (err) {
+                reject();
+                return;
+            }else if (rows === undefined) { resolve(false); }
+            else {
+                resolve(rows);
+            }
+        })
+    })
+}
+
+exports.linkHut = async (hikeId, locationId) => {
+    return new Promise((resolve, reject) => {
+        const sql1='SELECT * FROM HikesHaveHuts WHERE hikeId=? AND locationId=?'; 
+        db.all(sql1, [hikeId, locationId], function(err, rows){
+            if(err){
+                reject(err); 
+                return; 
+            }else if(rows.length===0){
+                const sql2 = 'INSERT INTO HikesHaveHuts(hikeId, locationId) VALUES(?,?)';
+                db.run(sql2, [hikeId, locationId], function (err, rows) {
                     if (err) {
-                        //revert in case of error
-                        db.run('DELETE FROM Locations WHERE id=?', [this.lastID]);
+                        console.log(err);
                         reject(400);
                         return;
                     }
                     else {
-                        resolve(201);
+                        resolve({id: this.lastID});
                         return;
                     }
                 })
+            }else if(rows.length!==0){
+                reject(415);
+                return; 
             }
-        })
-    })
-}
-
-
-
-
-
-
-
-exports.clearDatabase = async () => {
-    return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM Huts'
-        db.run(sql, [], async (err) => {
-            if (err)
-                reject();
-            else
-                resolve();
-        })
-    }).then(() => {
-        return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM ParkingLots'
-            db.run(sql, [], async (err) => {
-                if (err)
-                    reject();
-                else
-                    resolve();
-            })
-        })
-    }).then(() => {
-        return new Promise((resolve, reject) => {
-            const sql = 'DELETE FROM Locations WHERE id != 1 AND id != 2'
-            db.run(sql, [], async (err) => {
-                if (err)
-                    reject();
-                else
-                    resolve();
-            })
         })
     })
 }

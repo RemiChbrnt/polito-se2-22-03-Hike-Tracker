@@ -12,6 +12,17 @@ function SideBar(props) {
     const [over, setOver] = useState("");
     const navigate = useNavigate();
 
+    const hoverButtonStyle = {
+        color: "black",
+        backgroundColor: "white",
+        paddingLeft: "5px"
+    }
+    const normalButtonStyle = {
+        color: "white",
+        backgroundColor: "#00706c",
+        paddingLeft: "5px"
+    }
+
     return (
         <Container>
             <Navbar.Toggle aria-controls={"offcanvasNavbar-expand-xxl"} />
@@ -62,7 +73,7 @@ function SideBar(props) {
                                     <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                     <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                     <ul></ul>
-                                    <Button onClick={() => { props.setUser(undefined) }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                    <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                 </Nav>
                             </Offcanvas.Body>
                             :
@@ -105,8 +116,22 @@ function SideBar(props) {
                                                 <Button onClick={() => { props.setUser(undefined) }} variant='danger'><h4><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</h4></Button>
                                             </Nav>
                                         </Offcanvas.Body>
-                                        : false
-                }
+                                        : props.user.role === "hiker" ?
+                                            <Offcanvas.Body> {/*HIKER*/}
+                                                <Nav className="justify-content-end flex-grow-1 pe-3">
+
+                                                    <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hike list</h5></Nav.Link>
+
+                                                    <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hut list</h5></Nav.Link>
+                                                    <ul></ul>
+
+                                                    <Nav.Link onClick={() => { navigate('/hiker/personal-page') }}><i class="bi bi-gear-fill text-white"></i></Nav.Link>
+
+                                                    <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                </Nav>
+                                            </Offcanvas.Body>
+                                            : false
+                    }
 
             </Navbar.Offcanvas>
         </Container>

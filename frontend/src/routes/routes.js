@@ -7,11 +7,11 @@ import { AddParkingForm } from "../components/addParkingForm";
 import { AddPointForm } from "../components/addPointForm";
 import { AddHutForm } from "../components/addHutForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
-import { HutListPage } from "../screens/hutListPage";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
 
-import Hiker  from "../screens/hiker.js";
+import { HutListPage } from "../screens/hutListPage";
+import Hiker from "../screens/hiker.js";
 import Home from "../screens/home.js";
 
 
@@ -40,8 +40,8 @@ const routes = [
     {
         path: "/hiker/personal-page",
         key: "hiker-personal-page",
-        screen: function(props, setProps) {
-            return <HikerPersonalPage props={props} setProps={setProps}/>
+        screen: function (props, setProps) {
+            return <HikerPersonalPage props={props} setProps={setProps} />
         }
     },
     {
@@ -74,7 +74,7 @@ const routes = [
                 </Container>
             );
         }
-    }, 
+    },
     {
         path: "/add-parking-lot",
         key: "add-parking-lot",
@@ -103,7 +103,7 @@ const routes = [
         path: "/link-hut-to-hike",
         key: "link-hut-to-hike",
         screen: function (user, props, setProps) {
-            return <LinkHutToHike props={props} setProps={setProps} />
+            return <LinkHutToHike user={user} props={props} setProps={setProps} />
         }
     },
     {

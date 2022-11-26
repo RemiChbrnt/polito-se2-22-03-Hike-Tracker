@@ -66,7 +66,7 @@ app.use(passport.authenticate('session'));
 /* Here we decide which information should be stored during each session.
  * To do so, we use the serializeUser() and deserializeUser() methods,
  * which take the specified subset of user information and store them
- * on req.session.passport (or retrieves them, with deserializeUser()).
+ * on req.passport (or retrieves them, with deserializeUser()).
  * Note that the deserializeUser() can only access the information
  * that have been serialized, and uses them to return a User object,
  * which will be accessible to every authenticated request to the server. 
@@ -83,16 +83,6 @@ passport.deserializeUser(function (user, callback) {
      */
 });
 
-/* The isLoggedIn middleware will be passed to every protected API,
- * in order to prevent unauthenticated users to access them.
- */
-
-const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    return res.status(401).json({ error: 'Not logged in' });
-}
 /* --------------------------------------------------------- */
 
 /* AUTHENTICATION */
