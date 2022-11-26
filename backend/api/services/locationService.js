@@ -127,9 +127,16 @@ class LocationService {
                 body: res
             }
         } catch (e) {
-            return {
-                ok: false,
-                status: 400
+            if (e === 415) {
+                return {
+                    ok: false,
+                    status: 415
+                }
+            } else {
+                return {
+                    ok: false,
+                    status: 400
+                }
             }
         }
     }

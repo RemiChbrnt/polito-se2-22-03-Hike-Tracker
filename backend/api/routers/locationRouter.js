@@ -98,6 +98,7 @@ router.get('/hutsList/:userId', isLoggedIn, [
         }
 
         const data = await service.getHutsByUserId(req.params.userId)
+        console.log('here')
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
@@ -108,8 +109,6 @@ router.post('/linkHut', isLoggedIn, [
     body('locationId').exists().isNumeric(),
     body('hikeId').exists().isNumeric(),
 ], async (req, res) => {
-
-    console.log(req.body)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
