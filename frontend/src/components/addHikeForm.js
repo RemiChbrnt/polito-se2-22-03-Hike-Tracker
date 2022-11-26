@@ -212,8 +212,31 @@ function AddHikeForm(props) {
                 var endPointCoordinates = converted.features[0].geometry.coordinates[converted.features[0].geometry.coordinates.length - 1];
                 setAddressFromCoordinates(startPointCoordinates, true);
                 setAddressFromCoordinates(endPointCoordinates, false);
+                const startMatchingLocations = findMatchingLocation(startPointCoordinates);
+                const endMatchingLocations = findMatchingLocation(endPointCoordinates);
             }
         }
+    }
+
+    // A function that will search within the existing locations if one could match coordinates
+    const findMatchingLocation = (coords) => {
+        let matchingLocations = [];
+        // Checking if a location exists close to the given
+        if(Array.isArray(locationList) && Array.isArray(coords)){
+            const minLat = coords[1]-0.001;
+            const maxLat = coords[1]+0.001;
+            const minLon = coords[0]-0.001;
+            const maxLon = coords[0]+0.001;
+            for(let i = 0; i<locationList.length; i++){
+                console.log(locationList[i]);
+                // Checking all lat/long constraints
+                if(locationList[i].latitude > minLat && locationList[i].latitude < maxLat && locationList[i].longitude > minLon && locationList[i].latitude < maxLon){
+                    matchingLocations.push(i);
+                }
+            }
+        }
+        console.log(matchingLocations);
+        return matchingLocations;
     }
 
 
