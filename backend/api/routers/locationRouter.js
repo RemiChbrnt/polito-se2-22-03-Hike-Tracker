@@ -73,6 +73,8 @@ router.post('/locations', isLoggedIn, [
     body('description').optional({ nullable: true }).isString()
 ], async (req, res) => {
     const errors = validationResult(req);
+    if(req.user.role!=='guide')
+        return res.status(403).json({ errors: "Only guides can access this feature"})
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
@@ -109,6 +111,9 @@ router.post('/linkHut', isLoggedIn, [
     body('locationId').exists().isNumeric(),
     body('hikeId').exists().isNumeric(),
 ], async (req, res) => {
+
+    if(req.user.role!=='guide')
+        return res.status(403).json({ errors: "Only guides can access this feature"})
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });

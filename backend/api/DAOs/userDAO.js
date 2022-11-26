@@ -137,25 +137,4 @@ exports.getPreferences = async (email) => {
 }
 
 
-exports.clearDatabase = async () => {
-    return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM Users WHERE email!="maurizio.merluzzo@donkeykong.com"'
-        db.run(sql, [], async (err, rows) => {
-            if (err) console.log(err)
-            if (err)
-                reject();
-            else {
-                const sql1 = 'DELETE FROM Preferences'
-                db.run(sql1, [], async (err, rows) => {
-                    if (err) console.log(err)
-                    if (err)
-                        reject();
-                    else {
-                        resolve();
-                    }
-                })
-            }
-        })
-    })
-}
 

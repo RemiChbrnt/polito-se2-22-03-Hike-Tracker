@@ -2,6 +2,7 @@ const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const { INTERNAL } = require('sqlite3')
+const { resetLocations } = require('../db/dbreset.js')
 chai.use(chaiHttp)
 chai.should()
 
@@ -22,24 +23,27 @@ describe('Testing all the operations on locations', function () {
         //         phoneNumber: '2313124214'
         //     })
         //login
-        // await agent
-        //     .post('/api/login')
-        //     .set('content-type', 'application/json')
-        //     .send({
-        //         email: 'antonio.fracassa@live.it',
-        //         password: 'testPassword2'
-        //     })
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+            })
+        await resetLocations()
     })
     after(async () => {
         //maybe delete
+        
     })
 
-    it('POST /api/parking with erroneous latitude', async () => {
+    it('POST /api/locations with erroneous latitude', async () => {
         const result = await agent
-            .post('/api/parking')
+            .post('/api/locations')
             .set('content-type', 'application/json')
             .send({
                 name: 'Test',
+                type: 'parkinglot',
                 latitude: 'a',
                 longitude: '11',
                 country: 'Italy',
@@ -53,12 +57,13 @@ describe('Testing all the operations on locations', function () {
         result.should.have.status(422)
     })
 
-    it('POST /api/parking with negative lotsNumber', async () => {
+    it('POST /api/locations with negative lotsNumber', async () => {
         const result = await agent
-            .post('/api/parking')
+            .post('/api/locations')
             .set('content-type', 'application/json')
             .send({
                 name: 'Test',
+                type: 'parkinglot',
                 latitude: 'a',
                 longitude: '11',
                 country: 'Italy',
@@ -72,12 +77,13 @@ describe('Testing all the operations on locations', function () {
         result.should.have.status(422)
     })
 
-    it('POST /api/parking', async () => {
+    it('POST /api/locations', async () => {
         const result = await agent
-            .post('/api/parking')
+            .post('/api/locations')
             .set('content-type', 'application/json')
             .send({
                 name: 'Test',
+                type: 'parkinglot',
                 latitude: '11',
                 longitude: '11',
                 country: 'Italy',
@@ -89,6 +95,6 @@ describe('Testing all the operations on locations', function () {
                 lotsNumber: '10'
               })
         result.should.have.status(201)
-        expect(result.body).deep.equal({})
+        expect(result.body.id!==undefined).deep.equal(true)
     })
 })
