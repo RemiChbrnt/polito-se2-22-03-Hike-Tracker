@@ -1,5 +1,5 @@
 import { Form, Button, Container, Row, Col, Collapse } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toGeoJson from '@mapbox/togeojson'
 import { DOMParser } from 'xmldom'
@@ -97,13 +97,18 @@ function AddHikeForm(props) {
 
 
     // Start and End point selection
-    const [openStart, setOpenStart] = useState(false);
+    const [openStart, setOpenStart] = useState(true);
     const [startPoint, setStartPoint] = useState();
 
-    const [openEnd, setOpenEnd] = useState(false);
+    const [openEnd, setOpenEnd] = useState(true);
     const [endPoint, setEndPoint] = useState();
 
     const [locationList, setLocationList] = useState([]);
+
+    useEffect(() => {
+        API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); 
+    }, [])
+    
 
     const handlerSubmit = async (e) => {
         e.preventDefault();
@@ -283,29 +288,37 @@ function AddHikeForm(props) {
                             <Form.Label><b>Start Point</b></Form.Label>
                             <Row>
                                 <Col>
-                                    <Button onClick={() => { setOpenStart(!openStart); setStartPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
+                                    <Button onClick={() => setOpenStart(true)}
                                         aria-controls="example-collapse-text"
-                                        aria-expanded={openStart} variant="success" size="sm">
-                                        {!openStart ?
-                                            <h5 className="text-white"> Choose the Start Point from existing points</h5>
-                                            :
-                                            <h5 className="text-white"> Insert a new point as the Start Point</h5>
-                                        }
+                                        aria-expanded={openStart} variant="success" size="sm"
+                                        style= {!openStart? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
+                                            {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
+                                            Choose the Start Point from existing points
                                     </Button>
                                 </Col>
+                                <Col>
+                                    <Button onClick={() => setOpenStart(false)}
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={openStart} variant="success" size="sm"
+                                        style={openStart? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
+                                            {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
+                                            Insert a new point as the Start Point
+                                    </Button>
+                                </Col>
+                                <Col/>
                             </Row>
-                            <Row>
+                           {openStart && <Row className="hike-form-group">
                                 <Collapse in={openStart}>
                                     <Form.Group>
                                         <Form.Select value={startPoint}
                                             onChange={e => setStartPoint(e.target.value)}
-                                            aria-label="region" size="lg">
+                                            aria-label="region" size="md">
                                             <option value={undefined}>Select the Start Point</option>
                                             {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
                                         </Form.Select>
                                     </Form.Group>
                                 </Collapse>
-                            </Row>
+                            </Row>}
                             {!openStart && <div>
                                 <Row>
                                     <Col>
@@ -383,33 +396,41 @@ function AddHikeForm(props) {
                     </Row>
                     <ul></ul>
                     <Row className="form-group mt-3">
-                        <Form.Group className="mb-3" controlId="hikeEndPt">
-                            <Form.Label><b>End Point</b></Form.Label>
+                        <Form.Group className="mb-3" controlId="hikeStartPt">
+                            <Form.Label><b>Start Point</b></Form.Label>
                             <Row>
                                 <Col>
-                                    <Button onClick={() => { setOpenEnd(!openEnd); setEndPoint(); API.getHutsAndParkingLots().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); }}
+                                    <Button onClick={() => setOpenEnd(true)}
                                         aria-controls="example-collapse-text"
-                                        aria-expanded={openEnd} variant="success" size="sm">
-                                        {!openStart ?
-                                            <h5 className="text-white"> Choose the End Point from existing points</h5>
-                                            :
-                                            <h5 className="text-white"> Insert a new point as the End Point</h5>
-                                        }
+                                        aria-expanded={openEnd} variant="success" size="sm"
+                                        style= {!openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
+                                            {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
+                                            Choose the Start Point from existing points
                                     </Button>
                                 </Col>
+                                <Col>
+                                    <Button onClick={() => setOpenEnd(false)}
+                                        aria-controls="example-collapse-text"
+                                        aria-expanded={openEnd} variant="success" size="sm"
+                                        style={openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
+                                            {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
+                                            Insert a new point as the Start Point
+                                    </Button>
+                                </Col>
+                                <Col/>
                             </Row>
-                            <Row>
+                            {openEnd && <Row className="hike-form-group">
                                 <Collapse in={openEnd}>
                                     <Form.Group>
                                         <Form.Select value={endPoint}
                                             onChange={e => setEndPoint(e.target.value)}
-                                            aria-label="region" size="lg">
+                                            aria-label="region" size="md">
                                             <option value={undefined}>Select the Arrival Point</option>
                                             {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
                                         </Form.Select>
                                     </Form.Group>
                                 </Collapse>
-                            </Row>
+                            </Row>}
                             {!openEnd && <div>
                                 <Row>
                                     <Col>
