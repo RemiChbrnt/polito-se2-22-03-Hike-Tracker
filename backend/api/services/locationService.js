@@ -5,9 +5,9 @@ class LocationService {
         this.dao = dao
     }
 
-    getHuts = async (query, email) => {
+    getHuts = async (query) => {
         try {
-            const huts = await this.dao.getHuts(query, email);
+            const huts = await this.dao.getHuts(query);
             const message = huts.map((r) => ({
                 id: r.id,
                 name: r.name,

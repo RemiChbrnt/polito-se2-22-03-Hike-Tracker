@@ -1,19 +1,21 @@
 'use strict';
 const db = require('../../db/db');
 
-exports.getHuts = async (query, email) => {
+exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
         let sql =
             `SELECT * from Locations
             LEFT JOIN Huts ON Locations.id = Huts.locationId
-            WHERE type="hut" AND author = ?`
+            WHERE type="hut"`
         let filters = "";
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
         sql = sql + filters;
-        db.all(sql, [email], async (err, rows) => {
+        console.log("sql " + sql);
+        db.all(sql, [], async (err, rows) => {
             if (err) {
+                console.log("rows " + rows[0]);
                 console.log(err);
                 reject(400);
                 return;
@@ -154,7 +156,7 @@ exports.getHutsByUserId = async (email) => {
             if (err) {
                 reject();
                 return;
-            }else if (rows === undefined) { resolve(false); }
+            } else if (rows === undefined) { resolve(false); }
             else {
                 resolve(rows);
             }
@@ -164,12 +166,12 @@ exports.getHutsByUserId = async (email) => {
 
 exports.linkHut = async (hikeId, locationId) => {
     return new Promise((resolve, reject) => {
-        const sql1='SELECT * FROM HikesHaveHuts WHERE hikeId=? AND locationId=?'; 
-        db.all(sql1, [hikeId, locationId], function(err, rows){
-            if(err){
-                reject(err); 
-                return; 
-            }else if(rows.length===0){
+        const sql1 = 'SELECT * FROM HikesHaveHuts WHERE hikeId=? AND locationId=?';
+        db.all(sql1, [hikeId, locationId], function (err, rows) {
+            if (err) {
+                reject(err);
+                return;
+            } else if (rows.length === 0) {
                 const sql2 = 'INSERT INTO HikesHaveHuts(hikeId, locationId) VALUES(?,?)';
                 db.run(sql2, [hikeId, locationId], function (err, rows) {
                     if (err) {
@@ -178,13 +180,13 @@ exports.linkHut = async (hikeId, locationId) => {
                         return;
                     }
                     else {
-                        resolve({id: this.lastID});
+                        resolve({ id: this.lastID });
                         return;
                     }
                 })
-            }else if(rows.length!==0){
+            } else if (rows.length !== 0) {
                 reject(415);
-                return; 
+                return;
             }
         })
     })

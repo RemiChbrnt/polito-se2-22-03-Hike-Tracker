@@ -16,7 +16,7 @@ router.get('/huts', isLoggedIn, [
     query('town').optional({ nullable: true }).isString({ min: 0 }),
     query('address').optional({ nullable: true }).isString({ min: 0 }),
     query('minAltitude').optional({ nullable: true }).isFloat(),
-    query('maxAltitude').optional({ nullable: true }).isFloat(),
+    query('maxAltitude').optional({ nullable: true }).isFloat()
 ],
     async (req, res) => {
 
@@ -28,7 +28,7 @@ router.get('/huts', isLoggedIn, [
             return res.status(400).json({ error: errors.array() });
         }
 
-        const data = await service.getHuts(req.query, req.user.email);
+        const data = await service.getHuts(req.query);
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }

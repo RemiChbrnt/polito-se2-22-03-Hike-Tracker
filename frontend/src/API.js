@@ -145,17 +145,17 @@ async function createHike(body) {
  */
 async function setHikeStartPoint(id, startPt) {
     // call: PUT /api/:hike/:startPt
-    
+
     const response = await fetch(URL + '/hike-startPt/' + id + '/' + startPt, {
         method: "PUT",
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-          },
+        },
     });
     if (response.ok)
-        return null;        
-    else{
+        return null;
+    else {
         const result = await response.json();
         throw result;
     }
@@ -177,11 +177,11 @@ async function setHikeEndPoint(id, endPt) {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-          },
+        },
     });
     if (response.ok)
-        return null;        
-    else{
+        return null;
+    else {
         const result = await response.json();
         throw result;
     }
@@ -223,7 +223,7 @@ async function getHuts(filters) {
             province: r.province,
             town: r.town,
             address: r.address,
-            altitude: r.altitude
+            altitude: r.altitude,
         }))
     } else {
         throw hutsJson;
