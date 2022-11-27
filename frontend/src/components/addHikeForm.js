@@ -273,13 +273,13 @@ function AddHikeForm(props) {
                     </Col>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Length</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Label><b>Length (km)</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control type="number" placeholder="Enter length" required
                                 onChange={ev => { setLength(ev.target.value); }}
                             />
                         </Col>
                         <Col>
-                            <Form.Label><b>Expected Time</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Label><b>Expected Time (hours)</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control type="number" placeholder="Enter expected time" required
                                 onChange={ev => { setExpTime(ev.target.value); }}
                             />
@@ -287,7 +287,7 @@ function AddHikeForm(props) {
                     </Row>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Ascent</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Label><b>Ascent (m)</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control type="number" placeholder="Enter ascent" required
                                 onChange={ev => { setAscent(ev.target.value); }}
                             />
@@ -381,9 +381,9 @@ function AddHikeForm(props) {
                                         <Col>
                                             <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
                                             <Form.Select required onChange={ev => { setStartPtType(ev.target.value); }}>
-                                                <option>generic</option>
-                                                <option>parkinglot</option>
-                                                <option>hut</option>
+                                                <option value="generic">Generic</option>
+                                                <option value="parkinglot">Parking Lot</option>
+                                                <option value="hut">Hut</option>
                                             </Form.Select>
                                         </Col>
 
@@ -524,9 +524,9 @@ function AddHikeForm(props) {
                                         <Col>
                                             <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
                                             <Form.Select required onChange={ev => { setEndPtType(ev.target.value); }}>
-                                                <option>generic</option>
-                                                <option>parkinglot</option>
-                                                <option>hut</option>
+                                                <option value="generic">Generic</option>
+                                                <option value="parkinglot">Parking Lot</option>
+                                                <option value="hut">Hut</option>
                                             </Form.Select>
                                         </Col>
                                     </Row>
