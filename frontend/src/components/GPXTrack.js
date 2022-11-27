@@ -5,7 +5,7 @@ import * as L from 'leaflet';
 const GPXTrack = (props) => {    
     const map = useMap();
     new L.geoJSON(JSON.parse(props.geoJsonFile), {
-        style: {color: "#5B2"}
+        style: {color: "#E9B00D"}
         }
     ).addTo(map);
 }
