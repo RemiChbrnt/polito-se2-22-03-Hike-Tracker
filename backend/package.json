@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "SET NODE_ENV=development& nodemon index.js",
+        "start": "node index.js",
         "test": "SET NODE_ENV=test& jest",
         "apiTest": "SET NODE_ENV=test& .\\node_modules\\.bin\\mocha test --runInBand--timeout 10000 --exit"
     },

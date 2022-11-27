@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  frontend:
+    image: zhuxiaozhen/polito-se2-22-03-hike-tracker:frontend_v1
+    ports:
+      - "3000:3000"
+
+  backend:
+    image: zhuxiaozhen/polito-se2-22-03-hike-tracker:backend_v1
+    ports:
+      - "3001:3001"
