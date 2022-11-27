@@ -55,7 +55,21 @@ router.get('/huts-and-parking-lots',
         return res.status(data.status).end()
     })
 
+router.get('/locations',
+    async (req, res) => {
+        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
 
+        const data = await service.getLocations(req.query)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    }
+)
 
 router.post('/locations', isLoggedIn, [
     body('name').exists().isString(),

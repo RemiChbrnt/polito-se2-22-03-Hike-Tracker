@@ -117,7 +117,6 @@ async function getHikesList() {
     }
 }
 
-
 async function createHike(body) {
 
     const response = await fetch(URL + '/hikes', {
@@ -258,6 +257,36 @@ async function getHutsAndParkingLots() {
     }
 }
 
+/**
+ * 
+ * @param none; 
+ * @returns all existing locations, 400 on error
+ */
+async function getLocations() {
+    // call: GET /api/hikes
+    const response = await fetch(URL + '/locations', {
+        credentials: 'include',
+    });
+    const locationsJson = await response.json();
+    if (response.ok) {
+        return locationsJson.map((r) => ({
+            id: r.id,
+            name: r.name,
+            type: r.type,
+            latitude: r.latitude,
+            longitude: r.longitude,
+            country: r.country,
+            province: r.province,
+            town: r.town,
+            address: r.address,
+            altitude: r.altitude,
+            author: r.author
+        }))
+    } else {
+        throw locationsJson;
+    }
+}
+
 
 /**
  * 
@@ -349,5 +378,5 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, signup, getUserInfo, getAllHikes, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
+const API = { login, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
 export default API;
