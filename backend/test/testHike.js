@@ -25,6 +25,8 @@ describe('Testing all the operations on hikes', function () {
         //maybe delete
     })
 
+    let hikeId;
+
     it('POST /api/hikes + GET /api/hikes', async () => {
         const p1 = await agent
             .post('/api/locations')
@@ -69,14 +71,53 @@ describe('Testing all the operations on hikes', function () {
                 description: '',
                 track: null,
                 author: 'antonio.fracassa@live.it'
-            })     
+            })
         result.should.have.status(201)
         expect(result.body.id).not.equal(undefined)
 
         const resultGET = await agent
             .get('/api/hikes')
         expect(result.body.id).deep.equal(resultGET.body[1].id)
+        hikeId = result.body.id;
     })
+
+
+    /* ----- set start point ----- */
+
+    it('PUT /api/hike-startPt/:id/:startPt', async () => {
+        const result = await agent
+            .put('/api/hike-startPt/' + hikeId + '/2')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(200);
+    });
+
+    it('PUT /api/hike-startPt/:id/:startPt', async () => {
+        const result = await agent
+            .put('/api/hike-startPt/' + hikeId + '/wrongValue')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(422);
+    });
+
+
+    /* ----- set end point ----- */
+
+    it('PUT /api/hike-endPt/:id/:endPt', async () => {
+        const result = await agent
+            .put('/api/hike-endPt/' + hikeId + '/2')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(200);
+    });
+
+    it('PUT /api/hike-endPt/:id/:endPt', async () => {
+        const result = await agent
+            .put('/api/hike-endPt/' + hikeId + '/wrongValue')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(422);
+    });
 
 })
 
@@ -140,8 +181,24 @@ describe('Testing all the operations on hikes with wrong user', function () {
                 description: '',
                 track: null,
                 author: 'antonio.fracassa@live.it'
-            })     
+            })
         result.should.have.status(403)
     })
+
+    it('PUT /api/hike-startPt/:id/:startPt', async () => {
+        const result = await agent
+            .put('/api/hike-startPt/1/2')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(400);
+    });
+
+    it('PUT /api/hike-endPt/:id/:endPt', async () => {
+        const result = await agent
+            .put('/api/hike-endPt/1/2')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(400);
+    });
 
 })
