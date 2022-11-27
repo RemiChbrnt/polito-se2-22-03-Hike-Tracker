@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 
 import { routes, userRoutes } from './routes/routes';
@@ -15,25 +14,30 @@ import API from './API';
 function App() {
 
     const [user, setUser] = useState();
-
     const [props, setProps] = useState([]);
 
-    const [hikes, setHikes] = useState([]); /* State thst contains the hikes list */
+    useEffect(() => {
+        async function getUserSession() {
+            const user = await API.getUserInfo();
+            setUser(user);
+        }
 
+        getUserSession();
+    }, [])
 
 
     return (
         <div>
             <BrowserRouter>
-                <NavBar />
+                <NavBar user={user} setUser={setUser} />
                 <Routes>
-                    <Route path='/' element={<Home user={user} hikes={hikes} setProps={setProps} />} />
+                    <Route path='/' element={<Home user={user} setProps={setProps} />} />
                     {/*<Route path='/hike-filter-form' element={<HikeFilterForm/>}/>*/}
                     {routes.map((route) => {
                         return (<Route
                             key={route.key}
                             path={route.path}
-                            element={route.screen(props, setProps)}
+                            element={route.screen(user, props, setProps)}
                         />);
                     })
                     }

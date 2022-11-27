@@ -1,28 +1,23 @@
 'use strict'
-const sqlite = require('sqlite3')
-const { on } = require('../../index')
-const dbPath = require('../../index').databasePath
-const db = new sqlite.Database(dbPath, (err) => {
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON")
-})
+const db = require('../../db/db');
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
         let sql = 'SELECT * from Hikes'
         const filters = this.generateFilters(query);
         sql = sql + filters
-        console.log(sql)
+        // console.log(sql)
         db.all(sql, [], async (err, rows) => {
             if (err) {
+                console.log("err" + err)
                 reject()
                 return
             }
             const res = await Promise.all(
                 rows.map(async (r) => {
-                    const startLocation = await this.getLocationById(r.startPt);
-                    const endLocation = await this.getLocationById(r.endPt);
-                    const refLocations = await this.getReferenceLocations(r.id);
+                    const startLocation = await getLocationById(r.startPt);
+                    const endLocation = await getLocationById(r.endPt);
+                    const refLocations = await getReferenceLocations(r.id);
                     return {
                         id: r.id,
                         title: r.title,
@@ -33,6 +28,8 @@ exports.getHikes = async (query) => {
                         startPt: startLocation,
                         endPt: endLocation,
                         description: r.description,
+                        track: r.track,
+                        author: r.author,
                         referencePoints: refLocations,
                     }
                 })
@@ -42,79 +39,23 @@ exports.getHikes = async (query) => {
         })
     })
 }
-exports.filterByLocation = (query, hikes) => {
-    return hikes.filter((hike) => {
-        if (query.country !== undefined) {
-            if (hike.startPt.country.toLowerCase() !== query.country.toLowerCase()) return false
-        }
-        if (query.province !== undefined) {
-            if (hike.startPt.province.toLowerCase() !== query.province.toLowerCase()) return false
-        }
-        if (query.town !== undefined) {
-            if (hike.startPt.town.toLowerCase() !== query.town.toLowerCase()) return false
-        }
-        return true
-    });
+
+
+
+const getLocationById = async function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from Locations where id=?'
+        db.get(sql, [id], async (err, row) => {
+            if (err) {
+                console.log(err)
+                return null;
+            }
+            resolve(row)
+        })
+    })
 }
 
-exports.generateFilters = (query) => {
-    let filters = ""
-    if (query.minLength !== undefined || query.maxLength !== undefined ||
-        query.minAscent !== undefined || query.maxAscent !== undefined ||
-        query.minTime !== undefined || query.maxTime !== undefined ||
-        query.difficulty !== undefined) {
-        // test for an empty query, this looks awful but we cannot check for an empty object since
-        // there are also fields for the locations that are used later on.   
-        filters = " where"
-        if (query.minLength !== undefined) filters = filters + ` length > ${query.minLength} AND`
-        if (query.maxLength !== undefined) filters = filters + ` length < ${query.maxLength} AND`
-        if (query.minAscent !== undefined) filters = filters + ` ascent > ${query.minAscent} AND`
-        if (query.maxAscent !== undefined) filters = filters + ` ascent < ${query.maxAscent} AND`
-        if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
-        if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
-        if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
-        filters = filters + " 1"
-    }
-    return filters;
-}
-exports.filterByLocation = (query, hikes) => {
-    return hikes.filter((hike) => {
-        if (query.country !== undefined) {
-            if (hike.startPt.country.toLowerCase() !== query.country.toLowerCase()) return false
-        }
-        if (query.province !== undefined) {
-            if (hike.startPt.province.toLowerCase() !== query.province.toLowerCase()) return false
-        }
-        if (query.town !== undefined) {
-            if (hike.startPt.town.toLowerCase() !== query.town.toLowerCase()) return false
-        }
-        return true
-    });
-}
-
-exports.generateFilters = (query) => {
-    console.log(query);
-    let filters = ""
-    if (query.minLength !== undefined || query.maxLength !== undefined ||
-        query.minAscent !== undefined || query.maxAscent !== undefined ||
-        query.minTime !== undefined || query.maxTime !== undefined ||
-        query.difficulty !== undefined) {
-        // test for an empty query, this looks awful but we cannot check for an empty object since
-        // there are also fields for the locations that are used later on.   
-        filters = " where"
-        if (query.minLength !== undefined) filters = filters + ` length > ${query.minLength} AND`
-        if (query.maxLength !== undefined) filters = filters + ` length < ${query.maxLength} AND`
-        if (query.minAscent !== undefined) filters = filters + ` ascent > ${query.minAscent} AND`
-        if (query.maxAscent !== undefined) filters = filters + ` ascent < ${query.maxAscent} AND`
-        if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
-        if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
-        if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
-        filters = filters + " 1"
-    }
-    return filters;
-}
-
-exports.getReferenceLocations = async (id) => {
+const getReferenceLocations = async function (id) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * \
                      from Locations \
@@ -128,37 +69,116 @@ exports.getReferenceLocations = async (id) => {
         })
     })
 }
-exports.getLocationById = async (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from Locations where id=?'
-        db.get(sql, [id], async (err, row) => {
-            if (err) {
-                console.log(err)
-                return null;
-            }
-            resolve(row)
-        })
-    })
+
+
+
+exports.filterByLocation = (query, hikes) => {
+    return hikes.filter((hike) => {
+        if (query.country !== undefined) {
+            if (hike.startPt.country.toLowerCase() !== query.country.toLowerCase()) return false
+        }
+        if (query.province !== undefined) {
+            if (hike.startPt.province.toLowerCase() !== query.province.toLowerCase()) return false
+        }
+        if (query.town !== undefined) {
+            if (hike.startPt.town.toLowerCase() !== query.town.toLowerCase()) return false
+        }
+        return true
+    });
 }
+
+exports.generateFilters = (query) => {
+    let filters = ""
+    if (query.minLength !== undefined || query.maxLength !== undefined ||
+        query.minAscent !== undefined || query.maxAscent !== undefined ||
+        query.minTime !== undefined || query.maxTime !== undefined ||
+        query.difficulty !== undefined) {
+        // test for an empty query, this looks awful but we cannot check for an empty object since
+        // there are also fields for the locations that are used later on.   
+        filters = " where"
+        if (query.minLength !== undefined) filters = filters + ` length > ${query.minLength} AND`
+        if (query.maxLength !== undefined) filters = filters + ` length < ${query.maxLength} AND`
+        if (query.minAscent !== undefined) filters = filters + ` ascent > ${query.minAscent} AND`
+        if (query.maxAscent !== undefined) filters = filters + ` ascent < ${query.maxAscent} AND`
+        if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
+        if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
+        if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
+        if (query.author !== undefined) filters = filters + ` author = "${query.difficulty}" AND`
+        filters = filters + " 1"
+    }
+    return filters;
+}
+
+
+
+
+
 
 exports.createHike = async (hike) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, author) VALUES(?,?,?,?,?,1,2,?,?)';
+        const sql = 'INSERT INTO Hikes(title, length, expTime, ascent, difficulty, startPt, endPt, description, track, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
             hike.title,
             hike.length,
             hike.expTime,
             hike.ascent,
             hike.difficulty,
+            hike.startPt,
+            hike.endPt,
             hike.description,
+            hike.track,
             hike.author
-        ], async (err, rows) => {
+        ], function (err, rows) {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                resolve({ id: this.lastID });
+                return;
+            }
+        })
+    })
+}
+
+
+
+exports.setHikeStartPoint = async (hike) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET startPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.startPt,
+            hike.id
+        ], async (err) => {
             if (err) {
                 reject(400);
                 return;
             }
             else {
-                resolve(201);
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+
+
+
+exports.setHikeEndPoint = async (hike) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET endPt = ? WHERE id = ?`;
+        db.run(sql, [
+            hike.endPt,
+            hike.id
+        ], async (err) => {
+            if (err) {
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
                 return;
             }
         })

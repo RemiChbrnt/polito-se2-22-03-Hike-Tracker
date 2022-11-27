@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import API from "../API";
 
 
-const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
+const handlerSignup = async (email, fullName, password, role, phoneNumber) => {
     try {
         let body = {
             email: email,
@@ -26,7 +26,7 @@ const handlerSignup = async (email, password, fullName, role, phoneNumber) => {
 
 
 
-function SignupForm({ props, setProps }) {
+function SignupForm({ user, setUser }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -43,8 +43,10 @@ function SignupForm({ props, setProps }) {
         let result = await handlerSignup(email, fullName, password, role, phoneNumber);
         // props.setLoggedIn(true);
 
-        if (result !== false)
+        if (result !== false) {
             navigate(`/`);
+        }
+
         else
             setError(true);
     }

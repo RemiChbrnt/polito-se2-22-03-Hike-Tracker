@@ -1,13 +1,6 @@
 'use strict'
-const sqlite = require('sqlite3')
 const crypto = require('crypto');
-const dbPath = "./db/HikeTrackerDb.db"
-const db = new sqlite.Database(dbPath, (err) => {
-
-    if (err) throw err
-    db.run("PRAGMA foreign_keys = ON");
-
-})
+const db = require('../../db/db');
 
 exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {
@@ -52,7 +45,7 @@ exports.login = async (email, password) => {
 
 
 exports.signup = async (email, fullName, password, role, phoneNumber) => {
-    let salt, hash;
+    let salt, hash, query;
 
     return new Promise((resolve, reject) => {
         crypto.randomBytes(24, async (err, buf) => {
@@ -73,25 +66,18 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 
         if (phoneNumber !== undefined) {
 
-            //TABLE USERS MUST BE UPDATED TO STORE THE PHONE NUMBER
-
-
-            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
-            // db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role], (err) => {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
                 if (err)
                     reject(err);
-                else {
-                    console.log("ciao");
+                else
                     resolve(true);
-                }
+
             });
         }
         else {
-            // query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
-            let query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role], (err) => {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
                 if (err)
                     reject(err);
                 else {
@@ -110,167 +96,45 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-exports.getSKUItems = async () => {
+exports.createPreferences = async (email, ascent, duration) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from SKU_ITEM'
-        db.all(sql, [], async (err, rows) => {
+        const sql = 'INSERT INTO Preferences (email, duration, ascent) VALUES (?,?,?)'
+        db.run(sql, [email, duration, ascent], async (err, rows) => {
             if (err) {
                 reject(503)
                 return
             }
-            let list = rows.map((r) => {
-                return {
-                    RFID: r.RFID,
-                    SKUId: r.SKU_Id,
-                    Avaiable: r.avaiable,
-                    DateOfStock: r.dateOfStock,
-                }
-            })
-            resolve(list)
+            const prefs = {
+                "email": email,
+                "ascent": ascent,
+                "duration": duration,
+            }
+            resolve(prefs)
         })
     })
 }
 
-exports.getSKUItemsById = async (id) => {
+exports.getPreferences = async (email) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from SKU_ITEM WHERE SKU_Id=? and avaiable=1'
-        db.all(sql, [id], async (err, rows) => {
+        const sql = 'SELECT * FROM Preferences WHERE email=?'
+        db.get(sql, [email], async (err, row) => {
             if (err) {
                 reject(503)
                 return
             }
-            if (rows.length == 0) {
-                const check = await SkuDao.idExists(id).catch(() => reject(500));
-                if (!check) {
-                    reject(404)
-                    return
-                }
-            }
-            let list = rows.map((r) => {
-                return {
-                    RFID: r.RFID,
-                    SKUId: r.SKU_Id,
-                    Avaiable: r.avaiable,
-                    DateOfStock: r.dateOfStock,
-                }
-            })
-            resolve(list)
-        })
-    })
-}
-
-exports.getSKUItemsByRfid = async (rfid) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from SKU_ITEM WHERE RFID=?'
-        db.get(sql, [rfid], async (err, r) => {
-            if (err) {
-                reject(503)
+            if (row === undefined) {
+                resolve({})
                 return
             }
-            if (r === undefined) {
-                reject(404)
-                return
+            const prefs = {
+                "email": row.email,
+                "ascent": row.ascent,
+                "duration": row.duration,
             }
-            let res = {
-                RFID: r.RFID,
-                SKUId: r.SKU_Id,
-                Avaiable: r.avaiable,
-                DateOfStock: r.dateOfStock,
-            }
-            resolve(res)
-        })
-    })
-}
-
-exports.createSKUItem = async (RFID, SKUId, DateOfStock) => {
-    return new Promise(async (resolve, reject) => {
-        const check = await SkuDao.idExists(SKUId).catch(() => reject(503));
-        if (!check) {
-            reject(404)
-            return
-        }
-        const sql =
-            'INSERT INTO SKU_ITEM (RFID, avaiable, SKU_Id, dateOfStock) VALUES (?,0,?,?)'
-        db.get(sql, [RFID, SKUId, DateOfStock], async (err, r) => {
-            if (err) {
-
-                reject(503)
-                return
-            }
-            resolve(true)
-        })
-    })
-}
-
-exports.editSKUItem = async (oldRFID, RFID, Avaiable, DateOfStock) => {
-    return new Promise(async (resolve, reject) => {
-        const check = await this.rfidExists(oldRFID).catch(() => reject(503))
-        if (!check) {
-            reject('id not found')
-            return
-        }
-        const sql =
-            'UPDATE SKU_ITEM SET RFID=?, avaiable=?,  dateOfStock=? WHERE RFID=?'
-        db.get(
-            sql,
-            [RFID, Avaiable, DateOfStock, oldRFID],
-            async (err, r) => {
-                if (err) {
-
-                    reject(503)
-                    return
-                }
-                resolve(true)
-            }
-        )
-    })
-}
-
-exports.rfidExists = async (rfid) => {
-    return new Promise(async (resolve, reject) => {
-        const sql = 'SELECT RFID FROM SKU_ITEM WHERE RFID=?'
-        db.get(sql, [rfid], async (err, rows) => {
-            if (err) {
-                reject(false)
-                return
-            } else {
-                if (rows === undefined) resolve(false)
-                else resolve(true)
-            }
-        })
-    })
-}
-
-exports.deleteSKUItem = async (rfid) => {
-    return new Promise(async (resolve, reject) => {
-        const check = await this.rfidExists(rfid).catch(() => reject(503))
-        if (!check) {
-            reject('id not found')
-            return
-        }
-        const sql = 'DELETE FROM SKU_ITEM WHERE RFID=?'
-        db.all(sql, [rfid], (err, rows) => {
-            if (err) {
-                reject(err)
-                return
-            }
-            resolve(true)
+            resolve(prefs)
         })
     })
 }
 
 
-// module.exports = { login, signup }
+

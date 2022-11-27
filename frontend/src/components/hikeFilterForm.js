@@ -54,7 +54,7 @@ function HikeFilterForm(props) {
                             onChange={e => setDifficulty(e.target.value)}
                             aria-label="difficulty" size="lg">
                             <option>Select the Difficulty</option>
-                            <option value="Turist">Turist</option>
+                            <option value="Tourist">Tourist</option>
                             <option value="Hiker">Hiker</option>
                             <option value="Pro">Pro</option>
                         </Form.Select>
