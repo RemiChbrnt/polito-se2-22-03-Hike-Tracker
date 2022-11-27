@@ -38,6 +38,35 @@ class LocationService {
         }
     }
 
+    getLocations = async (query) => {
+        try {
+            const locations = await this.dao.getLocations(query)
+            const message = locations.map((r) => ({
+                id: r.id,
+                name: r.name,
+                type: r.type,
+                latitude: r.latitude,
+                longitude: r.longitude,
+                country: r.country,
+                province: r.province,
+                town: r.town,
+                address: r.address,
+                altitude: r.altitude,
+                author: r.author,
+            }))
+            return {
+                ok: true,
+                status: 200,
+                body: message
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
 
     getHutsAndParkingLots = async (email) => {
         try {

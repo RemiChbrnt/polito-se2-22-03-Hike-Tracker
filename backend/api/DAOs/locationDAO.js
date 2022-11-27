@@ -59,6 +59,40 @@ exports.getHutsAndParkingLots = async (email) => {
     })
 }
 
+exports.getLocations = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = 'SELECT * from Locations'
+        // const filters = this.generateFilters(query);
+        // sql = sql + filters
+        // console.log(sql)
+        db.all(sql, [], async (err, rows) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            const res = await Promise.all(
+                rows.map(async (r) => {
+                    return {
+                        id: r.id,
+                        name: r.name,
+                        type: r.type,
+                        latitude: r.latitude,
+                        longitude: r.longitude,
+                        country: r.country,
+                        province: r.province,
+                        town: r.town,
+                        address: r.address,
+                        altitude: r.altitude,
+                        author: r.author
+                    }
+                })
+            )
+            resolve(res);
+        })
+    })
+}
+
 
 exports.addLocation = async (newLocation, email) => {
     return new Promise((resolve, reject) => {
