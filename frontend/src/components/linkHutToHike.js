@@ -21,7 +21,6 @@ function LinkHutToHike(props) {
         //const hutsList = [{id: 1, name:"Rifugio La Riposa", latitude: "45.1788097585636", longitude: "7.08152295397762", country:"Italy", province:"TO", town:"Mompantero", altitude: "1000", beds:"1", food: "None", description:"Il Rifugio La Riposa si trova in località Riposa, Mompantero di Susa, a 2185 m di altitudine ed è raggiungibile anche in auto."}]
         setHuts(hutsList);
     };
-
     useEffect(() => {
       let email=''; 
       const checkAuth = async () => {
@@ -43,7 +42,6 @@ function LinkHutToHike(props) {
         }
       });
     }, [loggedIn, props.user]);
-
 
     return (
       	<>{!form && !error && !success &&
@@ -90,7 +88,6 @@ function HutsTable(props) {
 
 function HutRow(props) {
     const [show, setShow] = useState(false);
-
       return (
         <>
           <tr>
@@ -99,7 +96,7 @@ function HutRow(props) {
           <tr></tr>
           <tr id={props.hut.id} className={show? "infoVisible" : "infoHidden"}>
               <td colSpan={10} className="extraInfo">
-              <p><b>Beds: </b>{props.hut.beds}</p>
+              <p><b>Beds: </b>{props.hut.numberOfBeds}</p>
               <p><b>Food: </b>{props.hut.food}</p>
               <h6><b>Description</b></h6>
               <p>{props.hut.description}</p>
