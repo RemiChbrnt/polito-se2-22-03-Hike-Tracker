@@ -326,7 +326,7 @@ async function getHutsByUserId(userId) {
             province: r.province,
             town: r.town,
             altitude: r.altitude,
-            beds: r.beds,
+            numberOfBeds: r.numberOfBeds,
             food: r.food,
             description: r.description
         }))
