@@ -43,13 +43,35 @@ function HutCard(props) {
                 <Card.Body>
                     <Card.Title><h3 className="fw-bold">{props.hut.name}</h3></Card.Title>
                     <ListGroup variant="flush">
-                        <ListGroup.Item><span className="fw-bold">Latitude: </span>{props.hut.latitude}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Longitude: </span>{props.hut.longitude}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Country: </span>{props.hut.country}</ListGroup.Item>
+                        {/*<ListGroup.Item><span className="fw-bold">Latitude: </span>{props.hut.latitude}</ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Longitude: </span>{props.hut.longitude}</ListGroup.Item>*/}
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>
+                                    <span className="fw-bold">Number of beds: </span>{props.hut.numberOfBeds}
+                                </Col>
+                                <Col>
+                                    <span className="fw-bold">Cost: </span>{props.hut.cost}
+                                </Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Food: </span>{props.hut.food}</ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>
+                                    <span className="fw-bold">Opening time: </span>{props.hut.openingTime}
+                                </Col>
+                                <Col>
+                                    <span className="fw-bold">Closing time: </span>{props.hut.closingTime}
+                                </Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.province + ")"}, {props.hut.country}</ListGroup.Item>
+                        {/*<ListGroup.Item><span className="fw-bold">Country: </span>{props.hut.country}</ListGroup.Item>
                         <ListGroup.Item><span className="fw-bold">Province: </span>{props.hut.province}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Town: </span>{props.hut.town}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Address: </span>{props.hut.address}</ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Town: </span></ListGroup.Item>*/}
                         <ListGroup.Item><span className="fw-bold">Altitude: </span>{props.hut.altitude} m</ListGroup.Item>
+                        <ListGroup.Item>{props.hut.description}</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>
