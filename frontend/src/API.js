@@ -223,6 +223,12 @@ async function getHuts(filters) {
             town: r.town,
             address: r.address,
             altitude: r.altitude,
+            numberOfBeds: r.numberOfBeds,
+            cost: r.cost,
+            food: r.food,
+            openingTime: r.openingTime,
+            closingTime: r.closingTime,
+            description: r.description
         }))
     } else {
         throw hutsJson;

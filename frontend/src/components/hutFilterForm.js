@@ -80,7 +80,7 @@ function HutFilterForm(props) {
                     <Form.Group>
                         <h5>Number of beds: </h5>
                         <Form.Control
-                            value={latitude}
+                            value={numberOfBeds}
                             onChange={e => setNumberOfBeds(e.target.value)}
                             type='number' placeholder="Number Of Beds" size="lg" />
                     </Form.Group>
@@ -90,7 +90,7 @@ function HutFilterForm(props) {
                     <Form.Group>
                         <h5>Cost: </h5>
                         <Form.Control
-                            value={latitude}
+                            value={cost}
                             onChange={e => setCost(e.target.value)}
                             type='number' placeholder="Cost" size="lg" />
                     </Form.Group>
@@ -99,7 +99,7 @@ function HutFilterForm(props) {
                 <Row>
                     <Form.Group>
                         <h5>Food: </h5>
-                        <Form.Select value={province}
+                        <Form.Select value={food}
                             onChange={e => setFood(e.target.value)}
                             aria-label="region" size="lg">
                             <option>Select food type</option>
