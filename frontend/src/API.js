@@ -363,6 +363,36 @@ async function createPreferences(preferences) {
         throw res;
 }
 
+async function updatePreferences(newPreferences) {
+    const response = await fetch(URL + '/preferences', {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(newPreferences)
+    });
+    let res = await response.json();
+    if (response.ok)
+        return res;
+    else
+        throw res;
+}
+
+async function deletePreferences(userEmail) {
+    const response = await fetch(URL + '/preferences', {
+        method: "DELETE",
+        credentials: 'include',
+        //body: JSON.stringify(userEmail)
+    });
+    console.log(`RESPONSE: ${JSON.stringify(response)}`);
+    //let res = await response;
+    if(response.ok)
+        return true;
+    else
+        throw response.status;
+}
+
 async function linkHut(params) {
     const response = await fetch(URL + '/linkHut', {
         method: "POST",
@@ -378,5 +408,5 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
+const API = { login, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, updatePreferences, deletePreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
 export default API;

@@ -81,6 +81,36 @@ class UserService {
         }
     };
 
+    updatePreferences = async (req) => {
+        try {
+            let prefs = await this.DAO.updatePreferences(req.user.email, req.body.ascent, req.body.duration);
+            return {
+                ok: true,
+                status: 201,
+                body: prefs
+            };
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+    
+    deletePreferences = async (req) => {
+        try {
+            await this.DAO.deletePreferences(req.user.email);
+            return {
+                ok: true,
+                status: 204
+            };
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
 }
 
 module.exports = UserService

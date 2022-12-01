@@ -104,4 +104,26 @@ userRouter.get('/preferences', isLoggedIn, async (req, res) => {
         return res.status(403).json({ errors: "Invalid role selection" });
 })
 
+userRouter.put('/preferences', isLoggedIn, async (req, res) => {
+    if(req.user.role === "hiker") {
+        const data = await service.updatePreferences(req);
+        if(data.ok)
+            return res.status(data.status);
+        return res.status(data.status).end();
+    } else {
+        return res.status(403).json({ errors: "Invalid role selection" });
+    }
+});
+
+userRouter.delete('/preferences', isLoggedIn, async (req, res) => {
+    if(req.user.role === "hiker") {
+        const data = await service.deletePreferences(req);
+        if(data.ok)
+            return res.status(data.status).json(data.body);
+        return res.status(data.status).end();
+    } else {
+        return res.status(403).json({ errors: "Invalid role selection" });
+    }
+})
+
 module.exports = userRouter
