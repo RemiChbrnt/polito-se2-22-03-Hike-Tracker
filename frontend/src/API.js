@@ -32,6 +32,10 @@ async function login(email, password) {
     }
 }
 
+async function logOut() { //API di logout
+    await fetch(URL + '/session/current', { method: 'DELETE', credentials: 'include' });
+  }
+
 
 
 async function signup(body) {
@@ -384,5 +388,5 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
 export default API;
