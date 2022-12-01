@@ -45,6 +45,26 @@ class UserService {
         }
     };
 
+
+    verify = async (email, randomString) => {
+        try {
+            let user = await this.DAO.verifyUser(email, randomString);
+            return {
+                ok: true,
+                status: 201,
+                body: user
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
+
+        }
+    };
+
+
     createPreferences = async (req) => {
         try {
             let prefs = await this.DAO.createPreferences(req.user.email, req.body.ascent, req.body.duration);

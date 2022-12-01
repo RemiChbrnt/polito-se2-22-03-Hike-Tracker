@@ -57,8 +57,9 @@ userRouter.get('/session/current', (req, res) => {
 
 userRouter.post('/signup', async (req, res) => {
     let user = await service.signup(req.body);
-    if (user.ok)
+    if (user.ok) {
         return res.status(user.status).json(user.body);
+    }
 
     return res.status(user.status).end;
 
@@ -103,5 +104,19 @@ userRouter.get('/preferences', isLoggedIn, async (req, res) => {
     else
         return res.status(403).json({ errors: "Invalid role selection" });
 })
+
+
+
+userRouter.post('/verify/:randomString', isLoggedIn, async (req, res) => {
+
+    let data = await service.verify(req.user.email, req.params.randomString);
+
+    if (data.ok)
+        return res.status(data.status).json(data)
+
+    return res.status(data.status).end()
+
+});
+
 
 module.exports = userRouter

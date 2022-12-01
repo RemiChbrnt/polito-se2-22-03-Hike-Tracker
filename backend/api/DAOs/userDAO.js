@@ -1,5 +1,7 @@
 'use strict'
 const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { resolve } = require('path');
 const db = require('../../db/db');
 
 exports.login = async (email, password) => {
@@ -49,7 +51,8 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 
     return new Promise((resolve, reject) => {
         crypto.randomBytes(24, async (err, buf) => {
-            if (err) reject(err);
+            if (err)
+                reject(err);
 
             salt = buf.toString("base64");
             resolve(salt);
@@ -57,42 +60,54 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
     }).then(() => new Promise((resolve, reject) => {
 
         crypto.scrypt(password, salt, 128, function (err, hashedPassword) {
-            if (err) reject(err);
+            if (err)
+                reject(err);
 
             hash = hashedPassword.toString("base64");
             resolve(hash);
         })
     })).then(() => new Promise((resolve, reject) => {
 
-        if (phoneNumber !== undefined) {
+        let randomString = crypto.randomBytes(16).toString('base64');
+        console.log("randomString " + randomString);
 
-            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-                if (err)
+        if (phoneNumber !== undefined) {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, 0)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber, randomString], (err) => {
+                if (err) {
+                    console.log(err);
                     reject(err);
-                else
-                    resolve(true);
+                }
+                else {
+                    sendEmail(email, randomString);
+                    resolve({
+                        email: email,
+                        fullName: fullName,
+                        role: role
+                    });
+                }
 
             });
         }
         else {
-            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL, ?, 0)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber, randomString], async (err) => {
                 if (err)
                     reject(err);
                 else {
                     const user = {
                         email: email,
-                        fullName: fullname,
+                        fullName: fullName,
                         role: role
                     }
+
+                    sendEmail(email, randomString);
 
                     resolve(user);
                 }
             });
         }
     }));
-
 }
 
 
@@ -137,4 +152,60 @@ exports.getPreferences = async (email) => {
 }
 
 
+exports.verifyUser = async (email, randomString) => {
+    const sql1 = 'SELECT * FROM Users WHERE email=? AND randomString=?'
+    db.get(sql1, [email, randomString], async (err, row) => {
+        if (err)
+            reject(503);
+        else if (row === undefined)
+            resolve({});
+        else {
+            const sql2 = 'UPDATE Users SET verified=1 WHERE email=?'
+            db.run(sql2, [email]), async (err) => {
+                if (err)
+                    reject(503);
+                else
+                    resolve(row);
+            }
+        }
+
+    })
+};
+
+
+
+const sendEmail = async (email, randomString) => {
+    console.log("email " + email);
+    console.log("randomString " + randomString);
+    console.log("1");
+
+    // let testAccount = await nodemailer.createTestAccount();
+
+    let transport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "hiketrackerdemo@gmail.com",
+            pass: "cqmuynmsufghnheh"
+        }
+    });
+
+    console.log("2");
+
+    let sender = "Hike Tracker";
+    let mailOptions = {
+        from: sender,
+        to: email,
+        subject: "Email Confirmation",
+        html: `Press <a href=http://localhost:3001/api/verify/${randomString}> here </a> to verify your email.`
+    };
+
+    console.log("3");
+
+    let info = await transport.sendMail(mailOptions);
+
+    console.log("info " + JSON.stringify(info));
+
+
+
+}
 
