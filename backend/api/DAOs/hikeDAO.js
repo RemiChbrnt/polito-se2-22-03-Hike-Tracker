@@ -40,6 +40,20 @@ exports.getHikes = async (query) => {
     })
 }
 
+exports.getHikeFromID = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * from Hikes WHERE id=${query.id}`
+        db.all(sql, [], async (err, hike) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            resolve(hike[0]);
+        })
+    })
+}
+
 
 
 const getLocationById = async function (id) {
