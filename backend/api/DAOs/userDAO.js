@@ -17,12 +17,16 @@ exports.login = async (email, password) => {
                 resolve(false); // User not found
             else {
                 const user = {
-                    // id: row.rowid,
                     email: row.email,
                     fullName: row.fullname,
-                    role: row.role
+                    role: row.role,
+                    verified: row.verified
                 }
-
+                console.log(user.verified);
+                if (user.verified === 0) {
+                    resolve(412);
+                    return;
+                }
 
                 /* User found. Now check whether the hash matches */
                 crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
@@ -68,8 +72,7 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
         })
     })).then(() => new Promise((resolve, reject) => {
 
-        let randomString = crypto.randomBytes(16).toString('base64');
-        console.log("randomString " + randomString);
+        let randomString = crypto.randomBytes(16).toString('hex');
 
         if (phoneNumber !== undefined) {
             query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, 0)`;
@@ -151,35 +154,55 @@ exports.getPreferences = async (email) => {
     })
 }
 
+exports.checkUserVerification = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT verified FROM Users WHERE email=?'
+        db.get(sql, [email], (err, row) => {
+            if (err)
+                reject(503);
+            else if (row === undefined)
+                resolve({});
+            else {
+                if (row.verified === 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            }
+        })
+    })
+};
 
 exports.verifyUser = async (email, randomString) => {
-    const sql1 = 'SELECT * FROM Users WHERE email=? AND randomString=?'
-    db.get(sql1, [email, randomString], async (err, row) => {
-        if (err)
-            reject(503);
-        else if (row === undefined)
-            resolve({});
-        else {
-            const sql2 = 'UPDATE Users SET verified=1 WHERE email=?'
-            db.run(sql2, [email]), async (err) => {
-                if (err)
-                    reject(503);
-                else
-                    resolve(row);
+    return new Promise((resolve, reject) => {
+        const sql1 = 'SELECT * FROM Users WHERE email=? AND randomString=?'
+        db.get(sql1, [email, randomString], (err, row) => {
+            if (err)
+                reject(503);
+            else if (row === undefined)
+                resolve({});
+            else {
+                const sql2 = 'UPDATE Users SET verified=1 WHERE email=?'
+                db.run(sql2, [email], (err) => {
+                    if (err)
+                        reject(503);
+                    else
+                        resolve({
+                            email: row.email,
+                            fullName: row.fullname,
+                            role: row.role,
+                            verified: row.verified
+                        });
+                    return;
+                })
             }
-        }
-
+            return;
+        })
     })
 };
 
 
 
 const sendEmail = async (email, randomString) => {
-    console.log("email " + email);
-    console.log("randomString " + randomString);
-    console.log("1");
-
-    // let testAccount = await nodemailer.createTestAccount();
 
     let transport = nodemailer.createTransport({
         service: "gmail",
@@ -189,21 +212,21 @@ const sendEmail = async (email, randomString) => {
         }
     });
 
-    console.log("2");
-
     let sender = "Hike Tracker";
     let mailOptions = {
         from: sender,
         to: email,
         subject: "Email Confirmation",
-        html: `Press <a href=http://localhost:3001/api/verify/${randomString}> here </a> to verify your email.`
+        html: `<span>Press the button below to verify your email.</span>
+                <form method="get" action="http://localhost:3001/api/verify/${email}/${randomString}">                    
+                    <button type="submit">Verify your email</button>
+                </form>`
     };
 
-    console.log("3");
-
     let info = await transport.sendMail(mailOptions);
+    // console.log("info " + JSON.stringify(info));
 
-    console.log("info " + JSON.stringify(info));
+    return;
 
 
 

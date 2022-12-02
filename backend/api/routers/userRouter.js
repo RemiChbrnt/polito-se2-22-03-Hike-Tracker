@@ -43,7 +43,7 @@ userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
         return res.status(user.status).json(user.body);
     }
 
-    return res.status(user.status).end;
+    return res.status(user.status).end();
 
 });
 
@@ -61,7 +61,7 @@ userRouter.post('/signup', async (req, res) => {
         return res.status(user.status).json(user.body);
     }
 
-    return res.status(user.status).end;
+    return res.status(user.status).end();
 
 
 });
@@ -107,14 +107,25 @@ userRouter.get('/preferences', isLoggedIn, async (req, res) => {
 
 
 
-userRouter.post('/verify/:randomString', isLoggedIn, async (req, res) => {
+userRouter.get('/verify/:email/:randomString', async (req, res) => {
 
-    let data = await service.verify(req.user.email, req.params.randomString);
+    let data = await service.verify(req.params.email, req.params.randomString);
 
-    if (data.ok)
-        return res.status(data.status).json(data)
+    /* For now the server returns an html code snippet as response,
+    but it can be improved by redirecting to a real page */
 
-    return res.status(data.status).end()
+    let httpResponse;
+    if (data.ok) {
+        httpResponse = `<div>User ${data.body.email}, Full Name ${data.body.fullName}, role ${data.body.role} verified.</div>
+                        <div>You can close this page</div>`;
+        // return res.status(data.status).json(data);
+    }
+    else {
+        httpResponse = `<div>Something went wrong. Error ${data.status}</div>`;
+    }
+
+    // return res.status(data.status).end();
+    return res.send(httpResponse);
 
 });
 

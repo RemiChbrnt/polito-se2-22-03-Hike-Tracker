@@ -27,14 +27,16 @@ async function login(email, password) {
     console.log("user " + JSON.stringify(user));
     if (response.ok) {
         return user;
-    } else {
+    } else if (response.status === 412)
+        return 412;
+    else {
         throw user;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
 }
 
 async function logOut() { //API di logout
     await fetch(URL + '/session/current', { method: 'DELETE', credentials: 'include' });
-  }
+}
 
 
 
