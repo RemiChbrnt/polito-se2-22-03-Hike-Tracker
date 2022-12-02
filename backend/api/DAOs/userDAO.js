@@ -217,10 +217,7 @@ const sendEmail = async (email, randomString) => {
         from: sender,
         to: email,
         subject: "Email Confirmation",
-        html: `<span>Press the button below to verify your email.</span>
-                <form method="get" action="http://localhost:3001/api/verify/${email}/${randomString}">                    
-                    <button type="submit">Verify your email</button>
-                </form>`
+        html: `<span>Press <a href="http://localhost:3001/api/verify/${email}/${randomString}">here</a> to verify your email.</span>`
     };
 
     let info = await transport.sendMail(mailOptions);
