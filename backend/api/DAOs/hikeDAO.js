@@ -43,13 +43,30 @@ exports.getHikes = async (query) => {
 exports.getHikeFromID = async (query) => {
     return new Promise((resolve, reject) => {
         let sql = `SELECT * from Hikes WHERE id=${query.id}`
-        db.all(sql, [], async (err, hike) => {
+        db.all(sql, [], async (err, r) => {
             if (err) {
                 console.log("err" + err)
                 reject()
                 return
             }
-            resolve(hike[0]);
+            const hike=r[0];
+            const startLocation = await getLocationById(hike.startPt);
+            const endLocation = await getLocationById(hike.endPt);
+            const refLocations = await getReferenceLocations(hike.id);
+            resolve({
+                id: hike.id,
+                title: hike.title,
+                length: hike.length,
+                expTime: hike.expTime,
+                ascent: hike.ascent,
+                difficulty: hike.difficulty,
+                startPt: startLocation,
+                endPt: endLocation,
+                description: hike.description,
+                track: hike.track,
+                author: hike.author,
+                referencePoints: refLocations,
+            });
         })
     })
 }

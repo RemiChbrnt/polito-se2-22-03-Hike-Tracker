@@ -38,7 +38,6 @@ class HikeService {
     getHikeFromID = async (query) => {
         try {
             const hike = await this.dao.getHikeFromID(query)
-            console.log(hike);
             return {
                 ok: true,
                 status: 200,

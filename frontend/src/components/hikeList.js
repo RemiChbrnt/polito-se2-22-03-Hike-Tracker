@@ -44,7 +44,7 @@ function HikeCard(props) {
     const hike = JSON.parse(props.hike);
 
     const showDetail = (() => {
-        props.setProps({ hike: props.hike, user: props.user });
+        props.setProps({ user: props.user });
         navigate("/hike-detail-" + hike.id);
     });
 
