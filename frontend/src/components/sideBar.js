@@ -95,9 +95,7 @@ function SideBar(props) {
                                         <Offcanvas.Body>
                                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                                 {/*ADD OPTIONS EMERGENCY TO DO*/}
-                                                <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
-                                                <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
-                                                <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
+                                                <Nav.Link onClick={() => { navigate('/pending-requests') }} onMouseOver={() => { setOver('pending-users') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/pending-users' || over === 'pending-users') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Registration requests</h5></Nav.Link>
                                                 <ul></ul>
                                                 <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                             </Nav>

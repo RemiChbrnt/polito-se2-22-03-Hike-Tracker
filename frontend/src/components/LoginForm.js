@@ -36,6 +36,9 @@ function LoginForm({ user, setUser }) {
             if(result === 412) {
                 setErrorText('Please verify your email to access.');
                 setError(true);
+            } else if(result === 403){
+                setErrorText('Your account has not been approved yet. Please contact the platform manager.')
+                setError(true);
             } else {
                 setUser(result);
                 navigate(`/`);
