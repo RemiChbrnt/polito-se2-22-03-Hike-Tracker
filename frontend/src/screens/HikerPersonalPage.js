@@ -17,7 +17,6 @@ const HikerPersonalPage = (props) => {
     useEffect(() => {
         async function getUserInfoAndPreferences() {
             const user = await API.getUserInfo();
-            console.log("LOGGED USER IS " + user.fullName + " WITH MAIL " + user.email);
             setLoggedUser(user);
             const prefs = await API.getPreferences(loggedUser.email);
             if(Object.keys(prefs.body).length === 0)
@@ -147,8 +146,8 @@ function PrefsCard(props) {
 }
 
 function PreferencesForm(props) {
-    const [ascent, setAscent] = useState(0);
-    const [duration, setDuration] = useState(0);
+    const [ascent, setAscent] = useState(props.preferences === undefined ? 0 : props.preferences.ascent);
+    const [duration, setDuration] = useState(props.preferences === undefined ? 0 : props.preferences.duration);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -159,16 +158,13 @@ function PreferencesForm(props) {
         }
         props.setPreferences(newPrefs);
         if(props.operation === 'add') {
-            console.log('Adding new preferences')
             const result = await API.createPreferences(newPrefs);
             if(result !== false)
                 props.setSuccess(true);
             else
                 props.setError(true);
         } else if(props.operation === 'edit'){
-            console.log('Editing preferences')
             const result = await API.updatePreferences(newPrefs);
-            console.log('Editing preferences');
             if(result !== false)
                 props.setSuccess(true);
             else
@@ -176,8 +172,8 @@ function PreferencesForm(props) {
         }
         setAscent(0);
         setDuration(0);
-        props.setShowForm(false);
         props.setShowConfirm(true);
+        props.setShowForm(false);
     }
 
     return <>
@@ -206,12 +202,10 @@ function DeleteConfirmation(props) {
     async function deletePrefs(userEmail, setSuccess, setError, setShowConfirm, setShowDeleteConfirmation) {
         const result = await API.deletePreferences(userEmail);
         if(result !== false){
-            console.log('SUCCESS IN DELETE')
             props.setSuccess(true);
             props.setPreferences(undefined);
         }
         else{
-            console.log('ERROR IN DELETE');
             props.setError(true);
         }
         props.setShowConfirm(true);
