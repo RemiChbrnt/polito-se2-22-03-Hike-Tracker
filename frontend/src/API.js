@@ -71,6 +71,19 @@ const getUserInfo = async () => {
     }
 };
 
+async function getPendingUsers() {
+    const response = await fetch(URL + '/get-pending-users', {
+        credentials: 'include'
+    });
+
+    const users = await response.json();
+    if(response.ok) {
+        return users;
+    } else {
+        throw users;
+    }
+}
+
 async function approveUser(email) {
     const response = await fetch(URL + '/approve', {
         method: "PUT",
@@ -408,5 +421,5 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser };
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers };
 export default API;
