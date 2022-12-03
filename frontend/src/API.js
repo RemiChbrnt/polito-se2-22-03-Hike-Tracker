@@ -1,7 +1,3 @@
-// import { post } from "../../backend";
-
-import { resolvePath } from "react-router-dom";
-
 /**
  * All the API calls
  */

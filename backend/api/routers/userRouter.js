@@ -41,6 +41,8 @@ userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
         // req.user = user.body;
         console.log("LOGIN AS " + JSON.stringify(req.user));
         return res.status(user.status).json(user.body);
+    } else if(user.status === 412){
+        return res.status(user.status).json(user.status);
     }
 
     return res.status(user.status).end();
