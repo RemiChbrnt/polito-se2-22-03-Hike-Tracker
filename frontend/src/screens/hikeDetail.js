@@ -43,33 +43,49 @@ const HikeDetail = ({ props, setProps }) => {
                     </Row>
                     <ul></ul>
                     <Row style={{ flex: 1, marginTop: "2%", alignItems: "center" }}>
-                        <Col>
-                            <h3>
-                                Length : {hike.length} km
-                            </h3>
-                            <h3>
-                                Ascent : {hike.ascent} m
-                            </h3>
-                            <h3>
-                                Expected time : {hike.expTime} hours
-                            </h3>
-                            <h3>
-                                Difficulty : {hike.difficulty}
-                            </h3>
-                            <h3>
-                                Description
-                            </h3>
-                            <h4>
-                                {hike.description}
-                            </h4>
-                            <h3>
-
-                            </h3>
-
-                        </Col>
-                        <Col>
+                        <Row className="border border-3 border-secondary">
                             <Map startPt={JSON.stringify(hike.startPt)} endPt={JSON.stringify(hike.endPt)} file={hike.track} />
-                        </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <h4>
+                                    Length : {hike.length} km
+                                </h4>
+                                <h4>
+                                    Ascent : {hike.ascent} m
+                                </h4>
+                                <h4>
+                                    Expected time : {hike.expTime} hours
+                                </h4>
+                                <div class="d-flex justify-content-start">
+                                    <h4>
+                                            Difficulty :
+                                    </h4>
+                                    <div style={{backgroundColor : (hike.difficulty==="tourist") ?
+                                            "darkGreen" : (hike.difficulty==="hiker") ?
+                                            "orange" : "red",
+                                            marginLeft: "2%"
+                                        }}>
+                                        <h4 style={{textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10}}>
+                                            { (hike.difficulty==="tourist") ?
+                                            "Tourist Friendly" : (hike.difficulty==="hiker") ?
+                                            "Casual Hiker" : "Professional Hiker"}
+                                        </h4>
+                                    </div>
+                                </div>
+                               
+                                
+                            </Col>
+
+                            <Col className="border-start border-2 border-secondary">
+                                <h3>
+                                    Description
+                                </h3>
+                                <h4>
+                                    {hike.description}
+                                </h4>
+                            </Col>
+                        </Row>              
                     </Row>
                     <ul></ul>
                 </Container>
