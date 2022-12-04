@@ -72,7 +72,7 @@ function SideBar(props) {
                                 <Offcanvas.Body>
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
                                         {/*ADD OPTIONS FOR HUTWORKER TO DO*/}
-                                        <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
+                                        <Nav.Link onClick={() => { navigate('/update-hut-status') }} onMouseOver={() => { setOver('update-hut-status') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/update-hut-status' || over === 'update-hut-status') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Update Status</h5></Nav.Link>
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <ul></ul>

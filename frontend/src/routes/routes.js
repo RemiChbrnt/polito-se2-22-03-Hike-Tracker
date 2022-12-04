@@ -9,7 +9,7 @@ import { AddHutForm } from "../components/addHutForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
-
+import { UpdateHutStatus } from "../components/updateHutStatus.js";
 import { HutListPage } from "../screens/hutListPage";
 import Hiker from "../screens/hiker.js";
 import Home from "../screens/home.js";
@@ -112,6 +112,13 @@ const routes = [
         key: "hut-list",
         screen: function (props, setProps) {
             return <HutListPage props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/update-hut-status",
+        key: "update-hut-status",
+        screen: function (user, props, setProps) {
+            return <UpdateHutStatus user={user} props={props} setProps={setProps} />
         }
     }
 

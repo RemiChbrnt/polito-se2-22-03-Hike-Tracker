@@ -33,7 +33,7 @@ function ActiveForm(props) {
     const addParking = async (title, latitude, longitude, country, province, town, address, altitude, description, lotsNumber) => {
         try {
             let params = ({ name: title, type: "parkinglot", latitude: latitude, longitude: longitude, country: country, province: province, town: town, address: address, altitude: altitude, description: description, lotsNumber: lotsNumber });
-            let res = API.createLocation(params);
+            let res = await API.createLocation(params);
             return res;
 
         } catch (err) {

@@ -35,7 +35,7 @@ function ActiveForm(props) {
     const addHut = async (name, latitude, longitude, country, province, town, address, altitude, numberOfBeds, food, description) => {
         try {
             let params = ({ name: name, type: "hut", latitude: latitude, longitude: longitude, country: country, province: province, town: town, address: address, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description })
-            let res = API.createLocation(params);
+            let res = await API.createLocation(params);
             return res;
 
         } catch (err) {

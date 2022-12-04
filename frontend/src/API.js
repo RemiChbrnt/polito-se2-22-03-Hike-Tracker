@@ -388,5 +388,51 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
+
+async function getHutIdByUserId(email) {
+    const response = await fetch(URL + `/hut/` + email, { method: 'GET', credentials: 'include' });
+    const hutId = await response.json();
+    if (response.ok) {
+        return hutId;
+    } else {
+        throw hutId;
+    }
+
+}
+
+async function updateStatus(params) {
+    const response = await fetch(URL + '/hike-endPt/' + params.hutId + '/' + params.hikeId, {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({status: params.status, description: params.description})
+    });
+    if (response.ok)
+        return true;
+    else {
+        const result = await response.json();
+        throw result;
+    }
+
+}
+
+async function getHikesByHutId(hutId) {
+    const response = await fetch(URL + `/hikesList/` + hutId, { method: 'GET', credentials: 'include' });
+    const hikesJson = await response.json();
+    if (response.ok) {
+        return hikesJson.map((r) => ({
+            id: r.id, //hikeId
+            name: r.name,
+            status:r.status, 
+            description: r.description //status description
+        }))
+    } else {
+        throw hikesJson;
+    }
+
+}
+
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, getHutIdByUserId, updateStatus,getHikesByHutId};
 export default API;
