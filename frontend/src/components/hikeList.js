@@ -8,7 +8,6 @@ function HikeGrid(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [hikes, setHikes] = useState([]);
 
-
     useEffect(() => {
         API.getAllHikes(props.filters).then(res => {
             setHikes([]);

@@ -12,6 +12,8 @@ const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
+    const [coordsFilter, setCoordsFilter] = useState([]);
+    const [radiusFilter, setRadiusFilter] = useState([]);
 
     const navigate = useNavigate();
 
@@ -63,7 +65,7 @@ const Home = (props) => {
                     <Modal.Title>Filter Selection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <HikeFilterForm setShow={setShow} setFilters={setFilters} />
+                    <HikeFilterForm setShow={setShow} setFilters={setFilters} setCoords={setCoordsFilter} setRadiusFilter={setRadiusFilter}/>
                 </Modal.Body>
             </Modal>
         </Container>

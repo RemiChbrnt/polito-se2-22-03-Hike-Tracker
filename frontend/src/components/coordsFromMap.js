@@ -12,10 +12,10 @@ import { CoordsOnClick } from "./coordsOnClick";
  */
 const CoordsFromMap = ({center, radius = 0, setCoords}) => {
 
-    const [localCoords, setLocalCoords] = useState([]);
+    const [localCoords, setLocalCoords] = useState([center]);
 
     return (
-        <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{width: 500, height: 500}} >
+        <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{width: 650, height: 400}} >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
