@@ -12,7 +12,6 @@ const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
-    const [coords, setCoords] = useState([]);
 
     const navigate = useNavigate();
 

@@ -34,4 +34,22 @@ const CoordsFromMap = ({center, radius = 0, setCoords}) => {
     );
 }
 
-export { CoordsFromMap };
+/**
+ * Function to verify a point lies within a circle
+ * @param {*} pointCoords: point coordinates to be checked
+ * @param {*} diskCenter: center point coordinates for the disk
+ * @param {*} diskRadius: radius for the disk to be checked
+ * @returns true if point in disk, false if not, error if parameters are incorrect
+ */
+const isPointInDisk = (pointCoords, diskCenter, diskRadius ) => {
+    if (Array.isArray(pointCoords) && Array.isArray(diskCenter)) {
+        if (Math.sqrt((pointCoords[0]-diskCenter[0])**2+(pointCoords[1]-diskCenter[1])**2) < diskRadius){
+            return true;
+        }
+        return false;
+    } else {
+        throw new Error("Inconsistent parameters, try reading doc in coordsFromMap.js");
+    }
+}
+
+export { CoordsFromMap, isPointInDisk };
