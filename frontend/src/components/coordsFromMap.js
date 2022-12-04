@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { CoordsOnClick } from "./coordsOnClick";
-const SelectCoordinatesFromMap = (props) => {
+
+const CoordsFromMap = (props) => {
     const [coords, setCoords]= useState([]);
 
     return (
@@ -20,4 +21,4 @@ const SelectCoordinatesFromMap = (props) => {
     );
 }
 
-export { SelectCoordinatesFromMap };
+export { CoordsFromMap };
