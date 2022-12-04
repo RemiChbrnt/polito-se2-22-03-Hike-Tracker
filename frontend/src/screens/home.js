@@ -3,6 +3,7 @@ import { Col, Container, Button, Row, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { HikeGrid } from "./../components/hikeList";
 import { HikeFilterForm } from "./../components/hikeFilterForm";
+import { CoordsFromMap } from "./../components/coordsFromMap";
 
 import HutWorker from "./../screens/hutWorker"
 import EmergencyOperator from "./../screens/emergencyOperator"
@@ -11,6 +12,7 @@ const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
+    const [coords, setCoords] = useState([]);
 
     const navigate = useNavigate();
 
