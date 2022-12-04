@@ -43,7 +43,6 @@ const Home = (props) => {
             )}
             <ul></ul>*/}
 
-
             <Row>
                 <Col md={10}>
                     <h1>Hike List</h1>
