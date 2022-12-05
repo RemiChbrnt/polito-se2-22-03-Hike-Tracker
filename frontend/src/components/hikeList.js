@@ -80,9 +80,9 @@ function HikeCard(props) {
                                 </div>
                             </div>
                         </ListGroup.Item>
-                        <ListGroup.Item><i class="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time: </span>{hike.expTime} hours</ListGroup.Item>
-                        <ListGroup.Item><i class="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length: </span>{hike.length} km</ListGroup.Item>
-                        <ListGroup.Item><i class="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent: </span>{hike.ascent} m</ListGroup.Item>
+                        <ListGroup.Item><i class="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
+                        <ListGroup.Item><i class="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
+                        <ListGroup.Item><i class="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
                         <ListGroup.Item>{hike.description}</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
