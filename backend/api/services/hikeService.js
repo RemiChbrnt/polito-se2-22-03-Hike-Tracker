@@ -100,6 +100,43 @@ class HikeService {
     }
 
 
+    getHikesByHutId = async (hutId, email) => {
+        try {
+            const hikes = await this.dao.getHikesByHutId(hutId, email)
+            const message = hikes.map((r) => ({
+                id: r.id,
+                name: r.title,
+                status: r.status,
+                description: r.description,
+            }))
+            return {
+                ok: true,
+                status: 200,
+                body: message
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 400
+            }
+        }
+    }
+
+
+    updateStatus = async (status, hikeId, hutId, email) => {
+        try {
+            await this.dao.updateStatus(status, hikeId, hutId, email)
+            return {
+                ok: true,
+                status: 200
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 400
+            }
+        }
+    }
 }
 
 module.exports = HikeService

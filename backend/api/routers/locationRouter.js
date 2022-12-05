@@ -142,4 +142,23 @@ router.post('/linkHut', isLoggedIn, [
 })
 
 
+router.get('/huts/myhut', isLoggedIn,
+    async (req, res) => {
+        
+        if (req.user === undefined || req.user.role !== "hutworker")
+        return res.status(400).json({ error: "Unauthorized" });
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+        const data = await service.getHutbyWorkerId(req.user.email)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    }
+)
+
+
 module.exports = router;

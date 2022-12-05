@@ -16,31 +16,32 @@ function UpdateHutStatus(props) {
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const getHutIdByUserId = async (userEmail) => {
-        //const h = await API.getHutIdByUserId(userEmail);
-        //setHutId(h);
-        setHutId('1'); //HARDCODED
+    const getHutIdByUserId = async () => {
+        const id = await API.getHutIdByUserId();
+        setHutId(id);
+        const h = await API.getHikesByHutId(id); 
+        setHikes(h); 
     };
 
+    const getHikes = async()=>{
+      const h = await API.getHikesByHutId(hutId); 
+      // const h=[{id: 1, name:"Sentiero per il Rocciamelone", status: "open", description:"Nice weather."}] //HARDCODED
+      setHikes(h); 
+    }
+
     useEffect(() => {
-      let email=''; 
       const checkAuth = async () => {
         const user = await API.getUserInfo(); 
         if (user){
           setLoggedIn(true);
-          email=user.email; 
         }
         return user;
       };
-      const getHikes = async()=>{
-        //const h = await API.getHikesByHutId(hutId); 
-        const h=[{id: 1, name:"Sentiero per il Rocciamelone", status: "open", description:"Nice weather."}] //HARDCODED
-        setHikes(h); 
-      }
-      checkAuth().then(user=>{
+      
+      checkAuth().then(async user=>{
         if(user){
-          getHutIdByUserId(email);
-          getHikes();
+          getHutIdByUserId();
+          // getHikes();
         }
       });
     }, [loggedIn, props.user]);
@@ -144,10 +145,8 @@ function StatusForm(props){
   const updateStatus = async (hutId, hikeId, condition, description) => {
       try {
           let params=({hutId:hutId, hikeId:hikeId, status:condition, description:description})
-          //let res= await API.updateStatus(params).then(res=>{return true}).catch(error=>{return false});
-          //return res;
-          return true;
-
+          let res = await API.updateStatus(params).then(res=>{return true}).catch(error=>{return false});
+          return res;
       } catch (err) {
           console.log(err);
           return false;

@@ -171,6 +171,26 @@ class LocationService {
         }
     }
 
+
+    getHutbyWorkerId = async (email) => {
+        try {
+            const hutId = await this.dao.getHutbyWorkerId(email)
+            return {
+                ok: true,
+                status: 200,
+                body: hutId
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
 }
+
+
+
 
 module.exports = LocationService

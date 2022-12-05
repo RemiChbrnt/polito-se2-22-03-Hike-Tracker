@@ -185,3 +185,53 @@ exports.setHikeEndPoint = async (hike) => {
     })
 }
 
+
+exports.getHikesByHutId
+ = async (hutId, email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT hk.id, hk.title, hhh.status, hhh.description \
+        FROM Hikes hk, HikesHaveHuts hhh, HutWorkers hw \
+        WHERE hhh.locationId = hw.locationId AND hk.id = hhh.hikeId AND hhh.locationId = ? AND hw.email = ?';
+        db.all(sql, [
+            hutId,
+            email
+        ], async function (err, rows) {
+            if (err) {
+                console.log(err)
+                reject(400);
+                return;
+            }
+            resolve(rows);
+            return;
+        })
+    })
+}
+
+
+
+exports.updateStatus = async (status, hikeId, hutId, email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE HikesHaveHuts SET status = ?, description = ? \
+        WHERE hikeId = ? AND locationId = ? AND locationId = (SELECT locationId FROM HutWorkers WHERE email = ?)';
+        db.run(sql, [
+            status.status,
+            status.description,
+            hikeId,
+            hutId,
+            email
+        ], async function (err) {
+            if (err) {
+                console.log(err)
+                reject(400);
+                return;
+            }
+            if (this.changes === 0) {
+                reject(404);
+                return;
+            }
+            resolve(200);
+            return;
+        })
+    })
+}
+

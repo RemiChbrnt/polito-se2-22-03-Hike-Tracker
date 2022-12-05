@@ -223,3 +223,22 @@ exports.linkHut = async (hikeId, locationId) => {
         })
     })
 }
+
+
+
+exports.getHutbyWorkerId = async (email) => {
+    return new Promise((resolve, reject) => {
+        let sql =
+            `SELECT l.id FROM Locations l, HutWorkers h          
+            WHERE l.type="hut" AND l.id=h.locationId AND email=?`
+
+        db.get(sql, [email], async (err, row) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            resolve(row.id);
+        })
+    })
+}

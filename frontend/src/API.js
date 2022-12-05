@@ -389,8 +389,8 @@ async function linkHut(params) {
     }
 }
 
-async function getHutIdByUserId(email) {
-    const response = await fetch(URL + `/hut/` + email, { method: 'GET', credentials: 'include' });
+async function getHutIdByUserId() {
+    const response = await fetch(URL + `/huts/myhut`, { method: 'GET', credentials: 'include' });
     const hutId = await response.json();
     if (response.ok) {
         return hutId;
@@ -401,7 +401,7 @@ async function getHutIdByUserId(email) {
 }
 
 async function updateStatus(params) {
-    const response = await fetch(URL + '/hike-endPt/' + params.hutId + '/' + params.hikeId, {
+    const response = await fetch(URL + '/hikes/' + params.hikeId + '/status/'+ params.hutId, {
         method: "PUT",
         credentials: 'include',
         headers: {
