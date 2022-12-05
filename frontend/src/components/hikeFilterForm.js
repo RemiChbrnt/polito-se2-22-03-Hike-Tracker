@@ -176,15 +176,8 @@ function HikeFilterForm(props) {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row style={{ width: "100%", marginTop: "2%" }}>
-                    <Col />
-                    <Col />
-                    <Col>
-                        <Button variant="danger" onClick={() => props.setShow(false)} size="lg">
-                            Back
-                        </Button>
-                    </Col>
-                    <Col>
+                <Row>
+                    <Col style={{ width: "100%", marginTop: "2%", display:"flex", justifyContent:"flex-end", alignItems:"center"}}>
                         <Button variant="success" type="submit" size="lg">
                             Confirm
                         </Button>

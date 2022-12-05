@@ -14,8 +14,8 @@ const HikeFilterMap = ({setCoords, setRadiusFilter, setShow}) => {
                 onChange={ev => { setRadius(ev.target.value); setRadiusFilter(ev.target.value)}}
             />
             <CoordsFromMap center={center} radius={radius*1000} setCoords={setCoords}/>
-            <Col>
-                <Button variant="success" onClick={() => setShow(false)}>
+            <Col style={{marginTop: "2%", display: "flex", width:"100%", justifyContent:"flex-end", alignItems:"center"}}>
+                <Button variant="success" size="lg" onClick={() => setShow(false)}>
                     Confirm
                 </Button>
             </Col>

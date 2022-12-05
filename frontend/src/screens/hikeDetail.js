@@ -48,15 +48,6 @@ const HikeDetail = ({ props, setProps }) => {
                         </Row>
                         <Row>
                             <Col>
-                                <h4>
-                                    Length : {hike.length} km
-                                </h4>
-                                <h4>
-                                    Ascent : {hike.ascent} m
-                                </h4>
-                                <h4>
-                                    Expected time : {hike.expTime} hours
-                                </h4>
                                 <div class="d-flex justify-content-start">
                                     <h4>
                                             Difficulty :
@@ -73,8 +64,15 @@ const HikeDetail = ({ props, setProps }) => {
                                         </h4>
                                     </div>
                                 </div>
-                               
-                                
+                                <h4>
+                                    Expected time : {hike.expTime} hours
+                                </h4>
+                                <h4>
+                                    Length : {hike.length} km
+                                </h4>
+                                <h4>
+                                    Ascent : {hike.ascent} m
+                                </h4>
                             </Col>
 
                             <Col className="border-start border-2 border-secondary">
