@@ -202,3 +202,97 @@ describe('Testing all the operations on hikes with wrong user', function () {
     });
 
 })
+
+describe('Testing the status of hikes', function () {
+    before(async () => {
+        // await agent
+        //     .post('/api/signup')
+        //     .set('content-type', 'application/json')
+        //     .send({
+        //         email: 'jen.shiro@chiocciola.it',
+        //         password: 'testPassword4',
+        //         fullName: 'jenet',
+        //         role: 'hutworker',
+        //         phoneNumber: '2313124214'
+        //     })
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'jen.shiro@chiocciola.it',
+                password: 'testPassword4'
+            })
+        await resetHikes()
+        await resetLocations()
+    })
+    after(async () => {
+        //maybe delete
+    })
+
+
+    it('GET /api/huts/myhut', async () => {
+        const result = await agent
+            .get('/api/huts/myhut')
+            .set('content-type', 'application/json');
+        expect(result.body).deep.equal(1);
+        result.should.have.status(200)
+    });
+
+    it('GET /api/hikesList/:hutId', async () => {
+        const hutIdCall = await agent
+            .get('/api/huts/myhut')
+            .set('content-type', 'application/json');
+        const hutId=hutIdCall.body;
+
+        const result = await agent
+            .get('/api/hikesList/'+hutId)
+            .set('content-type', 'application/json');
+        expect(result.body).deep.equal([
+            {
+              id: 1,
+              name: 'testingHikeCreation',
+              status: 'closed',
+              description: 'mud slide on the main bridge'
+            }
+          ]);
+        result.should.have.status(200)
+    });
+
+    it('PUT /api/hikes/:hikeId/status/:hutId', async () => {
+        const hikeId=1;
+        const hutId=1;
+        const result = await agent
+            .put('/api/hikes/'+hikeId+'/status/'+hutId)
+            .set('content-type', 'application/json')
+            .send({
+                status: 'closed',
+                description: 'mud slide on the main bridge'
+            });
+        result.should.have.status(200)
+    });
+
+    it('PUT /api/hikes/:hikeId/status/:hutId with missing fields', async () => {
+        const hikeId=1;
+        const hutId=1;
+        const result = await agent
+            .put('/api/hikes/'+hikeId+'/status/'+hutId)
+            .set('content-type', 'application/json')
+            .send({
+                description: 'all good'
+            });
+        result.should.have.status(422)
+    });
+
+    it('PUT /api/hikes/:hikeId/status/:hutId with wrong hikeId', async () => {
+        const hikeId="abcd";
+        const hutId=1;
+        const result = await agent
+            .put('/api/hikes/'+hikeId+'/status/'+hutId)
+            .set('content-type', 'application/json')
+            .send({
+                description: 'all good'
+            });
+        result.should.have.status(422)
+    });
+
+})

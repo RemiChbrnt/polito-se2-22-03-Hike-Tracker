@@ -225,6 +225,3 @@ describe('Parking lot tests', () => {
 
 
 })
-
-
-
