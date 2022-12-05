@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Circle } from 'react-leaflet';
 import { CoordsOnClick } from "./coordsOnClick";
+import * as L from 'leaflet';
 
 /**
  * Component to get coordinates from selection on the map
@@ -43,13 +44,27 @@ const CoordsFromMap = ({center, radius = 0, setCoords}) => {
  */
 const isPointInDisk = (pointCoords, diskCenter, diskRadius ) => {
     if (Array.isArray(pointCoords) && Array.isArray(diskCenter)) {
-        if (Math.sqrt((pointCoords[0]-diskCenter[0])**2+(pointCoords[1]-diskCenter[1])**2) < diskRadius){
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(diskCenter[0]-pointCoords[0]);  // deg2rad below
+        var dLon = deg2rad(diskCenter[1]-pointCoords[1]); 
+        var a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(diskCenter[0])) * Math.cos(deg2rad(pointCoords[0])) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+            ; 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c; // Distance in km
+        if (d < diskRadius){
             return true;
         }
         return false;
     } else {
         throw new Error("Inconsistent parameters, try reading doc in coordsFromMap.js");
     }
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
 }
 
 export { CoordsFromMap, isPointInDisk };

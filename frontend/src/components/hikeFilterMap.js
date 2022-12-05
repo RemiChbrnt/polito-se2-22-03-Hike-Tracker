@@ -4,16 +4,16 @@ import { CoordsFromMap } from "./coordsFromMap";
 
 const HikeFilterMap = ({setCoords, setRadiusFilter, setShow}) => {
 
-    const [radius, setRadius] = useState(10000);
+    const [radius, setRadius] = useState(10);
     const center = [45.116177, 7.742615];
 
     return (
         <Container>
-            <Form.Label><b>Radius (m)</b></Form.Label>
+            <Form.Label><b>Radius (km)</b></Form.Label>
             <Form.Control className="mb-2" type="number" value={radius}
                 onChange={ev => { setRadius(ev.target.value); setRadiusFilter(ev.target.value)}}
             />
-            <CoordsFromMap center={center} radius={radius} setCoords={setCoords}/>
+            <CoordsFromMap center={center} radius={radius*1000} setCoords={setCoords}/>
             <Col>
                 <Button variant="success" onClick={() => setShow(false)}>
                     Confirm

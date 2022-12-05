@@ -12,8 +12,8 @@ const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
-    const [coordsFilter, setCoordsFilter] = useState([]);
-    const [radiusFilter, setRadiusFilter] = useState([]);
+    const [coordsFilter, setCoordsFilter] = useState([45.116177, 7.742615]);
+    const [radiusFilter, setRadiusFilter] = useState(10); // km
 
     const navigate = useNavigate();
 
@@ -57,7 +57,7 @@ const Home = (props) => {
 
             <ul></ul>
             <Row>
-                <HikeGrid filters={filters} user={props.user} setProps={props.setProps} />
+                <HikeGrid filters={filters} coordsFilter={coordsFilter} radiusFilter={radiusFilter} user={props.user} setProps={props.setProps} />
             </Row>
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">

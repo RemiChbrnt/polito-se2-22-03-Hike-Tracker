@@ -1,23 +1,33 @@
 import { Card, Row, Col, ListGroup, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { isPointInDisk } from './coordsFromMap';
 import API from '../API.js';
 
 function HikeGrid(props) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [hikes, setHikes] = useState([]);
+    const [hikesStored, setHikesStored] = useState([]);
 
     useEffect(() => {
         API.getAllHikes(props.filters).then(res => {
             setHikes([]);
+            setHikesStored([]);
             res.forEach((hike, index) => {
                 setHikes(hikes => [...hikes, JSON.stringify(hike)]);
+                setHikesStored(hikes => [...hikes, JSON.stringify(hike)]);
             });
+            
             // console.log(hikes);
             setIsLoading(false);
         }).catch(error => console.log(error));
-    }, [props.filters])
+    }, [props.filters]);
+
+    useEffect(() => {
+        // Filtering with zone Coordinates on modification
+        setHikes(hikes => hikesStored.filter((hike) => isPointInDisk([JSON.parse(hike).startPt.latitude, JSON.parse(hike).startPt.longitude], props.coordsFilter, props.radiusFilter)));
+    }, [props.coordsFilter, props.radiusFilter]);
 
     return (
         <Container fluid>
