@@ -64,6 +64,20 @@ router.post('/hikes', isLoggedIn, [
     return res.status(hikeId.status).end()
 })
 
+router.get('/hikeFromID', [query('id').exists()],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const data = await service.getHikeFromID(req.query)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    })
+
 // router.post('/locations', [
 //     body('name').exists().isString(),
 //     body('type').exists().isString(),

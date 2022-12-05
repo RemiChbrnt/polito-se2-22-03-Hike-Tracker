@@ -35,6 +35,22 @@ class HikeService {
         }
     }
 
+    getHikeFromID = async (query) => {
+        try {
+            const hike = await this.dao.getHikeFromID(query)
+            return {
+                ok: true,
+                status: 200,
+                body: hike
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
     createHike = async (newHike) => {
         try {
             const hike = await this.dao.createHike(newHike)

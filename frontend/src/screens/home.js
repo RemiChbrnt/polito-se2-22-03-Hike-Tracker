@@ -3,6 +3,7 @@ import { Col, Container, Button, Row, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { HikeGrid } from "./../components/hikeList";
 import { HikeFilterForm } from "./../components/hikeFilterForm";
+import { CoordsFromMap } from "./../components/coordsFromMap";
 
 import HutWorker from "./../screens/hutWorker"
 import EmergencyOperator from "./../screens/emergencyOperator"
@@ -11,6 +12,8 @@ const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
+    const [coordsFilter, setCoordsFilter] = useState([45.116177, 7.742615]);
+    const [radiusFilter, setRadiusFilter] = useState(10); // km
 
     const navigate = useNavigate();
 
@@ -43,7 +46,6 @@ const Home = (props) => {
             )}
             <ul></ul>*/}
 
-
             <Row>
                 <Col md={10}>
                     <h1>Hike List</h1>
@@ -55,7 +57,7 @@ const Home = (props) => {
 
             <ul></ul>
             <Row>
-                <HikeGrid filters={filters} user={props.user} setProps={props.setProps} />
+                <HikeGrid filters={filters} coordsFilter={coordsFilter} radiusFilter={radiusFilter} user={props.user} setProps={props.setProps} />
             </Row>
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
@@ -63,7 +65,7 @@ const Home = (props) => {
                     <Modal.Title>Filter Selection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <HikeFilterForm setShow={setShow} setFilters={setFilters} />
+                    <HikeFilterForm setShow={setShow} setFilters={setFilters} setCoords={setCoordsFilter} setRadiusFilter={setRadiusFilter}/>
                 </Modal.Body>
             </Modal>
         </Container>

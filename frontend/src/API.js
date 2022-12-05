@@ -26,7 +26,7 @@ async function login(email, password) {
     } else if (response.status === 412)
         /* User email not verified */
         return 412;
-    else if(response.status === 403) {
+    else if (response.status === 403) {
         /* Account not yet approved by manager */
         return 403;
     } else {
@@ -77,7 +77,7 @@ async function getPendingUsers() {
     });
 
     const users = await response.json();
-    if(response.ok) {
+    if (response.ok) {
         return users;
     } else {
         throw users;
@@ -95,7 +95,7 @@ async function approveUser(email) {
     });
 
     const result = await response.json();
-    if(response.ok) {
+    if (response.ok) {
         return result;
     } else {
         throw result;
@@ -135,6 +135,28 @@ async function getAllHikes(filters) {
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+
+/**
+ * Function to get a specific hike from the database
+ * @param {*} id: the hike's id
+ * @returns hike corresponding to ID if succesful, 400 otherwise
+ */
+async function getHikeFromID(id) {
+    let params = `/hikeFromID?id=${id}`;
+
+    const response = await fetch(URL + params, {
+        credentials: 'include',
+    });
+
+    const hikeJson = await response.json();
+    console.log(hikeJson);
+    if (response.ok) {
+        return hikeJson;
+    } else {
+        throw hikeJson;
     }
 }
 
@@ -421,5 +443,6 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers };
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers };
+
 export default API;
