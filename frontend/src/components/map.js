@@ -22,9 +22,14 @@ const Map = (props) => {
         iconUrl: require('../images/finish-marker.png'),
         iconSize: [104, 158]
     });
+
+    const center={
+        latitude: (endPt.latitude + startPt.latitude)/2,
+        longitude: (endPt.longitude + startPt.longitude)/2
+    }
    
     return (
-        <MapContainer center={[startPt.latitude, startPt.longitude]} zoom={12} scrollWheelZoom={false} style={{width: windowSize.innerWidth/2.5, height: windowSize.innerHeight/1.5}} >
+        <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{width: windowSize.innerWidth/1.5, height: windowSize.innerHeight/2.5}} >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

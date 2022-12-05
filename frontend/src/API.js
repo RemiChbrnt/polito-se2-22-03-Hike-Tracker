@@ -101,6 +101,28 @@ async function getAllHikes(filters) {
     }
 }
 
+
+/**
+ * Function to get a specific hike from the database
+ * @param {*} id: the hike's id
+ * @returns hike corresponding to ID if succesful, 400 otherwise
+ */
+async function getHikeFromID(id) {
+    let params = `/hikeFromID?id=${id}`;
+
+    const response = await fetch(URL + params, {
+        credentials: 'include',
+    });
+
+    const hikeJson = await response.json();
+    console.log(hikeJson);
+    if (response.ok) {
+        return hikeJson;
+    } else {
+        throw hikeJson;
+    }
+}
+
 async function getHikesList() {
     // call: GET /api/hikes
     const response = await fetch(URL + '/hikes', {
@@ -378,5 +400,5 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
+const API = { login, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
 export default API;
