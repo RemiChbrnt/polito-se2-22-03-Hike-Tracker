@@ -39,8 +39,6 @@ exports.generateHutFilters = (query) => {
     return filters;
 }
 
-
-
 exports.getHutsAndParkingLots = async (email) => {
     return new Promise((resolve, reject) => {
         let sql =
@@ -220,6 +218,69 @@ exports.linkHut = async (hikeId, locationId) => {
                 reject(415);
                 return;
             }
+        })
+    })
+}
+
+exports.getReferencePointsFromHikeId = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * from HikesReferencePoints WHERE hikeId=${query.id}`
+        db.all(sql, [], async (err, rows) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            const res = await Promise.all(
+                rows.map(async (r) => {
+                    const location = await _getLocationById(r.locationId);
+                    return {
+                        location: location
+                    }
+                })
+            )
+            resolve(res);
+        })
+    })
+}
+
+const _getLocationById = async function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from Locations where id=?'
+        db.get(sql, [id], async (err, row) => {
+            if (err) {
+                console.log(err)
+                return null;
+            }
+            resolve(row)
+        })
+    })
+}
+
+exports.getLocationById = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * from Locations WHERE id=${query.id}`
+        db.all(sql, [], async (err, r) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            const location=r[0];
+            resolve({
+                id: location.id,
+                name: location.name,
+                type: location.type,
+                latitude: location.latitude,
+                longitude: location.longitude,
+                difficulty: location.difficulty,
+                country: location.country,
+                province: location.province,
+                town: location.town,
+                address: location.address,
+                altitude: location.altitude,
+                author: location.author
+            });
         })
     })
 }

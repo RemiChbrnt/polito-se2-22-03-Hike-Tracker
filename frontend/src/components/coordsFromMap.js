@@ -14,7 +14,11 @@ import * as L from 'leaflet';
 const CoordsFromMap = ({center, radius = 0, setCoords}) => {
 
     const [localCoords, setLocalCoords] = useState([center]);
-
+    const defaultMarker = new L.Icon({
+        iconUrl: require('../images/pin-marker.png'),
+        iconSize: [104, 158]
+    });
+    
     return (
         <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{width: 650, height: 400}} >
             <TileLayer
@@ -24,7 +28,7 @@ const CoordsFromMap = ({center, radius = 0, setCoords}) => {
                 <CoordsOnClick setCoords={setCoords} setLocalCoords={setLocalCoords}/>
                 {(radius === 0)?
                     localCoords.map((point, index) =>
-                        <Marker key={index} position={point}/>
+                        <Marker key={index} position={point} icon={defaultMarker}/>
                     )
                 :
                     localCoords.map((point, index) =>

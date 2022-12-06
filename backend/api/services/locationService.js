@@ -171,6 +171,37 @@ class LocationService {
         }
     }
 
+    getLocationById = async (query) => {
+        try {
+            const location = await this.dao.getLocationById(query)
+            return {
+                ok: true,
+                status: 200,
+                body: location
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+    getReferencePointsFromHikeId = async (query) => {
+        try {
+            const locations = await this.dao.getReferencePointsFromHikeId(query)
+            return {
+                ok: true,
+                status: 200,
+                body: locations
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
 }
 
 module.exports = LocationService
