@@ -43,4 +43,37 @@ describe('Hikes API tests', () => {
         const hikes = await HikeDao.getHikes({});
         return expect(hikes.length).toBe(2);
     })
+
+    test('getHikesByHutId should retrieve the correct hike related to the hutworker', async () => {
+        const hikelist = [{
+            "description": "mud slide on the main bridge",
+            "id": 1,
+            "status": "closed",
+            "title": "testingHikeCreation"
+        }];
+
+        const hikes = await HikeDao.getHikesByHutId(1, "jen.shiro@chiocciola.it");
+        return expect(hikes).toEqual(hikelist);
+    })
+
+    test('updateStatus should correctly update the status of a hike related to a hut, but only if the user owns it', async () => {
+        const status = {
+            "description": "mud slide on the main bridge",
+            "status": "closed",
+        };
+
+        const res = await HikeDao.updateStatus(status, 1, 1, "jen.shiro@chiocciola.it");
+        return expect(res).toBe(200);
+    })
+
+    test('updateStatus should return 404 if the user doesn\'t own it', async () => {
+        const status = {
+            "description": "mud slide on the main bridge",
+            "status": "closed",
+        };
+
+        await HikeDao.updateStatus(status, 1, 1, "not the owner's email").catch((e)=>{
+            return expect(e).toBe(404);
+        });
+    })
 })
