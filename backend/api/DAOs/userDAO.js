@@ -13,8 +13,10 @@ exports.login = async (email, password) => {
                 console.log("errore " + err);
                 reject(err);
             }
-            else if (row === undefined)
-                resolve(false); // User not found
+            else if (row === undefined) {
+                resolve(401); // User not found
+                return;
+            }
             else {
                 const user = {
                     email: row.email,
@@ -22,9 +24,11 @@ exports.login = async (email, password) => {
                     role: row.role,
                     verified: row.verified
                 }
-                console.log(user.verified);
                 if (user.verified === 0) {
                     resolve(412);
+                    return;
+                } else if (user.role !== "hiker" && user.verified === 1) {
+                    resolve(403);
                     return;
                 }
 
@@ -156,21 +160,62 @@ exports.getPreferences = async (email) => {
 
 exports.checkUserVerification = async (email) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT verified FROM Users WHERE email=?'
+        const sql = 'SELECT role, verified FROM Users WHERE email=?'
         db.get(sql, [email], (err, row) => {
             if (err)
                 reject(503);
             else if (row === undefined)
                 resolve({});
-            else {
-                if (row.verified === 1)
-                    resolve(true);
-                else
-                    resolve(false);
-            }
+            else
+                resolve(row);
+
         })
     })
 };
+
+
+
+exports.getPendingUsers = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM Users WHERE verified = 1 AND role <> "hiker"`
+        db.all(sql, [], (err, rows) => {
+            if (err)
+                reject(503);
+            else if (rows === undefined || rows.length === 0)
+                resolve([]);
+            else
+                resolve(rows);
+        })
+    })
+}
+
+
+exports.approveUser = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE Users SET verified = 2 WHERE email = ?'
+        db.run(sql, [email], (err) => {
+            if (err)
+                reject(503);
+            else
+                resolve(true);
+        })
+    })
+}
+
+exports.declineUser = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM Users WHERE email = ?'
+        db.run(sql, [email], (err) => {
+            if (err)
+                reject(503);
+            else
+                resolve(true);
+        })
+    })
+}
+
+
+
 
 exports.verifyUser = async (email, randomString) => {
     return new Promise((resolve, reject) => {
@@ -224,8 +269,6 @@ const sendEmail = async (email, randomString) => {
     // console.log("info " + JSON.stringify(info));
 
     return;
-
-
 
 }
 

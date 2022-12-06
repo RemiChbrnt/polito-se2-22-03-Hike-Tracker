@@ -41,9 +41,9 @@ userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
         // req.user = user.body;
         console.log("LOGIN AS " + JSON.stringify(req.user));
         return res.status(user.status).json(user.body);
-    } else if(user.status === 412){
+    } else if (user.status === 412 || user.status === 403 || user.status === 401)
         return res.status(user.status).json(user.status);
-    }
+
 
     return res.status(user.status).end();
 
@@ -130,6 +130,58 @@ userRouter.get('/verify/:email/:randomString', async (req, res) => {
     return res.send(httpResponse);
 
 });
+
+
+
+
+userRouter.get('/get-pending-users', isLoggedIn, async (req, res) => {
+
+    if (req.user.role !== "manager")
+        return res.status(400).json({ error: "Unauthorized" });
+
+    const data = await service.getPendingUsers();
+
+    if (data.ok)
+        return res.status(data.status).json(data.body);
+
+    return res.status(data.status).end()
+
+});
+
+
+
+
+userRouter.put('/approve', isLoggedIn, async (req, res) => {
+
+    if (req.user.role !== "manager")
+        return res.status(400).json({ error: "Unauthorized" });
+
+    const data = await service.approveUser(req.body.email);
+
+    if (data.ok)
+        return res.status(data.status).json(data)
+
+    return res.status(data.status).end()
+
+});
+
+
+
+userRouter.delete('/approve', isLoggedIn, async (req, res) => {
+
+    if (req.user.role !== "manager")
+        return res.status(400).json({ error: "Unauthorized" });
+
+    const data = await service.declineUser(req.body.email);
+
+    if (data.ok)
+        return res.status(data.status).json(data)
+
+    return res.status(data.status).end()
+
+});
+
+
 
 
 module.exports = userRouter

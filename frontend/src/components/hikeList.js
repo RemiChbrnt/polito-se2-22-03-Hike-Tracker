@@ -18,7 +18,7 @@ function HikeGrid(props) {
                 setHikes(hikes => [...hikes, JSON.stringify(hike)]);
                 setHikesStored(hikes => [...hikes, JSON.stringify(hike)]);
             });
-            
+
             // console.log(hikes);
             setIsLoading(false);
         }).catch(error => console.log(error));
@@ -63,31 +63,32 @@ function HikeCard(props) {
                 <Card.Body>
                     <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title>
                     <ListGroup variant="flush">
-                        
+
                         <ListGroup.Item>
-                            <div class="d-flex justify-content-start">
-                                <i class="bi bi-activity"></i><span className="fw-bold">{"  "}Difficulty : </span>
-                                <div style={{backgroundColor : (hike.difficulty==="tourist") ?
-                                        "darkGreen" : (hike.difficulty==="hiker") ?
-                                        "orange" : "red",
-                                        marginLeft: "2%"
-                                    }}>
-                                    <h6 style={{textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10}}>
-                                        { (hike.difficulty==="tourist") ?
-                                        "Tourist Friendly" : (hike.difficulty==="hiker") ?
-                                        "Casual Hiker" : "Professional Hiker"}
+                            <div className="d-flex justify-content-start">
+                                <i className="bi bi-activity"></i><span className="fw-bold">{"  "}Difficulty : </span>
+                                <div style={{
+                                    backgroundColor: (hike.difficulty === "tourist") ?
+                                        "darkGreen" : (hike.difficulty === "hiker") ?
+                                            "orange" : "red",
+                                    marginLeft: "2%"
+                                }}>
+                                    <h6 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
+                                        {(hike.difficulty === "tourist") ?
+                                            "Tourist Friendly" : (hike.difficulty === "hiker") ?
+                                                "Casual Hiker" : "Professional Hiker"}
                                     </h6>
                                 </div>
                             </div>
                         </ListGroup.Item>
-                        <ListGroup.Item><i class="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
-                        <ListGroup.Item><i class="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
-                        <ListGroup.Item><i class="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
+                        <ListGroup.Item><i className="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
+                        <ListGroup.Item><i className="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
+                        <ListGroup.Item><i className="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
                         <ListGroup.Item>{hike.description}</ListGroup.Item>
                     </ListGroup>
-                </Card.Body>
-            </Card>
-        </Col>
+                </Card.Body >
+            </Card >
+        </Col >
     );
 }
 
