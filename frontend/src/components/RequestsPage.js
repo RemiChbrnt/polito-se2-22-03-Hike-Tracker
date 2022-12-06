@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Table, Button } from 'react-bootstrap';
+import { Container, Table, Button, Row, Col } from 'react-bootstrap';
 import API from "../API";
 
 const RequestsPage = (props) => {
@@ -13,7 +13,8 @@ const RequestsPage = (props) => {
         setIsLoading(false);
     }
 
-/*     const testGetPendingUsers = async () => {
+     // TODO: Remove
+    const testGetPendingUsers = async () => {
         const pendingUsers = [
             {
                 "email": "testUser1@polito.it",
@@ -36,7 +37,7 @@ const RequestsPage = (props) => {
         ];
         setPendingUsers(pendingUsers);
         setIsLoading(false);
-    } */
+    }
 
     const approveUser = async (email) => {
         try {
@@ -48,9 +49,19 @@ const RequestsPage = (props) => {
         }
     }
 
-    useEffect(() => {
+    const declineUser = async (email) => {
+        try {
+            await API.declineUser(email);
             getPendingUsers();
-            //testGetPendingUsers();
+        } catch(e) {
+            console.log('ERROR DECLINING USER: ' + e);
+            throw e;
+        }
+    }
+
+    useEffect(() => {
+            //getPendingUsers();
+            testGetPendingUsers(); // TODO: Remove
     }, []);
 
     return <>
@@ -61,6 +72,7 @@ const RequestsPage = (props) => {
                 : <RequestsList
                     pendingUsers={pendingUsers}
                     approveUser={approveUser}
+                    declineUser={declineUser}
                 />
         }
         </Container>
@@ -81,7 +93,7 @@ function RequestsList(props) {
                 </tr>
             </thead>
             <tbody>
-                {props.pendingUsers.map((user) => <TableRow key={user.email} user={user} approveUser={props.approveUser}/>)}
+                {props.pendingUsers.map((user) => <TableRow key={user.email} user={user} approveUser={props.approveUser} declineUser={props.declineUser}/>)}
             </tbody>
         </Table>
     </>
@@ -94,7 +106,18 @@ function TableRow(props) {
         <td>{props.user.fullName}</td>
         <td>{props.user.role}</td>
         <td>{props.user.phoneNumber}</td>
-        <td><Button variant="success" onClick={() => props.approveUser(props.user.email)}>Approve registration</Button></td>
+        <td>
+            <Container fluid>
+                <Row>
+                    <Col lg={4}>
+                        <Button variant="success" onClick={() => props.approveUser(props.user.email)}>Approve</Button>
+                    </Col>
+                    <Col lg={4}>
+                        <Button variant="danger" onClick={() => props.declineUser(props.user.email)}>Decline</Button>
+                    </Col>
+                </Row>
+            </Container>
+        </td>
     </tr>
 }
 

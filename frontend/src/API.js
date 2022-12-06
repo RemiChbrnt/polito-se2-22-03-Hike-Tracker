@@ -100,7 +100,25 @@ async function approveUser(email) {
     } else {
         throw result;
     }
-}
+};
+
+async function declineUser(email) {
+    const response = await fetch(URL + '/approve', {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(email)
+    });
+
+    const result = await response.json();
+    if(response.ok) {
+        return result;
+    } else {
+        throw result;
+    }
+};
 
 /* hikes API */
 
@@ -421,5 +439,5 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers };
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers };
 export default API;
