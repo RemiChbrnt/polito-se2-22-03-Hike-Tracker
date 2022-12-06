@@ -145,11 +145,30 @@ describe("Hut tests", () => {
 
     test('Link a hut to a hike with non existing hike', async () => {
         try {
-            
             const locationToLink = 4316;
             await LocationDao.linkHut(1,locationToLink);
         } catch (err) {
             expect(err).toBe(400);
+        }
+    });
+
+
+    //testing status related functions
+
+    test('get hut by worker email', async () => {
+        try {
+            const result = await LocationDao.getHutbyWorkerId("jen.shiro@chiocciola.it");
+            expect(result.body).toEqual(1);
+        } catch (err) {
+            console.log(err)
+        }
+    });
+
+    test('get hut by wrong worker email', async () => {
+        try {
+            await LocationDao.getHutbyWorkerId("jen.shiro1719@chiocciola.it");
+        } catch (err) {
+            expect(err).toBe(404);
         }
     });
 });
@@ -225,3 +244,4 @@ describe('Parking lot tests', () => {
 
 
 })
+

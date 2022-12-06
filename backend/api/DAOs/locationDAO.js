@@ -1,6 +1,11 @@
 'use strict';
 const db = require('../../db/db');
 
+/*
+getHutsByUserId refers to local guides
+getHutbyWorkerId to workers intead
+*/
+
 exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
         let sql =
@@ -238,7 +243,12 @@ exports.getHutbyWorkerId = async (email) => {
                 reject(400);
                 return;
             }
-            resolve(row.id);
+            if(row===undefined){
+                reject(404);
+                return;
+            }else{
+                resolve(row.id);
+            }       
         })
     })
 }
