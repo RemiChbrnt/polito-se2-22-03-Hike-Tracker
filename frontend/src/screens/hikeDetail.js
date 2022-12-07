@@ -3,6 +3,7 @@ import { Col, Container, Row, Button, Collapse, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
 import API from '../API.js';
+import { AddReferencePointForm } from "../components/addReferencePointForm";
 
 const HikeDetail = ({user, props, setProps }) => {
 
@@ -121,7 +122,9 @@ const HikeDetail = ({user, props, setProps }) => {
                                 addNewReferencePoint={addNewReferencePoint}
                                 file={hike.track} />
                         </Row>
-                        <Row>
+                        {addNewReferencePoint?
+                            <AddReferencePointForm hikeId={params.hikeId} userEmail={user.email} pointCoords={newReferencePointCoords}/>
+                        :<Row>
                             <Col>
                                 <div class="d-flex justify-content-start">
                                     <h4>
@@ -158,7 +161,7 @@ const HikeDetail = ({user, props, setProps }) => {
                                     {hike.description}
                                 </h4>
                             </Col>
-                        </Row>              
+                        </Row>}       
                     </Row>
                     <ul></ul>
                 </Container>

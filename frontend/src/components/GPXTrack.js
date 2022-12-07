@@ -27,7 +27,7 @@ const GPXTrack = (props) => {
             });
                 
             if(closestPointOnTrack !== null){
-                console.log(closestPointOnTrack);
+                // console.log(closestPointOnTrack);
                 props.setNewReferencePointCoords(closestPointOnTrack);
             }
         }
