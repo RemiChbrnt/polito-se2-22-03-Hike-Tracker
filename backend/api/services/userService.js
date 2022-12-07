@@ -9,10 +9,10 @@ class UserService {
     login = async (body) => {
         try {
             let user = await this.DAO.login(body.email, body.password);
-            if (user === 412)
+            if (user === 412 || user === 403 || user === 401)
                 return {
                     ok: false,
-                    status: 412
+                    status: user
                 }
 
             return {
@@ -106,6 +106,70 @@ class UserService {
 
         }
     };
+
+
+    getPendingUsers = async () => {
+        try {
+            const result = await this.DAO.getPendingUsers();
+            const users = result.map((u) => ({
+                email: u.email,
+                fullName: u.fullname,
+                role: u.role
+            }))
+            return {
+                ok: true,
+                status: 200,
+                body: users
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
+
+        }
+    }
+
+
+    approveUser = async (email) => {
+        try {
+            const user = await this.DAO.approveUser(email);
+            return {
+                ok: true,
+                status: 200,
+                body: user
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
+
+        }
+    }
+
+
+    declineUser = async (email) => {
+        try {
+            const user = await this.DAO.declineUser(email);
+            return {
+                ok: true,
+                status: 200,
+                body: user
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
+
+        }
+    }
+
+
 
 }
 

@@ -20,16 +20,14 @@ async function login(email, password) {
         })
     });
     const user = await response.json();
-    console.log("user " + JSON.stringify(user));
     if (response.ok) {
         return user;
-    } else if (response.status === 412)
-        /* User email not verified */
-        return 412;
-    else if (response.status === 403) {
-        /* Account not yet approved by manager */
-        return 403;
-    } else {
+    } else if (response.status === 412  /* User email not verified */
+        || response.status == 403   /* Account not yet approved by manager */
+        || response.status == 401)   /* Account not found */
+
+        return response.status;
+    else {
         throw user;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
 }
@@ -41,7 +39,6 @@ async function logOut() { //API di logout
 
 
 async function signup(body) {
-    console.log("body.fullname " + body.fullName);
     console.log("body " + JSON.stringify(body));
     const response = await fetch(URL + '/signup', {
         method: "POST",
@@ -71,6 +68,10 @@ const getUserInfo = async () => {
     }
 };
 
+/**
+ * function to get the pending users
+ * @returns the list of users not yet verified by manager
+ */
 async function getPendingUsers() {
     const response = await fetch(URL + '/get-pending-users', {
         credentials: 'include'
@@ -91,7 +92,7 @@ async function approveUser(email) {
             'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify(email)
+        body: JSON.stringify({ email: email })
     });
 
     const result = await response.json();
@@ -100,7 +101,25 @@ async function approveUser(email) {
     } else {
         throw result;
     }
-}
+};
+
+async function declineUser(email) {
+    const response = await fetch(URL + '/approve', {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email: email })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        return result;
+    } else {
+        throw result;
+    }
+};
 
 /* hikes API */
 
@@ -470,6 +489,7 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers, addReferencePoint };
+
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers, addReferencePoint };
 
 export default API;

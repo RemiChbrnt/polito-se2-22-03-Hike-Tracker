@@ -21,7 +21,8 @@ function LoginForm({ user, setUser }) {
 
     const [email, setEmail] = useState('maurizio.merluzzo@donkeykong.com');
     const [password, setPassword] = useState('testPassword1');
-    
+
+    const [loginError, setLoginError] = useState(false);
     const [error, setError] = useState(false);
     const [errorText, setErrorText] = useState('');
 
@@ -33,19 +34,21 @@ function LoginForm({ user, setUser }) {
         let result = await handlerLogin(email, password);
 
         if (result !== false) {
-            if(result === 412) {
+            if (result === 412) {
                 setErrorText('Please verify your email to access.');
                 setError(true);
-            } else if(result === 403){
+            } else if (result === 403) {
                 setErrorText('Your account has not been approved yet. Please contact the platform manager.')
                 setError(true);
-            } else {
+            } else if (result === 401)
+                setLoginError(true);
+            else {
                 setUser(result);
                 navigate(`/`);
             }
         }
         else
-            setError(true);
+            setLoginError(true);
     }
 
 
@@ -88,7 +91,7 @@ function LoginForm({ user, setUser }) {
                                     <Button type="submit" variant='success' size='lg'>Log-In</Button>
                                 </Col>
                             </Row>
-                            {error && <span>Error: email or password not correct</span>}
+                            {loginError && <span>Error: email or password not correct</span>}
                         </Form>
                     </Col>
                 </Row>
@@ -104,7 +107,7 @@ function LoginForm({ user, setUser }) {
                 </Row>
             </Container>
         }
-        {error && 
+        {error &&
             <ErrorDisplay
                 errorText={errorText}
                 setError={setError}

@@ -23,21 +23,21 @@ const HikeDetail = ({user, props, setProps }) => {
 
     useEffect(() => {
         API.getHikeFromID(params.hikeId)
-            .then(hike => { 
+            .then(hike => {
                 console.log(hike);
                 setHike(hike);
                 setIsLoading(false);
             })
-            .catch(error => console.log(error)); 
+            .catch(error => console.log(error));
     }, [])
 
     return (
         <Container>
-            {isLoading?
+            {isLoading ?
                 <Container>
                     <h5>Loading...</h5>
                 </Container>
-            :
+                :
                 <Container>
                     <Row>
                         <Col md={10}>
@@ -131,19 +131,20 @@ const HikeDetail = ({user, props, setProps }) => {
                             />
                         :<Row>
                             <Col>
-                                <div class="d-flex justify-content-start">
+                                <div className="d-flex justify-content-start">
                                     <h4>
-                                            Difficulty :
+                                        Difficulty :
                                     </h4>
-                                    <div style={{backgroundColor : (hike.difficulty==="tourist") ?
-                                            "darkGreen" : (hike.difficulty==="hiker") ?
-                                            "orange" : "red",
-                                            marginLeft: "2%"
-                                        }}>
-                                        <h4 style={{textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10}}>
-                                            { (hike.difficulty==="tourist") ?
-                                            "Tourist Friendly" : (hike.difficulty==="hiker") ?
-                                            "Casual Hiker" : "Professional Hiker"}
+                                    <div style={{
+                                        backgroundColor: (hike.difficulty === "tourist") ?
+                                            "darkGreen" : (hike.difficulty === "hiker") ?
+                                                "orange" : "red",
+                                        marginLeft: "2%"
+                                    }}>
+                                        <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
+                                            {(hike.difficulty === "tourist") ?
+                                                "Tourist Friendly" : (hike.difficulty === "hiker") ?
+                                                    "Casual Hiker" : "Professional Hiker"}
                                         </h4>
                                     </div>
                                 </div>
@@ -166,7 +167,7 @@ const HikeDetail = ({user, props, setProps }) => {
                                     {hike.description}
                                 </h4>
                             </Col>
-                        </Row>}       
+                        </Row>     
                     </Row>
                     <ul></ul>
                 </Container>
