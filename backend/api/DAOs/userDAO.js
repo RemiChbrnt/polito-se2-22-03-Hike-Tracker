@@ -54,7 +54,7 @@ exports.login = async (email, password) => {
 
 
 
-exports.signup = async (email, fullName, password, role, phoneNumber) => {
+exports.signup = async (email, fullName, password, role, phoneNumber, hut) => {
     let salt, hash, query;
 
     return new Promise((resolve, reject) => {
@@ -86,12 +86,31 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
                     reject(err);
                 }
                 else {
-                    sendEmail(email, randomString);
-                    resolve({
-                        email: email,
-                        fullName: fullName,
-                        role: role
-                    });
+                    /* If the new user wants to be a hut worker, insert his data in the HutWorkers table */
+                    if(role === "hutworker") {
+                        console.log('QUERY PARAMETERS: ' + email + ' - ' + hut);
+                        query = 'INSERT INTO HutWorkers VALUES(?, ?)';
+                        db.run(query, [email, hut], (err) => {
+                            if(err){
+                                console.log(err);
+                                reject(err);
+                            } else {
+                                sendEmail(email, randomString);
+                                resolve({
+                                    email: email,
+                                    fullName: fullName,
+                                    role: role
+                                });
+                            }
+                        })
+                    } else {
+                        sendEmail(email, randomString);
+                        resolve({
+                            email: email,
+                            fullName: fullName,
+                            role: role
+                        });
+                    }
                 }
 
             });
@@ -202,15 +221,26 @@ exports.approveUser = async (email) => {
     })
 }
 
-exports.declineUser = async (email) => {
+exports.declineUser = async (email, role) => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM Users WHERE email = ?'
         db.run(sql, [email], (err) => {
             if (err)
                 reject(503);
-            else
-                resolve(true);
-        })
+            else{
+                if(role === "hutworker") {
+                    const sql = 'DELETE FROM HutWorkers WHERE email = ?'
+                    db.run(sql, [email], (err) => {
+                        if(err)
+                            reject(503);
+                        else
+                            resolve(true);
+                    });
+                }
+                else
+                    resolve(true);
+            }
+        });
     })
 }
 

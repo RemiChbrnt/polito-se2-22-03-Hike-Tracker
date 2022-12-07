@@ -172,7 +172,7 @@ userRouter.delete('/approve', isLoggedIn, async (req, res) => {
     if (req.user.role !== "manager")
         return res.status(400).json({ error: "Unauthorized" });
 
-    const data = await service.declineUser(req.body.email);
+    const data = await service.declineUser(req.body.email, req.body.role);
 
     if (data.ok)
         return res.status(data.status).json(data)

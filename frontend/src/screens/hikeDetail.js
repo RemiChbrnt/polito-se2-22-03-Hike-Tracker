@@ -122,52 +122,54 @@ const HikeDetail = ({user, props, setProps }) => {
                                 addNewReferencePoint={addNewReferencePoint}
                                 file={hike.track} />
                         </Row>
-                        {addNewReferencePoint?
-                            <AddReferencePointForm 
-                                hikeId={params.hikeId} 
-                                userEmail={user.email} 
-                                pointCoords={newReferencePointCoords}
-                                setAddNewReferencePoint={setAddNewReferencePoint}
-                            />
-                        :<Row>
-                            <Col>
-                                <div className="d-flex justify-content-start">
-                                    <h4>
-                                        Difficulty :
-                                    </h4>
-                                    <div style={{
-                                        backgroundColor: (hike.difficulty === "tourist") ?
-                                            "darkGreen" : (hike.difficulty === "hiker") ?
-                                                "orange" : "red",
-                                        marginLeft: "2%"
-                                    }}>
-                                        <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
-                                            {(hike.difficulty === "tourist") ?
-                                                "Tourist Friendly" : (hike.difficulty === "hiker") ?
-                                                    "Casual Hiker" : "Professional Hiker"}
+                        {
+                            addNewReferencePoint 
+                            ? <AddReferencePointForm 
+                                    hikeId={params.hikeId} 
+                                    userEmail={user.email} 
+                                    pointCoords={newReferencePointCoords}
+                                    setAddNewReferencePoint={setAddNewReferencePoint}
+                                />
+                            : <Row>
+                                <Col>
+                                    <div className="d-flex justify-content-start">
+                                        <h4>
+                                            Difficulty :
                                         </h4>
+                                        <div style={{
+                                            backgroundColor: (hike.difficulty === "tourist") ?
+                                                "darkGreen" : (hike.difficulty === "hiker") ?
+                                                    "orange" : "red",
+                                            marginLeft: "2%"
+                                        }}>
+                                            <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
+                                                {(hike.difficulty === "tourist") ?
+                                                    "Tourist Friendly" : (hike.difficulty === "hiker") ?
+                                                        "Casual Hiker" : "Professional Hiker"}
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
-                                <h4>
-                                    Expected time : {hike.expTime} hours
-                                </h4>
-                                <h4>
-                                    Length : {hike.length} km
-                                </h4>
-                                <h4>
-                                    Ascent : {hike.ascent} m
-                                </h4>
-                            </Col>
+                                    <h4>
+                                        Expected time : {hike.expTime} hours
+                                    </h4>
+                                    <h4>
+                                        Length : {hike.length} km
+                                    </h4>
+                                    <h4>
+                                        Ascent : {hike.ascent} m
+                                    </h4>
+                                </Col>
 
-                            <Col className="border-start border-2 border-secondary">
-                                <h3>
-                                    Description
-                                </h3>
-                                <h4>
-                                    {hike.description}
-                                </h4>
-                            </Col>
-                        </Row>     
+                                <Col className="border-start border-2 border-secondary">
+                                    <h3>
+                                        Description
+                                    </h3>
+                                    <h4>
+                                        {hike.description}
+                                    </h4>
+                                </Col>
+                            </Row>  
+                        }   
                     </Row>
                     <ul></ul>
                 </Container>

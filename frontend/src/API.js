@@ -103,14 +103,14 @@ async function approveUser(email) {
     }
 };
 
-async function declineUser(email) {
+async function declineUser(email, role) {
     const response = await fetch(URL + '/approve', {
         method: "DELETE",
         headers: {
             'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({ email: email, role: role })
     });
 
     const result = await response.json();
