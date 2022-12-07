@@ -65,6 +65,15 @@ const Map = (props) => {
                         }
                     }
                 )}
+                {(props.newReferencePointCoords !== null ) &&
+                    <Marker 
+                    position={props.newReferencePointCoords} 
+                    icon={defaultMarker}>
+                        <Popup>
+                            hi
+                        </Popup>
+                    </Marker>
+                }
                 {props.displayPoints[3] &&
                     <Marker position={[startPt.latitude, startPt.longitude]} icon={startIcon}>
                         <Popup>
@@ -81,7 +90,10 @@ const Map = (props) => {
                         </Popup>
                     </Marker>
                 }
-                {(props.file !== undefined) && <GPXTrack geoJsonFile={props.file}/>}
+                {(props.file !== undefined) && <GPXTrack 
+                    geoJsonFile={props.file} 
+                    setNewReferencePointCoords={props.setNewReferencePointCoords}
+                    addNewReferencePoint={props.addNewReferencePoint}/>}
         </MapContainer>
     );
 }
