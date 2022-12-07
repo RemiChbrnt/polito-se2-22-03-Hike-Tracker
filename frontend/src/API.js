@@ -195,6 +195,33 @@ async function createHike(body) {
     }
 }
 
+
+/**
+ * Function to add a referencePoint
+ * @param {*} hikeId: the hike's id
+ * @param {*} locationId: the location's id
+ * @returns 200 if succesful, 400 otherwise
+ */
+ async function addReferencePoint(hikeId, locationId) {
+    let params = `/hikesReferencePoints`;
+
+    const response = await fetch(URL + params, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({hikeId: hikeId, locationId: locationId})
+    });
+
+    const res = await response.json();
+    if (res.ok) {
+        return true;
+    } else {
+        throw res;
+    }
+}
+
 /**
  * Function to set the StartPt field of an hike in the database
  * @param {*} id: the hike's id
@@ -443,6 +470,6 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers };
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, getPendingUsers, addReferencePoint };
 
 export default API;

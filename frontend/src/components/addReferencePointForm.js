@@ -12,7 +12,6 @@ const handleReferencePointCreation = async (name, type, latitude, longitude, cou
     if (town === "") town = null;
     if (address === "") address = null;
     if (altitude === "") altitude = null;
-    console.log(name, type, latitude, longitude, country, province, town, address, altitude);
     try {
         let body = {
             name: name,
@@ -26,7 +25,9 @@ const handleReferencePointCreation = async (name, type, latitude, longitude, cou
             altitude: altitude,
         }
         let res = await API.createLocation(body);
-        return (res.id);
+        let done = await API.addReferencePoint(hikeId, res.id);
+
+        return done;
     } catch (err) {
         console.log(err);
         return (false);
@@ -34,8 +35,9 @@ const handleReferencePointCreation = async (name, type, latitude, longitude, cou
 };
 
 //----- TO DO -----
-function AddReferencePointForm({hikeId, userEmail, pointCoords}) {
+function AddReferencePointForm({hikeId, userEmail, pointCoords, setAddNewReferencePoint}) {
 
+    const [completedWithSuccess, setCompletedWithSuccess] = useState(false);
 
     const [name, setName] = useState("");
     const [type, setType] = useState('generic');
@@ -65,44 +67,64 @@ function AddReferencePointForm({hikeId, userEmail, pointCoords}) {
                     if (res.address.village !== undefined) town = res.address.village;
                 }
             });
-            let result = await handleReferencePointCreation(name, type, latitude, longitude, country, province, town, address, altitude, hikeId);
-        }
+            let res = await handleReferencePointCreation(name, type, latitude, longitude, country, province, town, address, altitude, hikeId);
+            if (res){
+                setCompletedWithSuccess(true);
+            }else{
+                throw new Error(String(res));
+            }
+        }   
     };
 
 
     return (
-        <Form onSubmit={handlerSubmit} className="hike-form mt-3">
-            <h4>Add a new Reference Point !</h4>
-            <h6>Click on the map to select a location</h6>
-            <div className="form-group">
-                <Form.Group controlId='hutName'>
-                    <Form.Label><b>Name</b> <b className="asterisk-required">*</b></Form.Label>
-                    <Form.Control type="text" placeholder="Enter hut name" required
-                        onChange={ev => { setName(ev.target.value); }}
-                    />
-                </Form.Group>
+        <Row>
+            {completedWithSuccess? 
+            <div>
+                <h4>New reference point added with success !</h4>
+                <div className="d-grid gap-2 mt-3 mb-5">
+                    <Button style={{width:"20%"}} variant="success" onClick={() => setAddNewReferencePoint(false)}>OK</Button>
+                </div>
             </div>
-            <div className="form-group mt-3">
-                <Form.Label><b>Type</b> <b className="asterisk-required">*</b></Form.Label>
-                <Form.Select required onChange={ev => {setType(ev.target.value); }}>
-                    <option value="generic">Generic</option>
-                    <option value="parkinglot">Parking Lot</option>
-                    <option value="hut">Hut</option>
-                </Form.Select>
-            </div>
-            <div className="form-group mt-3">
-                <Form.Group className="mb-3" controlId="altitude">
-                    <Form.Label><b>Altitude</b></Form.Label>
-                    <Form.Control type="number" placeholder="Enter altitude"
-                        onChange={ev => { setAltitude(ev.target.value); }}
-                    />
-                </Form.Group>
-            </div>
-            {mustSelectPointOnTrack && <h6 className="asterisk-required">Please select a location on the map.</h6>}
-            <div className="d-grid gap-2 mt-3 mb-5">
-                <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
-            </div>
-        </Form>
+            :<Form onSubmit={handlerSubmit} className="hike-form mt-3">
+                <h4>Add a new Reference Point !</h4>
+                <h6>Click on the map to select a location</h6>
+                <Row>
+                    <Col>
+                        <Form.Group controlId='hutName'>
+                            <Form.Label><b>Name</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control type="text" placeholder="Entre reference location name" required
+                                onChange={ev => { setName(ev.target.value); }}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Label><b>Type</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Select required onChange={ev => {setType(ev.target.value); }}>
+                            <option value="generic">Generic</option>
+                            <option value="parkinglot">Parking Lot</option>
+                            <option value="hut">Hut</option>
+                        </Form.Select>
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="altitude">
+                            <Form.Label><b>Altitude</b></Form.Label>
+                            <Form.Control type="number" placeholder="Enter altitude"
+                                onChange={ev => { setAltitude(ev.target.value); }}
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>  
+                {mustSelectPointOnTrack && <h6 className="asterisk-required">Please select a location on the map.</h6>}
+                <Row>
+                    <Col style={{display:"flex", justifyContent:"flex-end"}}>
+                        <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
+                        <Button style={{marginLeft: 10}} variant="warning" onClick={() => setAddNewReferencePoint(false)}>CANCEL</Button>
+                    </Col>
+                </Row>
+            </Form>} 
+        </Row>
+        
     );
 }
 

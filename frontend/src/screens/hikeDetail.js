@@ -123,7 +123,12 @@ const HikeDetail = ({user, props, setProps }) => {
                                 file={hike.track} />
                         </Row>
                         {addNewReferencePoint?
-                            <AddReferencePointForm hikeId={params.hikeId} userEmail={user.email} pointCoords={newReferencePointCoords}/>
+                            <AddReferencePointForm 
+                                hikeId={params.hikeId} 
+                                userEmail={user.email} 
+                                pointCoords={newReferencePointCoords}
+                                setAddNewReferencePoint={setAddNewReferencePoint}
+                            />
                         :<Row>
                             <Col>
                                 <div class="d-flex justify-content-start">

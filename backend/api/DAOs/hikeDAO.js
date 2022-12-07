@@ -216,3 +216,24 @@ exports.setHikeEndPoint = async (hike) => {
     })
 }
 
+exports.addHikeReferencePoint = async (query) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO HikesReferencePoints(hikeId, locationId) VALUES(?,?)';
+        db.run(sql, [
+            query.hikeId,
+            query.locationId,
+        ], function (err, rows) {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
+

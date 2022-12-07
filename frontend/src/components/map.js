@@ -50,7 +50,7 @@ const Map = (props) => {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
                 {referencePoints.map(refPt => {
-                        if((props.displayPoints[0] && refPt.type==="parkingLot") || 
+                        if((props.displayPoints[0] && refPt.type==="parkinglot") || 
                         (props.displayPoints[1] && refPt.type==="hut") || 
                         (props.displayPoints[2] && refPt.type==="generic")){
                             return (<Marker 
