@@ -14,7 +14,11 @@ import * as L from 'leaflet';
 const CoordsFromMap = ({center, radius = 0, setCoords}) => {
 
     const [localCoords, setLocalCoords] = useState([center]);
-
+    const defaultMarker = new L.Icon({
+        iconUrl: require('../images/pin-marker.png'),
+        iconSize: [104, 158]
+    });
+    
     return (
         <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{width: 650, height: 400}} >
             <TileLayer
@@ -24,7 +28,7 @@ const CoordsFromMap = ({center, radius = 0, setCoords}) => {
                 <CoordsOnClick setCoords={setCoords} setLocalCoords={setLocalCoords}/>
                 {(radius === 0)?
                     localCoords.map((point, index) =>
-                        <Marker key={index} position={point}/>
+                        <Marker key={index} position={point} icon={defaultMarker}/>
                     )
                 :
                     localCoords.map((point, index) =>
@@ -44,16 +48,7 @@ const CoordsFromMap = ({center, radius = 0, setCoords}) => {
  */
 const isPointInDisk = (pointCoords, diskCenter, diskRadius ) => {
     if (Array.isArray(pointCoords) && Array.isArray(diskCenter)) {
-        var R = 6371; // Radius of the earth in km
-        var dLat = deg2rad(diskCenter[0]-pointCoords[0]);  // deg2rad below
-        var dLon = deg2rad(diskCenter[1]-pointCoords[1]); 
-        var a = 
-            Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(deg2rad(diskCenter[0])) * Math.cos(deg2rad(pointCoords[0])) * 
-            Math.sin(dLon/2) * Math.sin(dLon/2)
-            ; 
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        var d = R * c; // Distance in km
+        const d = distanceTwoPoints(pointCoords, diskCenter);
         if (d < diskRadius){
             return true;
         }
@@ -63,8 +58,29 @@ const isPointInDisk = (pointCoords, diskCenter, diskRadius ) => {
     }
 }
 
+
+/**
+ * Function that returns the geographical distance in kms given two points
+ * @param {*} p1: Point 1 as [lat, long]
+ * @param {*} p2: Point 2 as [lat, long]
+ * @returns distance in kms
+ */
+const distanceTwoPoints = (p1 ,p2) => {
+    var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(p2[0]-p1[0]);  // deg2rad below
+        var dLon = deg2rad(p2[1]-p1[1]); 
+        var a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(p2[0])) * Math.cos(deg2rad(p1[0])) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+            ; 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c; // Distance in km
+        return d;
+}
+
 function deg2rad(deg) {
     return deg * (Math.PI/180)
 }
 
-export { CoordsFromMap, isPointInDisk };
+export { CoordsFromMap, isPointInDisk, distanceTwoPoints };

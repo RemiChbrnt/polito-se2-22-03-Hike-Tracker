@@ -140,6 +140,24 @@ router.put('/hike-endPt/:id/:endPt', isLoggedIn, [
     return res.status(data.status).end()
 })
 
+router.post('/hikesReferencePoints', isLoggedIn, [
+    body('hikeId').exists().isNumeric(),
+    body('locationId').exists().isNumeric()
+], async (req, res) => {
+    const errors = validationResult(req);
 
+    if(req.user.role!=='guide')
+        return res.status(403).json({ errors: "Only guides can access this feature" });
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const hikeReferencePoints = req.body
+    const refPt = await service.addHikeReferencePoint(hikeReferencePoints)
+    if (refPt.ok) {
+        return res.status(refPt.status).json({ok: true})
+    }
+    return res.status(refPt.status).end()
+})
 
 module.exports = router

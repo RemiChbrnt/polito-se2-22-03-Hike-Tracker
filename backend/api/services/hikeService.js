@@ -114,7 +114,21 @@ class HikeService {
             }
         }
     }
-
+    
+    addHikeReferencePoint = async (newReferencePoint) => {
+        try {
+            const res = await this.dao.addHikeReferencePoint(newReferencePoint)
+            return {
+                ok: true,
+                status: 201,
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 400
+            }
+        }
+    }
 
 }
 
