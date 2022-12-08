@@ -1,6 +1,7 @@
 import { Form, Button, Container, Row, Col, Nav } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Country, State, City }  from 'country-state-city';
 
 import API from "../API";
 
@@ -23,16 +24,18 @@ function ActiveForm(props) {
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [country, setCountry] = useState("");
-    const [province, setProvince] = useState("");
+    const [countryCode, setCountryCode]=useState("");
+    const [region, setRegion] = useState("");
+    const [regionCode, setRegionCode]=useState(""); 
     const [town, setTown] = useState("");
     const [address, setAddress] = useState("");
     const [altitude, setAltitude] = useState("");
     const [description, setDescription] = useState("");
     const [lotsNumber, setLotsNumber] = useState(0);
     //----- TO DO -----
-    const addParking = async (title, latitude, longitude, country, province, town, address, altitude, description, lotsNumber) => {
+    const addParking = async (title, latitude, longitude, country, region, town, address, altitude, description, lotsNumber) => {
         try {
-            let params = ({ name: title, type: "parkinglot", latitude: latitude, longitude: longitude, country: country, province: province, town: town, address: address, altitude: altitude, description: description, lotsNumber: lotsNumber });
+            let params = ({ name: title, type: "parkinglot", latitude: latitude, longitude: longitude, country: country, region: region, town: town, address: address, altitude: altitude, description: description, lotsNumber: lotsNumber });
             let res = await API.createLocation(params);
             return res;
 
@@ -46,7 +49,7 @@ function ActiveForm(props) {
     const handlerSubmit = async (e) => {
         e.preventDefault();
         props.setForm(true);
-        let result = await addParking(title, latitude, longitude, country, province, town, address, altitude, description, lotsNumber);
+        let result = await addParking(title, latitude, longitude, country, region, town, address, altitude, description, lotsNumber);
         if (result !== false) {
             props.setSuccess(true);
         }
@@ -96,21 +99,34 @@ function ActiveForm(props) {
                     <Row>
                         <Col>
                             <div className="form-group mt-3">
-                                <Form.Group controlId='parkingCountry'>
-                                    <Form.Label><b>Country</b> <b className="asterisk-required">*</b></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter country" required
-                                        onChange={ev => { setCountry(ev.target.value); }}
-                                    />
+                                <Form.Group controlId='hutCountry'>
+                                    <Form.Label><b>Country</b></Form.Label>
+                                        <Form.Select className='country-input' value={countryCode} onChange={(ev) => { 
+                                            if(ev.target.value!==''){
+                                                setCountryCode(ev.target.value);
+                                                setCountry(Country.getAllCountries().filter(c => c.isoCode === ev.target.value)[0].name);
+                                            }
+                                        }}>
+                                            <option key={'None'} value={''}>{'Select a country'}</option>
+                                            {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
+                                        </Form.Select>
                                 </Form.Group>
                             </div>
                         </Col>
                         <Col>
                             <div className="form-group mt-3">
-                                <Form.Group controlId='parkingProvince'>
-                                    <Form.Label><b>Province</b> <b className="asterisk-required">*</b></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter province" required
-                                        onChange={ev => { setProvince(ev.target.value); }}
-                                    />
+                                <Form.Group controlId='hutRegion'>
+                                    <Form.Label><b>Region</b></Form.Label>
+                                    <Form.Select className='region-input' value={regionCode} disabled={countryCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => { 
+                                        if(ev.target.value!==''){
+                                            setRegionCode(ev.target.value);
+                                            setRegion(State.getStatesOfCountry(countryCode).filter(r=>r.isoCode===ev.target.value)[0].name);
+                                        }
+                                        
+                                    }}>
+                                        <option key={'None'} value={''}>{'Select a region'}</option>
+                                        {State.getStatesOfCountry(countryCode).map((r, k) => <option key={k} value={r.isoCode}>{r.name}</option>)}
+                                    </Form.Select>
                                 </Form.Group>
                             </div>
                         </Col>
@@ -118,11 +134,12 @@ function ActiveForm(props) {
                     <Row>
                         <Col>
                             <div className="form-group mt-3">
-                                <Form.Group controlId='parkingTown'>
-                                    <Form.Label><b>Town</b> <b className="asterisk-required">*</b></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter town" required
-                                        onChange={ev => { setTown(ev.target.value); }}
-                                    />
+                                <Form.Group controlId='hutTown'>
+                                    <Form.Label><b>Town</b></Form.Label>
+                                    <Form.Select className='town-input' disabled={regionCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => {setTown(ev.target.value);}}>
+                                        <option key={'None'} value={''}>{'Select a town'}</option>
+                                        {City.getCitiesOfState(countryCode, regionCode).map((t,m)=><option key={m} value={t.name}>{t.name}</option>)}
+                                    </Form.Select>
                                 </Form.Group>
                             </div>
                         </Col>
@@ -130,7 +147,7 @@ function ActiveForm(props) {
                             <div className="form-group mt-3">
                                 <Form.Group controlId='parkingAddress'>
                                     <Form.Label><b>Address</b></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter town"
+                                    <Form.Control type="text" placeholder="Enter an address"
                                         onChange={ev => { setAddress(ev.target.value); }}
                                     />
                                 </Form.Group>
