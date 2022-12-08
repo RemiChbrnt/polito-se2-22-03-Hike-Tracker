@@ -3,7 +3,7 @@ const db = require('../../db/db');
 
 exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
-        let sql =
+        let sql1 =
             `SELECT * from Locations
             LEFT JOIN Huts ON Locations.id = Huts.locationId
             WHERE type="hut"`
@@ -11,18 +11,68 @@ exports.getHuts = async (query) => {
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
-        sql = sql + filters;
-        db.all(sql, [], async (err, rows) => {
+        sql1 = sql1 + filters;
+        db.all(sql1, [], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
                 return;
             }
-
-            resolve(rows);
+            else {
+                const res = await Promise.all(
+                    rows.map(async (r) => {
+                        let photos = await setPhotos(r.id);
+                        return {
+                            id: r.id,
+                            name: r.name,
+                            type: r.type,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            country: r.country,
+                            province: r.province,
+                            town: r.town,
+                            address: r.address,
+                            altitude: r.altitude,
+                            author: r.author,
+                            photos: photos
+                        }
+                    })
+                )
+                resolve(res);
+            }
         })
     })
 }
+
+
+
+const setPhotos = async (id) => {
+    return new Promise((resolve, reject) => {
+        const sql =
+            `SELECT fileName FROM HutsPhotos        
+            WHERE hutId = ?`
+        db.all(sql, [id], async (err, rows) => {
+            if (err) {
+                console.log("err" + err)
+                reject();
+                return;
+            } else if (rows === undefined || rows.length === 0)
+                resolve();
+            else {
+                const res = await Promise.all(
+                    rows.map(async (r) => {
+                        // console.log("fileName " + r.fileName);
+                        return r.fileName;
+                    }))
+                resolve(res);
+            }
+        })
+    })
+}
+
+
+
+
 
 exports.generateHutFilters = (query) => {
     let filters = " AND";
@@ -178,17 +228,51 @@ const addParking = async function (id, lotsNumber, description) {
 
 exports.getHutsByUserId = async (email) => {
     return new Promise((resolve, reject) => {
-        const sql =
-            `SELECT * from Locations
-             LEFT JOIN Huts ON Locations.id = Huts.locationId
-             WHERE type="hut" AND author=? `
-        db.all(sql, [email], async (err, rows) => {
+        const sql1 =
+            `SELECT * FROM Locations
+             LEFT JOIN Huts ON Locations.id = Huts.locationId             
+             WHERE type="hut" AND author=?`
+        db.all(sql1, [email], async (err, rows) => {
             if (err) {
                 reject();
                 return;
             } else if (rows === undefined) { resolve(false); }
             else {
-                resolve(rows);
+                const res = await Promise.all(
+                    rows.map(async (r) => {
+                        let photos = [];
+                        const sql2 =
+                            `SELECT fileName FROM Locations, HutsPhotos
+                            WHERE Locations.id = HutsPhotos.hutId
+                            AND type="hut" AND Locations.id = ?`
+                        db.all(sql2, [r.id], async (err, rows) => {
+                            if (err) {
+                                reject();
+                                return;
+                            } else {
+                                if (rows !== undefined && rows.length !== 0)
+                                    rows.map((r) => {
+                                        photos.push(r.fileName);
+                                    })
+                            }
+                        })
+                        return {
+                            id: r.id,
+                            name: r.name,
+                            type: r.type,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            country: r.country,
+                            province: r.province,
+                            town: r.town,
+                            address: r.address,
+                            altitude: r.altitude,
+                            author: r.author,
+                            photos: photos
+                        }
+                    })
+                )
+                resolve(res);
             }
         })
     })
@@ -266,7 +350,7 @@ exports.getLocationById = async (query) => {
                 reject()
                 return
             }
-            const location=r[0];
+            const location = r[0];
             resolve({
                 id: location.id,
                 name: location.name,
@@ -281,6 +365,23 @@ exports.getLocationById = async (query) => {
                 altitude: location.altitude,
                 author: location.author
             });
+        })
+    })
+}
+
+
+
+exports.addHutPhoto = async (id, photo) => {
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO HutsPhotos(hutId, fileName) VALUES(?,?)`
+        db.run(sql, [id, photo], async (err) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+
+            resolve(201);
         })
     })
 }

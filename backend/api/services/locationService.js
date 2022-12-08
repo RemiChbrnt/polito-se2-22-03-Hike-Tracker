@@ -8,24 +8,27 @@ class LocationService {
     getHuts = async (query) => {
         try {
             const huts = await this.dao.getHuts(query);
-            
-            const message = huts.map((r) => ({
-                id: r.id,
-                name: r.name,
-                latitude: r.latitude,
-                longitude: r.longitude,
-                country: r.country,
-                province: r.province,
-                town: r.town,
-                address: r.address,
-                altitude: r.altitude,
-                numberOfBeds: r.numberOfBeds,
-                food: r.food,
-                description: r.description,
-                openingTime: r.openingTime,
-                closingTime: r.closingTime,
-                cost: r.cost
-            }))
+
+            const message = huts.map((r) => {
+                return ({
+                    id: r.id,
+                    name: r.name,
+                    latitude: r.latitude,
+                    longitude: r.longitude,
+                    country: r.country,
+                    province: r.province,
+                    town: r.town,
+                    address: r.address,
+                    altitude: r.altitude,
+                    numberOfBeds: r.numberOfBeds,
+                    food: r.food,
+                    description: r.description,
+                    openingTime: r.openingTime,
+                    closingTime: r.closingTime,
+                    cost: r.cost,
+                    photos: r.photos
+                })
+            })
             return {
                 ok: true,
                 status: 200,
@@ -133,7 +136,8 @@ class LocationService {
                 description: r.description,
                 openingTime: r.openingTime,
                 closingTime: r.closingTime,
-                cost: r.cost
+                cost: r.cost,
+                photos: r.photos
             }))
             return {
                 ok: true,
@@ -202,6 +206,25 @@ class LocationService {
             }
         }
     }
+
+
+    addHutPhoto = async (body) => {
+        try {
+            const result = await this.dao.addHutPhoto(body.id, body.photo);
+            return {
+                ok: true,
+                status: 201,
+                body: result
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+
 }
 
 module.exports = LocationService

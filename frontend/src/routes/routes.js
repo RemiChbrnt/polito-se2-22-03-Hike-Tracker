@@ -6,6 +6,7 @@ import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
 import { AddPointForm } from "../components/addPointForm";
 import { AddHutForm } from "../components/addHutForm";
+import { AddHutPhotoForm } from "../components/addHutPhotoForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
@@ -77,6 +78,23 @@ const routes = [
         }
     },
     {
+        path: "/add-hut-photo",
+        key: "add-hut-photo",
+        screen: function (user, props, setProps) {
+            return (
+                <Container>
+                    <Row >
+                        <Col></Col>
+                        <Col>
+                            <AddHutPhotoForm props={props} setProps={setProps} />
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Container>
+            );
+        }
+    },
+    {
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (user, props, setProps) {
@@ -119,7 +137,7 @@ const routes = [
         path: "/pending-requests",
         key: "pending-requests",
         screen: function (props, setProps) {
-            return <RequestsPage props={props} setProps={setProps}/>
+            return <RequestsPage props={props} setProps={setProps} />
         }
     }
 

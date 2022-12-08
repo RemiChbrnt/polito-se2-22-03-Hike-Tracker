@@ -35,7 +35,32 @@ function HutGrid(props) {
 
 function HutCard(props) {
 
-    //console.log(props.hut);
+    const [photos, setPhotos] = useState();
+
+    useEffect(() => {
+        if (props.hut.photos !== undefined) {
+            let reader = new FileReader();
+
+            reader.onloadend = (e) => {
+
+                // setPhotos(e.target.result);
+                console.log("photo " + e.target.result);
+
+            }
+
+            let photosText = [];
+
+            props.hut.photos.map((p) => {
+                console.log("tipo " + typeof p);
+                console.log("p " + p);
+                photosText.push(p);
+
+                // reader.readAsDataURL(p);
+            })
+            setPhotos(photosText);
+        }
+    }, []);
+
 
     return (
         <Col>
@@ -72,10 +97,21 @@ function HutCard(props) {
                         <ListGroup.Item><span className="fw-bold">Town: </span></ListGroup.Item>*/}
                         <ListGroup.Item><span className="fw-bold">Altitude: </span>{props.hut.altitude} m</ListGroup.Item>
                         <ListGroup.Item>{props.hut.description}</ListGroup.Item>
+                        <ListGroup.Item>
+                            {(photos !== undefined) ?
+                                photos.map((p) => {
+                                    console.log("map p " + (p));
+                                    {/* console.log("object url " + URL.createObjectURL(p)); */ }
+                                    return <img src={p} style={{ width: "100%" }} />
+                                })
+                                :
+                                <span>No images available</span>
+                            }
+                        </ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>
-        </Col>
+        </Col >
     );
 }
 

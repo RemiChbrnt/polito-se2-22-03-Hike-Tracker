@@ -29,9 +29,9 @@ router.get('/huts', isLoggedIn, [
         }
 
         const data = await service.getHuts(req.query);
-        if (data.ok) {
+        if (data.ok)
             return res.status(data.status).json(data.body)
-        }
+
         return res.status(data.status).end()
     })
 
@@ -57,7 +57,7 @@ router.get('/huts-and-parking-lots',
 
 router.get('/locations',
     async (req, res) => {
-        
+
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
@@ -87,8 +87,8 @@ router.post('/locations', isLoggedIn, [
     body('description').optional({ nullable: true }).isString()
 ], async (req, res) => {
     const errors = validationResult(req);
-    if(req.user.role!=='guide')
-        return res.status(403).json({ errors: "Only guides can access this feature"})
+    if (req.user.role !== 'guide')
+        return res.status(403).json({ errors: "Only guides can access this feature" })
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
@@ -126,8 +126,8 @@ router.post('/linkHut', isLoggedIn, [
     body('hikeId').exists().isNumeric(),
 ], async (req, res) => {
 
-    if(req.user.role!=='guide')
-        return res.status(403).json({ errors: "Only guides can access this feature"})
+    if (req.user.role !== 'guide')
+        return res.status(403).json({ errors: "Only guides can access this feature" })
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -170,5 +170,26 @@ router.get('/referencePointsByHikeId', [query('id').exists()],
         return res.status(data.status).end()
     }
 )
+
+
+
+router.post("/hut-photo", isLoggedIn, [
+    body('id').exists().isNumeric(),
+    body('photo').exists(),
+], async (req, res) => {
+    if (req.user.role !== 'hutworker')
+        return res.status(403).json({ errors: "Only hut workers can access this feature" })
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    const response = await service.addHutPhoto(req.body)
+    if (response.ok)
+        return res.status(response.status).json(response.body)
+
+    return res.status(response.status).end();
+});
+
 
 module.exports = router;

@@ -221,7 +221,7 @@ async function createHike(body) {
  * @param {*} locationId: the location's id
  * @returns 200 if succesful, 400 otherwise
  */
- async function addReferencePoint(hikeId, locationId) {
+async function addReferencePoint(hikeId, locationId) {
     let params = `/hikesReferencePoints`;
 
     const response = await fetch(URL + params, {
@@ -230,7 +230,7 @@ async function createHike(body) {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({hikeId: hikeId, locationId: locationId})
+        body: JSON.stringify({ hikeId: hikeId, locationId: locationId })
     });
 
     const res = await response.json();
@@ -333,7 +333,8 @@ async function getHuts(filters) {
             food: r.food,
             openingTime: r.openingTime,
             closingTime: r.closingTime,
-            description: r.description
+            description: r.description,
+            photos: r.photos
         }))
     } else {
         throw hutsJson;
@@ -490,6 +491,28 @@ async function linkHut(params) {
     }
 }
 
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers, addReferencePoint };
+/**
+ * Function to add a photo related to a hut
+ * @param {*} body contains the attributes "id", the id of the hut, and "photo", the png/jpeg file converted into BLOB
+ * @returns true if succesfull, false otherwise
+ */
+async function addHutPhoto(body) {
+    const response = await fetch(URL + '/hut-photo', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body)
+    });
+    if (response.ok) {
+        return true;
+    } else {
+        throw false;
+    }
+}
+
+
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers, addReferencePoint, addHutPhoto };
 
 export default API;
