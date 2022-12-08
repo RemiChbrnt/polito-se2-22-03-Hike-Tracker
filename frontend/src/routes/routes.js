@@ -94,7 +94,7 @@ const routes = [
                     <Row >
                         <Col></Col>
                         <Col>
-                            <AddHutPhotoForm props={props} setProps={setProps} />
+                            <AddHutPhotoForm user={user} props={props} setProps={setProps} />
                         </Col>
                         <Col></Col>
                     </Row>

@@ -1,18 +1,19 @@
 import { Form, Button, Container, Row, Col, Nav } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import API from "../API";
 
 
-const handlerSignup = async (email, fullName, password, role, phoneNumber) => {
+const handlerSignup = async (email, fullName, password, role, phoneNumber, hut) => {
     try {
         let body = {
             email: email,
             password: password,
             fullName: fullName,
             role: role,
-            phoneNumber: phoneNumber
+            phoneNumber: phoneNumber,
+            hut: hut
         }
         let user = await API.signup(body);
         return user;
@@ -35,13 +36,25 @@ function SignupForm({ user, setUser }) {
     const [error, setError] = useState(false);
     const [message, setMessage] = useState(false);
     const [messageText, setMessageText] = useState('');
+    const [huts, setHuts] = useState([]);
+    const [hut, setHut] = useState(undefined);
 
     let navigate = useNavigate();
+
+    useEffect(() => {
+        async function getHuts() {
+            const huts = await API.getHuts();
+            setHuts(huts);
+            setHut(huts[0].id);
+        }
+
+        getHuts();
+    }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
 
-        let result = await handlerSignup(email, fullName, password, role, phoneNumber);
+        let result = await handlerSignup(email, fullName, password, role, phoneNumber, hut);
         // props.setLoggedIn(true);
 
         if (result !== false) {
@@ -104,12 +117,26 @@ function SignupForm({ user, setUser }) {
                             </Form.Select>
                         </Form.Group>
 
-                        {(role === "hutworker" || role === "guide") &&
+                        {(role === "guide" || role === "hutworker") &&
                             <Form.Group controlId="email">
                                 <Form.Label>Phone number</Form.Label>
                                 <Form.Control type="text" placeholder="Phone number" required={true}
                                     onChange={ev => { setPhoneNumber(ev.target.value) }}
                                 />
+                            </Form.Group>
+                        }
+                        {
+                            role === "hutworker" &&
+                            <Form.Group controlId="hutlist">
+                                <Form.Label>Select your hut</Form.Label>
+                                <Form.Select 
+                                    value={hut}
+                                    onChange={event => {
+                                        console.log('You selected hut: ' + event.target.value);
+                                        setHut(event.target.value)}
+                                    }>
+                                    {huts.map((hut) => <option value={hut.id}>{hut.name}</option>)}
+                                </Form.Select>
                             </Form.Group>
                         }
 

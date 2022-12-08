@@ -23,9 +23,9 @@ const RequestsPage = (props) => {
         }
     }
 
-    const declineUser = async (email) => {
+    const declineUser = async (email, role) => {
         try {
-            await API.declineUser(email);
+            await API.declineUser(email, role);
             await getPendingUsers();
         } catch (e) {
             console.log('ERROR DECLINING USER: ' + e);
@@ -97,7 +97,7 @@ function TableRow(props) {
                         <Button variant="success" onClick={() => props.approveUser(props.user.email)}>Approve</Button>
                     </Col>
                     <Col lg={4}>
-                        <Button variant="danger" onClick={() => props.declineUser(props.user.email)}>Decline</Button>
+                        <Button variant="danger" onClick={() => props.declineUser(props.user.email, props.user.role)}>Decline</Button>
                     </Col>
                 </Row>
             </Container>

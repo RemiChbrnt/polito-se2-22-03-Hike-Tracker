@@ -1,17 +1,16 @@
 import { Form, Button, Container, Row, Col, Nav } from 'react-bootstrap';
 import { useState } from 'react';
-import { resolvePath, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import API from "../API";
-import toGeoJSON from '@mapbox/togeojson';
 
-function AddHutPhotoForm() {
+function AddHutPhotoForm(props) {
     const [form, setForm] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
     return (
         <Container>
-            {!form && <ActiveForm setForm={setForm} setError={setError} setSuccess={setSuccess} />}
+            {!form && <ActiveForm user={props.user} setForm={setForm} setError={setError} setSuccess={setSuccess} />}
             {form && error && <ErrorDisplay setError={setError} setForm={setForm} />}
             {form && success && <SuccessDisplay setSuccess={setSuccess} setForm={setForm} />}
         </Container>
@@ -20,7 +19,8 @@ function AddHutPhotoForm() {
 
 function ActiveForm(props) {
 
-    const [id, setId] = useState(6);
+    console.log("hut " + JSON.stringify(props.user.hut));
+
     const [photo, setPhoto] = useState(null);
     const [photoPreview, setPhotoPreview] = useState(null);
 
@@ -63,7 +63,7 @@ function ActiveForm(props) {
     const handlerSubmit = async (e) => {
         e.preventDefault();
         props.setForm(true);
-        let result = await addHutPhoto(id, photo);
+        let result = await addHutPhoto(props.user.hut, photo);
         if (result !== false)
             props.setSuccess(true);
 
@@ -77,7 +77,7 @@ function ActiveForm(props) {
             <h2> Add a photo for your hut </h2>
             <Form onSubmit={handlerSubmit} className="hike-form">
                 <div className="hike-form-group">
-                    <Row>
+                    {/* <Row>
                         <div className="form-group mt-3">
                             <Form.Group controlId='hutName'>
                                 <Form.Label><b>Id</b> <b className="asterisk-required">*</b></Form.Label>
@@ -86,12 +86,11 @@ function ActiveForm(props) {
                                 />
                             </Form.Group>
                         </div>
-                    </Row>
+                    </Row> */}
                     <Row>
-                        <b> Upload a PNG or JPEG file </b>
-                    </Row>
-                    <Row>
-                        <input type="file" name="file" onChange={ev => handleFile(ev)} />
+                        <Form.Label>Upload a PNG or JPEG file</Form.Label>
+                        <Form.Control type="file" onChange={ev => handleFile(ev)} />
+
                         {invalidFileFormat && <h5 style={{ color: "#f00" }}>WARNING : Invalid format, try with a .png or a .jpeg </h5>}
                     </Row>
                     <Row>

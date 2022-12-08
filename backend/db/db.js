@@ -11,7 +11,8 @@ if (process.env.NODE_ENV === 'test') {
     dbPath = './testingHikeTrackerDb.db'
 }
 
-dbPath = './HikeTrackerDb.db';
+// TODO: set to original db
+dbPath = './productionHikeTrackerDb.db';
 
 const DBSOURCE = path.join(__dirname, dbPath);
 const database = new sqlite.Database(DBSOURCE, (err) => {

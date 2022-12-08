@@ -487,7 +487,7 @@ function AddHikeForm(props) {
                                             aria-expanded={openEnd} variant="success" size="sm"
                                             style= {!openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
                                                 {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Choose the Start Point from existing points
+                                                Choose the End Point from existing points
                                         </Button>
                                     </Col>
                                     <Col>
@@ -496,7 +496,7 @@ function AddHikeForm(props) {
                                             aria-expanded={openEnd} variant="success" size="sm"
                                             style={openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
                                                 {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Insert a new point as the Start Point
+                                                Insert a new point as the End Point
                                         </Button>
                                     </Col>
                                     <Col/>
@@ -517,7 +517,7 @@ function AddHikeForm(props) {
                                     <Row>
                                         <Col>
                                             <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="text" placeholder="Enter start point name" required
+                                            <Form.Control type="text" placeholder="Enter end point name" required
                                                 onChange={ev => { setEndPtName(ev.target.value); }}
                                             />
                                         </Col>
