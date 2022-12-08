@@ -171,7 +171,7 @@ async function getHikeFromID(id) {
     });
 
     const hikeJson = await response.json();
-    console.log(hikeJson);
+    // console.log(hikeJson);
     if (response.ok) {
         return hikeJson;
     } else {
@@ -340,6 +340,27 @@ async function getHuts(filters) {
         throw hutsJson;
     }
 }
+
+
+/**
+ * Function to get a specific hut 
+ * @param {*} id: the hut's id
+ * @returns hut corresponding to ID if succesful, 400 otherwise
+ */
+async function getHutById(id) {
+
+    const response = await fetch(URL + `/hut-by-id?id=${id}`, {
+        credentials: 'include',
+    });
+
+    const hutJson = await response.json();
+    if (response.ok)
+        return hutJson;
+    else
+        throw hutJson;
+}
+
+
 
 /**
  * Function to get all the huts and the parking lots
@@ -513,6 +534,6 @@ async function addHutPhoto(body) {
 }
 
 
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers, addReferencePoint, addHutPhoto };
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers, addReferencePoint, addHutPhoto };
 
 export default API;

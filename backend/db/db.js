@@ -4,12 +4,12 @@ const path = require('path');
 /* DB init */
 
 let dbPath = "";
-// if (process.env.NODE_ENV === 'development') {
-//     dbPath = './HikeTrackerDb.db'
-// }
-// if (process.env.NODE_ENV === 'test') {
-//     dbPath = './testingHikeTrackerDb.db'
-// }
+if (process.env.NODE_ENV === 'development') {
+    dbPath = './HikeTrackerDb.db'
+}
+if (process.env.NODE_ENV === 'test') {
+    dbPath = './testingHikeTrackerDb.db'
+}
 
 dbPath = './HikeTrackerDb.db';
 

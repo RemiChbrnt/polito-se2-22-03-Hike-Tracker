@@ -3,7 +3,7 @@ const db = require('../../db/db');
 
 exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
-        let sql1 =
+        let sql =
             `SELECT * from Locations
             LEFT JOIN Huts ON Locations.id = Huts.locationId
             WHERE type="hut"`
@@ -11,8 +11,8 @@ exports.getHuts = async (query) => {
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
-        sql1 = sql1 + filters;
-        db.all(sql1, [], async (err, rows) => {
+        sql = sql + filters;
+        db.all(sql, [], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
@@ -21,7 +21,6 @@ exports.getHuts = async (query) => {
             else {
                 const res = await Promise.all(
                     rows.map(async (r) => {
-                        let photos = await setPhotos(r.id);
                         return {
                             id: r.id,
                             name: r.name,
@@ -33,12 +32,35 @@ exports.getHuts = async (query) => {
                             town: r.town,
                             address: r.address,
                             altitude: r.altitude,
-                            author: r.author,
-                            photos: photos
+                            author: r.author
                         }
                     })
                 )
                 resolve(res);
+            }
+        })
+    })
+}
+
+
+
+exports.getHutById = async (id) => {
+    return new Promise((resolve, reject) => {
+        let sql =
+            `SELECT * from Locations
+            LEFT JOIN Huts ON Locations.id = Huts.locationId
+            WHERE type="hut" AND id = ?`
+
+        db.get(sql, [id], async (err, row) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                let photos = await setPhotos(row.id);
+                row.photos = photos;
+                resolve(row);
             }
         })
     })
@@ -240,22 +262,6 @@ exports.getHutsByUserId = async (email) => {
             else {
                 const res = await Promise.all(
                     rows.map(async (r) => {
-                        let photos = [];
-                        const sql2 =
-                            `SELECT fileName FROM Locations, HutsPhotos
-                            WHERE Locations.id = HutsPhotos.hutId
-                            AND type="hut" AND Locations.id = ?`
-                        db.all(sql2, [r.id], async (err, rows) => {
-                            if (err) {
-                                reject();
-                                return;
-                            } else {
-                                if (rows !== undefined && rows.length !== 0)
-                                    rows.map((r) => {
-                                        photos.push(r.fileName);
-                                    })
-                            }
-                        })
                         return {
                             id: r.id,
                             name: r.name,
@@ -267,8 +273,7 @@ exports.getHutsByUserId = async (email) => {
                             town: r.town,
                             address: r.address,
                             altitude: r.altitude,
-                            author: r.author,
-                            photos: photos
+                            author: r.author
                         }
                     })
                 )

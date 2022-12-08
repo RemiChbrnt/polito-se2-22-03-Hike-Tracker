@@ -25,8 +25,7 @@ class LocationService {
                     description: r.description,
                     openingTime: r.openingTime,
                     closingTime: r.closingTime,
-                    cost: r.cost,
-                    photos: r.photos
+                    cost: r.cost
                 })
             })
             return {
@@ -41,6 +40,42 @@ class LocationService {
             }
         }
     }
+
+
+    getHutById = async (id) => {
+        try {
+            const hut = await this.dao.getHutById(id);
+            return {
+                ok: true,
+                status: 200,
+                body: hut
+                // body: {
+                //     id: hut.id,
+                //     name: hut.name,
+                //     latitude: hut.latitude,
+                //     longitude: hut.longitude,
+                //     country: hut.country,
+                //     province: hut.province,
+                //     town: hut.town,
+                //     address: hut.address,
+                //     altitude: hut.altitude,
+                //     numberOfBeds: hut.numberOfBeds,
+                //     food: hut.food,
+                //     description: hut.description,
+                //     openingTime: hut.openingTime,
+                //     closingTime: hut.closingTime,
+                //     cost: hut.cost,
+                //     photos: hut.photos
+                // }
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
 
     getLocations = async (query) => {
         try {

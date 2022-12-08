@@ -36,6 +36,26 @@ router.get('/huts', isLoggedIn, [
     })
 
 
+router.get('/hut-by-id', isLoggedIn, [query('id').exists()],
+    async (req, res) => {
+
+        console.log("req.query.id " + req.query.id);
+
+        if (req.user === undefined)
+            return res.status(400).json({ error: "Unauthorized" });
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(400).json({ error: errors.array() });
+
+        const data = await service.getHutById(req.query.id);
+        if (data.ok)
+            return res.status(data.status).json(data.body)
+
+        return res.status(data.status).end()
+    })
+
+
 
 router.get('/huts-and-parking-lots',
     async (req, res) => {

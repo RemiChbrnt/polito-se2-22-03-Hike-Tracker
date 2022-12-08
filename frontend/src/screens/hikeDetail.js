@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row, Button, Collapse, Form } from 'react-bootstrap';
+import { Col, Container, Row, Button, Collapse, Form, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
 import API from '../API.js';
@@ -24,7 +24,7 @@ const HikeDetail = ({ user, props, setProps }) => {
     useEffect(() => {
         API.getHikeFromID(params.hikeId)
             .then(hike => {
-                console.log(hike);
+                // console.log(hike);
                 setHike(hike);
                 setIsLoading(false);
             })
@@ -50,52 +50,39 @@ const HikeDetail = ({ user, props, setProps }) => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <label for="parking" className="pr-5">
-                                Show Parkings &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="parking"
-                                checked={showParkings}
-                                onChange={e => setShowParkings(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="hut" >
-                                Show Huts &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="hut"
-                                checked={showHuts}
-                                onChange={e => setShowHuts(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="pointsInterest">
-                                Show Points of Interest &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="pointsInterest"
-                                checked={showPointsOfInterest}
-                                onChange={e => setShowPointsOfInterest(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="startAndArrival">
-                                Show Start & Arrival Points &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="startAndArrival"
-                                checked={showStartAndArrival}
-                                onChange={e => setShowStartAndArrival(e.target.checked)}
-                            />
-                        </Col>
-                    </Row>
+                    <Form>
+                        <Form.Check
+                            inline
+                            label="Show parkings"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowParkings(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show huts"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowHuts(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show points of interest"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowPointsOfInterest(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show start and arrival"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowStartAndArrival(e.target.checked)}
+                        />
+                    </Form>
 
                     {(user === undefined) ? (false && <></>) : (user.role === "guide") &&
                         <Col style={{ marginTop: "2%", display: "flex", width: "100%", justifyContent: "flex-end", alignItems: "center" }}>
@@ -110,8 +97,8 @@ const HikeDetail = ({ user, props, setProps }) => {
                         </Col>
                     }
                     <ul></ul>
-                    <Row style={{ flex: 1, marginTop: "2%", alignItems: "center" }}>
-                        <Row className="border border-3 border-secondary">
+                    <Row>
+                        <Row className="justify-content-center">
                             <Map
                                 displayPoints={[showParkings, showHuts, showPointsOfInterest, showStartAndArrival]}
                                 startPt={JSON.stringify(hike.startPt)}
@@ -122,6 +109,8 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 addNewReferencePoint={addNewReferencePoint}
                                 file={hike.track} />
                         </Row>
+
+
                         {addNewReferencePoint ?
                             <AddReferencePointForm
                                 hikeId={params.hikeId}
@@ -129,7 +118,7 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 pointCoords={newReferencePointCoords}
                                 setAddNewReferencePoint={setAddNewReferencePoint}
                             />
-                            : <Row>
+                            : <Row className="justify-content-center mt-5">
                                 <Col>
                                     <div className="d-flex justify-content-start">
                                         <h4>

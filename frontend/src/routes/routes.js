@@ -5,6 +5,7 @@ import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
 import { AddPointForm } from "../components/addPointForm";
+import HutDetail from "../screens/hutDetail.js";
 import { AddHutForm } from "../components/addHutForm";
 import { AddHutPhotoForm } from "../components/addHutPhotoForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
@@ -58,6 +59,13 @@ const routes = [
         key: "add-hike-description",
         screen: function (user, props, setProps) {
             return <AddHikeForm user={user} props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/hut-detail-:hutId",
+        key: "hut-detail",
+        screen: function (user, props, setProps) {
+            return <HutDetail user={user} props={props} setProps={setProps} />
         }
     },
     {

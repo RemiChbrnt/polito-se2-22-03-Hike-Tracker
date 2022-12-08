@@ -34,21 +34,14 @@ function ActiveForm(props) {
             setInvalidFileFormat(true);
         } else {
             setInvalidFileFormat(false);
-            console.log("file " + file);
             setPhotoPreview(file);
-            // setPhoto(file);
 
             let reader = new FileReader();
 
             reader.onloadend = (e) => {
-                console.log("photo " + photo);
-
                 setPhoto(e.target.result);
-                console.log("photo " + e.target.result);
-
             }
             reader.readAsDataURL(file);
-
         }
     }
 

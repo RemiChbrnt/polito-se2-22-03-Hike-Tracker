@@ -1,5 +1,6 @@
 import { Card, Row, Col, ListGroup, Container } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import API from '../API.js';
 
 function HutGrid(props) {
@@ -23,7 +24,11 @@ function HutGrid(props) {
                     {(huts.length === 0) ? <h2>No match found with the specified filters...</h2> :
                         <Row xs={1} md={2} className="g-4">
                             {
-                                huts.map((hut, index) => <HutCard hut={hut} key={index} setProps={props.setProps} />)
+                                huts.map((hut, index) =>
+                                    <HutCard
+                                        hut={hut}
+                                        key={index}
+                                        setProps={props.setProps} />)
                             }
                         </Row>
                     }
@@ -35,36 +40,37 @@ function HutGrid(props) {
 
 function HutCard(props) {
 
-    const [photos, setPhotos] = useState();
+    // const [photos, setPhotos] = useState();
 
-    useEffect(() => {
-        if (props.hut.photos !== undefined) {
-            let reader = new FileReader();
+    // useEffect(() => {
+    //     if (props.hut.photos !== undefined) {
+    //         let reader = new FileReader();
 
-            reader.onloadend = (e) => {
+    //         reader.onloadend = (e) => {
 
-                // setPhotos(e.target.result);
-                console.log("photo " + e.target.result);
 
-            }
+    //         }
 
-            let photosText = [];
+    //         let photosText = [];
 
-            props.hut.photos.map((p) => {
-                console.log("tipo " + typeof p);
-                console.log("p " + p);
-                photosText.push(p);
+    //         props.hut.photos.map((p) => {                
+    //             photosText.push(p);                
+    //         })
+    //         setPhotos(photosText);
+    //     }
+    // }, []);
 
-                // reader.readAsDataURL(p);
-            })
-            setPhotos(photosText);
-        }
-    }, []);
+    const navigate = useNavigate();
+
+    const showDetail = (() => {
+        // props.setProps({ user: props.user });
+        navigate("/hut-detail-" + props.hut.id);
+    });
 
 
     return (
         <Col>
-            <Card>
+            <Card style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
                 <Card.Body>
                     <Card.Title><h3 className="fw-bold">{props.hut.name}</h3></Card.Title>
                     <ListGroup variant="flush">
@@ -97,21 +103,10 @@ function HutCard(props) {
                         <ListGroup.Item><span className="fw-bold">Town: </span></ListGroup.Item>*/}
                         <ListGroup.Item><span className="fw-bold">Altitude: </span>{props.hut.altitude} m</ListGroup.Item>
                         <ListGroup.Item>{props.hut.description}</ListGroup.Item>
-                        <ListGroup.Item>
-                            {(photos !== undefined) ?
-                                photos.map((p) => {
-                                    console.log("map p " + (p));
-                                    {/* console.log("object url " + URL.createObjectURL(p)); */ }
-                                    return <img src={p} style={{ width: "100%" }} />
-                                })
-                                :
-                                <span>No images available</span>
-                            }
-                        </ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>
-        </Col >
+        </Col>
     );
 }
 
