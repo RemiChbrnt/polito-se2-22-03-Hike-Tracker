@@ -64,10 +64,10 @@ function HikeFilterForm(props) {
 
                 <Row>
                     <Form.Group>
-                        <Form.Select value={region}
+                        <Form.Select data-test-id="region" value={region}
                             onChange={e => setRegion(e.target.value)}
                             aria-label="region" size="lg">
-                            <option>Select the Region</option>
+                            <option value="select">Select the Region</option>
                             <option value="Abruzzo">Abruzzo</option>
                             <option value="Basilicata">Basilicata</option>
                             <option value="Calabria">Calabria</option>
@@ -98,6 +98,7 @@ function HikeFilterForm(props) {
                         <Form.Group>
                             <h5>Minimum Length (km): </h5>
                             <Form.Control
+                                id="minLength-input"
                                 value={minLength}
                                 onChange={e => setMinLength(e.target.value)}
                                 type='number' placeholder="Minimum Length" size="lg" />
@@ -120,6 +121,7 @@ function HikeFilterForm(props) {
                         <Form.Group>
                             <h5>Minimum Ascent (m): </h5>
                             <Form.Control
+                                id="min-ascent"
                                 value={minAscent}
                                 onChange={e => setMinAscent(e.target.value)}
                                 type='number' placeholder="Minimum Ascent" size="lg" />
@@ -142,6 +144,7 @@ function HikeFilterForm(props) {
                         <Form.Group>
                             <h5>Minimum Time (hours): </h5>
                             <Form.Control
+                                id="min-time"
                                 value={minTime}
                                 onChange={e => setMinTime(e.target.value)}
                                 type='number' placeholder="Minimum Time" size="lg" />
@@ -161,12 +164,12 @@ function HikeFilterForm(props) {
                     <Col />
                     <Col />
                     <Col>
-                        <Button variant="danger" onClick={() => props.setShow(false)} size="lg">
+                        <Button data-test-id="back" variant="danger" onClick={() => props.setShow(false)} size="lg">
                             Back
                         </Button>
                     </Col>
                     <Col>
-                        <Button variant="success" type="submit" size="lg">
+                        <Button data-test-id="confirm" variant="success" type="submit" size="lg">
                             Confirm
                         </Button>
                     </Col>

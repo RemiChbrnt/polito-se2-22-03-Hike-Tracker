@@ -54,13 +54,13 @@ function HikeCard(props) {
                 <Card.Body>
                     <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title>
                     <ListGroup variant="flush">
-                        <ListGroup.Item><span className="fw-bold">Length: </span>{hike.length} km</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Estimated Time: </span>{hike.expTime} hours</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Ascent: </span>{hike.ascent} m</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Difficulty: </span>{hike.difficulty}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Start Point: </span>{hike.startPt.name}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">End Point: </span>{hike.endPt.name}</ListGroup.Item>
-                        <ListGroup.Item>{hike.description}</ListGroup.Item>
+                        <ListGroup.Item data-test-id="length"><span className="fw-bold">Length: </span>{hike.length} km</ListGroup.Item>
+                        <ListGroup.Item data-test-id="time"><span className="fw-bold">Estimated Time: </span>{hike.expTime} hours</ListGroup.Item>
+                        <ListGroup.Item data-test-id="ascent"><span className="fw-bold">Ascent: </span>{hike.ascent} m</ListGroup.Item>
+                        <ListGroup.Item data-test-id="difficulty"><span className="fw-bold">Difficulty: </span>{hike.difficulty}</ListGroup.Item>
+                        <ListGroup.Item data-test-id="start"><span className="fw-bold">Start Point: </span>{hike.startPt.name}</ListGroup.Item>
+                        <ListGroup.Item data-test-id="end"><span className="fw-bold">End Point: </span>{hike.endPt.name}</ListGroup.Item>
+                        <ListGroup.Item data-test-id="description">{hike.description}</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>

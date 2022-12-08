@@ -46,10 +46,10 @@ const Home = (props) => {
 
             <Row>
                 <Col md={10}>
-                    <h1>Hike List</h1>
+                    <h1 data-test-id="title">Hike List</h1>
                 </Col>
                 <Col md={2}>
-                    <Button onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
+                    <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
                 </Col>
             </Row>
 
