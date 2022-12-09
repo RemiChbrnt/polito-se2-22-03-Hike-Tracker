@@ -69,7 +69,7 @@ const Home = (props) => {
                     <Button onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
                 </Col>
                 {
-                props.user &&
+                (props.user && props.user.role === "hiker") &&
                     <Col md={1}>
                         <Button onClick={() => suggestHikes()} variant="success" size="lg">{" "}Suggested hikes</Button>
                     </Col>
