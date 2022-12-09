@@ -71,7 +71,6 @@ function SideBar(props) {
                             props.user.role === "hutworker" ?
                                 <Offcanvas.Body>
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
-                                        <Nav.Link onClick={() => { navigate('/add-hut-photo') }} onMouseOver={() => { setOver('add-hut-photo') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hut-photo' || over === 'add-hut-photo') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add Hut Photo</h5></Nav.Link>
                                         {/* <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link> */}
                                         <ul></ul>

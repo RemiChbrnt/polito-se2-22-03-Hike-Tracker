@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Button, Row } from 'react-bootstrap';
+import { Col, Container, Button, Row, ListGroup, Nav} from 'react-bootstrap';
 //import { Carousel } from 'react-carousel-minimal';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Carousel } from "./carousel/Carousel.js";
@@ -35,33 +35,62 @@ const HomeWorker = (props) => {
     };
 
     return (
-        <Container>
+        <Container className="container-hut">
             {isLoading ? <h1>Loading...</h1> :
-                <Container style={{ textAlign: "center" }}>
-                    <h2>{hut.name}</h2>
+                <Container className="container-hut">
+                    <Row><h2 style={{ textAlign: "center" }}>{hut.name}</h2></Row>
+                    <Row>
+                        <p></p>
+                        <p></p>
+                    </Row>
                     <Row>
                         <Col>
-                            <Row className="justify-content-md-center">
-                                <Col style={{ textAlign: "justify" }} xs={8}><h4>Description</h4></Col>
+                             <Row>
+                                <p></p>
+                                <p></p>
                             </Row>
-                            <Row className="justify-content-md-center">
-                                <Col style={{ textAlign: "justify" }} xs={8}>{hut.description}</Col>
+                            <Row >
+                                <Col style={{ textAlign: "justify" }}><h4>Description</h4></Col>
+                            </Row>
+                            <Row >
+                                <Col style={{ textAlign: "justify" }}>{hut.description}</Col>
                             </Row>
                             <p></p>
-                            <Row className="justify-content-md-center">
-                                <Col style={{ textAlign: "justify" }} xs={8}><h4>Address</h4></Col>
+                            <Row >
+                                <Col style={{ textAlign: "justify" }}><h4>General Info</h4></Col>
                             </Row>
-                            <Row className="justify-content-md-center">
-                                <Col style={{ textAlign: "justify" }} xs={8}>{hut.address}</Col>
+                            <Row >
+                                <Col>
+                                    <Row style={{ textAlign: "justify" }}><p><b>Opening Time: </b>{(hut.openingTime!==null)? hut.openingTime : "No information available" }</p></Row>
+                                    <Row style={{ textAlign: "justify" }}><p><b>Closing Time: </b>{(hut.closingTime!==null)? hut.closingTime : "No information available" }</p></Row>
+                                    <Row style={{ textAlign: "justify" }}><p><b>Number of beds: </b>{(hut.numberOfBeds!==null)? hut.numberOfBeds : "No information available" }</p></Row>
+                                    <Row style={{ textAlign: "justify" }}><p><b>Cost: </b>{(hut.cost!==null)? hut.cost : "No information available" }</p></Row>
+                                    <Row style={{ textAlign: "justify" }}><span><b>Food: </b>{(hut.food!==null)? hut.food : "No information available" }</span></Row>
+                                </Col>
+                            </Row>
+                            <p></p>
+                            <Row >
+                                <Col style={{ textAlign: "justify" }}><h4>Position</h4></Col>
+                            </Row>
+                            <Row >
+                                <Col>
+                                    <Row style={{ textAlign: "justify" }}><p><b>Altitude: </b>{(hut.altitude!==null)? hut.altitude + " m": "No information available" }</p></Row>
+                                    <Row style={{ textAlign: "justify" }}><p><b>Address: </b>{(hut.address!==null)? hut.address: "No information available"}</p></Row>
+                                </Col>
+                            </Row>
+                            <p></p>
+                            <Row>
+                                <Col style={{ textAlign: "center" }}><Button type="submit" className="guideBtn" borderless="true">Modify Info</Button></Col>
+                                <Col xs={7}> <Button type="submit" className="guideBtn" borderless="true"><Nav.Link onClick={() => { navigate('/add-hut-photo') }}>Add Photo</Nav.Link></Button></Col>
                             </Row>
                         </Col>
-                        <Col style={{ textAlign: "center" }}>
-                            <div style={{ padding: "0 20px", }}>
+                        <Col>
+                            <div>
                                 <Carousel
                                     data={hut.photos}
                                     time={2000}
                                     width="800px"
-                                    height="350px"
+                                    height="450px"
                                     captionStyle={captionStyle}
                                     radius="10px"
                                     slideNumber={true}
