@@ -20,7 +20,8 @@ class HikeService {
                 description: r.description,
                 track: r.track,
                 author: r.author,
-                referencePoints: r.referencePoints
+                referencePoints: r.referencePoints,
+                statusList:r.statusList,
             }))
             return {
                 ok: true,

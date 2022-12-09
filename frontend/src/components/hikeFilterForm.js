@@ -24,7 +24,7 @@ function HikeFilterForm(props) {
             filters.push({ key: "difficulty", value: difficulty.toLocaleLowerCase() });
         }
         if (region != "") {
-            filters.push({ key: "province", value: region.toLocaleLowerCase() });
+            filters.push({ key: "region", value: region.toLocaleLowerCase() });
         }
         if (minLength != undefined) {
             filters.push({ key: "minLength", value: minLength });

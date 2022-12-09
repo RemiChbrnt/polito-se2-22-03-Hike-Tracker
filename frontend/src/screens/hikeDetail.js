@@ -14,13 +14,19 @@ const HikeDetail = ({ props, setProps }) => {
 
     useEffect(() => {
         API.getHikeFromID(params.hikeId)
-            .then(hike => { 
-                console.log(hike);
+            .then(hike => {
                 setHike(hike);
                 setIsLoading(false);
             })
             .catch(error => console.log(error)); 
     }, [])
+
+    const alertStyle = (status)=>{
+        return{
+            color: status==='open'?'green':'#FF5733',
+            'font-style': 'italic',
+        } 
+      };
 
     return (
         <Container>
@@ -33,7 +39,9 @@ const HikeDetail = ({ props, setProps }) => {
                     <Row>
                         <Col md={10}>
                             <h1>Hike "{hike.title}"</h1>
-                            <h4>#{params.hikeId}</h4>
+                            
+                            {hike.statusList.map((status=><Row><p style={alertStyle(status.status)}><i class="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}
+                            
                         </Col>
                         <Col md={2}>
                             <div className="d-grid gap-2">
@@ -48,7 +56,7 @@ const HikeDetail = ({ props, setProps }) => {
                         </Row>
                         <Row>
                             <Col>
-                                <div class="d-flex justify-content-start">
+                                <div class="d-flex justify-content-start mt-2">
                                     <h4>
                                             Difficulty :
                                     </h4>

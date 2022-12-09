@@ -27,8 +27,7 @@ router.get('/hikes', [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
-        }
-
+        }  
         const data = await service.getHikes(req.query)
         if (data.ok) {
             return res.status(data.status).json(data.body)

@@ -1,4 +1,4 @@
-import { Card, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Card, Row, Col, ListGroup, Container, Popover } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { isPointInDisk } from './coordsFromMap';
@@ -51,22 +51,21 @@ function HikeCard(props) {
     const navigate = useNavigate();
 
     const hike = JSON.parse(props.hike);
-
+    
     const showDetail = (() => {
         props.setProps({ user: props.user });
         navigate("/hike-detail-" + hike.id);
-    });
-
+    });    
     return (
         <Col>
             <Card style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
                 <Card.Body>
-                    <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title>
+                    <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title> 
                     <ListGroup variant="flush">
                         
                         <ListGroup.Item data-test-id="difficulty">
-                            <div class="d-flex justify-content-start">
-                                <i class="bi bi-activity"></i><span className="fw-bold">{"  "}Difficulty : </span>
+                            <div className="d-flex justify-content-start">
+                                <i className="bi bi-activity"></i><span className="fw-bold">{"  "}Difficulty : </span>
                                 <div style={{backgroundColor : (hike.difficulty==="tourist") ?
                                         "darkGreen" : (hike.difficulty==="hiker") ?
                                         "orange" : "red",
@@ -80,9 +79,9 @@ function HikeCard(props) {
                                 </div>
                             </div>
                         </ListGroup.Item>
-                        <ListGroup.Item data-test-id="time"><i class="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
-                        <ListGroup.Item data-test-id="length"><i class="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
-                        <ListGroup.Item data-test-id="ascent"><i class="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
+                        <ListGroup.Item data-test-id="time"><i className="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
+                        <ListGroup.Item data-test-id="length"><i className="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
+                        <ListGroup.Item data-test-id="ascent"><i className="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
                         <ListGroup.Item data-test-id="description">{hike.description}</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>

@@ -118,6 +118,7 @@ async function getAllHikes(filters) {
         credentials: 'include',
     });
     const hikesJson = await response.json();
+    console.log(hikesJson)
     if (response.ok) {
         return hikesJson.map((r) => ({
             id: r.id,
@@ -131,7 +132,8 @@ async function getAllHikes(filters) {
             description: r.description,
             track: r.track,
             author: r.author,
-            referencePoints: r.refLocations
+            referencePoints: r.refLocations,
+            statusList:r.statusList,
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore

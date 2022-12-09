@@ -45,7 +45,7 @@ exports.getHikes = async (query) => {
 
 const getStatusList = async function (id) {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT status, description FROM HikesHaveHuts WHERE hikeId=?'
+        const sql = 'SELECT status, description, name FROM HikesHaveHuts hhh, Locations l WHERE hikeId=? AND hhh.locationId=l.id'
         db.all(sql, [id], async (err, rows) => {
             if (err) {
                 console.log(err)
