@@ -19,7 +19,7 @@ router.get('/hikes', [
     query('maxTime').optional().isFloat({ min: 0 }),
     query('difficulty').optional().isString().isIn(['tourist', 'hiker', 'pro']),
     query('country').optional().isString(),
-    query('province').optional().isString(),
+    query('region').optional().isString(),
     query('town').optional().isString(),
     query('author').optional().isEmail()
 ],

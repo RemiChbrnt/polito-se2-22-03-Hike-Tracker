@@ -12,7 +12,7 @@ const isLoggedIn = require("../middleware/authentication");
 router.get('/huts', isLoggedIn, [
     query('name').optional({ nullable: true }).isString({ min: 0 }),
     query('country').optional({ nullable: true }).isString({ min: 0 }),
-    query('province').optional({ nullable: true }).isString({ min: 0 }),
+    query('region').optional({ nullable: true }).isString({ min: 0 }),
     query('town').optional({ nullable: true }).isString({ min: 0 }),
     query('address').optional({ nullable: true }).isString({ min: 0 }),
     query('minAltitude').optional({ nullable: true }).isFloat(),
@@ -77,14 +77,17 @@ router.post('/locations', isLoggedIn, [
     body('latitude').exists().isFloat({ min: 0 }),
     body('longitude').exists().isFloat({ min: 0 }),
     body('country').optional({ nullable: true }).isString(),
-    body('province').optional({ nullable: true }).isString(),
+    body('region').optional({ nullable: true }).isString(),
     body('town').optional({ nullable: true }).isString(),
     body('address').optional({ nullable: true }).isString(),
     body('altitude').optional({ nullable: true }).isFloat({ min: 0 }),
     body('numberOfBeds').optional({ nullable: true }).isInt({ min: 0 }),
     body('lotsNumber').optional({ nullable: true }).isInt({ min: 0 }),
     body('food').optional({ nullable: true }).isString().isIn(['none', 'buffet', 'restaurant']),
-    body('description').optional({ nullable: true }).isString()
+    body('description').optional({ nullable: false }).isString(),
+    body('phone').optional({ nullable: false }).isMobilePhone(),
+    body('email').optional({ nullable: false }).isEmail(),
+    body('website').optional({ nullable: true }).isURL()
 ], async (req, res) => {
     const errors = validationResult(req);
     if(req.user.role!=='guide')

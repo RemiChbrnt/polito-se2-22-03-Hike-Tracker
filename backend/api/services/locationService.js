@@ -15,7 +15,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude,
@@ -24,7 +24,10 @@ class LocationService {
                 description: r.description,
                 openingTime: r.openingTime,
                 closingTime: r.closingTime,
-                cost: r.cost
+                cost: r.cost,
+                phone: r.phone,
+                email: r.email,
+                website: r.website
             }))
             return {
                 ok: true,
@@ -49,7 +52,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude,
@@ -79,7 +82,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude
@@ -124,7 +127,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude,
@@ -133,7 +136,10 @@ class LocationService {
                 description: r.description,
                 openingTime: r.openingTime,
                 closingTime: r.closingTime,
-                cost: r.cost
+                cost: r.cost,
+                phone: r.phone,
+                email: r.email,
+                website: r.website
             }))
             return {
                 ok: true,

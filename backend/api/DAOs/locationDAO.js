@@ -35,7 +35,7 @@ exports.generateHutFilters = (query) => {
     if (query.latitude !== undefined) filters = filters + ` latitude = ${query.latitude} AND`
     if (query.longitude !== undefined) filters = filters + ` longitude = ${query.longitude} AND`
     if (query.country !== undefined) filters = filters + ` country = '${query.country}' AND`
-    if (query.province !== undefined) filters = filters + ` province   = '${query.province}' AND`
+    if (query.region !== undefined) filters = filters + ` region   = '${query.region}' AND`
     if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
     if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
     if (query.minAltitude !== undefined) filters = filters + ` altitude >= ${query.minAltitude} AND`
@@ -85,7 +85,7 @@ exports.getLocations = async (query) => {
                         latitude: r.latitude,
                         longitude: r.longitude,
                         country: r.country,
-                        province: r.province,
+                        region: r.region,
                         town: r.town,
                         address: r.address,
                         altitude: r.altitude,
@@ -101,7 +101,7 @@ exports.getLocations = async (query) => {
 
 exports.addLocation = async (newLocation, email) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, province, town, address, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
+        const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, region, town, address, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
             newLocation.name,
             newLocation.type,
@@ -109,7 +109,7 @@ exports.addLocation = async (newLocation, email) => {
             newLocation.longitude,
             newLocation.altitude,
             newLocation.country,
-            newLocation.province,
+            newLocation.region,
             newLocation.town,
             newLocation.address,
             email
@@ -121,7 +121,7 @@ exports.addLocation = async (newLocation, email) => {
             }
             else {
                 if (newLocation.type === "hut")
-                    addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description)
+                    addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description, newLocation.phone, newLocation.email, newLocation.website)
                 if (newLocation.type === "parkinglot")
                     addParking(this.lastID, newLocation.lotsNumber, newLocation.description)
                 newLocation.id = this.lastID;
@@ -133,15 +133,18 @@ exports.addLocation = async (newLocation, email) => {
 }
 
 
-const addHut = async function (id, numberOfBeds, food, description) {
+const addHut = async function (id, numberOfBeds, food, description, phone, email, website) {
     return new Promise((resolve, reject) => {
 
-        const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description) VALUES (?,?,?,?)';
+        const sql2 = 'INSERT INTO Huts(locationId, numberOfBeds, food, description, phone, email, website) VALUES (?,?,?,?,?,?,?)';
         db.run(sql2, [
             id,
             numberOfBeds,
             food,
-            description
+            description,
+            phone,
+            email,
+            website
         ], async function (err) {
             if (err) {
                 console.log(err);

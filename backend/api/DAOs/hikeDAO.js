@@ -3,7 +3,7 @@ const db = require('../../db/db');
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
-        let sql = 'SELECT * from Hikes'
+        let sql = 'SELECT * from Hikes h'
         const filters = this.generateFilters(query);
         sql = sql + filters
         // console.log(sql)
@@ -18,6 +18,7 @@ exports.getHikes = async (query) => {
                     const startLocation = await getLocationById(r.startPt);
                     const endLocation = await getLocationById(r.endPt);
                     const refLocations = await getReferenceLocations(r.id);
+                    const statuses = await getStatusList(r.id);
                     return {
                         id: r.id,
                         title: r.title,
@@ -31,11 +32,26 @@ exports.getHikes = async (query) => {
                         track: r.track,
                         author: r.author,
                         referencePoints: refLocations,
+                        statusList: statuses,
                     }
                 })
             )
             const hikes = this.filterByLocation(query, res)
             resolve(hikes)
+        })
+    })
+}
+
+
+const getStatusList = async function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT status, description FROM HikesHaveHuts WHERE hikeId=?'
+        db.all(sql, [id], async (err, rows) => {
+            if (err) {
+                console.log(err)
+                return null;
+            }
+            resolve(rows)
         })
     })
 }
@@ -53,6 +69,7 @@ exports.getHikeFromID = async (query) => {
             const startLocation = await getLocationById(hike.startPt);
             const endLocation = await getLocationById(hike.endPt);
             const refLocations = await getReferenceLocations(hike.id);
+            const statuses = await getStatusList(hike.id);
             resolve({
                 id: hike.id,
                 title: hike.title,
@@ -66,6 +83,7 @@ exports.getHikeFromID = async (query) => {
                 track: hike.track,
                 author: hike.author,
                 referencePoints: refLocations,
+                statusList: statuses,
             });
         })
     })
@@ -75,7 +93,7 @@ exports.getHikeFromID = async (query) => {
 
 const getLocationById = async function (id) {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from Locations where id=?'
+        const sql = 'SELECT * FROM Locations WHERE id=?'
         db.get(sql, [id], async (err, row) => {
             if (err) {
                 console.log(err)
@@ -89,8 +107,8 @@ const getLocationById = async function (id) {
 const getReferenceLocations = async function (id) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * \
-                     from Locations \
-                     where id in ( select locationId from HikesReferencePoints where hikeId=?)'
+                     FROM Locations \
+                     WHERE id IN ( SELECT locationId FROM HikesReferencePoints WHERE hikeId=?)'
         db.all(sql, [id], async (err, rows) => {
             if (err) {
                 console.log(err)
@@ -108,8 +126,8 @@ exports.filterByLocation = (query, hikes) => {
         if (query.country !== undefined) {
             if (hike.startPt.country.toLowerCase() !== query.country.toLowerCase()) return false
         }
-        if (query.province !== undefined) {
-            if (hike.startPt.province.toLowerCase() !== query.province.toLowerCase()) return false
+        if (query.region !== undefined) {
+            if (hike.startPt.region.toLowerCase() !== query.region.toLowerCase()) return false
         }
         if (query.town !== undefined) {
             if (hike.startPt.town.toLowerCase() !== query.town.toLowerCase()) return false
@@ -127,12 +145,12 @@ exports.generateFilters = (query) => {
         // test for an empty query, this looks awful but we cannot check for an empty object since
         // there are also fields for the locations that are used later on.   
         filters = " where"
-        if (query.minLength !== undefined) filters = filters + ` length > ${query.minLength} AND`
-        if (query.maxLength !== undefined) filters = filters + ` length < ${query.maxLength} AND`
-        if (query.minAscent !== undefined) filters = filters + ` ascent > ${query.minAscent} AND`
-        if (query.maxAscent !== undefined) filters = filters + ` ascent < ${query.maxAscent} AND`
-        if (query.minTime !== undefined) filters = filters + ` expTime > ${query.minTime} AND`
-        if (query.maxTime !== undefined) filters = filters + ` expTime < ${query.maxTime} AND`
+        if (query.minLength !== undefined) filters = filters + ` length >= ${query.minLength} AND`
+        if (query.maxLength !== undefined) filters = filters + ` length <= ${query.maxLength} AND`
+        if (query.minAscent !== undefined) filters = filters + ` ascent >= ${query.minAscent} AND`
+        if (query.maxAscent !== undefined) filters = filters + ` ascent <= ${query.maxAscent} AND`
+        if (query.minTime !== undefined) filters = filters + ` expTime >= ${query.minTime} AND`
+        if (query.maxTime !== undefined) filters = filters + ` expTime <= ${query.maxTime} AND`
         if (query.difficulty !== undefined) filters = filters + ` difficulty = "${query.difficulty}" AND`
         if (query.author !== undefined) filters = filters + ` author = "${query.difficulty}" AND`
         filters = filters + " 1"
