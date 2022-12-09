@@ -41,9 +41,11 @@ userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
         // req.user = user.body;
         console.log("LOGIN AS " + JSON.stringify(req.user));
         return res.status(user.status).json(user.body);
+    } else if(user.status === 412){
+        return res.status(user.status).json(user.status);
     }
 
-    return res.status(user.status).end;
+    return res.status(user.status).end();
 
 });
 
@@ -57,10 +59,11 @@ userRouter.get('/session/current', (req, res) => {
 
 userRouter.post('/signup', async (req, res) => {
     let user = await service.signup(req.body);
-    if (user.ok)
+    if (user.ok) {
         return res.status(user.status).json(user.body);
+    }
 
-    return res.status(user.status).end;
+    return res.status(user.status).end();
 
 
 });
@@ -103,5 +106,30 @@ userRouter.get('/preferences', isLoggedIn, async (req, res) => {
     else
         return res.status(403).json({ errors: "Invalid role selection" });
 })
+
+
+
+userRouter.get('/verify/:email/:randomString', async (req, res) => {
+
+    let data = await service.verify(req.params.email, req.params.randomString);
+
+    /* For now the server returns an html code snippet as response,
+    but it can be improved by redirecting to a real page */
+
+    let httpResponse;
+    if (data.ok) {
+        httpResponse = `<div>User ${data.body.email}, Full Name ${data.body.fullName}, role ${data.body.role} verified.</div>
+                        <div>You can close this page</div>`;
+        // return res.status(data.status).json(data);
+    }
+    else {
+        httpResponse = `<div>Something went wrong. Error ${data.status}</div>`;
+    }
+
+    // return res.status(data.status).end();
+    return res.send(httpResponse);
+
+});
+
 
 module.exports = userRouter

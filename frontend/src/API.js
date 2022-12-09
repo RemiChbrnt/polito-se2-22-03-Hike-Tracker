@@ -1,7 +1,3 @@
-// import { post } from "../../backend";
-
-import { resolvePath } from "react-router-dom";
-
 /**
  * All the API calls
  */
@@ -27,6 +23,12 @@ async function login(email, password) {
     console.log("user " + JSON.stringify(user));
     if (response.ok) {
         return user;
+    } else if (response.status === 412)
+        /* User email not verified */
+        return 412;
+    else if (response.status === 403) {
+        /* Account not yet approved by manager */
+        return 403;
     } else {
         throw user;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
@@ -34,7 +36,7 @@ async function login(email, password) {
 
 async function logOut() { //API di logout
     await fetch(URL + '/session/current', { method: 'DELETE', credentials: 'include' });
-  }
+}
 
 
 
@@ -69,6 +71,37 @@ const getUserInfo = async () => {
     }
 };
 
+async function getPendingUsers() {
+    const response = await fetch(URL + '/get-pending-users', {
+        credentials: 'include'
+    });
+
+    const users = await response.json();
+    if (response.ok) {
+        return users;
+    } else {
+        throw users;
+    }
+}
+
+async function approveUser(email) {
+    const response = await fetch(URL + '/approve', {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(email)
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        return result;
+    } else {
+        throw result;
+    }
+}
+
 /* hikes API */
 
 async function getAllHikes(filters) {
@@ -102,6 +135,28 @@ async function getAllHikes(filters) {
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+
+/**
+ * Function to get a specific hike from the database
+ * @param {*} id: the hike's id
+ * @returns hike corresponding to ID if succesful, 400 otherwise
+ */
+async function getHikeFromID(id) {
+    let params = `/hikeFromID?id=${id}`;
+
+    const response = await fetch(URL + params, {
+        credentials: 'include',
+    });
+
+    const hikeJson = await response.json();
+    console.log(hikeJson);
+    if (response.ok) {
+        return hikeJson;
+    } else {
+        throw hikeJson;
     }
 }
 
@@ -434,5 +489,6 @@ async function getHikesByHutId(hutId) {
 
 }
 
-const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, getHutIdByUserId, updateStatus,getHikesByHutId};
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, getHutIdByUserId, updateStatus,getHikesByHutId, getHikeFromID, approveUser, getPendingUsers};
+
 export default API;

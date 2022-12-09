@@ -1,5 +1,7 @@
 'use strict'
 const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { resolve } = require('path');
 const db = require('../../db/db');
 
 exports.login = async (email, password) => {
@@ -15,12 +17,16 @@ exports.login = async (email, password) => {
                 resolve(false); // User not found
             else {
                 const user = {
-                    // id: row.rowid,
                     email: row.email,
                     fullName: row.fullname,
-                    role: row.role
+                    role: row.role,
+                    verified: row.verified
                 }
-
+                console.log(user.verified);
+                if (user.verified === 0) {
+                    resolve(412);
+                    return;
+                }
 
                 /* User found. Now check whether the hash matches */
                 crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
@@ -49,7 +55,8 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
 
     return new Promise((resolve, reject) => {
         crypto.randomBytes(24, async (err, buf) => {
-            if (err) reject(err);
+            if (err)
+                reject(err);
 
             salt = buf.toString("base64");
             resolve(salt);
@@ -57,42 +64,53 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
     }).then(() => new Promise((resolve, reject) => {
 
         crypto.scrypt(password, salt, 128, function (err, hashedPassword) {
-            if (err) reject(err);
+            if (err)
+                reject(err);
 
             hash = hashedPassword.toString("base64");
             resolve(hash);
         })
     })).then(() => new Promise((resolve, reject) => {
 
-        if (phoneNumber !== undefined) {
+        let randomString = crypto.randomBytes(16).toString('hex');
 
-            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
-                if (err)
+        if (phoneNumber !== undefined) {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, 0)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber, randomString], (err) => {
+                if (err) {
+                    console.log(err);
                     reject(err);
-                else
-                    resolve(true);
+                }
+                else {
+                    sendEmail(email, randomString);
+                    resolve({
+                        email: email,
+                        fullName: fullName,
+                        role: role
+                    });
+                }
 
             });
         }
         else {
-            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber], (err) => {
+            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL, ?, 0)`;
+            db.run(query, [email, fullName, hash, salt, role, phoneNumber, randomString], async (err) => {
                 if (err)
                     reject(err);
                 else {
                     const user = {
                         email: email,
-                        fullName: fullname,
+                        fullName: fullName,
                         role: role
                     }
+
+                    sendEmail(email, randomString);
 
                     resolve(user);
                 }
             });
         }
     }));
-
 }
 
 
@@ -136,5 +154,78 @@ exports.getPreferences = async (email) => {
     })
 }
 
+exports.checkUserVerification = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT verified FROM Users WHERE email=?'
+        db.get(sql, [email], (err, row) => {
+            if (err)
+                reject(503);
+            else if (row === undefined)
+                resolve({});
+            else {
+                if (row.verified === 1)
+                    resolve(true);
+                else
+                    resolve(false);
+            }
+        })
+    })
+};
 
+exports.verifyUser = async (email, randomString) => {
+    return new Promise((resolve, reject) => {
+        const sql1 = 'SELECT * FROM Users WHERE email=? AND randomString=?'
+        db.get(sql1, [email, randomString], (err, row) => {
+            if (err)
+                reject(503);
+            else if (row === undefined)
+                resolve({});
+            else {
+                const sql2 = 'UPDATE Users SET verified=1 WHERE email=?'
+                db.run(sql2, [email], (err) => {
+                    if (err)
+                        reject(503);
+                    else
+                        resolve({
+                            email: row.email,
+                            fullName: row.fullname,
+                            role: row.role,
+                            verified: row.verified
+                        });
+                    return;
+                })
+            }
+            return;
+        })
+    })
+};
+
+
+
+const sendEmail = async (email, randomString) => {
+
+    let transport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "hiketrackerdemo@gmail.com",
+            pass: "cqmuynmsufghnheh"
+        }
+    });
+
+    let sender = "Hike Tracker";
+    let mailOptions = {
+        from: sender,
+        to: email,
+        subject: "Email Confirmation",
+        html: `<span>Press <a href="http://localhost:3001/api/verify/${email}/${randomString}">here</a> to verify your email.</span>`
+    };
+
+    let info = await transport.sendMail(mailOptions);
+    // console.log("info " + JSON.stringify(info));
+
+    return;
+
+
+
+}
 

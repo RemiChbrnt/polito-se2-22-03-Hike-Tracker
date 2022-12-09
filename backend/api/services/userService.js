@@ -9,6 +9,12 @@ class UserService {
     login = async (body) => {
         try {
             let user = await this.DAO.login(body.email, body.password);
+            if (user === 412)
+                return {
+                    ok: false,
+                    status: 412
+                }
+
             return {
                 ok: true,
                 status: 201,
@@ -44,6 +50,26 @@ class UserService {
 
         }
     };
+
+
+    verify = async (email, randomString) => {
+        try {
+            let user = await this.DAO.verifyUser(email, randomString);
+            return {
+                ok: true,
+                status: 201,
+                body: user
+            };
+        }
+        catch (e) {
+            return {
+                ok: false,
+                status: e
+            };
+
+        }
+    };
+
 
     createPreferences = async (req) => {
         try {

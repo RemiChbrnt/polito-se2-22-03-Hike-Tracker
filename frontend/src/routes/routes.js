@@ -10,6 +10,8 @@ import { LinkHutToHike } from "../components/linkHutToHike";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
 import { UpdateHutStatus } from "../components/updateHutStatus.js";
+import RequestsPage from '../components/RequestsPage';
+
 import { HutListPage } from "../screens/hutListPage";
 import Hiker from "../screens/hiker.js";
 import Home from "../screens/home.js";
@@ -119,6 +121,13 @@ const routes = [
         key: "update-hut-status",
         screen: function (user, props, setProps) {
             return <UpdateHutStatus user={user} props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/pending-requests",
+        key: "pending-requests",
+        screen: function (props, setProps) {
+            return <RequestsPage props={props} setProps={setProps}/>
         }
     }
 
