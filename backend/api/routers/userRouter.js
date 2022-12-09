@@ -107,8 +107,6 @@ userRouter.get('/preferences', isLoggedIn, async (req, res) => {
         return res.status(403).json({ errors: "Invalid role selection" });
 })
 
-
-
 userRouter.get('/verify/:email/:randomString', async (req, res) => {
 
     let data = await service.verify(req.params.email, req.params.randomString);
@@ -132,8 +130,6 @@ userRouter.get('/verify/:email/:randomString', async (req, res) => {
 });
 
 
-
-
 userRouter.get('/get-pending-users', isLoggedIn, async (req, res) => {
 
     if (req.user.role !== "manager")
@@ -147,8 +143,6 @@ userRouter.get('/get-pending-users', isLoggedIn, async (req, res) => {
     return res.status(data.status).end()
 
 });
-
-
 
 
 userRouter.put('/approve', isLoggedIn, async (req, res) => {
@@ -183,5 +177,26 @@ userRouter.delete('/approve', isLoggedIn, async (req, res) => {
 
 
 
+userRouter.put('/preferences', isLoggedIn, async (req, res) => {
+    if(req.user.role === "hiker") {
+        const data = await service.updatePreferences(req);
+        if(data.ok)
+            return res.status(data.status);
+        return res.status(data.status).end();
+    } else {
+        return res.status(403).json({ errors: "Invalid role selection" });
+    }
+});
+
+userRouter.delete('/preferences', isLoggedIn, async (req, res) => {
+    if(req.user.role === "hiker") {
+        const data = await service.deletePreferences(req);
+        if(data.ok)
+            return res.status(data.status).json(data.body);
+        return res.status(data.status).end();
+    } else {
+        return res.status(403).json({ errors: "Invalid role selection" });
+    }
+})
 
 module.exports = userRouter

@@ -220,6 +220,24 @@ exports.approveUser = async (email) => {
         })
     })
 }
+    
+exports.updatePreferences = async (email, ascent, duration) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE preferences SET ascent = ?, duration = ? WHERE email = ?';
+        db.run(sql, [ascent, duration, email], (err) => {
+            if(err) {
+                reject(503);
+                return;
+            }
+            const prefs = {
+                "email": email,
+                "ascent": ascent,
+                "duration": duration
+            }
+            resolve(prefs);
+        })
+    })
+}
 
 exports.declineUser = async (email, role) => {
     return new Promise((resolve, reject) => {
@@ -244,6 +262,18 @@ exports.declineUser = async (email, role) => {
     })
 }
 
+exports.deletePreferences = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM preferences WHERE email = ?';
+        db.run(sql, [email], (err) => {
+            if(err) {
+                reject(503);
+                return;
+            }
+            resolve(true);
+        })
+    })
+}
 
 
 
@@ -301,4 +331,3 @@ const sendEmail = async (email, randomString) => {
     return;
 
 }
-
