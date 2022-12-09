@@ -235,7 +235,7 @@ exports.setHikeEndPoint = async (hike) => {
 }
 
 
-exports.getHikesByHutId
+exports.getHikesByHutId // add radius check (5 km)
  = async (hutId, email) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT hk.id, hk.title, hhh.status, hhh.description \
