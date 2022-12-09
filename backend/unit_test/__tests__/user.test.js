@@ -1,11 +1,11 @@
-const { login, signup, getPreferences, createPreferences, getPendingUsers, approveUser } = require('../../api/DAOs/userDAO')
-const { resetUsers } = require('../../db/dbreset');
+const { login, signup, getPreferences, createPreferences, getPendingUsers, approveUser, declineUser } = require('../../api/DAOs/userDAO')
+const { resetUsers, resetDeclinedUser } = require('../../db/dbreset');
 const SECONDS = 1000;
 jest.setTimeout(20 * SECONDS);
 
 describe('User API tests', () => {
-    beforeEach(() => {
-        resetUsers();
+    beforeEach(async () => {
+        await resetUsers();
     });
 
     test('Signup should create a new entry in the database and return email, full name and role of the user', async () => {
@@ -48,7 +48,7 @@ describe('User API tests', () => {
     });
 
     test('Login before required manager approval should return 403', async () => {
-        const loginResult = await login("approvalneeded@polito.it", "testPassword4");
+        const loginResult = await login("fiyode9163@eilnews.com", "password");
         expect(loginResult).toEqual(403);
     });
 
@@ -114,17 +114,25 @@ describe('User API tests', () => {
     });
 
     test('Approving a user should allow them to login', async () => {
-        const approvalResult = await approveUser("approvalneeded@polito.it");
+        const approvalResult = await approveUser("fiyode9163@eilnews.com");
         expect(approvalResult).toBe(true);
-        const loginResult = await login("approvalneeded@polito.it", "testPassword4");
+        const loginResult = await login("fiyode9163@eilnews.com", "password");
         const expectedResult = {
-            "email": "approvalneeded@polito.it",
+            "email": "fiyode9163@eilnews.com",
             "fullName": "Approval Needed",
-            "role": "hutworker",
+            "role": "guide",
             "verified": 2
         }
         expect(loginResult).toEqual(expectedResult);
-    })
+    });
+
+    test('Declining a user should delete them from the db', async () => {
+        const declineResult = await declineUser("fiyode9163@eilnews.com");
+        expect(declineResult).toBe(true);
+        const loginResult = await login("fiyode9163@eilnews.com", "password");
+        expect(loginResult).toEqual(401);
+        await resetDeclinedUser();
+    });
 /* 
     test('signup should create a new entry in the Db and return true', async () => {
         const newUser = {

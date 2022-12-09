@@ -2,8 +2,8 @@
 const sqlite = require('sqlite3')
 const path = require('path');
 /* DB init */
-/* 
-let dbPath = "";
+
+/* let dbPath = "";
 if (process.env.NODE_ENV === 'development') {
     //dbPath = './HikeTrackerDb.db'
     dbPath = './productionHikeTrackerDb.db'
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'test') {
 } */
 
 // TODO: set to original db
-const dbPath = './productionHikeTrackerDb.db';
+const dbPath = './testingHikeTrackerDb_updated.db';
 
 const DBSOURCE = path.join(__dirname, dbPath);
 const database = new sqlite.Database(DBSOURCE, (err) => {

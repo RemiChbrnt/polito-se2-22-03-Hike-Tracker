@@ -17,18 +17,18 @@ const resetHikes = async function () {
 
 const resetUsers = async function () {
     return new Promise((resolve, reject) => {
-        const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' AND email != 'approvalneeded@polito.it'"
-        db.all(sql1, [], async (err) => {
+        const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' AND email != 'fiyode9163@eilnews.com'"
+        db.all(sql1, [], (err) => {
             if (err)
                 reject(err);
             else {
                 const sql2 = "DELETE FROM Preferences"
-                db.all(sql2, [], async (err) => {
+                db.all(sql2, [], (err) => {
                     if (err)
                         reject(err);
                     else {
-                        const sql3 = "UPDATE Users SET verified = 1 WHERE email = 'approvalneeded@polito.it'";
-                        db.run(sql3, [], async (err) => {
+                        const sql3 = "UPDATE Users SET verified = 1 WHERE email = 'fiyode9163@eilnews.com'";
+                        db.run(sql3, [], (err) => {
                             if(err)
                                 reject(err);
                             else
@@ -40,6 +40,28 @@ const resetUsers = async function () {
             }
         });
 
+    })
+}
+
+const resetDeclinedUser = async function () {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)';
+        const params = [
+            "fiyode9163@eilnews.com",
+            "Approval Needed",
+            "cHaEM8Ym4Z/8hydZAJcBFX5TVfgT3MDw9ByMCSVy6lTV2nRMiB+CPVnHavcf0T3PzTgHWErkyQUQRXYuMyv3ul2ZFH/FmWbsfu9r+l+oKf/CeIzS//zzGAknEp+4ZJ3ySDRn7RBxhX/IvoabqgkEWJr4I227FGFozuU8Qr6LcKs=",
+            "z0HTr4JT9KKIWzXVnL3zFpcetTrH4ScS",
+            "guide",
+            "1597536842",
+            "NULL",
+            "1"
+        ]
+        db.run(sql, params, (err) => {
+            if(err)
+                reject(err);
+            else
+                resolve(true);
+        })
     })
 }
 
@@ -63,4 +85,4 @@ const resetLocations = async function () {
 
     })
 }
-module.exports = { resetHikes, resetUsers, resetLocations }
+module.exports = { resetHikes, resetUsers, resetLocations, resetDeclinedUser }

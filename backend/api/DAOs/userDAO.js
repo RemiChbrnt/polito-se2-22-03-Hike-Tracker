@@ -24,6 +24,8 @@ exports.login = async (email, password) => {
                     role: row.role,
                     verified: row.verified
                 }
+
+                console.log('AAAAAAA ' + user.role + ' - verified: ' + user.verified);
                 if (user.verified === 0) {
                     resolve(412);
                     return;
@@ -212,7 +214,9 @@ exports.getPendingUsers = async () => {
 exports.approveUser = async (email) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE Users SET verified = 2 WHERE email = ?'
-        db.run(sql, [email], (err) => {
+        db.run(sql, [email], function (err) {
+            console.log('USER EMAIL: ' + email);
+            console.log(this.changes);
             if (err)
                 reject(503);
             else
