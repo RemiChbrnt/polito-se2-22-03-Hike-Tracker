@@ -3,13 +3,33 @@ const chai = require('chai')
 const chaiHttp = require('chai-http')
 const { INTERNAL } = require('sqlite3')
 const { resetUsers } = require('../db/dbreset.js')
+
+const { MailSlurp } = require('mailslurp-client');
+const api = new MailSlurp({ apiKey: process.env.API_KEY });
 chai.use(chaiHttp)
 chai.should()
 
 const app = require('../index')
 var agent = chai.request.agent(app)
 
-describe('Testing all the operations on locations', function () {
+describe('Testing user signup', () => {
+    it('can sign up as a new user', async () => {
+        const inbox = await generateNewEmailAddress();
+        await agent
+            .post('/api/signup')
+            .set('content-type', 'application/json')
+            .send({
+                email: inbox.email,
+                password: 'password',
+                fullName: 'test',
+                role: 'hiker'
+            });
+
+        
+    })
+})
+
+describe('Testing all the operations on users', function () {
     before(async () => {
         await resetUsers()
         //signup 
