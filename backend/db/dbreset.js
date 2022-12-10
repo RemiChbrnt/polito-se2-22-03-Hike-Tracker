@@ -17,7 +17,7 @@ const resetHikes = async function () {
 
 const resetUsers = async function () {
     return new Promise((resolve, reject) => {
-        const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' AND email != 'fiyode9163@eilnews.com'"
+        const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' AND email != 'fiyode9163@eilnews.com' AND email != 'najejof113@dmonies.com'"
         db.all(sql1, [], (err) => {
             if (err)
                 reject(err);
@@ -27,7 +27,7 @@ const resetUsers = async function () {
                     if (err)
                         reject(err);
                     else {
-                        const sql3 = "UPDATE Users SET verified = 1 WHERE email = 'fiyode9163@eilnews.com'";
+                        const sql3 = "UPDATE Users SET verified = 1 WHERE (email = 'fiyode9163@eilnews.com' OR email = 'najejof113@dmonies.com')";
                         db.run(sql3, [], (err) => {
                             if(err)
                                 reject(err);
@@ -43,7 +43,7 @@ const resetUsers = async function () {
     })
 }
 
-const resetDeclinedUser = async function () {
+const resetDeclinedUser1 = async function () {
     return new Promise((resolve, reject) => {
         const sql = 'INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)';
         const params = [
@@ -54,6 +54,28 @@ const resetDeclinedUser = async function () {
             "guide",
             "1597536842",
             "NULL",
+            "1"
+        ]
+        db.run(sql, params, (err) => {
+            if(err)
+                reject(err);
+            else
+                resolve(true);
+        })
+    })
+}
+
+const resetDeclinedUser2 = async function () {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)';
+        const params = [
+            "najejof113@dmonies.com",
+            "Unapproved Hutworker",
+            "Fp6qIsruB/E3d9g6OuUeUg+SlnYuaV01Epy4hxi3ayExXFxcJyuGF+ohTu8+/uAqw0LQTKqrql7Vc/eVoL9gzzPh3H14erZV3kefHPyjqHztbe269zMgYQcBN/Nn/2fPphe6+NKHklR13e2WdCddDKMwAImtppgUCRIAmH2jljE=",
+            "M3+UyafDMR1pxCWSTmhfQFUedcZ8ZFRa",
+            "hutworker",
+            "369852147",
+            "fd49d96d90ca033623e7b5214ec280c2",
             "1"
         ]
         db.run(sql, params, (err) => {
@@ -85,4 +107,4 @@ const resetLocations = async function () {
 
     })
 }
-module.exports = { resetHikes, resetUsers, resetLocations, resetDeclinedUser }
+module.exports = { resetHikes, resetUsers, resetLocations, resetDeclinedUser1, resetDeclinedUser2 }
