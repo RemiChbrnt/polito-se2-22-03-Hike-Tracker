@@ -27,7 +27,7 @@ router.get('/hikes', [
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
-        }  
+        }
         const data = await service.getHikes(req.query)
         if (data.ok) {
             return res.status(data.status).json(data.body)
@@ -139,12 +139,31 @@ router.put('/hike-endPt/:id/:endPt', isLoggedIn, [
     return res.status(data.status).end()
 })
 
+router.post('/hikesReferencePoints', isLoggedIn, [
+    body('hikeId').exists().isNumeric(),
+    body('locationId').exists().isNumeric()
+], async (req, res) => {
+    const errors = validationResult(req);
+
+    if (req.user.role !== 'guide')
+        return res.status(403).json({ errors: "Only guides can access this feature" });
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const hikeReferencePoints = req.body
+    const refPt = await service.addHikeReferencePoint(hikeReferencePoints)
+    if (refPt.ok) {
+        return res.status(refPt.status).json({ ok: true })
+    }
+    return res.status(refPt.status).end()
+})
 
 router.get('/hikesList/:hutId/', isLoggedIn,
     [param('hutId').exists().isInt(),],
     async (req, res) => {
         if (req.user === undefined || req.user.role !== "hutworker")
-        return res.status(400).json({ error: "Unauthorized" });
+            return res.status(400).json({ error: "Unauthorized" });
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

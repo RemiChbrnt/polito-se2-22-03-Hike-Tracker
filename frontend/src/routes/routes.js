@@ -50,7 +50,7 @@ const routes = [
         path: "/hike-detail-:hikeId",
         key: "hike-detail",
         screen: function (user, props, setProps) {
-            return <HikeDetail props={props} setProps={setProps} />
+            return <HikeDetail user={user} props={props} setProps={setProps} />
         }
     },
     {

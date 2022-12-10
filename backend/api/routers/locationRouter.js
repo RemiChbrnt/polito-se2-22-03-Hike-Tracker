@@ -9,7 +9,7 @@ const { body, param, query, validationResult } = require('express-validator');
 const isLoggedIn = require("../middleware/authentication");
 
 
-router.get('/huts', isLoggedIn, [
+router.get('/huts', /*isLoggedIn,*/ [
     query('name').optional({ nullable: true }).isString({ min: 0 }),
     query('country').optional({ nullable: true }).isString({ min: 0 }),
     query('region').optional({ nullable: true }).isString({ min: 0 }),
@@ -20,9 +20,10 @@ router.get('/huts', isLoggedIn, [
 ],
     async (req, res) => {
 
+        /*
         if (req.user === undefined || req.user.role !== "hiker")
             return res.status(400).json({ error: "Unauthorized" });
-
+        */
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
@@ -145,6 +146,35 @@ router.post('/linkHut', isLoggedIn, [
     return res.status(response.status).end();
 })
 
+router.get('/locationById', [query('id').exists()],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const data = await service.getLocationById(req.query)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    }
+)
+
+router.get('/referencePointsByHikeId', [query('id').exists()],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const data = await service.getReferencePointsFromHikeId(req.query)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    }
+)
 
 router.get('/huts/myhut', isLoggedIn,
     async (req, res) => {

@@ -44,8 +44,6 @@ exports.generateHutFilters = (query) => {
     return filters;
 }
 
-
-
 exports.getHutsAndParkingLots = async (email) => {
     return new Promise((resolve, reject) => {
         let sql =
@@ -122,12 +120,12 @@ exports.addLocation = async (newLocation, email) => {
                 return;
             }
             else {
-                try{
+                try {
                     if (newLocation.type === "hut")
                         await addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description, newLocation.phone, newLocation.email, newLocation.website)
                     if (newLocation.type === "parkinglot")
                         await addParking(this.lastID, newLocation.lotsNumber, newLocation.description)
-                } catch(e) {
+                } catch (e) {
                     console.log(e);
                     reject(404);
                 }
@@ -253,18 +251,83 @@ exports.getHutbyWorkerId = async (email) => {
                 reject(400);
                 return;
             }
-            if(row===undefined){
+            if (row === undefined) {
                 reject(404);
                 return;
-            }else{
+            } else {
                 resolve(row.id);
-            }       
+            }
         })
     })
 }
 
-const checkDistance = function (lat1, lon1, lat2, lon2, radius){
-    const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180, Δλ = (lon2-lon1) * Math.PI/180, R = 6371e3;
-    const d = Math.acos( Math.sin(φ1)*Math.sin(φ2) + Math.cos(φ1)*Math.cos(φ2) * Math.cos(Δλ) ) * R / 1000;
-    return d<=radius;
+
+exports.getReferencePointsFromHikeId = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * from HikesReferencePoints WHERE hikeId=${query.id}`
+        db.all(sql, [], async (err, rows) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            const res = await Promise.all(
+                rows.map(async (r) => {
+                    const location = await _getLocationById(r.locationId);
+                    return {
+                        location: location
+                    }
+                })
+            )
+            resolve(res);
+        })
+    })
+}
+
+const _getLocationById = async function (id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from Locations where id=?'
+        db.get(sql, [id], async (err, row) => {
+            if (err) {
+                console.log(err)
+                return null;
+            }
+            resolve(row)
+        })
+    })
+}
+
+const checkDistance = function (lat1, lon1, lat2, lon2, radius) {
+    const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180, Δλ = (lon2 - lon1) * Math.PI / 180, R = 6371e3;
+    const d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R / 1000;
+    return d <= radius;
+}
+
+
+exports.getLocationById = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * from Locations WHERE id=${query.id}`
+        db.all(sql, [], async (err, r) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            const location = r[0];
+            resolve({
+                id: location.id,
+                name: location.name,
+                type: location.type,
+                latitude: location.latitude,
+                longitude: location.longitude,
+                difficulty: location.difficulty,
+                country: location.country,
+                province: location.province,
+                town: location.town,
+                address: location.address,
+                altitude: location.altitude,
+                author: location.author
+            });
+        })
+    })
 }

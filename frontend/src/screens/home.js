@@ -7,6 +7,7 @@ import { CoordsFromMap } from "./../components/coordsFromMap";
 
 import HutWorker from "./../screens/hutWorker"
 import EmergencyOperator from "./../screens/emergencyOperator"
+import API from "../API";
 
 const Home = (props) => {
 
@@ -16,6 +17,20 @@ const Home = (props) => {
     const [radiusFilter, setRadiusFilter] = useState(10); // km
 
     const navigate = useNavigate();
+
+    const suggestHikes = async () => {
+        const prefs = await API.getPreferences();
+        const minAscent = 0.9 * Number(prefs.body.ascent);
+        const maxAscent = 1.1 * Number(prefs.body.ascent);
+        const minDuration = 0.9 * Number(prefs.body.duration);
+        const maxDuration = 1.1 * Number(prefs.body.duration);
+        let filters = [];
+        filters.push({ key: "minAscent", value: minAscent });
+        filters.push({ key: "maxAscent", value: maxAscent });
+        filters.push({ key: "minTime", value: minDuration });
+        filters.push({ key: "maxTime", value: maxDuration });
+        setFilters(JSON.stringify(filters));
+    }
 
     return (
         <Container>
@@ -53,6 +68,12 @@ const Home = (props) => {
                 <Col md={2}>
                     <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
                 </Col>
+                {
+                    (props.user && props.user.role === "hiker") &&
+                    <Col md={1}>
+                        <Button onClick={() => suggestHikes()} variant="success" size="lg">{" "}Suggested hikes</Button>
+                    </Col>
+                }
             </Row>
 
             <ul></ul>
@@ -65,7 +86,7 @@ const Home = (props) => {
                     <Modal.Title>Filter Selection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <HikeFilterForm setShow={setShow} setFilters={setFilters} setCoords={setCoordsFilter} setRadiusFilter={setRadiusFilter}/>
+                    <HikeFilterForm setShow={setShow} setFilters={setFilters} setCoords={setCoordsFilter} setRadiusFilter={setRadiusFilter} />
                 </Modal.Body>
             </Modal>
         </Container>

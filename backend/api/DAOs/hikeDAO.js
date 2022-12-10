@@ -65,7 +65,7 @@ exports.getHikeFromID = async (query) => {
                 reject()
                 return
             }
-            const hike=r[0];
+            const hike = r[0];
             const startLocation = await getLocationById(hike.startPt);
             const endLocation = await getLocationById(hike.endPt);
             const refLocations = await getReferenceLocations(hike.id);
@@ -236,25 +236,25 @@ exports.setHikeEndPoint = async (hike) => {
 
 
 exports.getHikesByHutId // add radius check (5 km)
- = async (hutId, email) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT hk.id, hk.title, hhh.status, hhh.description \
+    = async (hutId, email) => {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT hk.id, hk.title, hhh.status, hhh.description \
         FROM Hikes hk, HikesHaveHuts hhh, HutWorkers hw \
         WHERE hhh.locationId = hw.locationId AND hk.id = hhh.hikeId AND hhh.locationId = ? AND hw.email = ?';
-        db.all(sql, [
-            hutId,
-            email
-        ], async function (err, rows) {
-            if (err) {
-                console.log(err)
-                reject(400);
+            db.all(sql, [
+                hutId,
+                email
+            ], async function (err, rows) {
+                if (err) {
+                    console.log(err)
+                    reject(400);
+                    return;
+                }
+                resolve(rows);
                 return;
-            }
-            resolve(rows);
-            return;
+            })
         })
-    })
-}
+    }
 
 
 
@@ -280,7 +280,28 @@ exports.updateStatus = async (status, hikeId, hutId, email) => {
             }
             resolve(200);
             return;
+        }
+        )
+    })
+}
+exports.addHikeReferencePoint = async (query) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO HikesReferencePoints(hikeId, locationId) VALUES(?,?)';
+        db.run(sql, [
+            query.hikeId,
+            query.locationId,
+        ], function (err, rows) {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
         })
     })
 }
+
 

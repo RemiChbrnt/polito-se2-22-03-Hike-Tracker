@@ -178,6 +178,7 @@ class LocationService {
         }
     }
 
+<<<<<<< HEAD
 
     getHutbyWorkerId = async (email) => {
         try {
@@ -186,6 +187,15 @@ class LocationService {
                 ok: true,
                 status: 200,
                 body: hutId
+=======
+    getLocationById = async (query) => {
+        try {
+            const location = await this.dao.getLocationById(query)
+            return {
+                ok: true,
+                status: 200,
+                body: location
+>>>>>>> Sprint3HTGnap
             }
         } catch (e) {
             return {
@@ -195,6 +205,24 @@ class LocationService {
         }
     }
 
+<<<<<<< HEAD
+=======
+    getReferencePointsFromHikeId = async (query) => {
+        try {
+            const locations = await this.dao.getReferencePointsFromHikeId(query)
+            return {
+                ok: true,
+                status: 200,
+                body: locations
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+>>>>>>> Sprint3HTGnap
 }
 
 
