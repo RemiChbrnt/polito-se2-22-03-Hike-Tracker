@@ -30,10 +30,10 @@ const handleHikeCreation = async (title, length, expTime, ascent, difficulty, st
 };
 
 // API call to push a location to the database (for Start and End points if needed)
-const handleLocationCreation = async (name, type, latitude, longitude, country, province, town, address, altitude) => {
+const handleLocationCreation = async (name, type, latitude, longitude, country, region, town, address, altitude) => {
     // Setting null parameters for undefined inputs (that are not mandatory)
     if (country === "") country = null;
-    if (province === "") province = null;
+    if (region === "") region = null;
     if (town === "") town = null;
     if (address === "") address = null;
     if (altitude === "") altitude = null;
@@ -45,7 +45,7 @@ const handleLocationCreation = async (name, type, latitude, longitude, country, 
             latitude: latitude,
             longitude: longitude,
             country: country,
-            province: province,
+            region: region,
             town: town,
             address: address,
             altitude: altitude
@@ -79,7 +79,7 @@ function AddHikeForm(props) {
     const [startPtLatitude, setStartPtLatitude] = useState("");
     const [startPtLongitude, setStartPtLongitude] = useState("");
     const [startPtCountry, setStartPtCountry] = useState("");
-    const [startPtProvince, setStartPtProvince] = useState("");
+    const [startPtregion, setStartPtregion] = useState("");
     const [startPtTown, setStartPtTown] = useState("");
     const [startPtAddress, setStartPtAddress] = useState("");
     const [startPtAltitude, setStartPtAltitude] = useState("");
@@ -90,7 +90,7 @@ function AddHikeForm(props) {
     const [endPtLatitude, setEndPtLatitude] = useState("");
     const [endPtLongitude, setEndPtLongitude] = useState("");
     const [endPtCountry, setEndPtCountry] = useState("");
-    const [endPtProvince, setEndPtProvince] = useState("");
+    const [endPtregion, setEndPtregion] = useState("");
     const [endPtTown, setEndPtTown] = useState("");
     const [endPtAddress, setEndPtAddress] = useState("");
     const [endPtAltitude, setEndPtAltitude] = useState("");
@@ -125,14 +125,14 @@ function AddHikeForm(props) {
 
         if (startPtIndex === undefined) {
             startPtIndex = await handleLocationCreation(
-                startPtName, startPtType, startPtLatitude, startPtLongitude, startPtCountry, startPtProvince, startPtTown, startPtAddress, startPtAltitude
+                startPtName, startPtType, startPtLatitude, startPtLongitude, startPtCountry, startPtregion, startPtTown, startPtAddress, startPtAltitude
             );
         }
         if(identicalEndStart && startPtIndex !== undefined){
             endPtIndex = startPtIndex;
         }else if (endPtIndex === undefined) {
             endPtIndex = await handleLocationCreation(
-                endPtName, endPtType, endPtLatitude, endPtLongitude, endPtCountry, endPtProvince, endPtTown, endPtAddress, endPtAltitude
+                endPtName, endPtType, endPtLatitude, endPtLongitude, endPtCountry, endPtregion, endPtTown, endPtAddress, endPtAltitude
             );
         }
 
@@ -164,7 +164,7 @@ function AddHikeForm(props) {
                     if (res.lat !== undefined) setStartPtLatitude(parseFloat(res.lat));
                     if (res.lon !== undefined) setStartPtLongitude(parseFloat(res.lon));
                     if (res.address.country !== undefined) setStartPtCountry(res.address.country);
-                    if (res.address.county !== undefined) setStartPtProvince(res.address.county);
+                    if (res.address.county !== undefined) setStartPtregion(res.address.county);
                     if (res.display_name !== undefined) setStartPtAddress(res.display_name);
 
                     if (res.address.city !== undefined) {
@@ -177,7 +177,7 @@ function AddHikeForm(props) {
                     if (res.lat !== undefined) setEndPtLatitude(parseFloat(res.lat));
                     if (res.lon !== undefined) setEndPtLongitude(parseFloat(res.lon));
                     if (res.address.country !== undefined) setEndPtCountry(res.address.country);
-                    if (res.address.county !== undefined) setEndPtProvince(res.address.county);
+                    if (res.address.county !== undefined) setEndPtregion(res.address.county);
                     if (res.display_name !== undefined) setEndPtAddress(res.display_name);
 
                     if (res.address.city !== undefined) {
@@ -428,10 +428,10 @@ function AddHikeForm(props) {
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">
-                                            <Form.Label>Province</Form.Label>
-                                            <Form.Control type="text" placeholder={startPtProvince}
-                                                value={startPtProvince}
-                                                onChange={ev => { setStartPtProvince(ev.target.value); }}
+                                            <Form.Label>region</Form.Label>
+                                            <Form.Control type="text" placeholder={startPtregion}
+                                                value={startPtregion}
+                                                onChange={ev => { setStartPtregion(ev.target.value); }}
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">
@@ -570,10 +570,10 @@ function AddHikeForm(props) {
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">
-                                            <Form.Label>Province</Form.Label>
-                                            <Form.Control type="text" placeholder={endPtProvince}
-                                                value={endPtProvince}
-                                                onChange={ev => { setEndPtProvince(ev.target.value); }}
+                                            <Form.Label>region</Form.Label>
+                                            <Form.Control type="text" placeholder={endPtregion}
+                                                value={endPtregion}
+                                                onChange={ev => { setEndPtregion(ev.target.value); }}
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">

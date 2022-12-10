@@ -257,7 +257,7 @@ async function setHikeEndPoint(id, endPt) {
 /**
  * Function to get the huts, based on some filtering 
  * @param {*} filters object containing the key-value pairs for filtering
- * @returns array of "hut" objects, containing the fields id, name, country, province, town, address, altitude
+ * @returns array of "hut" objects, containing the fields id, name, country, region, town, address, altitude
  */
 async function getHuts(filters) {
     // call: GET /api/huts    
@@ -280,7 +280,7 @@ async function getHuts(filters) {
             latitude: r.latitude,
             longitude: r.longitude,
             country: r.country,
-            province: r.province,
+            region: r.region,
             town: r.town,
             address: r.address,
             altitude: r.altitude,
@@ -298,7 +298,7 @@ async function getHuts(filters) {
 
 /**
  * Function to get all the huts and the parking lots
- * @returns array of "location" objects, containing the fields id, name, type, country, province, town, address, altitude
+ * @returns array of "location" objects, containing the fields id, name, type, country, region, town, address, altitude
  */
 async function getHutsAndParkingLots() {
     // call: GET /api/huts-and-parking-lots
@@ -314,7 +314,7 @@ async function getHutsAndParkingLots() {
             latitude: r.latitude,
             longitude: r.longitude,
             country: r.country,
-            province: r.province,
+            region: r.region,
             town: r.town,
             address: r.address,
             altitude: r.altitude
@@ -343,7 +343,7 @@ async function getLocations() {
             latitude: r.latitude,
             longitude: r.longitude,
             country: r.country,
-            province: r.province,
+            region: r.region,
             town: r.town,
             address: r.address,
             altitude: r.altitude,
@@ -390,7 +390,7 @@ async function getHutsByUserId(userId) {
             latitude: r.latitude,
             longitude: r.longitude,
             country: r.country,
-            province: r.province,
+            region: r.region,
             town: r.town,
             altitude: r.altitude,
             numberOfBeds: r.numberOfBeds,

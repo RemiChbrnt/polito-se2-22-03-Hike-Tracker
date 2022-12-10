@@ -37,7 +37,7 @@ describe('Testing all the operations on hikes', function () {
                 latitude: 45.178734750000004,
                 longitude: 7.081576685703124,
                 country: 'Italy',
-                province: 'Torino',
+                region: 'Piemonte',
                 town: 'Mompantero',
                 address: 'La Riposa, GTA / 529 / SI, Trucco, Mompantero, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -52,7 +52,7 @@ describe('Testing all the operations on hikes', function () {
                 latitude: 45.2034457,
                 longitude: 7.077260064028688,
                 country: 'Italy',
-                province: 'Torino',
+                region: 'Piemonte',
                 town: 'Novalesa',
                 address: 'Nostra Signora del Rocciamelone, 585, Novalesa, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -147,7 +147,7 @@ describe('Testing all the operations on hikes with wrong user', function () {
                 latitude: 45.178734750000004,
                 longitude: 7.081576685703124,
                 country: 'Italy',
-                province: 'Torino',
+                region: 'Piemonte',
                 town: 'Mompantero',
                 address: 'La Riposa, GTA / 529 / SI, Trucco, Mompantero, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -162,7 +162,7 @@ describe('Testing all the operations on hikes with wrong user', function () {
                 latitude: 45.2034457,
                 longitude: 7.077260064028688,
                 country: 'Italy',
-                province: 'Torino',
+                region: 'Piemonte',
                 town: 'Novalesa',
                 address: 'Nostra Signora del Rocciamelone, 585, Novalesa, Torino, Piedmont, 10059, Italy',
                 altitude: null

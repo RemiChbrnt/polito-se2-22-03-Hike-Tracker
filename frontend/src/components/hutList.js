@@ -66,9 +66,9 @@ function HutCard(props) {
                                 </Col>
                             </Row>
                         </ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.province + ")"}, {props.hut.country}</ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.region + ")"}, {props.hut.country}</ListGroup.Item>
                         {/*<ListGroup.Item><span className="fw-bold">Country: </span>{props.hut.country}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Province: </span>{props.hut.province}</ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Region: </span>{props.hut.region}</ListGroup.Item>
                         <ListGroup.Item><span className="fw-bold">Town: </span></ListGroup.Item>*/}
                         <ListGroup.Item><span className="fw-bold">Altitude: </span>{props.hut.altitude} m</ListGroup.Item>
                         <ListGroup.Item>{props.hut.description}</ListGroup.Item>
