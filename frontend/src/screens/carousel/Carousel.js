@@ -123,7 +123,7 @@ function Carousel({
                                         </div>
                                     )}
                                     <img
-                                        src={require("../../photos/" + item)}
+                                        src={item}
                                         alt={item.caption}
                                         className="carousel-image"
                                         style={{
@@ -192,7 +192,7 @@ function Carousel({
                         return (
                             <img
                                 width={thumbnailWidth ? thumbnailWidth : "100px"}
-                                src={require("../../photos/" + item)}
+                                src={item}
                                 alt={item.caption}
                                 className="thumbnail"
                                 id={`thumbnail-${index}`}

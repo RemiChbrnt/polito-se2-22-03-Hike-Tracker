@@ -8,6 +8,7 @@ import API from '../API.js';
 const HomeWorker = (props) => {
 
     const [hut, setHut] = useState("");
+    const [photos, setPhotos] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
     const params = useParams();
@@ -16,9 +17,23 @@ const HomeWorker = (props) => {
     useEffect(() => {
 
         API.getHutById(props.user.hut)
-            .then(hut => {
+            .then(async (hut) => {
                 setHut(hut);
-                setIsLoading(false);
+                try {
+                    if (hut.photos !== undefined && hut.photos.length !== 0) {
+                        let data = [];
+                        hut.photos.map((p) => {
+                            data.push(require("../photos/" + p));
+                        })
+                        setPhotos(data);
+                    }
+                    setIsLoading(false);
+                    return;
+                } catch (e) {
+                    return;
+                }
+
+
             })
             .catch(error => console.log(error));
     }, [])
@@ -85,10 +100,10 @@ const HomeWorker = (props) => {
                         <Col style={{ textAlign: "center" }}>
                             <div style={{ padding: "0 20px", }}>
                                 {(hut.photos !== undefined && hut.photos.length !== 0) && <Carousel
-                                    data={hut.photos}
+                                    data={photos}
                                     time={2000}
                                     width="800px"
-                                    height="450px"
+                                    height="400px"
                                     captionStyle={captionStyle}
                                     radius="10px"
                                     slideNumber={true}
