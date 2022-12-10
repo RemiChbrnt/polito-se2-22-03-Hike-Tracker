@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Button, Row } from 'react-bootstrap';
-//import { Carousel } from 'react-carousel-minimal';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Carousel } from "./carousel/Carousel.js";
 import API from '../API.js';
@@ -21,9 +20,6 @@ const HomeWorker = (props) => {
             })
             .catch(error => console.log(error));
     }, [])
-
-    const navigate = useNavigate();
-
 
     const captionStyle = {
         fontSize: "2em",
@@ -57,7 +53,7 @@ const HomeWorker = (props) => {
                         </Col>
                         <Col style={{ textAlign: "center" }}>
                             <div style={{ padding: "0 20px", }}>
-                                <Carousel
+                                {(hut.photos !== undefined && hut.photos.length !== 0) && <Carousel
                                     data={hut.photos}
                                     time={2000}
                                     width="800px"
@@ -81,7 +77,7 @@ const HomeWorker = (props) => {
                                         maxWidth: "850px",
                                         margin: "40px auto",
                                     }}
-                                />
+                                />}
                             </div>
                         </Col>
                     </Row>

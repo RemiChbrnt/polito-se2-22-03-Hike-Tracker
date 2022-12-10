@@ -514,17 +514,15 @@ async function linkHut(params) {
 
 /**
  * Function to add a photo related to a hut
- * @param {*} body contains the attributes "id", the id of the hut, and "photo", the png/jpeg file converted into BLOB
+ * @param {*} id  is the hut id
+ * @param {*} formData contains the attributes "id", the id of the hut, and "photo", the png/jpeg file converted into BLOB
  * @returns true if succesfull, false otherwise
  */
-async function addHutPhoto(body) {
-    const response = await fetch(URL + '/hut-photo', {
+async function addHutPhoto(id, formData) {
+    const response = await fetch(URL + '/hut-photo/' + id, {
         method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
         credentials: 'include',
-        body: JSON.stringify(body)
+        body: formData
     });
     if (response.ok) {
         return true;

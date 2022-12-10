@@ -58,7 +58,7 @@ exports.getHutById = async (id) => {
                 return;
             }
             else {
-                let photos = await setPhotos(row.id);
+                let photos = await getHutPhotos(row.id);
                 row.photos = photos;
                 resolve(row);
             }
@@ -68,7 +68,7 @@ exports.getHutById = async (id) => {
 
 
 
-const setPhotos = async (id) => {
+const getHutPhotos = async (id) => {
     return new Promise((resolve, reject) => {
         const sql =
             `SELECT fileName FROM HutsPhotos        

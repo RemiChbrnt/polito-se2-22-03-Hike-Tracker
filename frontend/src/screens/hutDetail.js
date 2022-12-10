@@ -57,7 +57,13 @@ const HutDetail = ({ user, props, setProps }) => {
                             <Row>
                                 {(hut.photos !== undefined) ?
                                     hut.photos.map((p, i) => {
-                                        return <Card style={{ width: "33%" }} key={i}><img src={p} /></Card>
+                                        try {
+                                            require("../photos/" + p)
+                                            return <Card style={{ width: "33%" }} key={i}><img src={require("../photos/" + p)} /></Card>
+                                        } catch (e) {
+                                            return;
+                                        }
+
                                     })
                                     :
                                     <span>No images available</span>

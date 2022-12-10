@@ -243,9 +243,9 @@ class LocationService {
     }
 
 
-    addHutPhoto = async (body) => {
+    addHutPhoto = async (id, fileName) => {
         try {
-            const result = await this.dao.addHutPhoto(body.id, body.photo);
+            const result = await this.dao.addHutPhoto(id, fileName);
             return {
                 ok: true,
                 status: 201,

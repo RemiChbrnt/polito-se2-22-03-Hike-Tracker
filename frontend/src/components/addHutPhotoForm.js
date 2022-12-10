@@ -19,38 +19,31 @@ function AddHutPhotoForm(props) {
 
 function ActiveForm(props) {
 
-    console.log("hut " + JSON.stringify(props.user.hut));
-
-    const [photo, setPhoto] = useState(null);
     const [photoPreview, setPhotoPreview] = useState(null);
-
     const [invalidFileFormat, setInvalidFileFormat] = useState(false);
-
+    const [formData, setFormData] = useState("");
 
     const handleFile = (e) => {
         let file = e.target.files[0];
         // Checking correct file format
-        if (file.name.slice(-4) !== ".png" && file.name.slice(-5) !== ".jpeg") {
+        if (file.name.slice(-4) !== ".png" && file.name.slice(-5) !== ".jpeg" && file.name.slice(-4) !== ".jpg") {
             setInvalidFileFormat(true);
         } else {
             setInvalidFileFormat(false);
             setPhotoPreview(file);
 
-            let reader = new FileReader();
+            let formData = new FormData();
 
-            reader.onloadend = (e) => {
-                setPhoto(e.target.result);
-            }
-            reader.readAsDataURL(file);
+            formData.append("file", file);
+            setFormData(formData);
         }
     }
 
 
 
-    const addHutPhoto = async (id, photo) => {
+    const addHutPhoto = async (id) => {
         try {
-            let body = ({ id: id, photo: photo })
-            let res = API.addHutPhoto(body);
+            let res = await API.addHutPhoto(id, formData);
             return res;
 
         } catch (err) {
@@ -63,10 +56,9 @@ function ActiveForm(props) {
     const handlerSubmit = async (e) => {
         e.preventDefault();
         props.setForm(true);
-        let result = await addHutPhoto(props.user.hut, photo);
+        let result = await addHutPhoto(props.user.hut);
         if (result !== false)
             props.setSuccess(true);
-
         else
             props.setError(true);
 
@@ -75,21 +67,11 @@ function ActiveForm(props) {
     return (
         <Container>
             <h2> Add a photo for your hut </h2>
-            <Form onSubmit={handlerSubmit} className="hike-form">
+            <Form onSubmit={handlerSubmit} className="hike-form" encType="multipart/form-data">
                 <div className="hike-form-group">
-                    {/* <Row>
-                        <div className="form-group mt-3">
-                            <Form.Group controlId='hutName'>
-                                <Form.Label><b>Id</b> <b className="asterisk-required">*</b></Form.Label>
-                                <Form.Control type="text" placeholder="Enter name" required
-                                    onChange={ev => { setId(ev.target.value); }}
-                                />
-                            </Form.Group>
-                        </div>
-                    </Row> */}
                     <Row>
-                        <Form.Label>Upload a PNG or JPEG file</Form.Label>
-                        <Form.Control type="file" onChange={ev => handleFile(ev)} />
+                        <Form.Label>Upload a PNG, JPG or JPEG file</Form.Label>
+                        <Form.Control id="file" type="file" onChange={ev => handleFile(ev)} />
 
                         {invalidFileFormat && <h5 style={{ color: "#f00" }}>WARNING : Invalid format, try with a .png or a .jpeg </h5>}
                     </Row>
@@ -97,7 +79,7 @@ function ActiveForm(props) {
                         {(photoPreview !== null) && <img src={URL.createObjectURL(photoPreview)} />}
                     </Row>
                     <div className="d-grid gap-2 mt-3">
-                        <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
+                        <Button type="submit" className="guideBtn" borderless="true" disabled={invalidFileFormat}>CONFIRM</Button>
                     </div>
                 </div>
             </Form>

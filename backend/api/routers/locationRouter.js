@@ -7,9 +7,10 @@ const service = new locationService(locationDAO);
 const router = express.Router();
 const { body, param, query, validationResult } = require('express-validator');
 const isLoggedIn = require("../middleware/authentication");
+const multer = require("../middleware/storage");
 
 
-router.get('/huts', /*isLoggedIn,*/ [
+router.get('/huts', /*isLoggedIn,*/[
     query('name').optional({ nullable: true }).isString({ min: 0 }),
     query('country').optional({ nullable: true }).isString({ min: 0 }),
     query('province').optional({ nullable: true }).isString({ min: 0 }),
@@ -194,9 +195,8 @@ router.get('/referencePointsByHikeId', [query('id').exists()],
 
 
 
-router.post("/hut-photo", isLoggedIn, [
-    body('id').exists().isNumeric(),
-    body('photo').exists(),
+router.post("/hut-photo/:id", isLoggedIn, multer.uploadImg, [
+    param('id').exists().isNumeric(),
 ], async (req, res) => {
     if (req.user.role !== 'hutworker')
         return res.status(403).json({ errors: "Only hut workers can access this feature" })
@@ -205,7 +205,11 @@ router.post("/hut-photo", isLoggedIn, [
     if (!errors.isEmpty())
         return res.status(422).json({ errors: errors.array() });
 
-    const response = await service.addHutPhoto(req.body)
+
+
+    console.log("filename " + req.file.filename);
+
+    const response = await service.addHutPhoto(req.params.id, req.file.filename)
     if (response.ok)
         return res.status(response.status).json(response.body)
 
