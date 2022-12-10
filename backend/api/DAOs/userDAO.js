@@ -158,8 +158,10 @@ exports.checkUserVerification = async (email) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT verified FROM Users WHERE email=?'
         db.get(sql, [email], (err, row) => {
-            if (err)
+            if (err){
+                console.log('USER NOT VERIFIED IN MIDDLEWARE');
                 reject(503);
+            }
             else if (row === undefined)
                 resolve({});
             else {

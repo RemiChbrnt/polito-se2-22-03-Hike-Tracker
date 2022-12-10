@@ -101,6 +101,7 @@ exports.getLocations = async (query) => {
 
 exports.addLocation = async (newLocation, email) => {
     return new Promise((resolve, reject) => {
+        console.log('HERE DAO START: ' + newLocation + ' - ' + email);
         const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, region, town, address, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
             newLocation.name,
@@ -115,15 +116,21 @@ exports.addLocation = async (newLocation, email) => {
             email
         ], async function (err) {
             if (err) {
+                console.log('ERROR IN DAO: ' + err);
                 console.log(err);
                 reject(400);
                 return;
             }
             else {
-                if (newLocation.type === "hut")
-                    addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description, newLocation.phone, newLocation.email, newLocation.website)
-                if (newLocation.type === "parkinglot")
-                    addParking(this.lastID, newLocation.lotsNumber, newLocation.description)
+                try{
+                    if (newLocation.type === "hut")
+                        await addHut(this.lastID, newLocation.numberOfBeds, newLocation.food, newLocation.description, newLocation.phone, newLocation.email, newLocation.website)
+                    if (newLocation.type === "parkinglot")
+                        await addParking(this.lastID, newLocation.lotsNumber, newLocation.description)
+                } catch(e) {
+                    console.log(e);
+                    reject(404);
+                }
                 newLocation.id = this.lastID;
                 resolve(newLocation);
                 return;

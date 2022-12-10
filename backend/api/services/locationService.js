@@ -103,6 +103,7 @@ class LocationService {
 
     addLocation = async (newLocation, email) => {
         try {
+            console.log('HERE service: ' + newLocation  + ' - ' + email);
             const response = await this.dao.addLocation(newLocation, email);
             return {
                 ok: true,

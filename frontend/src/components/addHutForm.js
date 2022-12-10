@@ -23,19 +23,19 @@ function ActiveForm(props) {
     const [name, setName] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
-    const [country, setCountry] = useState("");
+    const [country, setCountry] = useState(undefined);
     const [countryCode, setCountryCode]=useState("");
-    const [region, setRegion] = useState("");
+    const [region, setRegion] = useState(undefined);
     const [regionCode, setRegionCode]=useState(""); 
-    const [town, setTown] = useState("");
+    const [town, setTown] = useState(undefined);
     const [address, setAddress] = useState("");
     const [altitude, setAltitude] = useState("");
     const [numberOfBeds, setNumberOfBeds] = useState(0);
-    const [food, setFood] = useState("");
+    const [food, setFood] = useState("none");
     const [description, setDescription] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
-    const [website, setWebsite] = useState("");
+    const [website, setWebsite] = useState(undefined);
     //----- TO DO -----
     const addHut = async (name, latitude, longitude, country, region, town, address, altitude, numberOfBeds, food, description, phone, email, website) => {
         try {

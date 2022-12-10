@@ -362,6 +362,7 @@ async function getLocations() {
  */
 async function createLocation(body) {
 
+    console.log('API BEFORE POST - ' + JSON.stringify(body));
     const response = await fetch(URL + '/locations', {
         method: "POST",
         headers: {
@@ -369,8 +370,11 @@ async function createLocation(body) {
         },
         credentials: 'include',
         body: JSON.stringify(body)
+    }).catch((e) => {
+        console.log(e)
     });
 
+    console.log('API AFTER POST - ' + JSON.stringify(body));
     const location = await response.json();
 
     if (response.ok) {

@@ -89,6 +89,7 @@ router.post('/locations', isLoggedIn, [
     body('email').optional({ nullable: false }).isEmail(),
     body('website').optional({ nullable: true }).isURL()
 ], async (req, res) => {
+    console.log('HERE router: ' + JSON.stringify(req.body));
     const errors = validationResult(req);
     if(req.user.role!=='guide')
         return res.status(403).json({ errors: "Only guides can access this feature"})
@@ -96,7 +97,7 @@ router.post('/locations', isLoggedIn, [
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const data = await service.addLocation(req.body, req.user.email);
+    const data = await service.addLocation(req.body, req.user.email).catch((e) => console.log('ROUTER: ' + e));;
     if (data.ok)
         return res.status(data.status).json(data.body);
 
