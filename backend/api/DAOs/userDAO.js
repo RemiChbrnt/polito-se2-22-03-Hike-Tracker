@@ -25,7 +25,6 @@ exports.login = async (email, password) => {
                     verified: row.verified
                 }
 
-                console.log('AAAAAAA ' + user.role + ' - verified: ' + user.verified);
                 if (user.verified === 0) {
                     resolve(412);
                     return;
