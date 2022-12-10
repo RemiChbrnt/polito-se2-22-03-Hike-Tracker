@@ -17,7 +17,8 @@ const resetHikes = async function () {
 
 const resetUsers = async function () {
     return new Promise((resolve, reject) => {
-        const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' AND email != 'fiyode9163@eilnews.com' AND email != 'najejof113@dmonies.com'"
+        const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' \
+                        AND email != 'fiyode9163@eilnews.com' AND email != 'najejof113@dmonies.com' AND email != 'manager@management.com'"
         db.all(sql1, [], (err) => {
             if (err)
                 reject(err);
