@@ -85,7 +85,7 @@ const HomeWorker = (props) => {
                         <Col style={{ textAlign: "center" }}>
                             <div style={{ padding: "0 20px", }}>
                                 {(hut.photos !== undefined && hut.photos.length !== 0) && <Carousel
-                                    data={photos}
+                                    data={hut.photos}
                                     time={2000}
                                     width="800px"
                                     height="450px"
