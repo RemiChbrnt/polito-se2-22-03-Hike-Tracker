@@ -1,4 +1,5 @@
 'use strict'
+const { Console } = require('console');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { resolve } = require('path');
@@ -8,7 +9,7 @@ exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {
         const sql =
             `SELECT * FROM Users WHERE email = ?`;
-        db.get(sql, [email], (err, row) => {
+        db.get(sql, [email], async (err, row) => {
             if (err) {
                 console.log("errore " + err);
                 reject(err);
@@ -31,6 +32,29 @@ exports.login = async (email, password) => {
                 } else if (user.role !== "hiker" && user.verified === 1) {
                     resolve(403);
                     return;
+                }
+
+                if (user.role === "hutworker") {
+                    let hut = null;
+                    hut = await new Promise((res, rej) => {
+
+                        const sql1 = `SELECT locationId FROM HutWorkers WHERE email = ?`;
+                        db.get(sql1, [email], async (err, row) => {
+                            if (err) {
+                                console.log("errore " + err);
+                                reject(err);
+                            }
+                            else if (row === undefined) {
+                                res(null);
+                                return;
+                            }
+                            else {
+                                user.hut = row.id;
+                                res(row.locationId);
+                            }
+                        })
+                    })
+                    user.hut = hut;
                 }
 
                 /* User found. Now check whether the hash matches */
@@ -88,11 +112,11 @@ exports.signup = async (email, fullName, password, role, phoneNumber, hut) => {
                 }
                 else {
                     /* If the new user wants to be a hut worker, insert his data in the HutWorkers table */
-                    if(role === "hutworker") {
+                    if (role === "hutworker") {
                         console.log('QUERY PARAMETERS: ' + email + ' - ' + hut);
                         query = 'INSERT INTO HutWorkers VALUES(?, ?)';
                         db.run(query, [email, hut], (err) => {
-                            if(err){
+                            if (err) {
                                 console.log(err);
                                 reject(err);
                             } else {
@@ -250,11 +274,11 @@ exports.declineUser = async (email, role) => {
         db.run(sql, [email], (err) => {
             if (err)
                 reject(503);
-            else{
-                if(role === "hutworker") {
+            else {
+                if (role === "hutworker") {
                     const sql = 'DELETE FROM HutWorkers WHERE email = ?'
                     db.run(sql, [email], (err) => {
-                        if(err)
+                        if (err)
                             reject(503);
                         else
                             resolve(true);

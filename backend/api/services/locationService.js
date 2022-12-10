@@ -8,7 +8,7 @@ class LocationService {
     getHuts = async (query) => {
         try {
             const huts = await this.dao.getHuts(query);
-            
+
             const message = huts.map((r) => ({
                 id: r.id,
                 name: r.name,
@@ -41,6 +41,24 @@ class LocationService {
             }
         }
     }
+
+
+    getHutById = async (id) => {
+        try {
+            const hut = await this.dao.getHutById(id);
+            return {
+                ok: true,
+                status: 200,
+                body: hut
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
 
     getLocations = async (query) => {
         try {
@@ -103,7 +121,7 @@ class LocationService {
 
     addLocation = async (newLocation, email) => {
         try {
-            console.log('HERE service: ' + newLocation  + ' - ' + email);
+            console.log('HERE service: ' + newLocation + ' - ' + email);
             const response = await this.dao.addLocation(newLocation, email);
             return {
                 ok: true,
@@ -140,7 +158,8 @@ class LocationService {
                 cost: r.cost,
                 phone: r.phone,
                 email: r.email,
-                website: r.website
+                website: r.website,
+                photos: r.photos
             }))
             return {
                 ok: true,
@@ -178,7 +197,6 @@ class LocationService {
         }
     }
 
-<<<<<<< HEAD
 
     getHutbyWorkerId = async (email) => {
         try {
@@ -187,15 +205,6 @@ class LocationService {
                 ok: true,
                 status: 200,
                 body: hutId
-=======
-    getLocationById = async (query) => {
-        try {
-            const location = await this.dao.getLocationById(query)
-            return {
-                ok: true,
-                status: 200,
-                body: location
->>>>>>> Sprint3HTGnap
             }
         } catch (e) {
             return {
@@ -205,8 +214,23 @@ class LocationService {
         }
     }
 
-<<<<<<< HEAD
-=======
+    getLocationById = async (query) => {
+        try {
+            const location = await this.dao.getLocationById(query)
+            return {
+                ok: true,
+                status: 200,
+                body: location
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+
     getReferencePointsFromHikeId = async (query) => {
         try {
             const locations = await this.dao.getReferencePointsFromHikeId(query)
@@ -222,7 +246,22 @@ class LocationService {
             }
         }
     }
->>>>>>> Sprint3HTGnap
+
+    addHutPhoto = async (id, fileName) => {
+        try {
+            const result = await this.dao.addHutPhoto(id, fileName);
+            return {
+                ok: true,
+                status: 201,
+                body: result
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
 }
 
 

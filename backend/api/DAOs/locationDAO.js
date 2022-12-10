@@ -23,11 +23,83 @@ exports.getHuts = async (query) => {
                 reject(400);
                 return;
             }
-
-            resolve(rows);
+            else {
+                const res = await Promise.all(
+                    rows.map(async (r) => {
+                        return {
+                            id: r.id,
+                            name: r.name,
+                            type: r.type,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            country: r.country,
+                            province: r.province,
+                            town: r.town,
+                            address: r.address,
+                            altitude: r.altitude,
+                            author: r.author
+                        }
+                    })
+                )
+                resolve(res);
+            }
         })
     })
 }
+
+
+
+exports.getHutById = async (id) => {
+    return new Promise((resolve, reject) => {
+        let sql =
+            `SELECT * from Locations
+            LEFT JOIN Huts ON Locations.id = Huts.locationId
+            WHERE type="hut" AND id = ?`
+
+        db.get(sql, [id], async (err, row) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                let photos = await getHutPhotos(row.id);
+                row.photos = photos;
+                resolve(row);
+            }
+        })
+    })
+}
+
+
+
+const getHutPhotos = async (id) => {
+    return new Promise((resolve, reject) => {
+        const sql =
+            `SELECT fileName FROM HutsPhotos        
+            WHERE hutId = ?`
+        db.all(sql, [id], async (err, rows) => {
+            if (err) {
+                console.log("err" + err)
+                reject();
+                return;
+            } else if (rows === undefined || rows.length === 0)
+                resolve();
+            else {
+                const res = await Promise.all(
+                    rows.map(async (r) => {
+                        // console.log("fileName " + r.fileName);
+                        return r.fileName;
+                    }))
+                resolve(res);
+            }
+        })
+    })
+}
+
+
+
+
 
 exports.generateHutFilters = (query) => {
     let filters = " AND";
@@ -193,17 +265,34 @@ const addParking = async function (id, lotsNumber, description) {
 
 exports.getHutsByUserId = async (email) => {
     return new Promise((resolve, reject) => {
-        const sql =
-            `SELECT * from Locations
-             LEFT JOIN Huts ON Locations.id = Huts.locationId
-             WHERE type="hut" AND author=? `
-        db.all(sql, [email], async (err, rows) => {
+        const sql1 =
+            `SELECT * FROM Locations
+             LEFT JOIN Huts ON Locations.id = Huts.locationId             
+             WHERE type="hut" AND author=?`
+        db.all(sql1, [email], async (err, rows) => {
             if (err) {
                 reject();
                 return;
             } else if (rows === undefined) { resolve(false); }
             else {
-                resolve(rows);
+                const res = await Promise.all(
+                    rows.map(async (r) => {
+                        return {
+                            id: r.id,
+                            name: r.name,
+                            type: r.type,
+                            latitude: r.latitude,
+                            longitude: r.longitude,
+                            country: r.country,
+                            province: r.province,
+                            town: r.town,
+                            address: r.address,
+                            altitude: r.altitude,
+                            author: r.author
+                        }
+                    })
+                )
+                resolve(res);
             }
         })
     })
@@ -328,6 +417,23 @@ exports.getLocationById = async (query) => {
                 altitude: location.altitude,
                 author: location.author
             });
+        })
+    })
+}
+
+
+
+exports.addHutPhoto = async (id, photo) => {
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO HutsPhotos(hutId, fileName) VALUES(?,?)`
+        db.run(sql, [id, photo], async (err) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+
+            resolve(201);
         })
     })
 }

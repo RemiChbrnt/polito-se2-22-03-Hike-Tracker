@@ -73,4 +73,7 @@ INSERT INTO "Users" ("email","fullname","password","salt","role","phoneNumber") 
 INSERT INTO "Hikes" ("id","title","length","expTime","ascent","difficulty","startPt","endPt","description","author") VALUES (1,'Sentiero per il Rocciamelone',9.0,6.5,1353.0,'pro',1,2,'Un percorso conosciutissimo, molto amato da Valsusini e non solo. È lungo e impegnativo per via del dislivello, ma segnalato benissimo e soprattutto con un punto di appoggio a metà strada circa (Il Rifugio gestito Ca’ d’Asti).','antonio.fracassa@live.it');
 INSERT INTO "Hikes" ("id","title","length","expTime","ascent","difficulty","startPt","endPt","description","author") VALUES (2,'testTitle',123.0,6.5,1000.0,'pro',1,2,'testDescription','antonio.fracassa@live.it');
 INSERT INTO "Hikes" ("id","title","length","expTime","ascent","difficulty","startPt","endPt","description","author") VALUES (3,'testingTitle1',1234.5,6.5,1000.0,'pro',1,2,'Testing description, just to check that it works','antonio.fracassa@live.it');
+INSERT INTO "HikesReferencePoints" ("hikeId","locationId") VALUES (1,1);
+INSERT INTO "HikesReferencePoints" ("hikeId","locationId") VALUES (1,2);
+INSERT INTO "HikesReferencePoints" ("hikeId","locationId") VALUES (1,3);
 COMMIT;

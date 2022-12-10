@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row, Button, Collapse, Form } from 'react-bootstrap';
+import { Col, Container, Row, Button, Collapse, Form, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
 import API from '../API.js';
@@ -58,68 +58,56 @@ const HikeDetail = ({ user, props, setProps }) => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <label for="parking" className="pr-5">
-                                Show Parkings &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="parking"
-                                checked={showParkings}
-                                onChange={e => setShowParkings(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="hut" >
-                                Show Huts &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="hut"
-                                checked={showHuts}
-                                onChange={e => setShowHuts(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="pointsInterest">
-                                Show Points of Interest &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="pointsInterest"
-                                checked={showPointsOfInterest}
-                                onChange={e => setShowPointsOfInterest(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="startAndArrival">
-                                Show Start & Arrival Points &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="startAndArrival"
-                                checked={showStartAndArrival}
-                                onChange={e => setShowStartAndArrival(e.target.checked)}
-                            />
-                        </Col>
-                    </Row>
+                    <Form>
+                        <Form.Check
+                            inline
+                            label="Show parkings"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowParkings(e.target.checked)}
+                        />
 
-                    {(user === undefined) ? (false && <></>) : (user.role === "guide") &&
-                        <Col style={{ marginTop: "2%", display: "flex", width: "100%", justifyContent: "flex-end", alignItems: "center" }}>
-                            <div className="d-grid gap-2">
-                                <Button
-                                    variant="white"
-                                    style={{ backgroundColor: "#00706c" }}
-                                    onClick={() => { setAddNewReferencePoint(true) }}>
-                                    <h4 className="text-white">Add a Reference Point</h4>
-                                </Button>
-                            </div>
-                        </Col>
+                        <Form.Check
+                            inline
+                            label="Show huts"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowHuts(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show points of interest"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowPointsOfInterest(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show start and arrival"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowStartAndArrival(e.target.checked)}
+                        />
+                    </Form>
+
+                    {
+                        (user === undefined) ? (false && <></>) : (user.role === "guide") &&
+                            <Col style={{ marginTop: "2%", display: "flex", width: "100%", justifyContent: "flex-end", alignItems: "center" }}>
+                                <div className="d-grid gap-2">
+                                    <Button
+                                        variant="white"
+                                        style={{ backgroundColor: "#00706c" }}
+                                        onClick={() => { setAddNewReferencePoint(true) }}>
+                                        <h4 className="text-white">Add a Reference Point</h4>
+                                    </Button>
+                                </div>
+                            </Col>
                     }
                     <ul></ul>
-                    <Row style={{ flex: 1, marginTop: "2%", alignItems: "center" }}>
-                        <Row className="border border-3 border-secondary">
+                    <Row>
+                        <Row className="justify-content-center">
                             <Map
                                 displayPoints={[showParkings, showHuts, showPointsOfInterest, showStartAndArrival]}
                                 startPt={JSON.stringify(hike.startPt)}
@@ -130,19 +118,31 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 addNewReferencePoint={addNewReferencePoint}
                                 file={hike.track} />
                         </Row>
-                        {
-                            addNewReferencePoint
-                                ? <AddReferencePointForm
-                                    hikeId={params.hikeId}
-                                    userEmail={user.email}
-                                    pointCoords={newReferencePointCoords}
-                                    setAddNewReferencePoint={setAddNewReferencePoint}
-                                />
-                                : <Row>
-                                    <Col>
-                                        <div className="d-flex justify-content-start">
-                                            <h4>
-                                                Difficulty :
+
+
+                        {addNewReferencePoint ?
+                            <AddReferencePointForm
+                                hikeId={params.hikeId}
+                                userEmail={user.email}
+                                pointCoords={newReferencePointCoords}
+                                setAddNewReferencePoint={setAddNewReferencePoint}
+                            />
+                            : <Row className="justify-content-center mt-5">
+                                <Col>
+                                    <div className="d-flex justify-content-start">
+                                        <h4>
+                                            Difficulty :
+                                        </h4>
+                                        <div style={{
+                                            backgroundColor: (hike.difficulty === "tourist") ?
+                                                "darkGreen" : (hike.difficulty === "hiker") ?
+                                                    "orange" : "red",
+                                            marginLeft: "2%"
+                                        }}>
+                                            <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
+                                                {(hike.difficulty === "tourist") ?
+                                                    "Tourist Friendly" : (hike.difficulty === "hiker") ?
+                                                        "Casual Hiker" : "Professional Hiker"}
                                             </h4>
                                             <div style={{
                                                 backgroundColor: (hike.difficulty === "tourist") ?
@@ -166,17 +166,18 @@ const HikeDetail = ({ user, props, setProps }) => {
                                         <h4>
                                             Ascent : {hike.ascent} m
                                         </h4>
-                                    </Col>
+                                    </div>
+                                </Col>
 
-                                    <Col className="border-start border-2 border-secondary">
-                                        <h3>
-                                            Description
-                                        </h3>
-                                        <h4>
-                                            {hike.description}
-                                        </h4>
-                                    </Col>
-                                </Row>
+                                <Col className="border-start border-2 border-secondary">
+                                    <h3>
+                                        Description
+                                    </h3>
+                                    <h4>
+                                        {hike.description}
+                                    </h4>
+                                </Col>
+                            </Row>
                         }
                     </Row>
                     <ul></ul>

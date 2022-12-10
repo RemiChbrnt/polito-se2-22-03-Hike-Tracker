@@ -3,10 +3,10 @@ const sqlite = require('sqlite3')
 const path = require('path');
 /* DB init */
 
-let dbPath = './HikeTrackerDb.db';
+let dbPath = './productionHikeTrackerDb.db';
 
 if (process.env.NODE_ENV === 'test') {
-    dbPath = './testingHikeTrackerDb.db'
+    dbPath = './testingHikeTrackerDb_updated.db'
 }
 
 // dbPath = './HikeTrackerDb.db';
