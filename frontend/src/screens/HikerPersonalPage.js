@@ -32,52 +32,52 @@ const HikerPersonalPage = (props) => {
     return <>
         <Container fluid>
             {
-                isLoading 
-                    ? <h3>Loading preferences...</h3> 
+                isLoading
+                    ? <h3>Loading preferences...</h3>
                     : showDeleteConfirmation
                         ? <DeleteConfirmation
-                            setPreferences={setPreferences} 
-                            userEmail = {loggedUser.email}
-                            setShowDeleteConfirmation = {setShowDeleteConfirmation}
-                            setSuccess={setSuccess}
-                            setError={setError}
-                            setShowConfirm={setShowConfirm}
-                        />
-                    : showConfirm
-                        ? <ConfirmDisplay 
-                            success={success}
-                            setSuccess={setSuccess}
-                            setError={setError}
-                            error={error}
-                            setShowConfirm={setShowConfirm}
-                        />
-                    : preferences === undefined 
-                        ? <EmptyPrefsCard 
-                            preferences={preferences} 
-                            setPreferences={setPreferences} 
-                            userEmail={loggedUser.email}
-                            showForm={showForm}
-                            setShowForm={setShowForm}
-                            operation={operation}
-                            setOperation={setOperation}
-                            setSuccess={setSuccess}
-                            setError={setError}
-                            setShowConfirm={setShowConfirm}
-                        /> 
-                        : <PrefsCard 
-                            preferences={preferences} 
                             setPreferences={setPreferences}
                             userEmail={loggedUser.email}
-                            showForm={showForm}
-                            setShowForm={setShowForm}
-                            operation={operation}
-                            setOperation={setOperation}
-                            showDeleteConfirmation={showDeleteConfirmation}
                             setShowDeleteConfirmation={setShowDeleteConfirmation}
                             setSuccess={setSuccess}
                             setError={setError}
                             setShowConfirm={setShowConfirm}
                         />
+                        : showConfirm
+                            ? <ConfirmDisplay
+                                success={success}
+                                setSuccess={setSuccess}
+                                setError={setError}
+                                error={error}
+                                setShowConfirm={setShowConfirm}
+                            />
+                            : preferences === undefined
+                                ? <EmptyPrefsCard
+                                    preferences={preferences}
+                                    setPreferences={setPreferences}
+                                    userEmail={loggedUser.email}
+                                    showForm={showForm}
+                                    setShowForm={setShowForm}
+                                    operation={operation}
+                                    setOperation={setOperation}
+                                    setSuccess={setSuccess}
+                                    setError={setError}
+                                    setShowConfirm={setShowConfirm}
+                                />
+                                : <PrefsCard
+                                    preferences={preferences}
+                                    setPreferences={setPreferences}
+                                    userEmail={loggedUser.email}
+                                    showForm={showForm}
+                                    setShowForm={setShowForm}
+                                    operation={operation}
+                                    setOperation={setOperation}
+                                    showDeleteConfirmation={showDeleteConfirmation}
+                                    setShowDeleteConfirmation={setShowDeleteConfirmation}
+                                    setSuccess={setSuccess}
+                                    setError={setError}
+                                    setShowConfirm={setShowConfirm}
+                                />
             }
         </Container>
     </>
@@ -85,20 +85,20 @@ const HikerPersonalPage = (props) => {
 
 function EmptyPrefsCard(props) {
 
-    return <> 
+    return <>
         <Card>
-                <Card.Body>
-                    <Card.Title>
-                        <h3 classname="fw-bold">Hike preferences</h3>
-                    </Card.Title>
-                    <div>You don't have any preference set. You can set them now.</div>
-                    <Button variant='outline-success' onClick={() => {props.setShowForm(true); props.setOperation('add')}}>
-                        Set hike preferences
-                    </Button>
-                </Card.Body>
+            <Card.Body>
+                <Card.Title>
+                    <h3 classname="fw-bold">Hike preferences</h3>
+                </Card.Title>
+                <div>You don't have any preference set. You can set them now.</div>
+                <Button variant='outline-success' onClick={() => { props.setShowForm(true); props.setOperation('add') }}>
+                    Set hike preferences
+                </Button>
+            </Card.Body>
         </Card>
         {
-            props.showForm && <PreferencesForm 
+            props.showForm && <PreferencesForm
                 userEmail={props.userEmail}
                 preferences={props.preferences}
                 setPreferences={props.setPreferences}
@@ -106,7 +106,7 @@ function EmptyPrefsCard(props) {
                 operation={props.operation}
                 setSuccess={props.setSuccess}
                 setError={props.setError}
-                setShowConfirm={props.setShowConfirm}/>
+                setShowConfirm={props.setShowConfirm} />
         }
     </>
 }
@@ -120,10 +120,10 @@ function PrefsCard(props) {
                     <h3 classname="fw-bold">Hike preferences</h3>
                 </Card.Title>
                 <ListGroup variant="flush">
-                    <ListGroup.Item><span className="fw-bold">Duration: </span>{props.preferences.duration} km</ListGroup.Item>
+                    <ListGroup.Item><span className="fw-bold">Duration: </span>{props.preferences.duration} h</ListGroup.Item>
                     <ListGroup.Item><span className="fw-bold">Ascent: </span>{props.preferences.ascent} km</ListGroup.Item>
                 </ListGroup>
-                <Button variant='warning' onClick={() => {props.setShowForm(true); props.setOperation('edit')}}>
+                <Button variant='warning' onClick={() => { props.setShowForm(true); props.setOperation('edit') }}>
                     Edit hike preferences
                 </Button>
                 <Button variant='danger' onClick={() => props.setShowDeleteConfirmation(true)}>
@@ -131,17 +131,17 @@ function PrefsCard(props) {
                 </Button>
             </Card.Body>
         </Card>
-    {
-        props.showForm && <PreferencesForm 
-            userEmail={props.userEmail}
-            preferences={props.preferences}
-            setPreferences={props.setPreferences}
-            setShowForm={props.setShowForm}
-            operation={props.operation}
-            setSuccess={props.setSuccess}
-            setError={props.setError}
-            setShowConfirm={props.setShowConfirm}/>
-    }
+        {
+            props.showForm && <PreferencesForm
+                userEmail={props.userEmail}
+                preferences={props.preferences}
+                setPreferences={props.setPreferences}
+                setShowForm={props.setShowForm}
+                operation={props.operation}
+                setSuccess={props.setSuccess}
+                setError={props.setError}
+                setShowConfirm={props.setShowConfirm} />
+        }
     </>
 }
 
@@ -157,15 +157,15 @@ function PreferencesForm(props) {
             "ascent": ascent
         }
         props.setPreferences(newPrefs);
-        if(props.operation === 'add') {
+        if (props.operation === 'add') {
             const result = await API.createPreferences(newPrefs);
-            if(result !== false)
+            if (result !== false)
                 props.setSuccess(true);
             else
                 props.setError(true);
-        } else if(props.operation === 'edit'){
+        } else if (props.operation === 'edit') {
             const result = await API.updatePreferences(newPrefs);
-            if(result !== false)
+            if (result !== false)
                 props.setSuccess(true);
             else
                 props.setError(true);
@@ -180,12 +180,12 @@ function PreferencesForm(props) {
         <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="preferencesForm">
                 <Form.Label>Duration (hours)</Form.Label>
-                <Form.Control type="number" value={duration} required={true} onChange={(event) => { setDuration(event.target.value) }}/>
+                <Form.Control type="number" value={duration} required={true} onChange={(event) => { setDuration(event.target.value) }} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="preferencesForm">
                 <Form.Label>Ascent (m)</Form.Label>
-                <Form.Control type="number" value={ascent} required={true} onChange={(event) => { setAscent(event.target.value) }}/>
+                <Form.Control type="number" value={ascent} required={true} onChange={(event) => { setAscent(event.target.value) }} />
             </Form.Group>
 
             <Button variant='outline-secondary' onClick={() => {
@@ -201,11 +201,11 @@ function PreferencesForm(props) {
 function DeleteConfirmation(props) {
     async function deletePrefs(userEmail, setSuccess, setError, setShowConfirm, setShowDeleteConfirmation) {
         const result = await API.deletePreferences(userEmail);
-        if(result !== false){
+        if (result !== false) {
             props.setSuccess(true);
             props.setPreferences(undefined);
         }
-        else{
+        else {
             props.setError(true);
         }
         props.setShowConfirm(true);
@@ -227,9 +227,9 @@ function DeleteConfirmation(props) {
 }
 
 function ConfirmDisplay(props) {
-    if(props.success) {
+    if (props.success) {
         return <>
-                <div className="display-container">
+            <div className="display-container">
                 <p className="text-center">Preferences updated.</p>
                 <div className="d-grid gap-2 mt-1">
                     <Button type="submit" className="guideBtn" borderless="true" onClick={() => { props.setShowConfirm(false); props.setSuccess(false); }} style={{ color: "white" }} active>
@@ -238,7 +238,7 @@ function ConfirmDisplay(props) {
                 </div>
             </div>
         </>
-    } else if(props.error) {
+    } else if (props.error) {
         return <>
             <div className="display-container">
                 <p className="text-center">There was an error updating your preferences. Please try again.</p>

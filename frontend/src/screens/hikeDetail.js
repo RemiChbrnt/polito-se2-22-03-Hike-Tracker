@@ -128,46 +128,42 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 setAddNewReferencePoint={setAddNewReferencePoint}
                             />
                             : <Row className="justify-content-center mt-5">
-                                <Col>
+                                <Container>
                                     <div className="d-flex justify-content-start">
                                         <h4>
                                             Difficulty :
                                         </h4>
-                                        <div style={{
+                                        <div className="justify-content-center" style={{
                                             backgroundColor: (hike.difficulty === "tourist") ?
                                                 "darkGreen" : (hike.difficulty === "hiker") ?
                                                     "orange" : "red",
                                             marginLeft: "2%"
                                         }}>
-                                            <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
-                                                {(hike.difficulty === "tourist") ?
-                                                    "Tourist Friendly" : (hike.difficulty === "hiker") ?
-                                                        "Casual Hiker" : "Professional Hiker"}
-                                            </h4>
-                                            <div style={{
-                                                backgroundColor: (hike.difficulty === "tourist") ?
-                                                    "darkGreen" : (hike.difficulty === "hiker") ?
-                                                        "orange" : "red",
-                                                marginLeft: "2%"
-                                            }}>
+                                            <Row>
                                                 <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
                                                     {(hike.difficulty === "tourist") ?
                                                         "Tourist Friendly" : (hike.difficulty === "hiker") ?
                                                             "Casual Hiker" : "Professional Hiker"}
                                                 </h4>
-                                            </div>
+                                            </Row>
                                         </div>
-                                        <h4>
-                                            Expected time : {hike.expTime} hours
-                                        </h4>
-                                        <h4>
-                                            Length : {hike.length} km
-                                        </h4>
-                                        <h4>
-                                            Ascent : {hike.ascent} m
-                                        </h4>
+                                        <Row>
+                                            <h4>
+                                                Expected time : {hike.expTime} hours
+                                            </h4>
+                                        </Row>
+                                        <Row>
+                                            <h4>
+                                                Length : {hike.length} km
+                                            </h4>
+                                        </Row>
+                                        <Row>
+                                            <h4>
+                                                Ascent : {hike.ascent} m
+                                            </h4>
+                                        </Row>
                                     </div>
-                                </Col>
+                                </Container>
 
                                 <Col className="border-start border-2 border-secondary">
                                     <h3>

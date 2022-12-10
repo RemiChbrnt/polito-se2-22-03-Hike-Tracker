@@ -1,5 +1,5 @@
 import { Form, Button, Container, Row, Col, Nav } from 'react-bootstrap';
-import { Country, State, City }  from 'country-state-city';
+import { Country, State, City } from 'country-state-city';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,9 +24,9 @@ function ActiveForm(props) {
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [country, setCountry] = useState(undefined);
-    const [countryCode, setCountryCode]=useState("");
+    const [countryCode, setCountryCode] = useState("");
     const [region, setRegion] = useState(undefined);
-    const [regionCode, setRegionCode]=useState(""); 
+    const [regionCode, setRegionCode] = useState("");
     const [town, setTown] = useState(undefined);
     const [address, setAddress] = useState("");
     const [altitude, setAltitude] = useState("");
@@ -39,7 +39,7 @@ function ActiveForm(props) {
     //----- TO DO -----
     const addHut = async (name, latitude, longitude, country, region, town, address, altitude, numberOfBeds, food, description, phone, email, website) => {
         try {
-            let params = ({ name: name, type: "hut", latitude: latitude, longitude: longitude, country: country, region: region, town: town, address: address, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description, phone:phone, email:email, website:website})
+            let params = ({ name: name, type: "hut", latitude: latitude, longitude: longitude, country: country, region: region, town: town, address: address, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description, phone: phone, email: email, website: website })
             let res = await API.createLocation(params);
             return res;
 
@@ -82,8 +82,8 @@ function ActiveForm(props) {
                         <Col>
                             <div className="form-group mt-3">
                                 <Form.Group className="mb-3" controlId="hutLatitude">
-                                    <Form.Label><b>Latitude</b></Form.Label>
-                                    <Form.Control type="text" placeholder="Enter latitude"
+                                    <Form.Label><b>Latitude</b> <b className="asterisk-required">*</b> </Form.Label>
+                                    <Form.Control type="text" placeholder="Enter latitude" required
                                         onChange={ev => { setLatitude(ev.target.value); }}
                                     />
                                 </Form.Group>
@@ -105,15 +105,15 @@ function ActiveForm(props) {
                             <div className="form-group mt-3">
                                 <Form.Group controlId='hutCountry'>
                                     <Form.Label><b>Country</b></Form.Label>
-                                        <Form.Select className='country-input' value={countryCode} onChange={(ev) => { 
-                                            if(ev.target.value!==''){
-                                                setCountryCode(ev.target.value);
-                                                setCountry(Country.getAllCountries().filter(c => c.isoCode === ev.target.value)[0].name);
-                                            }
-                                        }}>
-                                            <option key={'None'} value={''}>{'Select a country'}</option>
-                                            {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
-                                        </Form.Select>
+                                    <Form.Select className='country-input' value={countryCode} onChange={(ev) => {
+                                        if (ev.target.value !== '') {
+                                            setCountryCode(ev.target.value);
+                                            setCountry(Country.getAllCountries().filter(c => c.isoCode === ev.target.value)[0].name);
+                                        }
+                                    }}>
+                                        <option key={'None'} value={''}>{'Select a country'}</option>
+                                        {Country.getAllCountries().map((c, i) => <option key={i} value={c.isoCode}>{c.name}</option>)}
+                                    </Form.Select>
                                 </Form.Group>
                             </div>
                         </Col>
@@ -121,12 +121,12 @@ function ActiveForm(props) {
                             <div className="form-group mt-3">
                                 <Form.Group controlId='hutRegion'>
                                     <Form.Label><b>Region</b></Form.Label>
-                                    <Form.Select className='region-input' value={regionCode} disabled={countryCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => { 
-                                        if(ev.target.value!==''){
+                                    <Form.Select className='region-input' value={regionCode} disabled={countryCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => {
+                                        if (ev.target.value !== '') {
                                             setRegionCode(ev.target.value);
-                                            setRegion(State.getStatesOfCountry(countryCode).filter(r=>r.isoCode===ev.target.value)[0].name);
+                                            setRegion(State.getStatesOfCountry(countryCode).filter(r => r.isoCode === ev.target.value)[0].name);
                                         }
-                                        
+
                                     }}>
                                         <option key={'None'} value={''}>{'Select a region'}</option>
                                         {State.getStatesOfCountry(countryCode).map((r, k) => <option key={k} value={r.isoCode}>{r.name}</option>)}
@@ -140,9 +140,9 @@ function ActiveForm(props) {
                             <div className="form-group mt-3">
                                 <Form.Group controlId='hutTown'>
                                     <Form.Label><b>Town</b></Form.Label>
-                                    <Form.Select className='town-input' disabled={regionCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => {setTown(ev.target.value);}}>
+                                    <Form.Select className='town-input' disabled={regionCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => { setTown(ev.target.value); }}>
                                         <option key={'None'} value={''}>{'Select a town'}</option>
-                                        {City.getCitiesOfState(countryCode, regionCode).map((t,m)=><option key={m} value={t.name}>{t.name}</option>)}
+                                        {City.getCitiesOfState(countryCode, regionCode).map((t, m) => <option key={m} value={t.name}>{t.name}</option>)}
                                     </Form.Select>
                                 </Form.Group>
                             </div>
@@ -162,7 +162,7 @@ function ActiveForm(props) {
                                 <div className="form-group mt-3">
                                     <Form.Group className="mb-3" controlId="hutAltitude">
                                         <Form.Label><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
-                                        <Form.Control type="number"  min={0} placeholder="Enter Altitude" required
+                                        <Form.Control type="number" min={0} placeholder="Enter Altitude" required
                                             onChange={ev => { setAltitude(ev.target.value); }}
                                         />
                                     </Form.Group>
@@ -175,7 +175,7 @@ function ActiveForm(props) {
                             <div className="form-group mt-3">
                                 <Form.Group controlId='hutPhone'>
                                     <Form.Label><b>Phone</b><b className="asterisk-required">*</b></Form.Label>
-                                    <Form.Control className='phone-input' pattern="[0-9]{4,12}" value ={phone} type='tel' placeholder="Enter phone" required
+                                    <Form.Control className='phone-input' pattern="[0-9]{4,12}" value={phone} type='tel' placeholder="Enter phone" required
                                         onChange={ev => { setPhone(ev.target.value); }}
                                     />
                                 </Form.Group>
@@ -222,7 +222,7 @@ function ActiveForm(props) {
                         <Form.Group className="mb-3" controlId="hutWebsite">
                             <Form.Label><b>Website</b></Form.Label>
                             <Form.Control className='website-input' type='url' placeholder="https://example.com" value={website}
-                                        onChange={ev => { setWebsite(ev.target.value); }}
+                                onChange={ev => { setWebsite(ev.target.value); }}
                             />
                         </Form.Group>
                     </div>
