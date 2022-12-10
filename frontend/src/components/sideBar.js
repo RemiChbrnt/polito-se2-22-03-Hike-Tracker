@@ -72,7 +72,6 @@ function SideBar(props) {
                                 <Offcanvas.Body>
                                     <Nav className="justify-content-end flex-grow-1 pe-3">
                                         <Nav.Link onClick={() => { navigate('/update-hut-status') }} onMouseOver={() => { setOver('update-hut-status') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/update-hut-status' || over === 'update-hut-status') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Update Status</h5></Nav.Link>
-                                        <Nav.Link onClick={() => { navigate('/add-hut-photo') }} onMouseOver={() => { setOver('add-hut-photo') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hut-photo' || over === 'add-hut-photo') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add Hut Photo</h5></Nav.Link>
                                         <ul></ul>
                                         <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                     </Nav>
