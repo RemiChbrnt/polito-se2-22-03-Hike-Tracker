@@ -19,7 +19,7 @@ Date: 10 Nov 2022
 
 - **Returns an array containing all Hikes**.
 - **Request body**: none.
-- **Response**: `200 OK` (success); body: An array of objects, each describing (id, title, length, expTime, ascent, difficulty, startPt, endPt, description) of a Hike. StartPt and endPt are single location objects (id, name, latitude, longitude, country, region, town, address, altitude). While referencePoints is a list of location objects, formatted as before.
+- **Response**: `200 OK` (success); body: An array of objects, each describing (id, title, length, expTime, ascent, difficulty, startPt, endPt, description) of a Hike. StartPt and endPt are single location objects (id, name, latitude, longitude, country, province, town, address, altitude). While referencePoints is a list of location objects, formatted as before.
 
     ```
     [
@@ -37,7 +37,7 @@ Date: 10 Nov 2022
                 "latitude": 45.17880975856355,
                 "longitude": 7.08152295397762,
                 "country": "Italy",
-                "region": "Piemonte",
+                "province": "TO",
                 "town": "Mompantero",
                 "address": "Frazione La Riposa",
                 "altitude": 2185
@@ -49,7 +49,7 @@ Date: 10 Nov 2022
                 "latitude": 45.203883238657625,
                 "longitude": 7.076990054701778,
                 "country": "Italy",
-                "region": "Piemonte",
+                "province": "TO",
                 "town": "Usseglio",
                 "address": null,
                 "altitude": 3538
@@ -63,7 +63,7 @@ Date: 10 Nov 2022
                     "latitude": 45.17880975856355,
                     "longitude": 7.08152295397762,
                     "country": "Italy",
-                    "region": "Piemonte",
+                    "province": "TO",
                     "town": "Mompantero",
                     "address": "Frazione La Riposa",
                     "altitude": 2185
@@ -75,7 +75,7 @@ Date: 10 Nov 2022
                     "latitude": 45.203883238657625,
                     "longitude": 7.076990054701778,
                     "country": "Italy",
-                    "region": "Piemonte",
+                    "province": "TO",
                     "town": "Usseglio",
                     "address": null,
                     "altitude": 3538
@@ -87,7 +87,7 @@ Date: 10 Nov 2022
                     "latitude": 45.19880975856355,
                     "longitude": 7.078090054701778,
                     "country": "Italy",
-                    "region": "Piemonte",
+                    "province": "TO",
                     "town": "fakeTown",
                     "address": null,
                     "altitude": 2500

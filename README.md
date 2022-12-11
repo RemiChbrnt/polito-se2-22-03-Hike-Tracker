@@ -41,7 +41,7 @@ By clicking on a hike card, the user opens the hike view, which will, show, in a
 
 ##### Filtering the hikes
 
-The user can also filter the hikes that are displayed, by providing filters on the hikes' properties (by difficulty, region of the start point, and min/max length, ascent and expected time. Note: the filtering by region is not yet implemented).
+The user can also filter the hikes that are displayed, by providing filters on the hikes' properties (by difficulty, province of the start point, and min/max length, ascent and expected time. Note: the filtering by region is not yet implemented).
 
 <p align="center">
     <img src="./screenshots/filters.png" width="350"/>
@@ -64,7 +64,7 @@ A list of registered users, with their role and passwords, is available in the A
 
 ### 3. Hiker homepage
 
-In addition to the previously mentioned features, a hiker can also access the list of available huts. So far, the huts information include their coordinates, the country, region and town, an optional address and their altitude.
+In addition to the previously mentioned features, a hiker can also access the list of available huts. So far, the huts information include their coordinates, the country, province and town, an optional address and their altitude.
 
 <p align="center">
     <img src="./screenshots/searchhut.png" width="350"/>

@@ -18,6 +18,7 @@ function LinkHutToHike(props) {
 
     const getHutsByUserId = async (userEmail) => {
         const hutsList = await API.getHutsByUserId(userEmail);
+        //const hutsList = [{id: 1, name:"Rifugio La Riposa", latitude: "45.1788097585636", longitude: "7.08152295397762", country:"Italy", province:"TO", town:"Mompantero", altitude: "1000", beds:"1", food: "None", description:"Il Rifugio La Riposa si trova in località Riposa, Mompantero di Susa, a 2185 m di altitudine ed è raggiungibile anche in auto."}]
         setHuts(hutsList);
     };
     useEffect(() => {
@@ -70,7 +71,7 @@ function HutsTable(props) {
                 <th className = "hutTableHeader" style={{width:'14%'}}>LONGITUDE</th>
                 <th className = "hutTableHeader" style={{width:'10%'}}>ALTITUDE</th>
                 <th className = "hutTableHeader" style={{width:'10%'}}>COUNTRY</th>
-                <th className = "hutTableHeader" style={{width:'8%'}}>REGION</th>
+                <th className = "hutTableHeader" style={{width:'8%'}}>PROVINCE</th>
                 <th className = "hutTableHeader" style={{width:'12%'}}>TOWN</th>
                 <th className = "hutTableHeader" style={{width:'7%'}}>INFO</th>
                 <th className = "hutTableHeader" style={{width:'20%'}}>LINK A HIKE</th>
@@ -95,13 +96,8 @@ function HutRow(props) {
           <tr></tr>
           <tr id={props.hut.id} className={show? "infoVisible" : "infoHidden"}>
               <td colSpan={10} className="extraInfo">
-              <p><b>Phone: </b>{props.hut.phone}</p>
-              <p><b>Email: </b>{props.hut.email}</p>
-              <p><b>Website: </b>{props.hut.website? props.hut.website:"No website available."}</p>
-              <p><b>Opening Time: </b>{props.hut.openingTime?props.hut.openingTime:"No information available yet."}</p>
-              <p><b>Closing TIme: </b>{props.hut.closingTime?props.hut.closingTime: "No information available yet."}</p>
               <p><b>Beds: </b>{props.hut.numberOfBeds}</p>
-              <p><b>Food: </b>{props.hut.food? props.hut.food:"No information available."}</p>
+              <p><b>Food: </b>{props.hut.food}</p>
               <h6><b>Description</b></h6>
               <p>{props.hut.description}</p>
               </td>
@@ -124,7 +120,7 @@ function HutRow(props) {
             <td style={{textAlign:'center'}}>{props.hut.longitude}</td>
             <td style={{textAlign:'center'}}>{props.hut.altitude}</td>
             <td style={{textAlign:'center'}}>{props.hut.country}</td>
-            <td style={{textAlign:'center'}}>{props.hut.region}</td>
+            <td style={{textAlign:'center'}}>{props.hut.province}</td>
             <td style={{textAlign:'center'}}>{props.hut.town}</td>
             <td style={{textAlign:'center'}}>
               <button className="btn" type="button" onClick={() => props.setShow(!props.show)}>
@@ -147,7 +143,7 @@ function LinkForm(props){
   const linkHut = async (hutId, hikeId) => {
       try {
           let params=({locationId:hutId, hikeId:hikeId})
-          let res = await API.linkHut(params);
+          let res= API.linkHut(params).then(res=>{return true}).catch(error=>{return false});
           return res;
 
       } catch (err) {
@@ -173,16 +169,10 @@ function LinkForm(props){
 
   return(
     <Container>
-      <Row>
-        <Col></Col>
-        <Col className="text-center"><h2>Link a Hut to a Hike!</h2></Col>
-        <Col></Col>
-      </Row>
-            <ul></ul>
       <Row >
           <Col></Col>
           <Col>
-            <Form onSubmit={handlerSubmit} className="link-form">
+            <Form onSubmit={handlerSubmit} className="hike-form">
               <div className="hike-form-group">
                   <Form.Group className="mb-3" controlId="hutFood">
                       <Form.Label><b>Select a hike to link</b> <b className="asterisk-required">*</b></Form.Label>

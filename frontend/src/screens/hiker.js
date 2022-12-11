@@ -9,7 +9,20 @@ const Hiker = ({setProps}) => {
 
   const navigate = useNavigate();
 
+  //const createRequest = null;
   const [customerRequest, setCustomerRequest] = useState(false);
+  
+  // const handleCreateRequest = async (option) => {
+  //   try {
+  //     // const user=await API.getUserInfo();
+  //     // const request=await API.createRequest(option, user.id);
+
+  //     // if(request) 
+  //     setCustomerRequest(true);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   return (
     <Container fluid>

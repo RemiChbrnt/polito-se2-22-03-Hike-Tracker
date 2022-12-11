@@ -7,11 +7,22 @@ chai.use(chaiHttp)
 chai.should()
 
 const app = require('../index')
-let agent = chai.request.agent(app)
+var agent = chai.request.agent(app)
 
 
 describe('Testing all the operations on locations', function () {
     before(async () => {
+        //signup needed 
+        // await agent
+        //     .post('/api/signup')
+        //     .set('content-type', 'application/json')
+        //     .send({
+        //         email: 'antonio.fracassa@live.it',
+        //         password: 'testPassword2',
+        //         fullName: 'test',
+        //         role: 'guide',
+        //         phoneNumber: '2313124214'
+        //     })
         //login
         await agent
             .post('/api/login')
@@ -37,7 +48,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 'a',
                 longitude: '11',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -57,7 +68,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 'a',
                 longitude: '11',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -77,7 +88,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11',
                 longitude: '11',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -98,7 +109,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '11.12931',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -119,7 +130,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '-11.12',
                 longitude: 'dasfsdafasd',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: 'werf',
@@ -140,7 +151,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '13121.12',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -161,7 +172,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '13121.12',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -182,7 +193,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 45.178734750000004,
                 longitude: 7.081576685703124,
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Mompantero',
                 address: 'La Riposa, GTA / 529 / SI, Trucco, Mompantero, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -197,7 +208,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 45.2034457,
                 longitude: 7.077260064028688,
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Novalesa',
                 address: 'Nostra Signora del Rocciamelone, 585, Novalesa, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -227,7 +238,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '11.12931',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -268,13 +279,13 @@ describe('Testing all the operations on locations', function () {
             .get('/api/hutsList/antonio.fracassa@live.it')
             .set('content-type', 'application/json');
         result.should.have.status(200);
-        
+
         expect(result.body[1]).to.include({
             name: 'Test',
             latitude: 11.12,
             longitude: 11.12931,
             country: 'Italy',
-            region: 'Piedmont',
+            province: 'Torino',
             town: 'Riva presso Chieri',
             address: 'Via giacomo puccini 4',
             altitude: 1000,
@@ -315,7 +326,7 @@ describe('Testing all the operations on locations', function () {
                 "latitude",
                 "longitude",
                 "country",
-                "region",
+                "province",
                 "town",
                 "address",
                 "altitude",
@@ -336,7 +347,7 @@ describe('Testing all the operations on locations', function () {
 
 /* ----- Testing /api/huts ----- */
 
-describe('Testing operations on locations requiring a hiker', function () {
+describe('Testing operations on locations requiring an hiker', function () {
     before(async () => {
         //login
         await agent
@@ -350,6 +361,39 @@ describe('Testing operations on locations requiring a hiker', function () {
 
 
 
+    it('GET /api/huts - valid get Hut', async () => {
+        const result = await agent
+            .get('/api/huts')
+            .set('content-type', 'application/json')
+            .query({
+                name: 'Test',
+                country: 'Italy',
+                province: 'Torino',
+                town: 'Riva presso Chieri',
+                address: 'Via giacomo puccini 4',
+                minAltitude: '900',
+                maxAltitude: '1100'
+            });
+
+        result.should.have.status(200);
+        expect(result.body[0]).to.include({
+            name: 'Test',
+            latitude: 11.12,
+            longitude: 11.12931,
+            country: 'Italy',
+            province: 'Torino',
+            town: 'Riva presso Chieri',
+            address: 'Via giacomo puccini 4',
+            altitude: 1000,
+            food: "none",
+            description: null,
+            openingTime: null,
+            closingTime: null,
+            cost: null
+        })
+    })
+
+
 
     it('GET /api/huts - invalid get Hut - not existing', async () => {
         const result = await agent
@@ -358,13 +402,14 @@ describe('Testing operations on locations requiring a hiker', function () {
             .query({
                 name: 'wrong testing',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 minAltitude: '900',
                 maxAltitude: '1100'
             });
-            expect(result.body).deep.equal([])
+
+        result.should.have.status(404);
     })
 
 
@@ -375,7 +420,7 @@ describe('Testing operations on locations requiring a hiker', function () {
             .query({
                 name: 'Test',
                 country: 'Italy',
-                region: 'Piedmont',
+                province: 'Torino',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 minAltitude: 'altitude x',
