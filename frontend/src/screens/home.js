@@ -14,9 +14,21 @@ const Home = (props) => {
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
     const [coordsFilter, setCoordsFilter] = useState([45.116177, 7.742615]);
-    const [radiusFilter, setRadiusFilter] = useState(10); // km
-
+    const [radiusFilter, setRadiusFilter] = useState(10); // km+
+    const [preferences, setPreferences] = useState(undefined);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        async function getPrefs () {
+            const prefs = await API.getPreferences();
+            if (Object.keys(prefs.body).length === 0)
+                setPreferences(undefined);
+            else
+                setPreferences(prefs.body);
+        }
+
+        getPrefs();
+    }, []);
 
     const suggestHikes = async () => {
         const prefs = await API.getPreferences();
@@ -71,7 +83,7 @@ const Home = (props) => {
                 {
                     (props.user && props.user.role === "hiker") &&
                     <Col md={1}>
-                        <Button onClick={() => suggestHikes()} variant="success" size="lg">{" "}Suggested hikes</Button>
+                        <Button onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences===undefined}>{" "}Suggested hikes</Button>
                     </Col>
                 }
             </Row>

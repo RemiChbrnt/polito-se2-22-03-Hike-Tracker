@@ -181,7 +181,7 @@ userRouter.put('/preferences', isLoggedIn, async (req, res) => {
     if(req.user.role === "hiker") {
         const data = await service.updatePreferences(req);
         if(data.ok)
-            return res.status(data.status);
+            return res.status(data.status).json(data);
         return res.status(data.status).end();
     } else {
         return res.status(403).json({ errors: "Invalid role selection" });

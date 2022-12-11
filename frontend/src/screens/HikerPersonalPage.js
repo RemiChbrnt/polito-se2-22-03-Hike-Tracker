@@ -18,7 +18,7 @@ const HikerPersonalPage = (props) => {
         async function getUserInfoAndPreferences() {
             const user = await API.getUserInfo();
             setLoggedUser(user);
-            const prefs = await API.getPreferences(loggedUser.email);
+            const prefs = await API.getPreferences();
             if (Object.keys(prefs.body).length === 0)
                 setPreferences(undefined);
             else
@@ -120,8 +120,8 @@ function PrefsCard(props) {
                     <h3 classname="fw-bold">Hike preferences</h3>
                 </Card.Title>
                 <ListGroup variant="flush">
-                    <ListGroup.Item><span className="fw-bold">Duration: </span>{props.preferences.duration} h</ListGroup.Item>
-                    <ListGroup.Item><span className="fw-bold">Ascent: </span>{props.preferences.ascent} km</ListGroup.Item>
+                    <ListGroup.Item><span className="fw-bold">Duration: </span>{props.preferences.duration} hours</ListGroup.Item>
+                    <ListGroup.Item><span className="fw-bold">Ascent: </span>{props.preferences.ascent} m</ListGroup.Item>
                 </ListGroup>
                 <Button variant='warning' onClick={() => { props.setShowForm(true); props.setOperation('edit') }}>
                     Edit hike preferences
