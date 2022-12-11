@@ -8,7 +8,7 @@ chai.should()
 
 const app = require('../index')
 let agent = chai.request.agent(app)
-
+// @Generated\(".*"\)
 describe('Testing all the operations on hikes', function () {
     before(async () => {
         await agent
