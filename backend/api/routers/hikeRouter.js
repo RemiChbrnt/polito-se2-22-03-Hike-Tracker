@@ -4,7 +4,6 @@ const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDAO');
 const isLoggedIn = require("../middleware/authentication");
 const service = new HikeService(HikeDao)
-// const service = new HikeService(mockHikeDao);
 
 const router = express.Router()
 
@@ -76,25 +75,6 @@ router.get('/hikeFromID', [query('id').exists()],
         }
         return res.status(data.status).end()
     })
-
-// router.post('/locations', [
-//     body('name').exists().isString(),
-//     body('type').exists().isString(),
-//     body('latitude').exists().isFloat(),
-//     body('longitude').exists().isFloat()
-// ], async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(422).json({ errors: errors.array() });
-//     }
-
-//     const newLocation = req.body
-//     const locId = await service.createLocation(newLocation)
-//     if (locId.ok) {
-//         return res.status(locId.status).json(locId.body)
-//     }
-//     return res.status(locId.status).end()
-// })
 
 
 

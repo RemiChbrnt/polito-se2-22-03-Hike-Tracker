@@ -14,11 +14,6 @@ const session = require('express-session');
 
 /* ------------------------------------------------------------------- */
 
-
-// TODO: add routers and services
-// const hikeRouter = require('./api/routers/hikeRouter');
-// app.use(apiUrl, hikeRouter);
-
 const app = express();
 
 /* CORS setup */

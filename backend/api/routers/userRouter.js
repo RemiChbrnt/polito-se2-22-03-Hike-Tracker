@@ -38,7 +38,6 @@ userRouter.post('/login', passport.authenticate('local'), async (req, res) => {
     const user = await service.login(req.body);
 
     if (user.ok) {
-        // req.user = user.body;
         console.log("LOGIN AS " + JSON.stringify(req.user));
         return res.status(user.status).json(user.body);
     } else if (user.status === 412 || user.status === 403 || user.status === 401)
@@ -118,13 +117,11 @@ userRouter.get('/verify/:email/:randomString', async (req, res) => {
     if (data.ok) {
         httpResponse = `<div>User ${data.body.email}, Full Name ${data.body.fullName}, role ${data.body.role} verified.</div>
                         <div>You can close this page</div>`;
-        // return res.status(data.status).json(data);
     }
     else {
         httpResponse = `<div>Something went wrong. Error ${data.status}</div>`;
     }
 
-    // return res.status(data.status).end();
     return res.send(httpResponse);
 
 });

@@ -25,7 +25,6 @@ function UpdateHutStatus(props) {
 
     const getHikes = async()=>{
       const h = await API.getHikesByHutId(hutId); 
-      // const h=[{id: 1, name:"Sentiero per il Rocciamelone", status: "open", description:"Nice weather."}] //HARDCODED
       setHikes(h); 
     }
 
@@ -41,7 +40,6 @@ function UpdateHutStatus(props) {
       checkAuth().then(async user=>{
         if(user){
           getHutIdByUserId();
-          // getHikes();
         }
       });
     }, [loggedIn, props.user]);

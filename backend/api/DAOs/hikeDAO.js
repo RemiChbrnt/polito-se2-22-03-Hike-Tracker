@@ -6,7 +6,6 @@ exports.getHikes = async (query) => {
         let sql = 'SELECT * from Hikes h'
         const filters = this.generateFilters(query);
         sql = sql + filters
-        // console.log(sql)
         db.all(sql, [], async (err, rows) => {
             if (err) {
                 console.log("err" + err)

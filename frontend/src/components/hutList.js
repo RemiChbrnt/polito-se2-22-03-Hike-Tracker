@@ -40,30 +40,10 @@ function HutGrid(props) {
 
 function HutCard(props) {
 
-    // const [photos, setPhotos] = useState();
-
-    // useEffect(() => {
-    //     if (props.hut.photos !== undefined) {
-    //         let reader = new FileReader();
-
-    //         reader.onloadend = (e) => {
-
-
-    //         }
-
-    //         let photosText = [];
-
-    //         props.hut.photos.map((p) => {                
-    //             photosText.push(p);                
-    //         })
-    //         setPhotos(photosText);
-    //     }
-    // }, []);
 
     const navigate = useNavigate();
 
     const showDetail = (() => {
-        // props.setProps({ user: props.user });
         navigate("/hut-detail-" + props.hut.id);
     });
 
