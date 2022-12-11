@@ -346,7 +346,7 @@ exports.validateLinkStartEnd = async (hikeId, locationId) => {
                 db.get(sql2, [locationId], function (err, hutLocation) {
                     if (err) {
                         reject(err);
-                        return;
+                        return; 
                     } else {
                         if (checkDistance(hutLocation.latitude, hutLocation.longitude, l1.latitude, l1.longitude, 5) ||
                             checkDistance(hutLocation.latitude, hutLocation.longitude, l2.latitude, l2.longitude, 5))
