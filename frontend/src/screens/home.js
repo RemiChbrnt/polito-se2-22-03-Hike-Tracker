@@ -27,8 +27,11 @@ const Home = (props) => {
                 setPreferences(prefs.body);
         }
 
+        /* Temporary patch to make the filters reset upon logout */
+        if(props.user === undefined)
+            resetFilters();
         getPrefs();
-    }, []);
+    }, [props.user]);
 
     const suggestHikes = async () => {
         const prefs = await API.getPreferences();
@@ -42,6 +45,10 @@ const Home = (props) => {
         filters.push({ key: "minTime", value: minDuration });
         filters.push({ key: "maxTime", value: maxDuration });
         setFilters(JSON.stringify(filters));
+    }
+
+    const resetFilters = () => {
+        setFilters(JSON.stringify([]));
     }
 
     return (
@@ -74,8 +81,11 @@ const Home = (props) => {
             <ul></ul>*/}
 
             <Row>
-                <Col md={10}>
+                <Col md={8}>
                     <h1 data-test-id="title">Hike List</h1>
+                </Col>
+                <Col md={2}>
+                    <Button id='filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
                 </Col>
                 <Col md={2}>
                     <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
