@@ -4,7 +4,6 @@ import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
-import { AddPointForm } from "../components/addPointForm";
 import HutDetail from "../screens/hutDetail.js";
 import { AddHutForm } from "../components/addHutForm";
 import { AddHutPhotoForm } from "../components/addHutPhotoForm";
@@ -16,24 +15,9 @@ import RequestsPage from '../components/RequestsPage';
 
 import { HutListPage } from "../screens/hutListPage";
 import Hiker from "../screens/hiker.js";
-import Home from "../screens/home.js";
 
 
 const routes = [
-    /*{
-        path: "/",
-        key: "Home",
-        screen: function (props, setProps) {
-            return <Home props={props} setProps={setProps} />
-        }
-    },
-    {
-        path: "/localGuide",
-        key: "localGuide",
-        screen: function (props, setProps) {
-            return <LocalGuide setProps={setProps} />
-        }
-    },*/
     {
         path: "/hiker",
         key: "hiker",
@@ -97,14 +81,7 @@ const routes = [
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (user, props, setProps) {
-            return ( <AddParkingForm props={props} setProps={setProps} />);
-        }
-    },
-    {
-        path: "/add-hike",
-        key: "add-hike",
-        screen: function (user, props, setProps) {
-            return <AddPointForm props={props} setProps={setProps} />
+            return (<AddParkingForm props={props} setProps={setProps} />);
         }
     },
     {
