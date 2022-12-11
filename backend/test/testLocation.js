@@ -268,7 +268,7 @@ describe('Testing all the operations on locations', function () {
             .get('/api/hutsList/antonio.fracassa@live.it')
             .set('content-type', 'application/json');
         result.should.have.status(200);
-        
+
         expect(result.body[1]).to.include({
             name: 'Test',
             latitude: 11.12,
@@ -364,7 +364,7 @@ describe('Testing operations on locations requiring a hiker', function () {
                 minAltitude: '900',
                 maxAltitude: '1100'
             });
-            expect(result.body).deep.equal([])
+        expect(result.body).deep.equal([])
     })
 
 
@@ -392,5 +392,82 @@ describe('Testing operations on locations requiring a hiker', function () {
             .set('content-type', 'application/json');
         result.should.have.status(400);
     })
+
+
+
+    it('POST /api/hut-photo - unauthorized', async () => {
+        const result = await agent
+            .post('/api/hut-photo/1');
+
+        result.should.have.status(403);
+    })
+
+})
+
+
+
+/* ----- Testing /api/huts as hut worker ----- */
+
+describe('Testing operations on locations requiring a hut worker', function () {
+    before(async () => {
+        //login
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'jen.shiro@chiocciola.it',
+                password: 'testPassword4'
+            });
+    })
+
+
+    it('GET /hut-by-id - authorized hut worker - invalid', async () => {
+        const result = await agent
+            .get('/api/hut-by-id')
+            .set('content-type', 'application/json')
+            .query({
+                id: 20
+            })
+
+        result.should.have.status(500);
+    })
+
+
+    it('GET /hut-by-id - authorized hut worker - valid', async () => {
+        const result = await agent
+            .get('/api/hut-by-id')
+            .set('content-type', 'application/json')
+            .query({
+                id: 1
+            })
+
+
+        result.should.have.status(200);
+
+        expect(result.body).to.have.all.keys(
+            "id",
+            "locationId",
+            "name",
+            "type",
+            "latitude",
+            "longitude",
+            "description",
+            "country",
+            "region",
+            "town",
+            "address",
+            "altitude",
+            "numberOfBeds",
+            "openingTime",
+            "closingTime",
+            "cost",
+            "author",
+            "food",
+            "email",
+            "phone",
+            "website"
+        );
+    })
+
 
 })

@@ -121,7 +121,6 @@ class LocationService {
 
     addLocation = async (newLocation, email) => {
         try {
-            console.log('HERE service: ' + newLocation + ' - ' + email);
             const response = await this.dao.addLocation(newLocation, email);
             return {
                 ok: true,
@@ -175,13 +174,13 @@ class LocationService {
     }
 
     linkHut = async (newLink) => {
-        if(!await this.dao.validateLinkStartEnd(newLink.hikeId, newLink.locationId) 
-            && !await this.dao.validateLinkRef(newLink.hikeId, newLink.locationId)){
-                return {
-                    ok: false,
-                    status: 409
-                } 
+        if (!await this.dao.validateLinkStartEnd(newLink.hikeId, newLink.locationId)
+            && !await this.dao.validateLinkRef(newLink.hikeId, newLink.locationId)) {
+            return {
+                ok: false,
+                status: 409
             }
+        }
         try {
             const res = await this.dao.linkHut(newLink.hikeId, newLink.locationId)
             return {

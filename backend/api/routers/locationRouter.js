@@ -227,9 +227,6 @@ router.post("/hut-photo/:id", isLoggedIn, multer.uploadImg, [
         return res.status(422).json({ errors: errors.array() });
 
 
-
-    console.log("filename " + req.file.filename);
-
     const response = await service.addHutPhoto(req.params.id, req.file.filename)
     if (response.ok)
         return res.status(response.status).json(response.body)

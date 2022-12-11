@@ -65,7 +65,8 @@ exports.getHutById = async (id) => {
                 console.log(err);
                 reject(400);
                 return;
-            }
+            } else if (row === undefined)
+                reject(400);
             else {
                 let photos = await getHutPhotos(row.id);
                 row.photos = photos;
@@ -171,7 +172,6 @@ exports.getLocations = async (query) => {
 
 exports.addLocation = async (newLocation, email) => {
     return new Promise((resolve, reject) => {
-        console.log('HERE DAO START: ' + newLocation + ' - ' + email);
         const sql = 'INSERT INTO Locations(name, type, latitude, longitude, altitude, country, region, town, address, author) VALUES(?,?,?,?,?,?,?,?,?,?)';
         db.run(sql, [
             newLocation.name,
@@ -186,7 +186,6 @@ exports.addLocation = async (newLocation, email) => {
             email
         ], async function (err) {
             if (err) {
-                console.log('ERROR IN DAO: ' + err);
                 console.log(err);
                 reject(400);
                 return;
@@ -486,10 +485,8 @@ exports.addHutPhoto = async (id, photo) => {
             if (err) {
                 console.log(err);
                 reject(400);
-                return;
-            }
-
-            resolve(201);
+            } else
+                resolve(201);
         })
     })
 }

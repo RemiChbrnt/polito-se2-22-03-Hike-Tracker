@@ -75,7 +75,7 @@ const getHutId = async function (email) {
 }
 
 
-const generateHash = async function (password) { 
+const generateHash = async function (password) {
     let salt, hash;
     await new Promise((resolve, reject) => {
         crypto.randomBytes(24, async (err, buf) => {
@@ -116,7 +116,6 @@ exports.signup = async (email, fullName, password, role, phoneNumber, hut) => {
             else {
                 /* If the new user wants to be a hut worker, insert his data in the HutWorkers table */
                 if (role === "hutworker") {
-                    console.log('QUERY PARAMETERS: ' + email + ' - ' + hut);
                     query = 'INSERT INTO HutWorkers VALUES(?, ?)';
                     db.run(query, [email, hut], (err) => {
                         if (err) {
@@ -191,7 +190,6 @@ exports.checkUserVerification = async (email) => {
         const sql = 'SELECT role, verified FROM Users WHERE email=?'
         db.get(sql, [email], (err, row) => {
             if (err) {
-                console.log('USER NOT VERIFIED IN MIDDLEWARE');
                 reject(503);
             }
             else if (row === undefined)
@@ -224,8 +222,6 @@ exports.approveUser = async (email) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE Users SET verified = 2 WHERE email = ?'
         db.run(sql, [email], function (err) {
-            console.log('USER EMAIL: ' + email);
-            console.log(this.changes);
             if (err)
                 reject(503);
             else

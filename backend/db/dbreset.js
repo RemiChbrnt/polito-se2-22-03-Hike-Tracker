@@ -82,13 +82,13 @@ const resetDeclinedUser2 = async function () {
         db.run(sql, params, (err) => {
             if (err)
                 reject(err);
-            else{
+            else {
                 const sql = 'INSERT INTO HutWorkers VALUES (?,?)';
                 db.run(sql, ["najejof113@dmonies.com", 1], (err) => {
                     if (err)
                         reject(err);
                     else
-                     resolve(true);
+                        resolve(true);
                 })
             }
         })
@@ -107,7 +107,13 @@ const resetLocations = async function () {
                     if (err)
                         reject(err);
                     else {
-                        resolve("Success");
+                        const sql3 = "DELETE FROM HutsPhotos"
+                        db.all(sql3, [], async (err) => {
+                            if (err)
+                                reject(err)
+                            else
+                                resolve("Success");
+                        })
                     }
                 });
             }
