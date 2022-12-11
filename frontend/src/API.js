@@ -543,7 +543,7 @@ async function linkHut(params) {
     if (response.ok) {
         return true;
     } else {
-        throw false;
+        return false;
     }
 }
 

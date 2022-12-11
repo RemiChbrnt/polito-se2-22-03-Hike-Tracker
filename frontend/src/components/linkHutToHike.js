@@ -147,7 +147,7 @@ function LinkForm(props){
   const linkHut = async (hutId, hikeId) => {
       try {
           let params=({locationId:hutId, hikeId:hikeId})
-          let res= await API.linkHut(params).then(res=>{return true}).catch(error=>{return false});
+          let res = await API.linkHut(params);
           return res;
 
       } catch (err) {

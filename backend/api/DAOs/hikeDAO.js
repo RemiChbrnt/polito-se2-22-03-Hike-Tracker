@@ -135,6 +135,8 @@ exports.filterByLocation = (query, hikes) => {
     });
 }
 
+
+
 exports.generateFilters = (query) => {
     let filters = ""
     if (query.minLength !== undefined || query.maxLength !== undefined ||

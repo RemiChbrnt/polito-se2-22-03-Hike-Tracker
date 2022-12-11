@@ -332,6 +332,61 @@ exports.linkHut = async (hikeId, locationId) => {
 }
 
 
+exports.validateLinkStartEnd = async (hikeId, locationId) => {
+    return new Promise((resolve, reject) => {
+        const sql1 = 'SELECT startPt, endPt FROM Hikes WHERE id=?';
+        db.get(sql1, [hikeId], async function (err, row) {
+            if (err) {
+                reject(err);
+                return;
+            } else {
+                let l1 = await _getLocationById(row.startPt);
+                let l2 = await _getLocationById(row.endPt);
+                const sql2 = 'SELECT * FROM Locations WHERE id=?';
+                db.get(sql2, [locationId], function (err, hutLocation) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    } else {
+                        if (checkDistance(hutLocation.latitude, hutLocation.longitude, l1.latitude, l1.longitude, 5) ||
+                            checkDistance(hutLocation.latitude, hutLocation.longitude, l2.latitude, l2.longitude, 5))
+                            resolve(true)
+                        else
+                            resolve(false)
+                    }
+                })
+            }
+        })
+    })
+}
+
+
+exports.validateLinkRef = async (hikeId, locationId) => {
+    return new Promise((resolve, reject) => {
+        const sql1 = 'SELECT * FROM Locations WHERE id IN ( SELECT locationId FROM HikesReferencePoints WHERE hikeId=?)';
+        db.all(sql1, [hikeId], async function (err, refPoints) {
+            if (err) {
+                reject(err);
+                return;
+            } else {
+                const sql2 = 'SELECT * FROM Locations WHERE id=?';
+                db.get(sql2, [locationId], function (err, hutLocation) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    } else {
+                        let success = true;
+                        refPoints.forEach((refPoint) => {
+                            if (!checkDistance(hutLocation.latitude, hutLocation.longitude, refPoint.latitude, refPoint.longitude, 5))
+                                success = false;
+                        })
+                        resolve(success);
+                    }
+                })
+            }
+        })
+    })
+}
 
 exports.getHutbyWorkerId = async (email) => {
     return new Promise((resolve, reject) => {
@@ -391,11 +446,7 @@ const _getLocationById = async function (id) {
     })
 }
 
-const checkDistance = function (lat1, lon1, lat2, lon2, radius) {
-    const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180, Δλ = (lon2 - lon1) * Math.PI / 180, R = 6371e3;
-    const d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R / 1000;
-    return d <= radius;
-}
+
 
 
 exports.getLocationById = async (query) => {
@@ -441,4 +492,11 @@ exports.addHutPhoto = async (id, photo) => {
             resolve(201);
         })
     })
+}
+
+
+const checkDistance = function (lat1, lon1, lat2, lon2, radius) {
+    const φ1 = lat1 * Math.PI / 180, φ2 = lat2 * Math.PI / 180, Δλ = (lon2 - lon1) * Math.PI / 180, R = 6371e3;
+    const d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R / 1000;
+    return d <= radius;
 }
