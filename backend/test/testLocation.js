@@ -7,42 +7,11 @@ chai.use(chaiHttp)
 chai.should()
 
 const app = require('../index')
-var agent = chai.request.agent(app)
+let agent = chai.request.agent(app)
 
 
 describe('Testing all the operations on locations', function () {
     before(async () => {
-        //signup needed 
-        // await agent
-        //     .post('/api/signup')
-        //     .set('content-type', 'application/json')
-        //     .send({
-        //         email: 'manager@management.com',
-        //         password: 'testPassword3',
-        //         fullName: 'manager',
-        //         role: 'manager',
-        //         phoneNumber: '2313124214'
-        //     })
-        // await agent
-        //     .post('/api/signup')
-        //     .set('content-type', 'application/json')
-        //     .send({
-        //         email: 'najejof113@dmonies.com',
-        //         password: 'password',
-        //         fullName: 'Unapproved Hutworker',
-        //         role: 'hutworker',
-        //         phoneNumber: '2313124214'
-        //     })
-        // await agent
-        //     .post('/api/signup')
-        //     .set('content-type', 'application/json')
-        //     .send({
-        //         email: 'fiyode9163@eilnews.com',
-        //         password: 'password',
-        //         fullName: 'Approval Needed',
-        //         role: 'guide',
-        //         phoneNumber: '2313124214'
-        //     })
         //login
         await agent
             .post('/api/login')
@@ -379,38 +348,6 @@ describe('Testing operations on locations requiring a hiker', function () {
             });
     })
 
-
-
-    // it('GET /api/huts - valid get Hut', async () => {
-    //     const result = await agent
-    //         .get('/api/huts')
-    //         .set('content-type', 'application/json')
-    //         .query({
-    //             name: 'Test',
-    //             country: 'Italy',
-    //             region: 'Piedmont',
-    //             town: 'Mompantero',
-    //             address: 'Frazione La Riposa',
-    //             minAltitude: '900',
-    //             maxAltitude: '3100'
-    //         });
-    //     result.should.have.status(200);
-    //     expect(result.body[0]).to.include({
-    //         name: 'Test',
-    //         latitude: 11.12,
-    //         longitude: 11.12931,
-    //         country: 'Italy',
-    //         region: 'Piedmont',
-    //         town: 'Riva presso Chieri',
-    //         address: 'Via giacomo puccini 4',
-    //         altitude: 1000,
-    //         food: "none",
-    //         description: null,
-    //         openingTime: null,
-    //         closingTime: null,
-    //         cost: null
-    //     })
-    // })
 
 
 

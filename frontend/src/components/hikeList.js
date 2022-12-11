@@ -18,8 +18,6 @@ function HikeGrid(props) {
                 setHikes(hikes => [...hikes, JSON.stringify(hike)]);
                 setHikesStored(hikes => [...hikes, JSON.stringify(hike)]);
             });
-
-            // console.log(hikes);
             setIsLoading(false);
         }).catch(error => console.log(error));
     }, [props.filters]);

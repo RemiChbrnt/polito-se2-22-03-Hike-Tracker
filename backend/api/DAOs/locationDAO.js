@@ -92,7 +92,6 @@ const getHutPhotos = async (id) => {
             else {
                 const res = await Promise.all(
                     rows.map(async (r) => {
-                        // console.log("fileName " + r.fileName);
                         return r.fileName;
                     }))
                 resolve(res);
@@ -141,9 +140,6 @@ exports.getHutsAndParkingLots = async (email) => {
 exports.getLocations = async (query) => {
     return new Promise((resolve, reject) => {
         let sql = 'SELECT * from Locations'
-        // const filters = this.generateFilters(query);
-        // sql = sql + filters
-        // console.log(sql)
         db.all(sql, [], async (err, rows) => {
             if (err) {
                 console.log("err" + err)

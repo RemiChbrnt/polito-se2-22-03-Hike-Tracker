@@ -6,7 +6,6 @@ const CoordsOnClick = ({setCoords, setLocalCoords}) => {
     const map = useMap();
 
     map.on('click', function(e) {
-        // console.log(e.latlng.lat, e.latlng.lng);
         setCoords([e.latlng.lat, e.latlng.lng]);
         setLocalCoords([[e.latlng.lat, e.latlng.lng]]);
     });

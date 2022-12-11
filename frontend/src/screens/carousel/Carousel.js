@@ -48,11 +48,11 @@ function Carousel({
 
     //Listens to slide state changes
     useEffect(() => {
-        var slides = document.getElementsByClassName("carousel-item");
-        var dots = document.getElementsByClassName("dot");
+        let slides = document.getElementsByClassName("carousel-item");
+        let dots = document.getElementsByClassName("dot");
 
-        var slideIndex = slide;
-        var i;
+        let slideIndex = slide;
+        let i;
         for (i = 0; i < data.length; i++) {
             slides[i].style.display = "none";
         }
@@ -61,7 +61,7 @@ function Carousel({
         }
         //If thumbnails are enabled
         if (thumbnails) {
-            var thumbnailsArray = document.getElementsByClassName("thumbnail");
+            let thumbnailsArray = document.getElementsByClassName("thumbnail");
             for (i = 0; i < thumbnailsArray.length; i++) {
                 thumbnailsArray[i].className = thumbnailsArray[i].className.replace(
                     " active-thumbnail",

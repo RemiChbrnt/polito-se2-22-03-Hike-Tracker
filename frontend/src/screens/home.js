@@ -3,9 +3,6 @@ import { Col, Container, Button, Row, Modal } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { HikeGrid } from "./../components/hikeList";
 import { HikeFilterForm } from "./../components/hikeFilterForm";
-import { CoordsFromMap } from "./../components/coordsFromMap";
-
-import HutWorker from "./../screens/hutWorker"
 import EmergencyOperator from "./../screens/emergencyOperator"
 import API from "../API";
 

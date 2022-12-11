@@ -120,9 +120,6 @@ function AddHikeForm(props) {
         let startPtIndex = startPoint;
         let endPtIndex = endPoint;
 
-        // console.log("startPtIndex " + startPtIndex);
-        // console.log("endPtIndex " + endPtIndex);
-
         if (startPtIndex === undefined) {
             startPtIndex = await handleLocationCreation(
                 startPtName, startPtType, startPtLatitude, startPtLongitude, startPtCountry, startPtregion, startPtTown, startPtAddress, startPtAltitude
@@ -148,7 +145,6 @@ function AddHikeForm(props) {
             props.user.email
         );
 
-        // console.log(res);
 
         navigate("/");
 
@@ -202,23 +198,21 @@ function AddHikeForm(props) {
             // We stringify the GPX, then execute the following
             reader.onloadend = () => {
                 // Conversion to GeoJSON format
-                var gpx = new DOMParser().parseFromString(reader.result);
-                var converted = toGeoJson.gpx(gpx);
+                let gpx = new DOMParser().parseFromString(reader.result);
+                let converted = toGeoJson.gpx(gpx);
 
                 // Stringifying GeoJSON file for the database
                 setGPXFile(JSON.stringify(converted));
 
                 // Extracting Start and End Point coordinates in order to automatically fill the address fields
-                var startPointCoordinates = converted.features[0].geometry.coordinates[0];
-                var endPointCoordinates = converted.features[0].geometry.coordinates[converted.features[0].geometry.coordinates.length - 1];
+                let startPointCoordinates = converted.features[0].geometry.coordinates[0];
+                let endPointCoordinates = converted.features[0].geometry.coordinates[converted.features[0].geometry.coordinates.length - 1];
                 setAddressFromCoordinates(startPointCoordinates, true);
                 setAddressFromCoordinates(endPointCoordinates, false);
                 const matchStart = findMatchingLocation(startPointCoordinates);
                 const matchEnd = findMatchingLocation(endPointCoordinates);
                 setEndMatchingLocations(matchEnd);
                 setStartMatchingLocations(matchStart);
-                // console.log(startMatchingLocations);
-                // console.log(endMatchingLocations);
             }
         }
     }

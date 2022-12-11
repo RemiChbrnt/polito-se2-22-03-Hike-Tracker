@@ -7,7 +7,7 @@ chai.use(chaiHttp)
 chai.should()
 
 const app = require('../index')
-var agent = chai.request.agent(app)
+let agent = chai.request.agent(app)
 
 describe('Testing all the operations on hikes', function () {
     before(async () => {

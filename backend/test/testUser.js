@@ -7,7 +7,7 @@ chai.use(chaiHttp)
 chai.should()
 
 const app = require('../index')
-var agent = chai.request.agent(app)
+let agent = chai.request.agent(app)
 
 describe('User\'s API tests - Signup & Login as a Hiker', function () {
     beforeEach(async () => {
@@ -125,7 +125,7 @@ describe('User\'s API tests - Hiker\'s preferences management', function () {
                 duration: '2'
             });
         preferenceSettingResult.should.have.status(201);
-        var preferences = await agent
+        let preferences = await agent
             .get('/api/preferences');
         preferences.body.body.should.have.property('email');
         preferences.body.body.should.have.property('duration');
@@ -265,7 +265,7 @@ describe('User\'s API tests - Manager approval', function () {
                 password: 'testPassword3'
             });
         managerLoginResult.should.have.status(201);
-        var loggedUserInfo = await agent
+        let loggedUserInfo = await agent
             .get('/api/session/current');
 
         loggedUserInfo.body.should.have.property('email');
@@ -299,7 +299,7 @@ describe('User\'s API tests - Manager approval', function () {
                 password: 'testPassword3'
             });
         managerLoginResult.should.have.status(201);
-        var loggedUserInfo = await agent
+        let loggedUserInfo = await agent
             .get('/api/session/current');
 
         loggedUserInfo.body.should.have.property('email');
@@ -356,7 +356,7 @@ describe('User\'s API tests - Manager approval', function () {
                 password: 'testPassword3'
             });
         managerLoginResult.should.have.status(201);
-        var loggedUserInfo = await agent
+        let loggedUserInfo = await agent
             .get('/api/session/current');
 
         loggedUserInfo.body.should.have.property('email');

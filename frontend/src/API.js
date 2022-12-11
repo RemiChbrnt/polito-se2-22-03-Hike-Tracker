@@ -173,7 +173,6 @@ async function getHikeFromID(id) {
     });
 
     const hikeJson = await response.json();
-    // console.log(hikeJson);
     if (response.ok) {
         return hikeJson;
     } else {

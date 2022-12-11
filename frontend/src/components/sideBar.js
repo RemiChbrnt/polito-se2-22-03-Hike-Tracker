@@ -6,10 +6,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import API from "../API";
 
-const handlerLogOut = async () => {
-
-};
-
 function SideBar(props) {
 
     const location = useLocation();
