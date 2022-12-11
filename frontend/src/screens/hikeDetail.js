@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row, Button, Collapse, Form, Card } from 'react-bootstrap';
+import { Col, Container, Row, Button, Collapse, Form, Card, Badge } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
 import API from '../API.js';
@@ -127,53 +127,39 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 pointCoords={newReferencePointCoords}
                                 setAddNewReferencePoint={setAddNewReferencePoint}
                             />
-                            : <Row className="justify-content-center mt-5">
-                                <Container>
-                                    <div className="d-flex justify-content-start">
-                                        <h4>
-                                            Difficulty :
-                                        </h4>
-                                        <div className="justify-content-center" style={{
-                                            backgroundColor: (hike.difficulty === "tourist") ?
-                                                "darkGreen" : (hike.difficulty === "hiker") ?
-                                                    "orange" : "red",
-                                            marginLeft: "2%"
-                                        }}>
+                            : <Container>
+                                <p></p>
+                                <Row>
+                                    <Col>
+                                        <Row>
+                                            <h4> Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ?"Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></h4>
+                                        </Row>
                                             <Row>
-                                                <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
-                                                    {(hike.difficulty === "tourist") ?
-                                                        "Tourist Friendly" : (hike.difficulty === "hiker") ?
-                                                            "Casual Hiker" : "Professional Hiker"}
+                                                <h4>
+                                                    Expected time : {hike.expTime} hours
                                                 </h4>
                                             </Row>
-                                        </div>
-                                        <Row>
-                                            <h4>
-                                                Expected time : {hike.expTime} hours
-                                            </h4>
-                                        </Row>
-                                        <Row>
-                                            <h4>
-                                                Length : {hike.length} km
-                                            </h4>
-                                        </Row>
-                                        <Row>
-                                            <h4>
-                                                Ascent : {hike.ascent} m
-                                            </h4>
-                                        </Row>
-                                    </div>
-                                </Container>
-
-                                <Col className="border-start border-2 border-secondary">
-                                    <h3>
-                                        Description
-                                    </h3>
-                                    <h4>
-                                        {hike.description}
-                                    </h4>
-                                </Col>
-                            </Row>
+                                            <Row>
+                                                <h4>
+                                                    Length : {hike.length} km
+                                                </h4>
+                                            </Row>
+                                            <Row>
+                                                <h4>
+                                                    Ascent : {hike.ascent} m
+                                                </h4>
+                                            </Row>
+                                    </Col>
+                                    <Col className="border-start border-2 border-secondary">
+                                        <h3>
+                                            Description
+                                        </h3>
+                                        <h4>
+                                            {hike.description}
+                                        </h4>
+                                    </Col>
+                                </Row>
+                            </Container>
                         }
                     </Row>
                     <ul></ul>

@@ -73,17 +73,7 @@ const routes = [
         path: "/add-hut",
         key: "add-hut",
         screen: function (user, props, setProps) {
-            return (
-                <Container>
-                    <Row >
-                        <Col></Col>
-                        <Col>
-                            <AddHutForm props={props} setProps={setProps} />
-                        </Col>
-                        <Col></Col>
-                    </Row>
-                </Container>
-            );
+            return (<AddHutForm props={props} setProps={setProps} />);
         }
     },
     {
@@ -107,18 +97,7 @@ const routes = [
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (user, props, setProps) {
-            return (
-                <Container>
-                    <Row >
-                        <Col></Col>
-                        <Col>
-                            <AddParkingForm props={props} setProps={setProps} />
-                        </Col>
-                        <Col></Col>
-                    </Row>
-                    <ul></ul>
-                </Container>
-            );
+            return ( <AddParkingForm props={props} setProps={setProps} />);
         }
     },
     {

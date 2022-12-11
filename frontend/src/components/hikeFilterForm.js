@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap';
 import { HikeFilterMap } from './hikeFilterMap';
+import { Country, State, City } from 'country-state-city';
 
 function HikeFilterForm(props) {
 
@@ -88,27 +89,7 @@ function HikeFilterForm(props) {
                                     onChange={e => setRegion(e.target.value)}
                                     aria-label="region" size="lg">
                                     <option value="select">Select the Region</option>
-                                    <option value="Abruzzo">Abruzzo</option>
-                                    <option value="Basilicata">Basilicata</option>
-                                    <option value="Calabria">Calabria</option>
-                                    <option value="Campania">Campania</option>
-                                    <option value="Emilia Romagna">Emilia Romagna</option>
-                                    <option value="Friuli Venezia Giulia">Friuli Venezia Giulia</option>
-                                    <option value="Lazio">Lazio</option>
-                                    <option value="Liguria">Liguria</option>
-                                    <option value="Lombardia">Lombardia</option>
-                                    <option value="Marche">Marche</option>
-                                    <option value="Molise">Molise</option>
-                                    <option value="Piemonte">Piemonte</option>
-                                    <option value="Puglia">Puglia</option>
-                                    <option value="Sardegna">Sardegna</option>
-                                    <option value="Sicilia">Sicilia</option>
-                                    <option value="Toscana">Toscana</option>
-                                    <option value="Trentino Alto">Trentino Alto</option>
-                                    <option value="Umbria">Umbria</option>
-                                    <option value="Valle d'Aosta">Valle d'Aosta</option>
-                                    <option value="Veneto">Veneto</option>
-                                </Form.Select>
+                                    {State.getStatesOfCountry("IT").map((r, k) => <option key={k} value={r.name}>{r.name}</option>)}                                </Form.Select>
                             </Form.Group>
                         </Row>
                         <ul></ul>

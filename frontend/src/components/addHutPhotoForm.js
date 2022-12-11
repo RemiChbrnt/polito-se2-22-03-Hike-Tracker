@@ -66,8 +66,10 @@ function ActiveForm(props) {
 
     return (
         <Container>
-            <h2> Add a photo for your hut </h2>
-            <Form onSubmit={handlerSubmit} className="hike-form" encType="multipart/form-data">
+            <ul></ul>
+            <Row className="text-center"><h2> Add a photo for your hut </h2></Row>
+            <ul></ul>
+            <Form onSubmit={handlerSubmit} className="link-form" encType="multipart/form-data">
                 <div className="hike-form-group">
                     <Row>
                         <Form.Label>Upload a PNG, JPG or JPEG file</Form.Label>

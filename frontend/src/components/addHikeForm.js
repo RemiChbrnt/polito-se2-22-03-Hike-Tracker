@@ -262,8 +262,8 @@ function AddHikeForm(props) {
             </Row>
             <ul></ul>
 
-            <Row>
-                <Form onSubmit={handlerSubmit} className="hike-form mt-3">
+            <Row className="hike-form">
+                <Form onSubmit={handlerSubmit} className="mt-3">
                     <Col className="form-group">
                         <Form.Label><b>Hike Title</b> <b className="asterisk-required">*</b></Form.Label>
                         <Form.Control type="text" placeholder="Enter title" required

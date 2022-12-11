@@ -47,7 +47,7 @@ function UpdateHutStatus(props) {
     }, [loggedIn, props.user]);
 
     return (
-      	<>{!form && !error && !success &&
+      	<>{!form && !error && !success && 
           <Row className="justify-content-md-center">  
             <Col xs={6}>
               <div className="container-fluid myTable">
@@ -56,7 +56,7 @@ function UpdateHutStatus(props) {
             </Col>       
           </Row>
         }
-        {form && !error && !success && 
+        {form && !error && !success &&
           <Row className="justify-content-md-center">
               <Col></Col>
               <Col>
@@ -169,9 +169,10 @@ function StatusForm(props){
   };
 
   return(
-            <Form onSubmit={handlerSubmit} className="hike-form">
+            <Form onSubmit={handlerSubmit} className="link-form">
                 <div className="hike-form-group">
-                    <h2>Update Hut Status !</h2>
+                    <h2 className="text-center">Update Hut Status !</h2>
+                    
                     <div className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="condition">
                             <Form.Label><b>Status</b> <b className="asterisk-required">*</b></Form.Label>
