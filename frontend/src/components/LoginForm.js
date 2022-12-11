@@ -68,14 +68,14 @@ function LoginForm({ user, setUser }) {
                     <Col md="auto">
                         <h2 className="text-center">Log-In</h2>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group controlId="email">
+                            <Form.Group  id='parent1' controlId="email">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Email" value={email} required={true}
+                                <Form.Control id= "email-input" type="email" placeholder="Email" value={email} required={true}
                                     onChange={ev => { setEmail(ev.target.value) }}
                                 />
                             </Form.Group>
 
-                            <Form.Group controlId="password">
+                            <Form.Group  id='parent1' controlId="password">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" value={password} required={true}
                                     onChange={ev => { setPassword(ev.target.value) }}

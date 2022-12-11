@@ -173,10 +173,16 @@ function LinkForm(props){
 
   return(
     <Container>
+      <Row>
+        <Col></Col>
+        <Col className="text-center"><h2>Link a Hut to a Hike!</h2></Col>
+        <Col></Col>
+      </Row>
+            <ul></ul>
       <Row >
           <Col></Col>
           <Col>
-            <Form onSubmit={handlerSubmit} className="hike-form">
+            <Form onSubmit={handlerSubmit} className="link-form">
               <div className="hike-form-group">
                   <Form.Group className="mb-3" controlId="hutFood">
                       <Form.Label><b>Select a hike to link</b> <b className="asterisk-required">*</b></Form.Label>

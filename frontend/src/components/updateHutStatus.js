@@ -47,7 +47,7 @@ function UpdateHutStatus(props) {
     }, [loggedIn, props.user]);
 
     return (
-      	<>{!form && !error && !success &&
+      	<>{!form && !error && !success && 
           <Row className="justify-content-md-center">  
             <Col xs={6}>
               <div className="container-fluid myTable">
@@ -56,7 +56,7 @@ function UpdateHutStatus(props) {
             </Col>       
           </Row>
         }
-        {form && !error && !success && 
+        {form && !error && !success &&
           <Row className="justify-content-md-center">
               <Col></Col>
               <Col>
@@ -129,7 +129,7 @@ function HikeRow(props) {
               </button>
             </td>
             <td style={{textAlign:'center'}}>
-              <button className="btn" type="button" onClick={() => activateForm(props.hike.id)}>
+              <button data-test="modify-button" className="btn" type="button" onClick={() => activateForm(props.hike.id)}>
                 <i className="icons-style bi bi-pencil-square"></i>
               </button>
             </td>
@@ -169,11 +169,12 @@ function StatusForm(props){
   };
 
   return(
-            <Form onSubmit={handlerSubmit} className="hike-form">
+            <Form onSubmit={handlerSubmit} className="link-form">
                 <div className="hike-form-group">
-                    <h2>Update Hut Status !</h2>
+                    <h2 className="text-center">Update Hut Status !</h2>
+                    
                     <div className="form-group mt-3">
-                        <Form.Group className="mb-3" controlId="condition">
+                        <Form.Group id="status-form" className="mb-3" controlId="condition">
                             <Form.Label><b>Status</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Select required onChange={ev => { setCondition(ev.target.value); }}>
                                 <option value="open">Open</option>
@@ -183,10 +184,10 @@ function StatusForm(props){
                             </Form.Select>
                         </Form.Group>
                     </div>
-                    <div className="form-group mt-3">
+                    <div id="description-form" className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="hutDescription">
                             <Form.Label><b>Description</b></Form.Label>
-                            <Form.Control as="textarea" rows={2}
+                            <Form.Control as="textarea" rows={2} required
                                 onChange={ev => { setDescription(ev.target.value); }}
                             />
                         </Form.Group>

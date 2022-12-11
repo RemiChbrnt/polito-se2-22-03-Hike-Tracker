@@ -1,4 +1,4 @@
-import { Card, Row, Col, ListGroup, Container, Popover } from 'react-bootstrap';
+import { Card, Row, Col, ListGroup, Container, Badge  } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { isPointInDisk } from './coordsFromMap';
@@ -65,30 +65,34 @@ function HikeCard(props) {
 
                         <ListGroup.Item data-test-id="difficulty">
                             <div className="d-flex justify-content-start">
-                                <i className="bi bi-activity"></i><span className="fw-bold">{"  "}Difficulty : </span>
-                                <div style={{
-                                    backgroundColor: (hike.difficulty === "tourist") ?
-                                        "darkGreen" : (hike.difficulty === "hiker") ?
-                                            "orange" : "red",
-                                    marginLeft: "2%"
-                                }}>
-                                    <h6 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
-                                        {(hike.difficulty === "tourist") ?
-                                            "Tourist Friendly" : (hike.difficulty === "hiker") ?
-                                                "Casual Hiker" : "Professional Hiker"}
-                                    </h6>
-                                </div>
+                                <i className="bi bi-activity"></i><span className="fw-bold">{"  "} Difficulty:  <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ?"Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></span>
                             </div>
                         </ListGroup.Item>
                         <ListGroup.Item data-test-id="time"><i className="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
                         <ListGroup.Item data-test-id="length"><i className="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
                         <ListGroup.Item data-test-id="ascent"><i className="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
-                        <ListGroup.Item data-test-id="description">{hike.description}</ListGroup.Item>
+                        <ListGroup.Item data-test-id="description"><ReadMore>{hike.description}</ReadMore></ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>
         </Col>
     );
 }
+
+const ReadMore = ({ children }) => {
+    const text = children;
+    const [isReadMore, setIsReadMore] = useState(true);
+    const toggleReadMore = () => {
+      setIsReadMore(!isReadMore);
+    };
+    return (
+      <p className="text">
+        {isReadMore ? text.slice(0, 150) : text}
+        <span onClick={toggleReadMore} className="read-or-hide" style={{color:"#3366CC"}}>
+          {isReadMore ? "... Read More" : " Show Less"}
+        </span>
+      </p>
+    );
+  };
 
 export { HikeGrid };
