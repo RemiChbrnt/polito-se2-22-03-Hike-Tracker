@@ -7,7 +7,7 @@ import API from "../API";
 
 const handlerLogin = async (username, password) => {
     try {
-        let user = API.login(username, password);
+        let user = await API.login(username, password);
         return user;
 
     } catch (err) {

@@ -4,7 +4,6 @@ import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
-import { AddPointForm } from "../components/addPointForm";
 import { AddHutForm } from "../components/addHutForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
@@ -12,24 +11,9 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 import { HutListPage } from "../screens/hutListPage";
 import Hiker from "../screens/hiker.js";
-import Home from "../screens/home.js";
 
 
 const routes = [
-    /*{
-        path: "/",
-        key: "Home",
-        screen: function (props, setProps) {
-            return <Home props={props} setProps={setProps} />
-        }
-    },
-    {
-        path: "/localGuide",
-        key: "localGuide",
-        screen: function (props, setProps) {
-            return <LocalGuide setProps={setProps} />
-        }
-    },*/
     {
         path: "/hiker",
         key: "hiker",
@@ -91,13 +75,6 @@ const routes = [
                     <ul></ul>
                 </Container>
             );
-        }
-    },
-    {
-        path: "/add-hike",
-        key: "add-hike",
-        screen: function (user, props, setProps) {
-            return <AddPointForm props={props} setProps={setProps} />
         }
     },
     {
