@@ -37,7 +37,11 @@ exports.getHuts = async (query) => {
                             town: r.town,
                             address: r.address,
                             altitude: r.altitude,
-                            author: r.author
+                            author: r.author,
+                            numberOfBeds: r.numberOfBeds,
+                            food: r.food,
+                            description: r.description,
+                            phone: r.phone,
                         }
                     })
                 )

@@ -11,7 +11,7 @@ describe('Hikes API tests', () => {
     test('createHike should create a new entry in the Db and return status 201', async () => {
         const newHike = {
             "id": 3,
-            "title": "testingHikeCreation",
+            "title": "Sentiero per il Rocciamelone",
             "length": 1273.2,
             "expTime": 10.2,
             "ascent": 1000.0,
@@ -28,7 +28,7 @@ describe('Hikes API tests', () => {
     test('getHikes should retrieve the complete list of hikes in the database', async () => {
         const newHike = {
             "id": 2,
-            "title": "testingHikeCreation",
+            "title": "Sentiero per il Rocciamelone",
             "length": 1273.2,
             "expTime": 10.2,
             "ascent": 1000.0,
@@ -49,7 +49,7 @@ describe('Hikes API tests', () => {
             "description": "mud slide on the main bridge",
             "id": 1,
             "status": "closed",
-            "title": "testingHikeCreation"
+            "title": "Sentiero per il Rocciamelone"
         }];
 
         const hikes = await HikeDao.getHikesByHutId(1, "jen.shiro@chiocciola.it");
