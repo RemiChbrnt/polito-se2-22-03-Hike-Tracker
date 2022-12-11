@@ -7,7 +7,6 @@ import { NavBar } from "./components/navBar";
 import { HikeFilterForm } from './components/hikeFilterForm';
 import { HikeDetail } from './screens/hikeDetail';
 import Home from "./screens/home.js";
-import HomeWorker from "./screens/homeWorker.js"
 import API from './API';
 
 
@@ -32,10 +31,8 @@ function App() {
             <BrowserRouter>
                 <NavBar user={user} setUser={setUser} />
                 <Routes>
-                {(user === undefined)? <Route path='/' element={<Home user={user} setProps={setProps} />}/> : 
-                    user.role!=='hutworker'? <Route path='/' element={<Home user={user} setProps={setProps} />}/>
-                    :<Route path='/' element={<HomeWorker user={user} setProps={setProps} />}/>}
-                    {/* <Route path='/' element={<HomeWorker user={user} setProps={setProps} />}/> */}
+                    <Route path='/' element={<Home user={user} setProps={setProps} />} />
+                    {/*<Route path='/hike-filter-form' element={<HikeFilterForm/>}/>*/}
                     {routes.map((route) => {
                         return (<Route
                             key={route.key}

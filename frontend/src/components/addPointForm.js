@@ -6,9 +6,9 @@ import API from "../API";
 
 
 //----- TO DO -----
-const addPoint = async (type, name, latitude, longitude, country, region, town, address, altitude) => {
+const addPoint = async (type, name, latitude, longitude, country, province, town, address, altitude) => {
     try {
-        // API.createPoint(type, name, latitude, longitude, country, region, town, address, altitude);
+        // API.createPoint(type, name, latitude, longitude, country, province, town, address, altitude);
         return true;
 
     } catch (err) {
@@ -27,7 +27,7 @@ function AddPointForm(type) {
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [country, setCountry] = useState("");
-    const [region, setRegion] = useState("");
+    const [province, setProvince] = useState("");
     const [town, setTown] = useState("");
     const [address, setAddress] = useState("");
     const [altitude, setAltitude] = useState("");
@@ -36,7 +36,7 @@ function AddPointForm(type) {
     const handlerSubmit = async (e) => {
         e.preventDefault();
 
-        let result = await addPoint(type, name, latitude, longitude, country, region, town, address, altitude);
+        let result = await addPoint(type, name, latitude, longitude, country, province, town, address, altitude);
         // if(result !== false)
         //     ...
         // else
@@ -82,10 +82,10 @@ function AddPointForm(type) {
                     </Form.Group>
                 </div>
                 <div className="form-group mt-3">
-                    <Form.Group className="mb-3" controlId="region">
-                        <Form.Label><b>region</b></Form.Label>
-                        <Form.Control type="text" placeholder="Enter region" required
-                            onChange={ev => { setRegion(ev.target.value); }}
+                    <Form.Group className="mb-3" controlId="province">
+                        <Form.Label><b>Province</b></Form.Label>
+                        <Form.Control type="text" placeholder="Enter province" required
+                            onChange={ev => { setProvince(ev.target.value); }}
                         />
                     </Form.Group>
                 </div>

@@ -7,7 +7,7 @@ chai.use(chaiHttp)
 chai.should()
 
 const app = require('../index')
-let agent = chai.request.agent(app)
+var agent = chai.request.agent(app)
 
 describe('Testing all the operations on hikes', function () {
     before(async () => {
@@ -37,7 +37,7 @@ describe('Testing all the operations on hikes', function () {
                 latitude: 45.178734750000004,
                 longitude: 7.081576685703124,
                 country: 'Italy',
-                region: 'Piemonte',
+                province: 'Torino',
                 town: 'Mompantero',
                 address: 'La Riposa, GTA / 529 / SI, Trucco, Mompantero, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -52,7 +52,7 @@ describe('Testing all the operations on hikes', function () {
                 latitude: 45.2034457,
                 longitude: 7.077260064028688,
                 country: 'Italy',
-                region: 'Piemonte',
+                province: 'Torino',
                 town: 'Novalesa',
                 address: 'Nostra Signora del Rocciamelone, 585, Novalesa, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -147,7 +147,7 @@ describe('Testing all the operations on hikes with wrong user', function () {
                 latitude: 45.178734750000004,
                 longitude: 7.081576685703124,
                 country: 'Italy',
-                region: 'Piemonte',
+                province: 'Torino',
                 town: 'Mompantero',
                 address: 'La Riposa, GTA / 529 / SI, Trucco, Mompantero, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -162,7 +162,7 @@ describe('Testing all the operations on hikes with wrong user', function () {
                 latitude: 45.2034457,
                 longitude: 7.077260064028688,
                 country: 'Italy',
-                region: 'Piemonte',
+                province: 'Torino',
                 town: 'Novalesa',
                 address: 'Nostra Signora del Rocciamelone, 585, Novalesa, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -199,100 +199,6 @@ describe('Testing all the operations on hikes with wrong user', function () {
             .set('content-type', 'application/json');
 
         result.should.have.status(400);
-    });
-
-})
-
-describe('Testing the status of hikes', function () {
-    before(async () => {
-        // await agent
-        //     .post('/api/signup')
-        //     .set('content-type', 'application/json')
-        //     .send({
-        //         email: 'jen.shiro@chiocciola.it',
-        //         password: 'testPassword4',
-        //         fullName: 'jenet',
-        //         role: 'hutworker',
-        //         phoneNumber: '2313124214'
-        //     })
-        await agent
-            .post('/api/login')
-            .set('content-type', 'application/json')
-            .send({
-                email: 'jen.shiro@chiocciola.it',
-                password: 'testPassword4'
-            })
-        await resetHikes()
-        await resetLocations()
-    })
-    after(async () => {
-        //maybe delete
-    })
-
-
-    it('GET /api/huts/myhut', async () => {
-        const result = await agent
-            .get('/api/huts/myhut')
-            .set('content-type', 'application/json');
-        expect(result.body).deep.equal(1);
-        result.should.have.status(200)
-    });
-
-    it('GET /api/hikesList/:hutId', async () => {
-        const hutIdCall = await agent
-            .get('/api/huts/myhut')
-            .set('content-type', 'application/json');
-        const hutId=hutIdCall.body;
-
-        const result = await agent
-            .get('/api/hikesList/'+hutId)
-            .set('content-type', 'application/json');
-        expect(result.body).deep.equal([
-            {
-              id: 1,
-              name: 'Sentiero per il Rocciamelone',
-              status: 'closed',
-              description: 'mud slide on the main bridge'
-            }
-          ]);
-        result.should.have.status(200)
-    });
-
-    it('PUT /api/hikes/:hikeId/status/:hutId', async () => {
-        const hikeId=1;
-        const hutId=1;
-        const result = await agent
-            .put('/api/hikes/'+hikeId+'/status/'+hutId)
-            .set('content-type', 'application/json')
-            .send({
-                status: 'closed',
-                description: 'mud slide on the main bridge'
-            });
-        result.should.have.status(200)
-    });
-
-    it('PUT /api/hikes/:hikeId/status/:hutId with missing fields', async () => {
-        const hikeId=1;
-        const hutId=1;
-        const result = await agent
-            .put('/api/hikes/'+hikeId+'/status/'+hutId)
-            .set('content-type', 'application/json')
-            .send({
-                description: 'all good'
-            });
-        result.should.have.status(422)
-    });
-
-    it('PUT /api/hikes/:hikeId/status/:hutId with wrong hikeId', async () => {
-        const hikeId="abcd";
-        const hutId=1;
-        const result = await agent
-            .put('/api/hikes/'+hikeId+'/status/'+hutId)
-            .set('content-type', 'application/json')
-            .send({
-                description: 'all good'
-            });
-        result.should.have.status(422)
     });
 
 })
