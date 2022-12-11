@@ -43,7 +43,7 @@ const HutDetail = ({ user, props, setProps }) => {
                         </ListGroup>
 
                         <ListGroup horizontal>
-                            <ListGroup.Item style={{ width: "50%" }}><span><span className="fw-bold">Location: </span>{(hut.address !== null) && (hut.address + ", ")} {hut.town}, {"(" + hut.province + ")"}, {hut.country}</span></ListGroup.Item>
+                            <ListGroup.Item style={{ width: "50%" }}><span><span className="fw-bold">Location: </span>{(hut.address !== null) && (hut.address + ", ")} {hut.town}, {"(" + hut.region + ")"}, {hut.country}</span></ListGroup.Item>
                             <ListGroup.Item style={{ width: "50%" }}><span className="fw-bold">Altitude: </span>{hut.altitude} m</ListGroup.Item>
                         </ListGroup>
                         <ListGroup>

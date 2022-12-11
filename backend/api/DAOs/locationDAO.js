@@ -33,7 +33,7 @@ exports.getHuts = async (query) => {
                             latitude: r.latitude,
                             longitude: r.longitude,
                             country: r.country,
-                            province: r.province,
+                            region: r.region,
                             town: r.town,
                             address: r.address,
                             altitude: r.altitude,
@@ -284,11 +284,16 @@ exports.getHutsByUserId = async (email) => {
                             latitude: r.latitude,
                             longitude: r.longitude,
                             country: r.country,
-                            province: r.province,
+                            region: r.region,
                             town: r.town,
                             address: r.address,
                             altitude: r.altitude,
-                            author: r.author
+                            author: r.author,
+                            food: r.food,
+                            description: r.description,
+                            openingTime: r.openingTime,
+                            closingTime: r.closingTime,
+                            cost: r.cost
                         }
                     })
                 )
@@ -411,7 +416,7 @@ exports.getLocationById = async (query) => {
                 longitude: location.longitude,
                 difficulty: location.difficulty,
                 country: location.country,
-                province: location.province,
+                region: location.region,
                 town: location.town,
                 address: location.address,
                 altitude: location.altitude,

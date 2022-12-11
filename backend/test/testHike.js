@@ -250,7 +250,7 @@ describe('Testing the status of hikes', function () {
         expect(result.body).deep.equal([
             {
               id: 1,
-              name: 'testingHikeCreation',
+              name: 'Sentiero per il Rocciamelone',
               status: 'closed',
               description: 'mud slide on the main bridge'
             }

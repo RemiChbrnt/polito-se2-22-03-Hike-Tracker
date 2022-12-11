@@ -17,9 +17,29 @@ describe('Testing all the operations on locations', function () {
         //     .post('/api/signup')
         //     .set('content-type', 'application/json')
         //     .send({
-        //         email: 'antonio.fracassa@live.it',
-        //         password: 'testPassword2',
-        //         fullName: 'test',
+        //         email: 'manager@management.com',
+        //         password: 'testPassword3',
+        //         fullName: 'manager',
+        //         role: 'manager',
+        //         phoneNumber: '2313124214'
+        //     })
+        // await agent
+        //     .post('/api/signup')
+        //     .set('content-type', 'application/json')
+        //     .send({
+        //         email: 'najejof113@dmonies.com',
+        //         password: 'password',
+        //         fullName: 'Unapproved Hutworker',
+        //         role: 'hutworker',
+        //         phoneNumber: '2313124214'
+        //     })
+        // await agent
+        //     .post('/api/signup')
+        //     .set('content-type', 'application/json')
+        //     .send({
+        //         email: 'fiyode9163@eilnews.com',
+        //         password: 'password',
+        //         fullName: 'Approval Needed',
         //         role: 'guide',
         //         phoneNumber: '2313124214'
         //     })
@@ -48,7 +68,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 'a',
                 longitude: '11',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -68,7 +88,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 'a',
                 longitude: '11',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -88,7 +108,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11',
                 longitude: '11',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -109,7 +129,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '11.12931',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -130,7 +150,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '-11.12',
                 longitude: 'dasfsdafasd',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: 'werf',
@@ -151,7 +171,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '13121.12',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -172,7 +192,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '13121.12',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -193,7 +213,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 45.178734750000004,
                 longitude: 7.081576685703124,
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Mompantero',
                 address: 'La Riposa, GTA / 529 / SI, Trucco, Mompantero, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -208,7 +228,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: 45.2034457,
                 longitude: 7.077260064028688,
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Novalesa',
                 address: 'Nostra Signora del Rocciamelone, 585, Novalesa, Torino, Piedmont, 10059, Italy',
                 altitude: null
@@ -238,7 +258,7 @@ describe('Testing all the operations on locations', function () {
                 latitude: '11.12',
                 longitude: '11.12931',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 altitude: '1000',
@@ -279,13 +299,13 @@ describe('Testing all the operations on locations', function () {
             .get('/api/hutsList/antonio.fracassa@live.it')
             .set('content-type', 'application/json');
         result.should.have.status(200);
-
+        
         expect(result.body[1]).to.include({
             name: 'Test',
             latitude: 11.12,
             longitude: 11.12931,
             country: 'Italy',
-            region: 'Piemonte',
+            region: 'Piedmont',
             town: 'Riva presso Chieri',
             address: 'Via giacomo puccini 4',
             altitude: 1000,
@@ -368,7 +388,7 @@ describe('Testing operations on locations requiring a hiker', function () {
     //         .query({
     //             name: 'Test',
     //             country: 'Italy',
-    //             region: 'Piemonte',
+    //             region: 'Piedmont',
     //             town: 'Mompantero',
     //             address: 'Frazione La Riposa',
     //             minAltitude: '900',
@@ -380,7 +400,7 @@ describe('Testing operations on locations requiring a hiker', function () {
     //         latitude: 11.12,
     //         longitude: 11.12931,
     //         country: 'Italy',
-    //         region: 'Piemonte',
+    //         region: 'Piedmont',
     //         town: 'Riva presso Chieri',
     //         address: 'Via giacomo puccini 4',
     //         altitude: 1000,
@@ -401,7 +421,7 @@ describe('Testing operations on locations requiring a hiker', function () {
             .query({
                 name: 'wrong testing',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 minAltitude: '900',
@@ -418,7 +438,7 @@ describe('Testing operations on locations requiring a hiker', function () {
             .query({
                 name: 'Test',
                 country: 'Italy',
-                region: 'Piemonte',
+                region: 'Piedmont',
                 town: 'Riva presso Chieri',
                 address: 'Via giacomo puccini 4',
                 minAltitude: 'altitude x',

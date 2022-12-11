@@ -199,7 +199,8 @@ describe('User API tests - Signup, Login and Manager Approval as Hut Worker', ()
             "email": "najejof113@dmonies.com",
             "fullName": "Unapproved Hutworker",
             "role": "hutworker",
-            "verified": 2
+            "verified": 2,
+            "hut" : 1,
         }
         expect(loginResult).toEqual(expectedResult);
     });

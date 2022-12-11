@@ -6,7 +6,7 @@ const path = require('path');
 let dbPath = './HikeTrackerDb.db';
 
 if (process.env.NODE_ENV === 'test') {
-    dbPath = './testingHikeTrackerDb_updated.db'
+    dbPath = './testingHikeTrackerDb.db'
 }
 
 // dbPath = './HikeTrackerDb.db';

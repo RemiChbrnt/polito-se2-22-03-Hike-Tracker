@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import API from "../API";
 
 // API call to push a location to the database (for Start and End points if needed)
-const handleReferencePointCreation = async (name, type, latitude, longitude, country, province, town, address, altitude, hikeId) => {
+const handleReferencePointCreation = async (name, type, latitude, longitude, country, region, town, address, altitude, hikeId) => {
     // Setting null parameters for undefined inputs (that are not mandatory)
     if (country === "") country = null;
-    if (province === "") province = null;
+    if (region === "") region = null;
     if (town === "") town = null;
     if (address === "") address = null;
     if (altitude === "") altitude = null;
@@ -19,7 +19,7 @@ const handleReferencePointCreation = async (name, type, latitude, longitude, cou
             latitude: latitude,
             longitude: longitude,
             country: country,
-            province: province,
+            region: region,
             town: town,
             address: address,
             altitude: altitude,
@@ -54,12 +54,12 @@ function AddReferencePointForm({hikeId, userEmail, pointCoords, setAddNewReferen
             // Address from coordinates
             const latitude = pointCoords[0];
             const longitude = pointCoords[1];
-            let country, province, address, town = "";
+            let country, region, address, town = "";
             await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
             .then(res => res.json())
             .then(res => {
                 if (res.address.country !== undefined) country = res.address.country;
-                if (res.address.county !== undefined) province = res.address.county;
+                if (res.address.county !== undefined) region = res.address.county;
                 if (res.display_name !== undefined) address = res.display_name;
                 if (res.address.city !== undefined) {
                     town = res.address.city;
@@ -67,7 +67,7 @@ function AddReferencePointForm({hikeId, userEmail, pointCoords, setAddNewReferen
                     if (res.address.village !== undefined) town = res.address.village;
                 }
             });
-            let res = await handleReferencePointCreation(name, type, latitude, longitude, country, province, town, address, altitude, hikeId);
+            let res = await handleReferencePointCreation(name, type, latitude, longitude, country, region, town, address, altitude, hikeId);
             if (res){
                 setCompletedWithSuccess(true);
             }else{
