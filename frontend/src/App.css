@@ -37,10 +37,6 @@
   }
 }
 
-h4{
-  text-align: justify;
-}
-
 .guideBtn{
   background-color: #00706c !important;
   font-size: 16px;
@@ -49,6 +45,18 @@ h4{
 }
 
 .hike-form {
+  flex: 1;
+  width: 100%;
+  padding-top:50px;
+  padding-bottom:50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.link-form {
   flex: 1;
   width: 500px;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
@@ -84,10 +92,9 @@ h4{
 }
 
 .myTable{
-  padding-top:40px;
-  padding-left: 30px !important;
-  padding-right: 30px !important;
-
+    padding-top:40px;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
 }
 
 .table > :not(:first-child) {
@@ -136,4 +143,12 @@ h4{
 .row {
   display: flex;
   flex-direction: row;
+}
+
+.container-hut{
+  max-width: 95% !important;
+}
+
+.hiker-label{
+  width:35% !important;
 }

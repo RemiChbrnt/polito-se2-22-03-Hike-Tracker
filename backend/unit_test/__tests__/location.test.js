@@ -12,7 +12,7 @@ const validHuts = [{
     latitude: 45,
     longitude: 45,
     country: "Italy",
-    province: "TO",
+    region: "Piemonte",
     town: "X",
     address: "address x",
     altitude: 1000,
@@ -26,7 +26,7 @@ const validHuts = [{
     latitude: 24.8439,
     longitude: 12.294552,
     country: "England",
-    province: "LO",
+    region:  "Piemonte",
     town: "oehbfva<e",
     address: "address y39485",
     altitude: 630,
@@ -41,7 +41,7 @@ const invalidHuts = [{
     latitude: "spifbvsptdifszè",
     longitude: 0.68654,
     country: "Germany",
-    province: "DU",
+    region:  "Piemonte",
     town: 111,
     address: "address z",
     altitude: "asdvAR",
@@ -55,7 +55,7 @@ const invalidHuts = [{
     latitude: "sohfbos",
     longitude: 0.68654,
     country: 239829,
-    province: "DU",
+    region:  "Piemonte",
     town: 111,
     address: "address z",
     altitude: "asdvAR",
@@ -99,7 +99,7 @@ describe("Hut tests", () => {
             latitude: expect.any(Number),
             longitude: expect.any(Number),
             country: expect.any(String),
-            province: expect.any(String),
+            region:  expect.any(String),
             town: expect.any(String),
             address: expect.any(String),
             altitude: expect.any(Number),
@@ -145,11 +145,30 @@ describe("Hut tests", () => {
 
     test('Link a hut to a hike with non existing hike', async () => {
         try {
-            
             const locationToLink = 4316;
             await LocationDao.linkHut(1,locationToLink);
         } catch (err) {
             expect(err).toBe(400);
+        }
+    });
+
+
+    //testing status related functions
+
+    test('get hut by worker email', async () => {
+        try {
+            const result = await LocationDao.getHutbyWorkerId("jen.shiro@chiocciola.it");
+            expect(result.body).toEqual(1);
+        } catch (err) {
+            console.log(err)
+        }
+    });
+
+    test('get hut by wrong worker email', async () => {
+        try {
+            await LocationDao.getHutbyWorkerId("jen.shiro1719@chiocciola.it");
+        } catch (err) {
+            expect(err).toBe(404);
         }
     });
 });
@@ -169,7 +188,7 @@ describe('Parking lot tests', () => {
         "longitude": 17,
         "altitude": 1300,
         "country": "Italy",
-        "province": "TO",
+        "region": "Piemonte",
         "town": "fakeTown",
         "address": null,
         "description": "bla bla bla",
@@ -182,7 +201,7 @@ describe('Parking lot tests', () => {
         "longitude": 18,
         "altitude": 130,
         "country": "Italy",
-        "province": "TO",
+        "region": "Piemonte",
         "town": "town fake",
         "address": null,
         "description": "goo description",
@@ -196,7 +215,7 @@ describe('Parking lot tests', () => {
         "longitude": null,
         "altitude": 1300,
         "country": "Italy",
-        "province": "TO",
+        "region": "Piemonte",
         "town": "fakeTown",
         "address": null,
         "description": "bla bla bla",
@@ -225,6 +244,4 @@ describe('Parking lot tests', () => {
 
 
 })
-
-
 

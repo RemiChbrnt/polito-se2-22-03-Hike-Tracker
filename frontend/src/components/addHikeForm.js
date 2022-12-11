@@ -30,10 +30,10 @@ const handleHikeCreation = async (title, length, expTime, ascent, difficulty, st
 };
 
 // API call to push a location to the database (for Start and End points if needed)
-const handleLocationCreation = async (name, type, latitude, longitude, country, province, town, address, altitude) => {
+const handleLocationCreation = async (name, type, latitude, longitude, country, region, town, address, altitude) => {
     // Setting null parameters for undefined inputs (that are not mandatory)
     if (country === "") country = null;
-    if (province === "") province = null;
+    if (region === "") region = null;
     if (town === "") town = null;
     if (address === "") address = null;
     if (altitude === "") altitude = null;
@@ -45,7 +45,7 @@ const handleLocationCreation = async (name, type, latitude, longitude, country, 
             latitude: latitude,
             longitude: longitude,
             country: country,
-            province: province,
+            region: region,
             town: town,
             address: address,
             altitude: altitude
@@ -79,7 +79,7 @@ function AddHikeForm(props) {
     const [startPtLatitude, setStartPtLatitude] = useState("");
     const [startPtLongitude, setStartPtLongitude] = useState("");
     const [startPtCountry, setStartPtCountry] = useState("");
-    const [startPtProvince, setStartPtProvince] = useState("");
+    const [startPtregion, setStartPtregion] = useState("");
     const [startPtTown, setStartPtTown] = useState("");
     const [startPtAddress, setStartPtAddress] = useState("");
     const [startPtAltitude, setStartPtAltitude] = useState("");
@@ -90,7 +90,7 @@ function AddHikeForm(props) {
     const [endPtLatitude, setEndPtLatitude] = useState("");
     const [endPtLongitude, setEndPtLongitude] = useState("");
     const [endPtCountry, setEndPtCountry] = useState("");
-    const [endPtProvince, setEndPtProvince] = useState("");
+    const [endPtregion, setEndPtregion] = useState("");
     const [endPtTown, setEndPtTown] = useState("");
     const [endPtAddress, setEndPtAddress] = useState("");
     const [endPtAltitude, setEndPtAltitude] = useState("");
@@ -120,19 +120,16 @@ function AddHikeForm(props) {
         let startPtIndex = startPoint;
         let endPtIndex = endPoint;
 
-        // console.log("startPtIndex " + startPtIndex);
-        // console.log("endPtIndex " + endPtIndex);
-
         if (startPtIndex === undefined) {
             startPtIndex = await handleLocationCreation(
-                startPtName, startPtType, startPtLatitude, startPtLongitude, startPtCountry, startPtProvince, startPtTown, startPtAddress, startPtAltitude
+                startPtName, startPtType, startPtLatitude, startPtLongitude, startPtCountry, startPtregion, startPtTown, startPtAddress, startPtAltitude
             );
         }
         if(identicalEndStart && startPtIndex !== undefined){
             endPtIndex = startPtIndex;
         }else if (endPtIndex === undefined) {
             endPtIndex = await handleLocationCreation(
-                endPtName, endPtType, endPtLatitude, endPtLongitude, endPtCountry, endPtProvince, endPtTown, endPtAddress, endPtAltitude
+                endPtName, endPtType, endPtLatitude, endPtLongitude, endPtCountry, endPtregion, endPtTown, endPtAddress, endPtAltitude
             );
         }
 
@@ -148,7 +145,6 @@ function AddHikeForm(props) {
             props.user.email
         );
 
-        // console.log(res);
 
         navigate("/");
 
@@ -164,7 +160,7 @@ function AddHikeForm(props) {
                     if (res.lat !== undefined) setStartPtLatitude(parseFloat(res.lat));
                     if (res.lon !== undefined) setStartPtLongitude(parseFloat(res.lon));
                     if (res.address.country !== undefined) setStartPtCountry(res.address.country);
-                    if (res.address.county !== undefined) setStartPtProvince(res.address.county);
+                    if (res.address.county !== undefined) setStartPtregion(res.address.county);
                     if (res.display_name !== undefined) setStartPtAddress(res.display_name);
 
                     if (res.address.city !== undefined) {
@@ -177,7 +173,7 @@ function AddHikeForm(props) {
                     if (res.lat !== undefined) setEndPtLatitude(parseFloat(res.lat));
                     if (res.lon !== undefined) setEndPtLongitude(parseFloat(res.lon));
                     if (res.address.country !== undefined) setEndPtCountry(res.address.country);
-                    if (res.address.county !== undefined) setEndPtProvince(res.address.county);
+                    if (res.address.county !== undefined) setEndPtregion(res.address.county);
                     if (res.display_name !== undefined) setEndPtAddress(res.display_name);
 
                     if (res.address.city !== undefined) {
@@ -202,23 +198,21 @@ function AddHikeForm(props) {
             // We stringify the GPX, then execute the following
             reader.onloadend = () => {
                 // Conversion to GeoJSON format
-                var gpx = new DOMParser().parseFromString(reader.result);
-                var converted = toGeoJson.gpx(gpx);
+                let gpx = new DOMParser().parseFromString(reader.result);
+                let converted = toGeoJson.gpx(gpx);
 
                 // Stringifying GeoJSON file for the database
                 setGPXFile(JSON.stringify(converted));
 
                 // Extracting Start and End Point coordinates in order to automatically fill the address fields
-                var startPointCoordinates = converted.features[0].geometry.coordinates[0];
-                var endPointCoordinates = converted.features[0].geometry.coordinates[converted.features[0].geometry.coordinates.length - 1];
+                let startPointCoordinates = converted.features[0].geometry.coordinates[0];
+                let endPointCoordinates = converted.features[0].geometry.coordinates[converted.features[0].geometry.coordinates.length - 1];
                 setAddressFromCoordinates(startPointCoordinates, true);
                 setAddressFromCoordinates(endPointCoordinates, false);
                 const matchStart = findMatchingLocation(startPointCoordinates);
                 const matchEnd = findMatchingLocation(endPointCoordinates);
                 setEndMatchingLocations(matchEnd);
                 setStartMatchingLocations(matchStart);
-                // console.log(startMatchingLocations);
-                // console.log(endMatchingLocations);
             }
         }
     }
@@ -262,8 +256,8 @@ function AddHikeForm(props) {
             </Row>
             <ul></ul>
 
-            <Row>
-                <Form onSubmit={handlerSubmit} className="hike-form mt-3">
+            <Row className="hike-form">
+                <Form onSubmit={handlerSubmit} className="mt-3">
                     <Col className="form-group">
                         <Form.Label><b>Hike Title</b> <b className="asterisk-required">*</b></Form.Label>
                         <Form.Control type="text" placeholder="Enter title" required
@@ -428,10 +422,10 @@ function AddHikeForm(props) {
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">
-                                            <Form.Label>Province</Form.Label>
-                                            <Form.Control type="text" placeholder={startPtProvince}
-                                                value={startPtProvince}
-                                                onChange={ev => { setStartPtProvince(ev.target.value); }}
+                                            <Form.Label>region</Form.Label>
+                                            <Form.Control type="text" placeholder={startPtregion}
+                                                value={startPtregion}
+                                                onChange={ev => { setStartPtregion(ev.target.value); }}
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">
@@ -487,7 +481,7 @@ function AddHikeForm(props) {
                                             aria-expanded={openEnd} variant="success" size="sm"
                                             style= {!openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
                                                 {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Choose the Start Point from existing points
+                                                Choose the End Point from existing points
                                         </Button>
                                     </Col>
                                     <Col>
@@ -496,7 +490,7 @@ function AddHikeForm(props) {
                                             aria-expanded={openEnd} variant="success" size="sm"
                                             style={openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
                                                 {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Insert a new point as the Start Point
+                                                Insert a new point as the End Point
                                         </Button>
                                     </Col>
                                     <Col/>
@@ -517,7 +511,7 @@ function AddHikeForm(props) {
                                     <Row>
                                         <Col>
                                             <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="text" placeholder="Enter start point name" required
+                                            <Form.Control type="text" placeholder="Enter end point name" required
                                                 onChange={ev => { setEndPtName(ev.target.value); }}
                                             />
                                         </Col>
@@ -570,10 +564,10 @@ function AddHikeForm(props) {
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">
-                                            <Form.Label>Province</Form.Label>
-                                            <Form.Control type="text" placeholder={endPtProvince}
-                                                value={endPtProvince}
-                                                onChange={ev => { setEndPtProvince(ev.target.value); }}
+                                            <Form.Label>region</Form.Label>
+                                            <Form.Control type="text" placeholder={endPtregion}
+                                                value={endPtregion}
+                                                onChange={ev => { setEndPtregion(ev.target.value); }}
                                             />
                                         </Col>
                                         <Col className="form-group mt-3">

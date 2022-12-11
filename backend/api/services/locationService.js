@@ -8,19 +8,14 @@ class LocationService {
     getHuts = async (query) => {
         try {
             const huts = await this.dao.getHuts(query);
-            if (huts.length === 0)
-                return {
-                    ok: true,
-                    status: 404,
-                    body: "No hut found"
-                }
+
             const message = huts.map((r) => ({
                 id: r.id,
                 name: r.name,
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude,
@@ -29,7 +24,10 @@ class LocationService {
                 description: r.description,
                 openingTime: r.openingTime,
                 closingTime: r.closingTime,
-                cost: r.cost
+                cost: r.cost,
+                phone: r.phone,
+                email: r.email,
+                website: r.website
             }))
             return {
                 ok: true,
@@ -44,6 +42,24 @@ class LocationService {
         }
     }
 
+
+    getHutById = async (id) => {
+        try {
+            const hut = await this.dao.getHutById(id);
+            return {
+                ok: true,
+                status: 200,
+                body: hut
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+
     getLocations = async (query) => {
         try {
             const locations = await this.dao.getLocations(query)
@@ -54,7 +70,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude,
@@ -84,7 +100,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude
@@ -105,6 +121,7 @@ class LocationService {
 
     addLocation = async (newLocation, email) => {
         try {
+            console.log('HERE service: ' + newLocation + ' - ' + email);
             const response = await this.dao.addLocation(newLocation, email);
             return {
                 ok: true,
@@ -129,7 +146,7 @@ class LocationService {
                 latitude: r.latitude,
                 longitude: r.longitude,
                 country: r.country,
-                province: r.province,
+                region: r.region,
                 town: r.town,
                 address: r.address,
                 altitude: r.altitude,
@@ -138,7 +155,11 @@ class LocationService {
                 description: r.description,
                 openingTime: r.openingTime,
                 closingTime: r.closingTime,
-                cost: r.cost
+                cost: r.cost,
+                phone: r.phone,
+                email: r.email,
+                website: r.website,
+                photos: r.photos
             }))
             return {
                 ok: true,
@@ -154,6 +175,13 @@ class LocationService {
     }
 
     linkHut = async (newLink) => {
+        if(!await this.dao.validateLinkStartEnd(newLink.hikeId, newLink.locationId) 
+            && !await this.dao.validateLinkRef(newLink.hikeId, newLink.locationId)){
+                return {
+                    ok: false,
+                    status: 409
+                } 
+            }
         try {
             const res = await this.dao.linkHut(newLink.hikeId, newLink.locationId)
             return {
@@ -176,6 +204,74 @@ class LocationService {
         }
     }
 
+
+    getHutbyWorkerId = async (email) => {
+        try {
+            const hutId = await this.dao.getHutbyWorkerId(email)
+            return {
+                ok: true,
+                status: 200,
+                body: hutId
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+    getLocationById = async (query) => {
+        try {
+            const location = await this.dao.getLocationById(query)
+            return {
+                ok: true,
+                status: 200,
+                body: location
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+
+    getReferencePointsFromHikeId = async (query) => {
+        try {
+            const locations = await this.dao.getReferencePointsFromHikeId(query)
+            return {
+                ok: true,
+                status: 200,
+                body: locations
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+    addHutPhoto = async (id, fileName) => {
+        try {
+            const result = await this.dao.addHutPhoto(id, fileName);
+            return {
+                ok: true,
+                status: 201,
+                body: result
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
 }
+
+
+
 
 module.exports = LocationService

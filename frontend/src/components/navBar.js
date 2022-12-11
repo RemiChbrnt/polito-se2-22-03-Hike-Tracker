@@ -17,7 +17,7 @@ function NavBar(props) {
                     <Container fluid>
 
                         <Navbar.Brand style={{ cursor: "pointer" }} onClick={() => { navigate('/') }}>
-                            <img src={Logo} style={{height: 100}} alt="logo"/>
+                            <img id='logo' src={Logo} style={{height: 100}} alt="logo"/>
                         </Navbar.Brand>
 
 
@@ -33,7 +33,8 @@ function NavBar(props) {
                                 <Col>
                                     <SideBar user={props.user} setUser={props.setUser} />
                                 </Col>
-                            </Row>                        }
+                            </Row>
+                        }
 
 
                     </Container>
