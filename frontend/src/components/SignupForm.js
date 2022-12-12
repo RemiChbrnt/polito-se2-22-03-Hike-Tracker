@@ -1,4 +1,4 @@
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Nav } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,6 @@ const handlerSignup = async (email, fullName, password, role, phoneNumber) => {
             phoneNumber: phoneNumber
         }
         let user = await API.signup(body);
-
         return user;
 
     } catch (err) {
@@ -34,6 +33,8 @@ function SignupForm({ user, setUser }) {
     const [role, setRole] = useState("hiker");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [error, setError] = useState(false);
+    const [message, setMessage] = useState(false);
+    const [messageText, setMessageText] = useState('');
 
     let navigate = useNavigate();
 
@@ -44,7 +45,8 @@ function SignupForm({ user, setUser }) {
         // props.setLoggedIn(true);
 
         if (result !== false) {
-            navigate(`/`);
+            setMessageText('Thank you! Please check your email and verify your account to access the reserved features.');            
+            setMessage(true);
         }
 
         else
@@ -62,7 +64,8 @@ function SignupForm({ user, setUser }) {
         navigate('/login');
     }
 
-    return (
+    return <>
+        {!message &&
         <Container>
             <ul></ul>
             <Row className="justify-content-md-center">
@@ -124,9 +127,32 @@ function SignupForm({ user, setUser }) {
                 </Col>
             </Row>
         </Container>
-    );
+    }
+    {
+        message &&
+        <MessageDisplay
+            setMessage={setMessage}
+            setMessageText={setMessageText}
+            messageText={messageText}
+        />
+    }
+    </>
 }
 
+function MessageDisplay(props) {
+
+    const navigate = useNavigate();
+
+    return (
+        <div className="display-container">
+            <p className="text-center">{props.messageText}</p>
+            <div className="d-grid gap-2 mt-1">
+                <Button type="submit" className="guideBtn" borderless="true"><Nav.Link onClick={() => { props.setMessage(false); props.setMessageText(''); navigate(`/login`);}} style={{ color: "white" }} active>CLOSE</Nav.Link></Button>
+            </div>
+        </div>
+    );
+
+}
 
 
 export { SignupForm }

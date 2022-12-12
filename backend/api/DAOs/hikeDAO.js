@@ -40,6 +40,37 @@ exports.getHikes = async (query) => {
     })
 }
 
+exports.getHikeFromID = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * from Hikes WHERE id=${query.id}`
+        db.all(sql, [], async (err, r) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }
+            const hike=r[0];
+            const startLocation = await getLocationById(hike.startPt);
+            const endLocation = await getLocationById(hike.endPt);
+            const refLocations = await getReferenceLocations(hike.id);
+            resolve({
+                id: hike.id,
+                title: hike.title,
+                length: hike.length,
+                expTime: hike.expTime,
+                ascent: hike.ascent,
+                difficulty: hike.difficulty,
+                startPt: startLocation,
+                endPt: endLocation,
+                description: hike.description,
+                track: hike.track,
+                author: hike.author,
+                referencePoints: refLocations,
+            });
+        })
+    })
+}
+
 
 
 const getLocationById = async function (id) {
@@ -184,4 +215,25 @@ exports.setHikeEndPoint = async (hike) => {
         })
     })
 }
+
+exports.addHikeReferencePoint = async (query) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'INSERT INTO HikesReferencePoints(hikeId, locationId) VALUES(?,?)';
+        db.run(sql, [
+            query.hikeId,
+            query.locationId,
+        ], function (err, rows) {
+            if (err) {
+                console.log(err);
+                reject(400);
+                return;
+            }
+            else {
+                resolve(200);
+                return;
+            }
+        })
+    })
+}
+
 

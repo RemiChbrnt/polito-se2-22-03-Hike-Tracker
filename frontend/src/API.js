@@ -1,7 +1,3 @@
-// import { post } from "../../backend";
-
-import { resolvePath } from "react-router-dom";
-
 /**
  * All the API calls
  */
@@ -24,18 +20,25 @@ async function login(email, password) {
         })
     });
     const user = await response.json();
-    console.log("user " + JSON.stringify(user));
     if (response.ok) {
         return user;
-    } else {
+    } else if (response.status === 412  /* User email not verified */
+        || response.status == 403   /* Account not yet approved by manager */
+        || response.status == 401)   /* Account not found */
+
+        return response.status;
+    else {
         throw user;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
+}
+
+async function logOut() { //API di logout
+    await fetch(URL + '/session/current', { method: 'DELETE', credentials: 'include' });
 }
 
 
 
 async function signup(body) {
-    console.log("body.fullname " + body.fullName);
     console.log("body " + JSON.stringify(body));
     const response = await fetch(URL + '/signup', {
         method: "POST",
@@ -62,6 +65,59 @@ const getUserInfo = async () => {
         return user;
     } else {
         throw user;
+    }
+};
+
+/**
+ * function to get the pending users
+ * @returns the list of users not yet verified by manager
+ */
+async function getPendingUsers() {
+    const response = await fetch(URL + '/get-pending-users', {
+        credentials: 'include'
+    });
+
+    const users = await response.json();
+    if (response.ok) {
+        return users;
+    } else {
+        throw users;
+    }
+}
+
+async function approveUser(email) {
+    const response = await fetch(URL + '/approve', {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email: email })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        return result;
+    } else {
+        throw result;
+    }
+};
+
+async function declineUser(email) {
+    const response = await fetch(URL + '/approve', {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email: email })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        return result;
+    } else {
+        throw result;
     }
 };
 
@@ -101,6 +157,28 @@ async function getAllHikes(filters) {
     }
 }
 
+
+/**
+ * Function to get a specific hike from the database
+ * @param {*} id: the hike's id
+ * @returns hike corresponding to ID if succesful, 400 otherwise
+ */
+async function getHikeFromID(id) {
+    let params = `/hikeFromID?id=${id}`;
+
+    const response = await fetch(URL + params, {
+        credentials: 'include',
+    });
+
+    const hikeJson = await response.json();
+    console.log(hikeJson);
+    if (response.ok) {
+        return hikeJson;
+    } else {
+        throw hikeJson;
+    }
+}
+
 async function getHikesList() {
     // call: GET /api/hikes
     const response = await fetch(URL + '/hikes', {
@@ -133,6 +211,33 @@ async function createHike(body) {
         return hike;
     } else {
         throw hike;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
+    }
+}
+
+
+/**
+ * Function to add a referencePoint
+ * @param {*} hikeId: the hike's id
+ * @param {*} locationId: the location's id
+ * @returns 200 if succesful, 400 otherwise
+ */
+ async function addReferencePoint(hikeId, locationId) {
+    let params = `/hikesReferencePoints`;
+
+    const response = await fetch(URL + params, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({hikeId: hikeId, locationId: locationId})
+    });
+
+    const res = await response.json();
+    if (res.ok) {
+        return true;
+    } else {
+        throw res;
     }
 }
 
@@ -223,6 +328,12 @@ async function getHuts(filters) {
             town: r.town,
             address: r.address,
             altitude: r.altitude,
+            numberOfBeds: r.numberOfBeds,
+            cost: r.cost,
+            food: r.food,
+            openingTime: r.openingTime,
+            closingTime: r.closingTime,
+            description: r.description
         }))
     } else {
         throw hutsJson;
@@ -378,5 +489,7 @@ async function linkHut(params) {
         throw false;
     }
 }
-const API = { login, signup, getUserInfo, getAllHikes, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList };
+
+const API = { login, logOut, signup, getUserInfo, getAllHikes, getHikeFromID, getLocations, setHikeStartPoint, setHikeEndPoint, getHuts, getHutsAndParkingLots, getPreferences, createPreferences, createHike, createLocation, linkHut, getHutsByUserId, getHikesList, approveUser, declineUser, getPendingUsers, addReferencePoint };
+
 export default API;

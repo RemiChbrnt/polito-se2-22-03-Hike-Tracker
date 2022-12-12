@@ -4,6 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Button, Navbar, Offcanvas, Nav } from "react-bootstrap";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import API from "../API";
+
+const handlerLogOut = async () => {
+
+};
 
 function SideBar(props) {
 
@@ -11,6 +16,13 @@ function SideBar(props) {
 
     const [over, setOver] = useState("");
     const navigate = useNavigate();
+
+    const handleLogOut = async (event) => {
+        event.preventDefault();
+        await API.logOut();
+        props.setUser(undefined);
+        navigate('/');
+    }
 
     const hoverButtonStyle = {
         color: "black",
@@ -52,7 +64,7 @@ function SideBar(props) {
 
                                     <Nav.Link onClick={() => { navigate('/link-hut-to-hike') }} onMouseOver={() => { setOver('link-hut-to-hike') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/link-hut-to-hike' || over === 'link-hut-to-hike') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Link hut to hike</h5></Nav.Link>
                                     <ul></ul>
-                                    <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                    <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                 </Nav>
                             </Offcanvas.Body>
                             :
@@ -64,7 +76,7 @@ function SideBar(props) {
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR HUTWORKER</h5></Nav.Link>
                                         <ul></ul>
-                                        <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                        <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                     </Nav>
                                 </Offcanvas.Body>
                                 :
@@ -76,18 +88,16 @@ function SideBar(props) {
                                             <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR EMERGENCY</h5></Nav.Link>
                                             <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR EMERGENCY</h5></Nav.Link>
                                             <ul></ul>
-                                            <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                            <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                         </Nav>
                                     </Offcanvas.Body>
                                     : props.user.role === "manager" ?
                                         <Offcanvas.Body>
                                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                                 {/*ADD OPTIONS EMERGENCY TO DO*/}
-                                                <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
-                                                <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
-                                                <Nav.Link onClick={() => { }} style={{ color: "white" }}><h5>OPTIONS FOR MANAGER</h5></Nav.Link>
+                                                <Nav.Link onClick={() => { navigate('/pending-requests') }} onMouseOver={() => { setOver('pending-users') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/pending-users' || over === 'pending-users') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Registration requests</h5></Nav.Link>
                                                 <ul></ul>
-                                                <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                             </Nav>
                                         </Offcanvas.Body>
                                         : props.user.role === "hiker" ?
@@ -99,9 +109,9 @@ function SideBar(props) {
                                                     <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hut list</h5></Nav.Link>
                                                     <ul></ul>
 
-                                                    <Nav.Link onClick={() => { navigate('/hiker/personal-page') }}><i class="bi bi-gear-fill text-white"></i></Nav.Link>
+                                                    <Nav.Link onClick={() => { navigate('/hiker/personal-page') }}><i className="bi bi-gear-fill text-white"></i></Nav.Link>
 
-                                                    <Button onClick={() => { props.setUser(undefined); navigate('/'); }} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                    <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                                 </Nav>
                                             </Offcanvas.Body>
                                             : false

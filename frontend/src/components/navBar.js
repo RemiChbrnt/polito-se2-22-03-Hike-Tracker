@@ -33,7 +33,8 @@ function NavBar(props) {
                                 <Col>
                                     <SideBar user={props.user} setUser={props.setUser} />
                                 </Col>
-                            </Row>                        }
+                            </Row>
+                        }
 
 
                     </Container>

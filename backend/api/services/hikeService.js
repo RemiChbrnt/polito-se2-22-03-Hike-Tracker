@@ -35,6 +35,22 @@ class HikeService {
         }
     }
 
+    getHikeFromID = async (query) => {
+        try {
+            const hike = await this.dao.getHikeFromID(query)
+            return {
+                ok: true,
+                status: 200,
+                body: hike
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
     createHike = async (newHike) => {
         try {
             const hike = await this.dao.createHike(newHike)
@@ -98,7 +114,21 @@ class HikeService {
             }
         }
     }
-
+    
+    addHikeReferencePoint = async (newReferencePoint) => {
+        try {
+            const res = await this.dao.addHikeReferencePoint(newReferencePoint)
+            return {
+                ok: true,
+                status: 201,
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 400
+            }
+        }
+    }
 
 }
 
