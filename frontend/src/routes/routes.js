@@ -4,33 +4,20 @@ import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
-import { AddPointForm } from "../components/addPointForm";
+import HutDetail from "../screens/hutDetail.js";
 import { AddHutForm } from "../components/addHutForm";
+import { AddHutPhotoForm } from "../components/addHutPhotoForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
 import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
+import { UpdateHutStatus } from "../components/updateHutStatus.js";
 import RequestsPage from '../components/RequestsPage';
 
 import { HutListPage } from "../screens/hutListPage";
 import Hiker from "../screens/hiker.js";
-import Home from "../screens/home.js";
 
 
 const routes = [
-    /*{
-        path: "/",
-        key: "Home",
-        screen: function (props, setProps) {
-            return <Home props={props} setProps={setProps} />
-        }
-    },
-    {
-        path: "/localGuide",
-        key: "localGuide",
-        screen: function (props, setProps) {
-            return <LocalGuide setProps={setProps} />
-        }
-    },*/
     {
         path: "/hiker",
         key: "hiker",
@@ -60,15 +47,29 @@ const routes = [
         }
     },
     {
+        path: "/hut-detail-:hutId",
+        key: "hut-detail",
+        screen: function (user, props, setProps) {
+            return <HutDetail user={user} props={props} setProps={setProps} />
+        }
+    },
+    {
         path: "/add-hut",
         key: "add-hut",
+        screen: function (user, props, setProps) {
+            return (<AddHutForm props={props} setProps={setProps} />);
+        }
+    },
+    {
+        path: "/add-hut-photo",
+        key: "add-hut-photo",
         screen: function (user, props, setProps) {
             return (
                 <Container>
                     <Row >
                         <Col></Col>
                         <Col>
-                            <AddHutForm props={props} setProps={setProps} />
+                            <AddHutPhotoForm user={user} props={props} setProps={setProps} />
                         </Col>
                         <Col></Col>
                     </Row>
@@ -80,25 +81,7 @@ const routes = [
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (user, props, setProps) {
-            return (
-                <Container>
-                    <Row >
-                        <Col></Col>
-                        <Col>
-                            <AddParkingForm props={props} setProps={setProps} />
-                        </Col>
-                        <Col></Col>
-                    </Row>
-                    <ul></ul>
-                </Container>
-            );
-        }
-    },
-    {
-        path: "/add-hike",
-        key: "add-hike",
-        screen: function (user, props, setProps) {
-            return <AddPointForm props={props} setProps={setProps} />
+            return (<AddParkingForm props={props} setProps={setProps} />);
         }
     },
     {
@@ -116,10 +99,17 @@ const routes = [
         }
     },
     {
+        path: "/update-hut-status",
+        key: "update-hut-status",
+        screen: function (user, props, setProps) {
+            return <UpdateHutStatus user={user} props={props} setProps={setProps} />
+        }
+    },
+    {
         path: "/pending-requests",
         key: "pending-requests",
         screen: function (props, setProps) {
-            return <RequestsPage props={props} setProps={setProps}/>
+            return <RequestsPage props={props} setProps={setProps} />
         }
     }
 

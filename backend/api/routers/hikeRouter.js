@@ -4,7 +4,6 @@ const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDAO');
 const isLoggedIn = require("../middleware/authentication");
 const service = new HikeService(HikeDao)
-// const service = new HikeService(mockHikeDao);
 
 const router = express.Router()
 
@@ -19,7 +18,7 @@ router.get('/hikes', [
     query('maxTime').optional().isFloat({ min: 0 }),
     query('difficulty').optional().isString().isIn(['tourist', 'hiker', 'pro']),
     query('country').optional().isString(),
-    query('province').optional().isString(),
+    query('region').optional().isString(),
     query('town').optional().isString(),
     query('author').optional().isEmail()
 ],
@@ -28,7 +27,6 @@ router.get('/hikes', [
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: errors.array() });
         }
-
         const data = await service.getHikes(req.query)
         if (data.ok) {
             return res.status(data.status).json(data.body)
@@ -50,7 +48,7 @@ router.post('/hikes', isLoggedIn, [
     const errors = validationResult(req);
     console.log("hike query " + JSON.stringify(req.body));
 
-    if(req.user.role!=='guide')
+    if (req.user.role !== 'guide')
         return res.status(403).json({ errors: "Only guides can access this feature" });
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -77,25 +75,6 @@ router.get('/hikeFromID', [query('id').exists()],
         }
         return res.status(data.status).end()
     })
-
-// router.post('/locations', [
-//     body('name').exists().isString(),
-//     body('type').exists().isString(),
-//     body('latitude').exists().isFloat(),
-//     body('longitude').exists().isFloat()
-// ], async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(422).json({ errors: errors.array() });
-//     }
-
-//     const newLocation = req.body
-//     const locId = await service.createLocation(newLocation)
-//     if (locId.ok) {
-//         return res.status(locId.status).json(locId.body)
-//     }
-//     return res.status(locId.status).end()
-// })
 
 
 
@@ -146,7 +125,7 @@ router.post('/hikesReferencePoints', isLoggedIn, [
 ], async (req, res) => {
     const errors = validationResult(req);
 
-    if(req.user.role!=='guide')
+    if (req.user.role !== 'guide')
         return res.status(403).json({ errors: "Only guides can access this feature" });
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -155,9 +134,53 @@ router.post('/hikesReferencePoints', isLoggedIn, [
     const hikeReferencePoints = req.body
     const refPt = await service.addHikeReferencePoint(hikeReferencePoints)
     if (refPt.ok) {
-        return res.status(refPt.status).json({ok: true})
+        return res.status(refPt.status).json({ ok: true })
     }
     return res.status(refPt.status).end()
 })
+
+router.get('/hikesList/:hutId/', isLoggedIn,
+    [param('hutId').exists().isInt(),],
+    async (req, res) => {
+        if (req.user === undefined || req.user.role !== "hutworker")
+            return res.status(400).json({ error: "Unauthorized" });
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const data = await service.getHikesByHutId(req.params.hutId, req.user.email)
+        if (data.ok) {
+            return res.status(data.status).json(data.body)
+        }
+        return res.status(data.status).end()
+    }
+)
+
+
+router.put('/hikes/:hikeId/status/:hutId', [
+    param('hikeId').exists().isInt(),
+    param('hutId').exists().isInt(),
+    body('status').exists().isString().isIn(['open', 'closed', 'partly blocked', 'requires special gear']),
+    body('description').exists().isString()
+],
+    async (req, res) => {
+
+        if (req.user === undefined || req.user.role !== "hutworker")
+            return res.status(400).json({ error: "Unauthorized" });
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ error: errors.array() });
+        }
+
+        const data = await service.updateStatus(req.body, req.params.hikeId, req.params.hutId, req.user.email)
+        if (data.ok) {
+            return res.status(data.status).end();
+        }
+        return res.status(data.status).end()
+    }
+)
 
 module.exports = router

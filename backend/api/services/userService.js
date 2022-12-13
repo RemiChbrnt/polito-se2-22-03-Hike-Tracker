@@ -35,7 +35,7 @@ class UserService {
 
     signup = async (body) => {
         try {
-            let user = await this.DAO.signup(body.email, body.fullName, body.password, body.role, body.phoneNumber);
+            let user = await this.DAO.signup(body.email, body.fullName, body.password, body.role, body.phoneNumber, body.hut);
             return {
                 ok: true,
                 status: 201,
@@ -114,7 +114,8 @@ class UserService {
             const users = result.map((u) => ({
                 email: u.email,
                 fullName: u.fullname,
-                role: u.role
+                role: u.role,
+                phoneNumber: u.phoneNumber
             }))
             return {
                 ok: true,
@@ -151,9 +152,9 @@ class UserService {
     }
 
 
-    declineUser = async (email) => {
+    declineUser = async (email, role) => {
         try {
-            const user = await this.DAO.declineUser(email);
+            const user = await this.DAO.declineUser(email, role);
             return {
                 ok: true,
                 status: 200,
@@ -171,6 +172,36 @@ class UserService {
 
 
 
+    updatePreferences = async (req) => {
+        try {
+            let prefs = await this.DAO.updatePreferences(req.user.email, req.body.ascent, req.body.duration);
+            return {
+                ok: true,
+                status: 201,
+                body: prefs
+            };
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+    
+    deletePreferences = async (req) => {
+        try {
+            await this.DAO.deletePreferences(req.user.email);
+            return {
+                ok: true,
+                status: 204
+            };
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
 }
 
 module.exports = UserService

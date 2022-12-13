@@ -1,4 +1,5 @@
 'use strict'
+const { Console } = require('console');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { resolve } = require('path');
@@ -8,9 +9,8 @@ exports.login = async (email, password) => {
     return new Promise((resolve, reject) => {
         const sql =
             `SELECT * FROM Users WHERE email = ?`;
-        db.get(sql, [email], (err, row) => {
+        db.get(sql, [email], async (err, row) => {
             if (err) {
-                console.log("errore " + err);
                 reject(err);
             }
             else if (row === undefined) {
@@ -24,6 +24,7 @@ exports.login = async (email, password) => {
                     role: row.role,
                     verified: row.verified
                 }
+
                 if (user.verified === 0) {
                     resolve(412);
                     return;
@@ -32,17 +33,19 @@ exports.login = async (email, password) => {
                     return;
                 }
 
+                if (user.role === "hutworker") {
+                    user.hut = await getHutId(email).catch((e) => reject(e));
+                }
+
                 /* User found. Now check whether the hash matches */
                 crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
                     if (err)
                         reject(err);
 
                     if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))) {
-                        console.log("Login failed - Wrong password");
                         resolve(false); // Hash doesn't match, wrong password
                     }
                     else {
-                        console.log("Login successful");
                         resolve(user);
                     }
                 });
@@ -51,41 +54,83 @@ exports.login = async (email, password) => {
     });
 }
 
+const getHutId = async function (email) {
+    return new Promise((res, rej) => {
+        const sql1 = `SELECT locationId FROM HutWorkers WHERE email = ?`;
+        db.get(sql1, [email], async (err, row) => {
+            if (err) {
+                console.log("errore " + err);
+                rej(err);
+            }
+            else if (row === undefined) {
+                res(null);
+                return;
+            }
+            else {
+                // user.hut = row.id;
+                res(row.locationId);
+            }
+        })
+    })
+}
 
 
-
-exports.signup = async (email, fullName, password, role, phoneNumber) => {
-    let salt, hash, query;
-
-    return new Promise((resolve, reject) => {
+const generateHash = async function (password) {
+    let salt, hash;
+    await new Promise((resolve, reject) => {
         crypto.randomBytes(24, async (err, buf) => {
             if (err)
                 reject(err);
 
             salt = buf.toString("base64");
             resolve(salt);
-        })
-    }).then(() => new Promise((resolve, reject) => {
+        });
+    }).then(async () =>
+        await new Promise((resolve, reject) => {
+            crypto.scrypt(password, salt, 128, function (err, hashedPassword) {
+                if (err)
+                    reject(err);
 
-        crypto.scrypt(password, salt, 128, function (err, hashedPassword) {
-            if (err)
-                reject(err);
-
-            hash = hashedPassword.toString("base64");
-            resolve(hash);
+                hash = hashedPassword.toString("base64");
+                resolve();
+            })
         })
-    })).then(() => new Promise((resolve, reject) => {
+
+    );
+    return [salt, hash];
+}
+
+exports.signup = async (email, fullName, password, role, phoneNumber, hut) => {
+    let salt, hash, query;
+
+    [salt, hash] = await generateHash(password); //to reduce complexity we have outsourced the hash generation
+    return new Promise((resolve, reject) => {
 
         let randomString = crypto.randomBytes(16).toString('hex');
-
-        if (phoneNumber !== undefined) {
-            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, 0)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber, randomString], (err) => {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                else {
+        query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, ?, ?, 0)`;
+        db.run(query, [email, fullName, hash, salt, role, phoneNumber ? phoneNumber : null, randomString], (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            else {
+                /* If the new user wants to be a hut worker, insert his data in the HutWorkers table */
+                if (role === "hutworker") {
+                    query = 'INSERT INTO HutWorkers VALUES(?, ?)';
+                    db.run(query, [email, hut], (err) => {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            sendEmail(email, randomString);
+                            resolve({
+                                email: email,
+                                fullName: fullName,
+                                role: role
+                            });
+                        }
+                    })
+                } else {
                     sendEmail(email, randomString);
                     resolve({
                         email: email,
@@ -93,28 +138,10 @@ exports.signup = async (email, fullName, password, role, phoneNumber) => {
                         role: role
                     });
                 }
+            }
 
-            });
-        }
-        else {
-            query = `INSERT INTO Users VALUES(?, ?, ?, ?, ?, NULL, ?, 0)`;
-            db.run(query, [email, fullName, hash, salt, role, phoneNumber, randomString], async (err) => {
-                if (err)
-                    reject(err);
-                else {
-                    const user = {
-                        email: email,
-                        fullName: fullName,
-                        role: role
-                    }
-
-                    sendEmail(email, randomString);
-
-                    resolve(user);
-                }
-            });
-        }
-    }));
+        });
+    });
 }
 
 
@@ -162,8 +189,9 @@ exports.checkUserVerification = async (email) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT role, verified FROM Users WHERE email=?'
         db.get(sql, [email], (err, row) => {
-            if (err)
+            if (err) {
                 reject(503);
+            }
             else if (row === undefined)
                 resolve({});
             else
@@ -193,7 +221,7 @@ exports.getPendingUsers = async () => {
 exports.approveUser = async (email) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE Users SET verified = 2 WHERE email = ?'
-        db.run(sql, [email], (err) => {
+        db.run(sql, [email], function (err) {
             if (err)
                 reject(503);
             else
@@ -202,18 +230,59 @@ exports.approveUser = async (email) => {
     })
 }
 
-exports.declineUser = async (email) => {
+exports.updatePreferences = async (email, ascent, duration) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE preferences SET ascent = ?, duration = ? WHERE email = ?';
+        db.run(sql, [ascent, duration, email], (err) => {
+            if (err) {
+                reject(503);
+                return;
+            }
+            const prefs = {
+                "email": email,
+                "ascent": ascent,
+                "duration": duration
+            }
+            resolve(prefs);
+        })
+    })
+}
+
+exports.declineUser = async (email, role) => {
     return new Promise((resolve, reject) => {
         const sql = 'DELETE FROM Users WHERE email = ?'
         db.run(sql, [email], (err) => {
             if (err)
                 reject(503);
-            else
-                resolve(true);
-        })
+            else {
+                if (role === "hutworker") {
+                    const sql = 'DELETE FROM HutWorkers WHERE email = ?'
+                    db.run(sql, [email], (err) => {
+                        if (err)
+                            reject(503);
+                        else
+                            resolve(true);
+                    });
+                }
+                else
+                    resolve(true);
+            }
+        });
     })
 }
 
+exports.deletePreferences = async (email) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM preferences WHERE email = ?';
+        db.run(sql, [email], (err) => {
+            if (err) {
+                reject(503);
+                return;
+            }
+            resolve(true);
+        })
+    })
+}
 
 
 
@@ -265,10 +334,8 @@ const sendEmail = async (email, randomString) => {
         html: `<span>Press <a href="http://localhost:3001/api/verify/${email}/${randomString}">here</a> to verify your email.</span>`
     };
 
-    let info = await transport.sendMail(mailOptions);
-    // console.log("info " + JSON.stringify(info));
+    await transport.sendMail(mailOptions);
 
     return;
 
 }
-

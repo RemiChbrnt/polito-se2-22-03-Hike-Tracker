@@ -7,7 +7,7 @@ function HutFilterForm(props) {
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [country, setCountry] = useState("");
-    const [province, setProvince] = useState("");
+    const [region, setRegion] = useState("");
     const [town, setTown] = useState("");
     const [address, setAddress] = useState("");
     const [minAltitude, setMinAltitude] = useState("");
@@ -44,8 +44,8 @@ function HutFilterForm(props) {
         if (country !== "") {
             filters.push({ key: "country", value: country.toLocaleLowerCase() });
         }
-        if (province !== "") {
-            filters.push({ key: "province", value: province });
+        if (region !== "") {
+            filters.push({ key: "region", value: region });
         }
         if (town !== "") {
             filters.push({ key: "town", value: town.toLocaleLowerCase() });
@@ -160,11 +160,11 @@ function HutFilterForm(props) {
                         <ul></ul>
                         <Row>
                             <Form.Group>
-                                <h5>Province: </h5>
-                                <Form.Select value={province}
-                                    onChange={e => setProvince(e.target.value)}
+                                <h5>region: </h5>
+                                <Form.Select value={region}
+                                    onChange={e => setRegion(e.target.value)}
                                     aria-label="region" size="lg">
-                                    <option>Select the Province</option>
+                                    <option>Select the Region</option>
                                     <option value="AG">Agrigento</option>
                                     <option value="AL">Alessandria</option>
                                     <option value="AN">Ancona</option>

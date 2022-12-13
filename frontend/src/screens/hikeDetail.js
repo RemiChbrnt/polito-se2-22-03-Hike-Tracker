@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row, Button, Collapse, Form } from 'react-bootstrap';
+import { Col, Container, Row, Button, Collapse, Form, Card, Badge } from 'react-bootstrap';
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "../components/map.js";
 import API from '../API.js';
 import { AddReferencePointForm } from "../components/addReferencePointForm";
 
-const HikeDetail = ({user, props, setProps }) => {
+const HikeDetail = ({ user, props, setProps }) => {
 
     const [showParkings, setShowParkings] = useState(true);
     const [showHuts, setShowHuts] = useState(true);
@@ -14,7 +14,7 @@ const HikeDetail = ({user, props, setProps }) => {
 
     // Used to modify the display if a new reference point has to be added
     const [addNewReferencePoint, setAddNewReferencePoint] = useState(false);
-    const [newReferencePointCoords, setNewReferencePointCoords] = useState (null);
+    const [newReferencePointCoords, setNewReferencePointCoords] = useState(null);
 
     const [hike, setHike] = useState("");
     const [isLoading, setIsLoading] = useState(true);
@@ -24,12 +24,18 @@ const HikeDetail = ({user, props, setProps }) => {
     useEffect(() => {
         API.getHikeFromID(params.hikeId)
             .then(hike => {
-                console.log(hike);
                 setHike(hike);
                 setIsLoading(false);
             })
             .catch(error => console.log(error));
     }, [])
+
+    const alertStyle = (status) => {
+        return {
+            color: status === 'open' ? 'green' : '#FF5733',
+            'font-style': 'italic',
+        }
+    };
 
     return (
         <Container>
@@ -42,7 +48,9 @@ const HikeDetail = ({user, props, setProps }) => {
                     <Row>
                         <Col md={10}>
                             <h1>Hike "{hike.title}"</h1>
-                            <h4>#{params.hikeId}</h4>
+
+                            {hike.statusList.map((status => <Row><p style={alertStyle(status.status)}><i class="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}
+
                         </Col>
                         <Col md={2}>
                             <div className="d-grid gap-2">
@@ -50,124 +58,109 @@ const HikeDetail = ({user, props, setProps }) => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <label for="parking" className="pr-5">
-                                Show Parkings &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="parking"
-                                checked={showParkings}
-                                onChange={e => setShowParkings(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="hut" >
-                                Show Huts &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="hut"
-                                checked={showHuts}
-                                onChange={e => setShowHuts(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="pointsInterest">
-                                Show Points of Interest &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="pointsInterest"
-                                checked={showPointsOfInterest}
-                                onChange={e => setShowPointsOfInterest(e.target.checked)}
-                            />
-                        </Col>
-                        <Col>
-                            <label for="startAndArrival">
-                                Show Start & Arrival Points &emsp;
-                            </label>
-                            <input
-                                type="checkbox"
-                                id="startAndArrival"
-                                checked={showStartAndArrival}
-                                onChange={e => setShowStartAndArrival(e.target.checked)}
-                            />
-                        </Col>                     
-                    </Row>
+                    <Form>
+                        <Form.Check
+                            inline
+                            label="Show parkings"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowParkings(e.target.checked)}
+                        />
 
-                    {(user === undefined )? (false && <></>) : (user.role === "guide") && 
-                        <Col style={{marginTop: "2%", display: "flex", width:"100%", justifyContent:"flex-end", alignItems:"center"}}>
-                            <div className="d-grid gap-2">
-                                <Button 
-                                    variant="white" 
-                                    style={{ backgroundColor: "#00706c" }}
-                                    onClick={() => {setAddNewReferencePoint(true)}}>
+                        <Form.Check
+                            inline
+                            label="Show huts"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowHuts(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show points of interest"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowPointsOfInterest(e.target.checked)}
+                        />
+
+                        <Form.Check
+                            inline
+                            label="Show start and arrival"
+                            type="checkbox"
+                            defaultChecked={true}
+                            onChange={e => setShowStartAndArrival(e.target.checked)}
+                        />
+                    </Form>
+
+                    {
+                        (user === undefined) ? (false && <></>) : (user.role === "guide") &&
+                            <Col style={{ marginTop: "2%", display: "flex", width: "100%", justifyContent: "flex-end", alignItems: "center" }}>
+                                <div className="d-grid gap-2">
+                                    <Button
+                                        variant="white"
+                                        style={{ backgroundColor: "#00706c" }}
+                                        onClick={() => { setAddNewReferencePoint(true) }}>
                                         <h4 className="text-white">Add a Reference Point</h4>
-                                </Button>
-                            </div>
-                        </Col>
+                                    </Button>
+                                </div>
+                            </Col>
                     }
                     <ul></ul>
-                    <Row style={{ flex: 1, marginTop: "2%", alignItems: "center" }}>
-                        <Row className="border border-3 border-secondary">
-                            <Map 
+                    <Row>
+                        <Row className="justify-content-center">
+                            <Map
                                 displayPoints={[showParkings, showHuts, showPointsOfInterest, showStartAndArrival]}
-                                startPt={JSON.stringify(hike.startPt)} 
+                                startPt={JSON.stringify(hike.startPt)}
                                 endPt={JSON.stringify(hike.endPt)}
-                                referencePoints={JSON.stringify(hike.referencePoints)} 
+                                referencePoints={JSON.stringify(hike.referencePoints)}
                                 newReferencePointCoords={newReferencePointCoords}
                                 setNewReferencePointCoords={setNewReferencePointCoords}
                                 addNewReferencePoint={addNewReferencePoint}
                                 file={hike.track} />
                         </Row>
-                        {addNewReferencePoint?
-                            <AddReferencePointForm 
-                                hikeId={params.hikeId} 
-                                userEmail={user.email} 
+
+
+                        {addNewReferencePoint ?
+                            <AddReferencePointForm
+                                hikeId={params.hikeId}
+                                userEmail={user.email}
                                 pointCoords={newReferencePointCoords}
                                 setAddNewReferencePoint={setAddNewReferencePoint}
                             />
-                        :<Row>
-                            <Col>
-                                <div className="d-flex justify-content-start">
-                                    <h4>
-                                        Difficulty :
-                                    </h4>
-                                    <div style={{
-                                        backgroundColor: (hike.difficulty === "tourist") ?
-                                            "darkGreen" : (hike.difficulty === "hiker") ?
-                                                "orange" : "red",
-                                        marginLeft: "2%"
-                                    }}>
-                                        <h4 style={{ textAlign: "center", color: "white", paddingLeft: 10, paddingRight: 10 }}>
-                                            {(hike.difficulty === "tourist") ?
-                                                "Tourist Friendly" : (hike.difficulty === "hiker") ?
-                                                    "Casual Hiker" : "Professional Hiker"}
+                            : <Container>
+                                <p></p>
+                                <Row>
+                                    <Col>
+                                        <Row>
+                                            <h4> Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ?"Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></h4>
+                                        </Row>
+                                            <Row>
+                                                <h4>
+                                                    Expected time : {hike.expTime} hours
+                                                </h4>
+                                            </Row>
+                                            <Row>
+                                                <h4>
+                                                    Length : {hike.length} km
+                                                </h4>
+                                            </Row>
+                                            <Row>
+                                                <h4>
+                                                    Ascent : {hike.ascent} m
+                                                </h4>
+                                            </Row>
+                                    </Col>
+                                    <Col className="border-start border-2 border-secondary">
+                                        <h3>
+                                            Description
+                                        </h3>
+                                        <h4>
+                                            {hike.description}
                                         </h4>
-                                    </div>
-                                </div>
-                                <h4>
-                                    Expected time : {hike.expTime} hours
-                                </h4>
-                                <h4>
-                                    Length : {hike.length} km
-                                </h4>
-                                <h4>
-                                    Ascent : {hike.ascent} m
-                                </h4>
-                            </Col>
-
-                            <Col className="border-start border-2 border-secondary">
-                                <h3>
-                                    Description
-                                </h3>
-                                <h4>
-                                    {hike.description}
-                                </h4>
-                            </Col>
-                        </Row>     
+                                    </Col>
+                                </Row>
+                            </Container>
+                        }
                     </Row>
                     <ul></ul>
                 </Container>

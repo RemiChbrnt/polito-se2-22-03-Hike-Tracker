@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Form, Row, Col, ListGroup, Container, Button } from 'react-bootstrap';
 import { HikeFilterMap } from './hikeFilterMap';
+import { Country, State, City } from 'country-state-city';
 
 function HikeFilterForm(props) {
 
@@ -24,7 +25,7 @@ function HikeFilterForm(props) {
             filters.push({ key: "difficulty", value: difficulty.toLocaleLowerCase() });
         }
         if (region != "") {
-            filters.push({ key: "province", value: region.toLocaleLowerCase() });
+            filters.push({ key: "region", value: region.toLocaleLowerCase() });
         }
         if (minLength != undefined) {
             filters.push({ key: "minLength", value: minLength });
@@ -84,31 +85,11 @@ function HikeFilterForm(props) {
 
                         <Row>
                             <Form.Group>
-                                <Form.Select value={region}
+                                <Form.Select data-test-id="region" value={region}
                                     onChange={e => setRegion(e.target.value)}
                                     aria-label="region" size="lg">
-                                    <option>Select the Region</option>
-                                    <option value="Abruzzo">Abruzzo</option>
-                                    <option value="Basilicata">Basilicata</option>
-                                    <option value="Calabria">Calabria</option>
-                                    <option value="Campania">Campania</option>
-                                    <option value="Emilia Romagna">Emilia Romagna</option>
-                                    <option value="Friuli Venezia Giulia">Friuli Venezia Giulia</option>
-                                    <option value="Lazio">Lazio</option>
-                                    <option value="Liguria">Liguria</option>
-                                    <option value="Lombardia">Lombardia</option>
-                                    <option value="Marche">Marche</option>
-                                    <option value="Molise">Molise</option>
-                                    <option value="Piemonte">Piemonte</option>
-                                    <option value="Puglia">Puglia</option>
-                                    <option value="Sardegna">Sardegna</option>
-                                    <option value="Sicilia">Sicilia</option>
-                                    <option value="Toscana">Toscana</option>
-                                    <option value="Trentino Alto">Trentino Alto</option>
-                                    <option value="Umbria">Umbria</option>
-                                    <option value="Valle d'Aosta">Valle d'Aosta</option>
-                                    <option value="Veneto">Veneto</option>
-                                </Form.Select>
+                                    <option value="select">Select the Region</option>
+                                    {State.getStatesOfCountry("IT").map((r, k) => <option key={k} value={r.name}>{r.name}</option>)}                                </Form.Select>
                             </Form.Group>
                         </Row>
                         <ul></ul>
@@ -118,6 +99,7 @@ function HikeFilterForm(props) {
                                 <Form.Group>
                                     <h5>Minimum Length (km): </h5>
                                     <Form.Control
+                                        id="minLength-input"
                                         value={minLength}
                                         onChange={e => setMinLength(e.target.value)}
                                         type='number' placeholder="Minimum Length" size="lg" />
@@ -140,6 +122,7 @@ function HikeFilterForm(props) {
                                 <Form.Group>
                                     <h5>Minimum Ascent (m): </h5>
                                     <Form.Control
+                                        id="min-ascent"
                                         value={minAscent}
                                         onChange={e => setMinAscent(e.target.value)}
                                         type='number' placeholder="Minimum Ascent" size="lg" />
@@ -162,6 +145,7 @@ function HikeFilterForm(props) {
                                 <Form.Group>
                                     <h5>Minimum Time (hours): </h5>
                                     <Form.Control
+                                        id="min-time"
                                         value={minTime}
                                         onChange={e => setMinTime(e.target.value)}
                                         type='number' placeholder="Minimum Time" size="lg" />
@@ -179,13 +163,12 @@ function HikeFilterForm(props) {
                         </Row>
                         <Row>
                             <Col style={{ width: "100%", marginTop: "2%", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                                <Button variant="success" type="submit" size="lg">
+                                <Button data-test-id="confirm" variant="success" type="submit" size="lg">
                                     Confirm
                                 </Button>
                             </Col>
                         </Row>
-                    </Form>
-            }
+                    </Form>}
             <ul></ul>
         </Container >
     );
