@@ -1,4 +1,4 @@
-RETROSPECTIVE Sprint 4 (Team 3)
+RETROSPECTIVE Sprint 3 (Team 3)
 =====================================
 
 - [Process measures](#process-measures)
