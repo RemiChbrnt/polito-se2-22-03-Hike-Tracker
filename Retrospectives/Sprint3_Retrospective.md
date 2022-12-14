@@ -59,7 +59,14 @@ RETROSPECTIVE Sprint 3 (Team 3)
 - **Code review** 
   - Total hours estimated: 8h
   - Total hours spent: 9h
-  
+- **Technical Debt management**
+  - Total hours estimated: 19h30m
+  - Total hours spent: 20h
+  - Hours estimated for remediation by SonarQube: 2h
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues: 2h
+  - Hours spent on remediation: 1h30m
+  - debt ratio (as reported by SonarQube under "Measures-Maintainability")
+  - rating for each quality characteristic reported in SonarQube under "Measures" (namely reliability, security, maintainability )
 
 
 ## ASSESSMENT
