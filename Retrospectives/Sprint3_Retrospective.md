@@ -11,7 +11,7 @@ RETROSPECTIVE Sprint 3 (Team 3)
 
 - Number of stories committed vs. done: 10 vs 8
 - Total points committed vs. done: 39 vs 33
-- Nr of hours planned vs. spent (as a team): 86h30m vs 77h15m
+- Nr of hours planned vs. spent (as a team): 75h45m vs 68h30m
 
 
 ### Detailed statistics
