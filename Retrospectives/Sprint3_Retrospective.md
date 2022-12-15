@@ -59,6 +59,16 @@ RETROSPECTIVE Sprint 3 (Team 3)
 - **Code review** 
   - Total hours estimated: 8h
   - Total hours spent: 9h
+- **Technical Debt management** 
+  - Total hours estimated: 19h30m
+  - Total hours spent: 21h
+  - Hours estimated for remediation by SonarQube: 4d
+  - Hours estimated for remediation by SonarQube only for the selected and planned issues: 3h24m (on the branch gnapSprint3Final)
+  - Hours spent on remediation: 1h30m
+  - Debt ratio: 0.7%
+  - Reliability: A (0 bugs) 
+  - Security: A (0 vulnerailities)
+  - Maintainability: A (365 code smells)
   
 
 
