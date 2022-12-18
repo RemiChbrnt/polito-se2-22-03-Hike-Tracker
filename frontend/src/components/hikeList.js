@@ -1,7 +1,8 @@
-import { Card, Row, Col, ListGroup, Container, Badge  } from 'react-bootstrap';
+import { Card, Row, Col, ListGroup, Container, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { isPointInDisk } from './coordsFromMap';
+import { ReadMore } from './readMore';
 import API from '../API.js';
 
 function HikeGrid(props) {
@@ -63,7 +64,7 @@ function HikeCard(props) {
 
                         <ListGroup.Item data-test-id="difficulty">
                             <div className="d-flex justify-content-start">
-                                <i className="bi bi-activity"></i><span className="fw-bold">{"  "} Difficulty:  <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ?"Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></span>
+                                <i className="bi bi-activity"></i><span className="fw-bold">{"  "} Difficulty:  <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ? "Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></span>
                             </div>
                         </ListGroup.Item>
                         <ListGroup.Item data-test-id="time"><i className="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
@@ -77,20 +78,6 @@ function HikeCard(props) {
     );
 }
 
-const ReadMore = ({ children }) => {
-    const text = children;
-    const [isReadMore, setIsReadMore] = useState(true);
-    const toggleReadMore = () => {
-      setIsReadMore(!isReadMore);
-    };
-    return (
-      <p className="text">
-        {isReadMore ? text.slice(0, 150) : text}
-        <span onClick={toggleReadMore} className="read-or-hide" style={{color:"#3366CC"}}>
-          {isReadMore ? "... Read More" : " Show Less"}
-        </span>
-      </p>
-    );
-  };
+
 
 export { HikeGrid };
