@@ -68,13 +68,9 @@ const getHutPhotos = async (id) => {
                 return;
             } else if (rows === undefined || rows.length === 0)
                 resolve();
-            else {
-                const res = await Promise.all(
-                    rows.map(async (r) => {
-                        return r.fileName;
-                    }))
-                resolve(res);
-            }
+            else
+                resolve(rows);
+
         })
     })
 }

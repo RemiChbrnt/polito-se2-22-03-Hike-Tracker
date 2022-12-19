@@ -4,7 +4,7 @@ import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
-import HutDetail from "../screens/hutDetail.js";
+import { HutDetail } from "../screens/hutDetail.js";
 import { AddHutForm } from "../components/addHutForm";
 import { AddHutPhotoForm } from "../components/addHutPhotoForm";
 import { LinkHutToHike } from "../components/linkHutToHike";

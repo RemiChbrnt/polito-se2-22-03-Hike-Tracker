@@ -48,8 +48,6 @@ router.get('/huts', /*isLoggedIn,*/[
 router.get('/hut-by-id', isLoggedIn, [query('id').exists()],
     async (req, res) => {
 
-        console.log("req.query.id " + req.query.id);
-
         if (req.user === undefined)
             return res.status(400).json({ error: "Unauthorized" });
 
