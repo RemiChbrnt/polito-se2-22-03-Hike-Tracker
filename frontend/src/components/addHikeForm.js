@@ -311,7 +311,7 @@ function AddHikeForm(props) {
                             {// If a corresponding location already exists
                             (startMatchingLocations.length !== 0) ?
                             <Container>
-                                <h6> Matching Location(s) found for the given GPX file :</h6>
+                                <h6>Please select a point from the matching Location(s) found for the given GPX file :</h6>
                                 <Form.Group>
                                     <Form.Select value={startPoint}
                                         onChange={e => setStartPoint(e.target.value)}
@@ -321,13 +321,6 @@ function AddHikeForm(props) {
                                             <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>})}
                                     </Form.Select>
                                 </Form.Group>
-                                <Col>
-                                    <Button onClick={() => setStartMatchingLocations([])}
-                                        size="sm"
-                                        style= {{ marginTop: 15, flex: 1, fontSize: 13, fontWeight:"bold", color: "#C70039", backgroundColor:"white", borderColor:"#C70039"}}>
-                                            Create a new Point anyway
-                                    </Button>
-                                </Col>
                             </Container>
                             :   
                             <>
@@ -454,7 +447,7 @@ function AddHikeForm(props) {
                             !identicalEndStart && 
                             ((endMatchingLocations.length !== 0) ?
                             <Container>
-                                <h6> Matching Location(s) found for the given GPX file :</h6>
+                                <h6>Please select a point from the matching Location(s) found for the given GPX file :</h6>
                                 <Form.Group>
                                     <Form.Select value={endPoint}
                                         onChange={e => setEndPoint(e.target.value)}
@@ -464,13 +457,6 @@ function AddHikeForm(props) {
                                             <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>})}
                                     </Form.Select>
                                 </Form.Group>
-                                <Col>
-                                    <Button onClick={() => setStartMatchingLocations([])}
-                                        size="sm"
-                                        style= {{ marginTop: 15, flex: 1, fontSize: 13, fontWeight:"bold", color: "#C70039", backgroundColor:"white", borderColor:"#C70039"}}>
-                                            Create a new Point anyway
-                                    </Button>
-                                </Col>
                             </Container>
                             :   
                             <>

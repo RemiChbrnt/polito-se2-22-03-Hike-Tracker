@@ -93,7 +93,7 @@ const HikeDetail = ({ user, props, setProps }) => {
                     </Form>
 
                     {
-                        (user === undefined) ? (false && <></>) : (user.role === "guide") &&
+                        (user === undefined) ? (false && <></>) : (user.role === "guide" && user.email === hike.author) &&
                             <Col style={{ marginTop: "2%", display: "flex", width: "100%", justifyContent: "flex-end", alignItems: "center" }}>
                                 <div className="d-grid gap-2">
                                     <Button
