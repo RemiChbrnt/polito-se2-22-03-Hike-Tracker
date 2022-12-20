@@ -394,25 +394,14 @@ exports.terminateHike = async (groupId, hikeId, userId) => {
 /* TODO: finish */
 exports.getCurrentGroupId = async (hikerId) => {
     return new Promise((resolve, reject) => {
-        const sql1 = 'SELECT groupId FROM Participants WHERE hikerId = ?';
+        const sql1 = 'SELECT p.groupId FROM Participants p, HikesHistory h WHERE p.hikerId = ? AND p.groupId = h.groupId AND h.status = "ongoing"';
         db.all(sql1, [hikerId], (err, rows) => {
-            if(err) {
+            if(err){
                 reject(503);
             } else if(rows.length === 0) {
-                resolve(false);
+                resolve(false); // User not in any group
             } else {
-                const groupId = rows[0].groupId;
-                console.log('CURRENT GROUP ID: ' + groupId);
-                const sql2 = 'SELECT * FROM HikesHistory WHERE groupId = ? AND status = "ongoing"';
-                db.all(sql2, [groupId], (err, rows) => {
-                    if(err){
-                        reject(503);
-                    } else if(rows.length === 0){
-                        resolve(false);
-                    } else {
-                        resolve(groupId);
-                    }
-                })
+                resolve(rows[0].groupId)
             }
         })
     })

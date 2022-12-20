@@ -218,7 +218,7 @@ router.get('/current-group', isLoggedIn, async (req, res) => {
             if(response.status === 204) {
                 return res.status(response.status).end();
             } else {
-                return res.status(response.status).json(res.body);
+                return res.status(response.status).json(response.body);
             }
         }
         else {
