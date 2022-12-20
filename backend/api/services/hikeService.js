@@ -152,6 +152,78 @@ class HikeService {
             }
         }
     }
+
+    startHike = async (groupId, hikeId, userId) => {
+        try {
+            const result = await this.dao.startHike(groupId, hikeId, userId);
+            if(result === true){
+                return {
+                    ok: true,
+                    status: 201
+                }
+            } else {
+                return {
+                    ok: false,
+                    status: result
+                }
+            }
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+
+    terminateHike = async (groupId, hikeId, userId) => {
+        try {
+            const result = await this.dao.terminateHike(groupId, hikeId, userId);
+            if(result === true){
+                return {
+                    ok: true,
+                    status: 201
+                }
+            } else {
+                return {
+                    ok: false,
+                    status: result
+                }
+            }            
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+
+    getCurrentGroupId = async (hikerId) => {
+        try {
+            const result = await this.dao.getCurrentGroupId(hikerId);
+            if(result === 503) {
+                return {
+                    ok: false,
+                    status: 503
+                }
+            } else if(result === false) {
+                return {
+                    ok: true,
+                    status: 204
+                }
+            } else {
+                return {
+                    ok: true,
+                    status: 200,
+                    body: result
+                }
+            }
+        } catch(e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
 }
 
 module.exports = HikeService

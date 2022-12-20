@@ -181,6 +181,52 @@ router.put('/hikes/:hikeId/status/:hutId', [
         }
         return res.status(data.status).end()
     }
-)
+);
+
+router.post('/start-hike', isLoggedIn, async (req,res) => {
+    if(req.user.role === "hiker") {
+        const response = await service.startHike(req.body.groupId, req.body.hikeId, req.user.email);
+        if(response.ok) {
+            return res.status(response.status).end();
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+});
+
+router.put('/terminate-hike', isLoggedIn, async (req, res) => {
+    if(req.user.role === "hiker") {
+        const response = await service.terminateHike(req.body.groupId, req.body.hikeId, req.user.email);
+        if(response.ok) {
+            return res.status(response.status).end();
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+});
+
+router.get('/current-group', isLoggedIn, async (req, res) => {
+    if(req.user.role === "hiker") {
+        const response = await service.getCurrentGroupId(req.user.email);
+        if(response.ok) {
+            if(response.status === 204) {
+                return res.status(response.status).end();
+            } else {
+                return res.status(response.status).json(res.body);
+            }
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+})
 
 module.exports = router
