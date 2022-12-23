@@ -47,14 +47,14 @@ const HikeDetail = ({ user, props, setProps }) => {
                 <Container>
                     <Row>
                         <Col md={10}>
-                            <h1>Hike "{hike.title}"</h1>
+                            <h1 id="hike-tilte">Hike "{hike.title}"</h1>
 
-                            {hike.statusList.map((status => <Row><p style={alertStyle(status.status)}><i class="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}
+                            {hike.statusList.map((status => <Row><p id="hike-status" style={alertStyle(status.status)}><i class="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}
 
                         </Col>
                         <Col md={2}>
                             <div className="d-grid gap-2">
-                                <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
+                                <Button id="home-button" variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
                             </div>
                         </Col>
                     </Row>
@@ -132,26 +132,26 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 <Row>
                                     <Col>
                                         <Row>
-                                            <h4> Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ?"Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></h4>
+                                            <h4 id="hike-difficulty"> Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ?"Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></h4>
                                         </Row>
                                             <Row>
-                                                <h4>
+                                                <h4 id="hike-expected-time">
                                                     Expected time : {hike.expTime} hours
                                                 </h4>
                                             </Row>
                                             <Row>
-                                                <h4>
+                                                <h4 id="hike-length">
                                                     Length : {hike.length} km
                                                 </h4>
                                             </Row>
                                             <Row>
-                                                <h4>
+                                                <h4 id="hike-ascent">
                                                     Ascent : {hike.ascent} m
                                                 </h4>
                                             </Row>
                                     </Col>
                                     <Col className="border-start border-2 border-secondary">
-                                        <h3>
+                                        <h3 id="hike-description">
                                             Description
                                         </h3>
                                         <h4>

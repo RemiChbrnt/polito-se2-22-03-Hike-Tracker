@@ -1,4 +1,4 @@
-describe('Browse Hikes Home Page', {
+/*describe('Browse Hikes Home Page', {
     retries: {
       runMode: 2,
       openMode: 2,
@@ -79,4 +79,4 @@ describe('Browse Hikes Home Page', {
     cy.get('[data-test-id="confirm"]').trigger('click');
     cy.get(".card").should("have.length", 1);
   }); 
-})
+})*/
