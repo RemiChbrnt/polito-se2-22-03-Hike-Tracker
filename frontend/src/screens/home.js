@@ -82,10 +82,10 @@ const Home = (props) => {
 
             <Row>
                 <Col md={8}>
-                    <h1 data-test-id="title">Hike List</h1>
+                    <h1 id="title">Hike List</h1>
                 </Col>
                 <Col md={2}>
-                    <Button id='filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
+                    <Button id='reset-filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
                 </Col>
                 <Col md={2}>
                     <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
