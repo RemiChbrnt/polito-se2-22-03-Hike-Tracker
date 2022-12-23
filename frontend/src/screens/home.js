@@ -16,18 +16,21 @@ const Home = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function getPrefs () {
-            const prefs = await API.getPreferences();
-            if (Object.keys(prefs.body).length === 0)
-                setPreferences(undefined);
-            else
-                setPreferences(prefs.body);
+        if(props.user !== undefined){
+            async function getPrefs () {
+                const prefs = await API.getPreferences();
+                if (Object.keys(prefs.body).length === 0)
+                    setPreferences(undefined);
+                else
+                    setPreferences(prefs.body);
+            }
+    
+            /* Temporary patch to make the filters reset upon logout */
+            if(props.user === undefined)
+                resetFilters();
+            getPrefs();
         }
-
-        /* Temporary patch to make the filters reset upon logout */
-        if(props.user === undefined)
-            resetFilters();
-        getPrefs();
+        
     }, [props.user]);
 
     const suggestHikes = async () => {
