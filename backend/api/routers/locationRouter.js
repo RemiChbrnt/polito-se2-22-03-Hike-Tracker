@@ -16,8 +16,15 @@ router.get('/huts', /*isLoggedIn,*/[
     query('region').optional({ nullable: true }).isString({ min: 0 }),
     query('town').optional({ nullable: true }).isString({ min: 0 }),
     query('address').optional({ nullable: true }).isString({ min: 0 }),
+    query('latitude').optional({ nullable: true }).isFloat(),
+    query('longitude').optional({ nullable: true }).isFloat(),
+    query('minCost').optional({ nullable: true }).isFloat(),
+    query('maxCost').optional({ nullable: true }).isFloat(),
+    query('food').optional({ nullable: true }).isString().isIn(["none", "buffet", "restaurant"]),
     query('minAltitude').optional({ nullable: true }).isFloat(),
-    query('maxAltitude').optional({ nullable: true }).isFloat()
+    query('maxAltitude').optional({ nullable: true }).isFloat(),
+    query('minNumberOfBeds').optional({ nullable: true }).isFloat(),
+    query('maxNumberOfBeds').optional({ nullable: true }).isFloat()
 ],
     async (req, res) => {
 
@@ -40,8 +47,6 @@ router.get('/huts', /*isLoggedIn,*/[
 
 router.get('/hut-by-id', isLoggedIn, [query('id').exists()],
     async (req, res) => {
-
-        console.log("req.query.id " + req.query.id);
 
         if (req.user === undefined)
             return res.status(400).json({ error: "Unauthorized" });

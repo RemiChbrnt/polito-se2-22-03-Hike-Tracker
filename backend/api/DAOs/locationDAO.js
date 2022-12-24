@@ -23,30 +23,8 @@ exports.getHuts = async (query) => {
                 reject(400);
                 return;
             }
-            else {
-                const res = await Promise.all(
-                    rows.map(async (r) => {
-                        return {
-                            id: r.id,
-                            name: r.name,
-                            type: r.type,
-                            latitude: r.latitude,
-                            longitude: r.longitude,
-                            country: r.country,
-                            region: r.region,
-                            town: r.town,
-                            address: r.address,
-                            altitude: r.altitude,
-                            author: r.author,
-                            numberOfBeds: r.numberOfBeds,
-                            food: r.food,
-                            description: r.description,
-                            phone: r.phone,
-                        }
-                    })
-                )
-                resolve(res);
-            }
+            else
+                resolve(rows);
         })
     })
 }
@@ -90,13 +68,9 @@ const getHutPhotos = async (id) => {
                 return;
             } else if (rows === undefined || rows.length === 0)
                 resolve();
-            else {
-                const res = await Promise.all(
-                    rows.map(async (r) => {
-                        return r.fileName;
-                    }))
-                resolve(res);
-            }
+            else
+                resolve(rows);
+
         })
     })
 }
@@ -107,15 +81,21 @@ const getHutPhotos = async (id) => {
 
 exports.generateHutFilters = (query) => {
     let filters = " AND";
+    console.log("query.minNumberOfBeds " + query.minNumberOfBeds);
     if (query.name !== undefined) filters = filters + ` name LIKE '%${query.name}%' AND`
     if (query.latitude !== undefined) filters = filters + ` latitude = ${query.latitude} AND`
     if (query.longitude !== undefined) filters = filters + ` longitude = ${query.longitude} AND`
-    if (query.country !== undefined) filters = filters + ` country = '${query.country}' AND`
-    if (query.region !== undefined) filters = filters + ` region   = '${query.region}' AND`
+    if (query.country !== undefined) filters = filters + ` country = '${query.country}'COLLATE NOCASE AND`
+    if (query.region !== undefined) filters = filters + ` region = '${query.region}' COLLATE NOCASE AND`
     if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
     if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
+    if (query.latitude !== undefined) filters = filters + ` latitude >= ${query.latitude - 10} AND latitude <= ${query.latitude + 10} AND`
+    if (query.longitude !== undefined) filters = filters + ` longitude >= ${query.latitude - 10} AND longitude <= ${query.latitude + 10} AND`
     if (query.minAltitude !== undefined) filters = filters + ` altitude >= ${query.minAltitude} AND`
     if (query.maxAltitude !== undefined) filters = filters + ` altitude <= ${query.maxAltitude} AND`
+    if (query.food !== undefined) filters = filters + ` food = '${query.food}' AND`
+    if (query.minNumberOfBeds !== undefined) filters = filters + ` numberOfBeds >= ${query.minNumberOfBeds} AND`
+    if (query.maxNumberOfBeds !== undefined) filters = filters + ` numberOfBeds <= ${query.maxNumberOfBeds} AND`
     filters = filters + " 1"
     return filters;
 }
