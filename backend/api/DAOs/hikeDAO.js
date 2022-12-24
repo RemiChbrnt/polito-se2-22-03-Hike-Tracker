@@ -317,21 +317,24 @@ exports.addHikeReferencePoint = async (query) => {
 exports.startHike = async (groupId, hikeId, userId) => {
     return new Promise((resolve, reject) => {
         const sql1 = 'SELECT * FROM HikesHistory WHERE groupId = ? AND status = "ongoing"';
-        db.all(sql1, [groupId], (err, rows) => {
-            if(err){
+        db.all(sql1, [groupId], function (err, rows) {
+            if (err) {
+                console.log(err);
                 reject(503);
-            } else if(rows.length !== 0) {
+            } else if (rows.length !== 0) {
                 reject(404);
             } else {
-                const sql2 = 'INSERT INTO HikesHistory (groupId, hikeId, status, checkPoints) VALUES (?, ?, "ongoing", NULL)';
-                db.run(sql2, [groupId, hikeId], (err) => {
-                    if(err)
+                const sql2 = 'INSERT INTO HikesHistory (hikeId, status, checkPoints) VALUES (?, "ongoing", NULL)';
+                db.run(sql2, [hikeId], function (err) {
+                    if (err) {
+                        console.log(err);
                         reject(503);
+                    }
                     else {
                         {
                             const sql2 = 'INSERT INTO Participants(groupId, hikerId) VALUES(?,?)';
-                            db.run(sql2, [groupId, userId], (err) => {
-                                if(err) {
+                            db.run(sql2, [this.lastID, userId], function (err) {
+                                if (err) {
                                     reject(503);
                                 } else {
                                     resolve(true);
@@ -359,26 +362,26 @@ exports.terminateHike = async (groupId, hikeId, userId) => {
     return new Promise((resolve, reject) => {
         const sql1 = 'SELECT * FROM Participants WHERE groupId = ? AND hikerId = ?';
         db.all(sql1, [groupId, userId], (err, rows) => {
-            if(err) {
+            if (err) {
                 reject(503);
-            } else if(rows.length === 0) {
+            } else if (rows.length === 0) {
                 /* User is not performing the selected Hike, cannot terminate it */
                 reject(403);
             } else {
                 const sql2 = 'SELECT * FROM HikesHistory WHERE groupId = ? AND hikeId = ?';
                 db.all(sql2, [groupId, hikeId], (err, rows) => {
-                    if(err) {
+                    if (err) {
                         reject(503);
-                    } else if(rows.length === 0) {
+                    } else if (rows.length === 0) {
                         reject(404);
-                    } else if(rows[0].status !== "ongoing"){
+                    } else if (rows[0].status !== "ongoing") {
                         reject(400);
                     } else {
                         const sql3 = 'UPDATE HikesHistory SET status = "completed" WHERE groupId = ? AND hikeId = ?';
                         db.run(sql3, [groupId, hikeId], (err) => {
-                            if(err) {
+                            if (err) {
                                 reject(503);
-                            } else if(this.changes === 0){
+                            } else if (this.changes === 0) {
                                 reject(404); // Hike already completed
                             } else {
                                 resolve(true);
@@ -394,15 +397,17 @@ exports.terminateHike = async (groupId, hikeId, userId) => {
 /* TODO: finish */
 exports.getCurrentGroupId = async (hikerId) => {
     return new Promise((resolve, reject) => {
-        const sql1 = 'SELECT p.groupId FROM Participants p, HikesHistory h WHERE p.hikerId = ? AND p.groupId = h.groupId AND h.status = "ongoing"';
+        const sql1 =
+            `SELECT p.groupId, h.hikeId FROM Participants p, HikesHistory h
+            WHERE p.hikerId = ? AND h.status = "ongoing"
+            ORDER BY p.groupId DESC`;
         db.all(sql1, [hikerId], (err, rows) => {
-            if(err){
+            if (err) {
                 reject(503);
-            } else if(rows.length === 0) {
+            } else if (rows.length === 0) {
                 resolve(false); // User not in any group
-            } else {
-                resolve(rows[0].groupId)
-            }
+            } else
+                resolve(rows[0]);
         })
     })
 }

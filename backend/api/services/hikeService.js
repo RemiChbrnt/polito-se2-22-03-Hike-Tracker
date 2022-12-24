@@ -21,7 +21,7 @@ class HikeService {
                 track: r.track,
                 author: r.author,
                 referencePoints: r.referencePoints,
-                statusList:r.statusList,
+                statusList: r.statusList,
             }))
             return {
                 ok: true,
@@ -99,7 +99,7 @@ class HikeService {
             }
         }
     }
-    
+
     addHikeReferencePoint = async (newReferencePoint) => {
         try {
             const res = await this.dao.addHikeReferencePoint(newReferencePoint)
@@ -156,7 +156,7 @@ class HikeService {
     startHike = async (groupId, hikeId, userId) => {
         try {
             const result = await this.dao.startHike(groupId, hikeId, userId);
-            if(result === true){
+            if (result === true) {
                 return {
                     ok: true,
                     status: 201
@@ -167,7 +167,7 @@ class HikeService {
                     status: result
                 }
             }
-        } catch(e) {
+        } catch (e) {
             return {
                 ok: false,
                 status: e
@@ -178,7 +178,7 @@ class HikeService {
     terminateHike = async (groupId, hikeId, userId) => {
         try {
             const result = await this.dao.terminateHike(groupId, hikeId, userId);
-            if(result === true){
+            if (result === true) {
                 return {
                     ok: true,
                     status: 201
@@ -188,8 +188,8 @@ class HikeService {
                     ok: false,
                     status: result
                 }
-            }            
-        } catch(e) {
+            }
+        } catch (e) {
             return {
                 ok: false,
                 status: e
@@ -200,12 +200,12 @@ class HikeService {
     getCurrentGroupId = async (hikerId) => {
         try {
             const result = await this.dao.getCurrentGroupId(hikerId);
-            if(result === 503) {
+            if (result === 503) {
                 return {
                     ok: false,
                     status: 503
                 }
-            } else if(result === false) {
+            } else if (result === false) {
                 return {
                     ok: true,
                     status: 204
@@ -217,7 +217,7 @@ class HikeService {
                     body: result
                 }
             }
-        } catch(e) {
+        } catch (e) {
             return {
                 ok: false,
                 status: e

@@ -611,7 +611,60 @@ async function addHutPhoto(id, formData) {
     }
 }
 
-const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto }
+
+
+
+async function startHike(body) {
+    const response = await fetch(URL + '/start-hike', {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+    if (response.ok)
+        return true;
+    else
+        throw response;
+}
+
+async function terminateHike(body) {
+    const response = await fetch(URL + '/terminate-hike', {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+    if (response.ok)
+        return true;
+    else
+        throw false;
+}
+
+
+
+async function getCurrentGroup() {
+    const response = await fetch(URL + '/current-group', {
+        credentials: 'include'
+    });
+    if (response.ok) {
+        if (response.status === 204)
+            return 204;
+        else {
+            const result = await response.json();
+            return result;
+        }
+    }
+    else
+        throw false;
+}
+
+
+
+const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto, startHike, terminateHike, getCurrentGroup }
 
 
 export default API;

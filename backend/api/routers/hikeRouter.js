@@ -183,24 +183,27 @@ router.put('/hikes/:hikeId/status/:hutId', [
     }
 );
 
-router.post('/start-hike', isLoggedIn, async (req,res) => {
-    if(req.user.role === "hiker") {
-        const response = await service.startHike(req.body.groupId, req.body.hikeId, req.user.email);
-        if(response.ok) {
-            return res.status(response.status).end();
+router.post('/start-hike', isLoggedIn, [
+    body('hikeId').exists().isNumeric()
+],
+    async (req, res) => {
+        if (req.user.role === "hiker") {
+            const response = await service.startHike(req.body.groupId, req.body.hikeId, req.user.email);
+            if (response.ok) {
+                return res.status(response.status).end();
+            }
+            else {
+                res.status(response.status).end();
+            }
+        } else {
+            return res.status(400).json({ error: "Unauthorized" });
         }
-        else {
-            res.status(response.status).end();
-        }
-    } else {
-        return res.status(400).json({ error: "Unauthorized" });
-    }
-});
+    });
 
 router.put('/terminate-hike', isLoggedIn, async (req, res) => {
-    if(req.user.role === "hiker") {
+    if (req.user.role === "hiker") {
         const response = await service.terminateHike(req.body.groupId, req.body.hikeId, req.user.email);
-        if(response.ok) {
+        if (response.ok) {
             return res.status(response.status).end();
         }
         else {
@@ -212,10 +215,10 @@ router.put('/terminate-hike', isLoggedIn, async (req, res) => {
 });
 
 router.get('/current-group', isLoggedIn, async (req, res) => {
-    if(req.user.role === "hiker") {
+    if (req.user.role === "hiker") {
         const response = await service.getCurrentGroupId(req.user.email);
-        if(response.ok) {
-            if(response.status === 204) {
+        if (response.ok) {
+            if (response.status === 204) {
                 return res.status(response.status).end();
             } else {
                 return res.status(response.status).json(response.body);
