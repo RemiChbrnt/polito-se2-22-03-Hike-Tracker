@@ -115,7 +115,7 @@ function EmptyPrefsCard(props) {
         <Card>
             <Card.Body>
                 <Card.Title>
-                    <h3 classname="fw-bold">Hike preferences</h3>
+                    <h3 className="fw-bold">Hike preferences</h3>
                 </Card.Title>
                 <div>You don't have any preference set. You can set them now.</div>
                 <Button variant='outline-success' onClick={() => { props.setShowForm(true); props.setOperation('add') }}>
@@ -143,7 +143,7 @@ function PrefsCard(props) {
         <Card>
             <Card.Body>
                 <Card.Title>
-                    <h3 classname="fw-bold">Hike preferences</h3>
+                    <h3 className="fw-bold">Hike preferences</h3>
                 </Card.Title>
                 <ListGroup variant="flush">
                     <ListGroup.Item><span className="fw-bold">Duration: </span>{props.preferences.duration} hours</ListGroup.Item>

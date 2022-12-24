@@ -2,7 +2,6 @@ import { useState } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import * as L from 'leaflet';
 import GPXTrack from "./GPXTrack";
-import { HikeGrid } from "./hikeList";
 
 const Map = (props) => {
     const startPt = JSON.parse(props.startPt);
@@ -44,8 +43,8 @@ const Map = (props) => {
     }
 
     return (
-        // <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{width: windowSize.innerWidth/1.5, height: windowSize.innerHeight/2.5}} >
-        <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ width: "calc(100%)", height: "calc(100%)" }} >
+        <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ minWidth: windowSize.innerWidth / 1.8, minHeight: windowSize.innerHeight / 1.5 }} >
+            {/* <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ width: "calc(100%)", height: "calc(100%)" }}> */}
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

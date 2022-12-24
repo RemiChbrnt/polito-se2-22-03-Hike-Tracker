@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { Country, State, City } from 'country-state-city';
 
@@ -26,9 +26,6 @@ function HutFilterForm(props) {
         event.stopPropagation();
         props.setShow(false);
         let filters = [];
-
-        console.log("country " + JSON.stringify(country));
-        console.log("country.name " + country.name);
 
         if (name !== "") filters.push({ key: "name", value: name.toLocaleLowerCase() });
         if (minCost !== "") filters.push({ key: "cost", value: minCost });
@@ -100,9 +97,9 @@ function HutFilterForm(props) {
                                     }}
                                     aria-label="region" size="lg">
                                     <option value="">Select the Country</option>
-                                    {Country.getAllCountries().map((r, k) =>
-                                        <option key={k} value={JSON.stringify(r)}>{r.name}</option>
-                                    )}
+                                    {Country.getAllCountries().map((r, k) => {
+                                        return <option key={k} value={JSON.stringify(r)}>{r.name}</option>
+                                    })}
                                 </Form.Select>
                             </Form.Group>
                         </Row>

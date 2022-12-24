@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, Card, Col, Container, Row, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Col, Container, Row, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 import { Carousel } from "./carousel/Carousel.js";
 import API from '../API.js';
@@ -19,7 +19,7 @@ const HutDetail = ({ user, props, setProps }) => {
                 try {
                     if (hut.photos !== undefined && hut.photos.length !== 0) {
                         let data = [];
-                        hut.photos.map((p) => {
+                        hut.photos.forEach((p) => {
                             data.push(require("../photos/" + p.fileName));
                         })
                         setPhotos(data);
