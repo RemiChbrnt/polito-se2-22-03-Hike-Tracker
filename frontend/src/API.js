@@ -611,7 +611,34 @@ async function addHutPhoto(id, formData) {
     }
 }
 
-const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto }
+async function getCompletedHikes() {
+    // call: GET /api/hikes
+    const response = await fetch(URL + '/hikes/completed', {
+        credentials: 'include',
+    });
+    const hikesJson = await response.json();
+    if (response.ok) {
+        return hikesJson.map((r) => ({
+            id: r.id,
+            title: r.title,
+            length: r.length,
+            expTime: r.expTime,
+            ascent: r.ascent,
+            difficulty: r.difficulty,
+            startPt: r.startPt,
+            endPt: r.endPt,
+            description: r.description,
+            track: r.track,
+            author: r.author,
+            referencePoints: r.refLocations,
+            statusList: r.statusList
+        }))
+    } else {
+        throw hikesJson;
+    }
+}
+
+const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto, getCompletedHikes }
 
 
 export default API;
