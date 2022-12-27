@@ -100,7 +100,7 @@ function SideBar(props) {
                                                     <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hike list</h5></Nav.Link>
 
                                                     <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hut list</h5></Nav.Link>
-
+                                                    <Nav.Link onClick={() => { navigate('/completed-hikes') }} onMouseOver={() => { setOver('completed-hikes') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/completed-hikes' || over === 'completed-hikes') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Completed Hikes</h5></Nav.Link>
                                                     <Nav.Link onClick={() => { navigate('/hiker/personal-page') }} onMouseOver={() => { setOver('personal-page') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/personal-page' || over === 'personal-page') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Personal Page</h5></Nav.Link>
 
                                                     <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>

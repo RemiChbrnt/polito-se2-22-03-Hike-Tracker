@@ -41,6 +41,72 @@ exports.getHikes = async (query) => {
     })
 }
 
+exports.getCompletedHikes = async (email) => {
+    return new Promise((resolve, reject) => {
+        let sql1 = 'SELECT groupId FROM Participants p WHERE hikerId=?'
+
+        db.all(sql1, [email], async (err, rows) => {
+            if (err) {
+                console.log("err" + err)
+                reject()
+                return
+            }else if(rows.length>0){
+                var groupIdArray=[]; 
+                for(let i=0; i<rows.length; i++){
+                    groupIdArray.push(rows[i].groupId.toString()); 
+                }
+                var ids = groupIdArray.map(function (a) { return "'" + a.replace("'", "''") + "'"; }).join();;
+                let sql2 = 'SELECT hikeId FROM HikesHistory p WHERE status="completed" AND groupId IN ('+ids+')'
+                db.all(sql2, async (err, rows) => {
+                    if (err) {
+                        console.log("err" + err)
+                        reject()
+                        return
+                    }else if(rows.length>0){
+                        var hikesIdArray=[]; 
+                        for(let i=0; i<rows.length; i++){
+                            hikesIdArray.push(rows[i].hikeId.toString()); 
+                        }
+                        var ids = hikesIdArray.map(function (a) { return "'" + a.replace("'", "''") + "'"; }).join();;
+                        let sql3 = 'SELECT * FROM Hikes p WHERE id IN ('+ids+')'
+                        db.all(sql3, async (err, rows) => {
+                            if (err) {
+                                console.log("err" + err)
+                                reject()
+                                return
+                            }else if(rows.length>0){
+                                const res = await Promise.all(
+                                    rows.map(async (r) => {
+                                        const startLocation = await getLocationById(r.startPt);
+                                        const endLocation = await getLocationById(r.endPt);
+                                        const refLocations = await getReferenceLocations(r.id);
+                                        const statuses = await getStatusList(r.id);
+                                        return {
+                                            id: r.id,
+                                            title: r.title,
+                                            length: r.length,
+                                            expTime: r.expTime,
+                                            ascent: r.ascent,
+                                            difficulty: r.difficulty,
+                                            startPt: startLocation,
+                                            endPt: endLocation,
+                                            description: r.description,
+                                            track: r.track,
+                                            author: r.author,
+                                            referencePoints: refLocations,
+                                            statusList: statuses,
+                                        }
+                                    })
+                                )
+                                resolve(res);
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    })
+}
 
 const getStatusList = async function (id) {
     return new Promise((resolve, reject) => {
