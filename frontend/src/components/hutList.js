@@ -1,6 +1,7 @@
-import { Card, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Card, Row, Col, ListGroup, Container, ListGroupItem } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { ReadMore } from './readMore';
 import API from '../API.js';
 
 function HutGrid(props) {
@@ -54,35 +55,20 @@ function HutCard(props) {
                 <Card.Body>
                     <Card.Title><h3 className="fw-bold">{props.hut.name}</h3></Card.Title>
                     <ListGroup variant="flush">
-                        {/*<ListGroup.Item><span className="fw-bold">Latitude: </span>{props.hut.latitude}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Longitude: </span>{props.hut.longitude}</ListGroup.Item>*/}
-                        <ListGroup.Item>
-                            <Row>
-                                <Col>
-                                    <span className="fw-bold">Number of beds: </span>{props.hut.numberOfBeds}
-                                </Col>
-                                <Col>
-                                    <span className="fw-bold">Cost: </span>{props.hut.cost}
-                                </Col>
-                            </Row>
-                        </ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Food: </span>{props.hut.food}</ListGroup.Item>
-                        <ListGroup.Item>
-                            <Row>
-                                <Col>
-                                    <span className="fw-bold">Opening time: </span>{props.hut.openingTime}
-                                </Col>
-                                <Col>
-                                    <span className="fw-bold">Closing time: </span>{props.hut.closingTime}
-                                </Col>
-                            </Row>
-                        </ListGroup.Item>
                         <ListGroup.Item><span className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.region + ")"}, {props.hut.country}</ListGroup.Item>
-                        {/*<ListGroup.Item><span className="fw-bold">Country: </span>{props.hut.country}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Region: </span>{props.hut.region}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Town: </span></ListGroup.Item>*/}
-                        <ListGroup.Item><span className="fw-bold">Altitude: </span>{props.hut.altitude} m</ListGroup.Item>
-                        <ListGroup.Item>{props.hut.description}</ListGroup.Item>
+                        <ListGroup.Item><span className="fw-bold">Altitude: </span>{(props.hut.altitude !== null) ? props.hut.altitude : "No info"}</ListGroup.Item>
+                        <ListGroup.Item style={{ display: "flex", justifyContent: "space-between" }}>
+                            <span><span className="fw-bold">Number of beds: </span>{(props.hut.numberOfBeds !== null) ? props.hut.numberOfBeds : "No info"}</span>
+                            <span><span className="fw-bold">Cost: </span>{(props.hut.numberOfBeds !== null) ? props.hut.numberOfBeds : "No info"}</span>
+                        </ListGroup.Item>
+                        <ListGroup variant="flush">
+                            <ListGroup.Item style={{ display: "flex", justifyContent: "space-between" }}>
+                                <span><span className="fw-bold">Opening Time: </span>{(props.hut.openingTime !== null) ? props.hut.openingTime : "No info"}</span>
+                                <span><span className="fw-bold">Closing Time: </span>{(props.hut.closingTime !== null) ? props.hut.closingTime : "No info"}</span>
+                            </ListGroup.Item>
+                        </ListGroup>
+                        <ListGroup.Item><span className="fw-bold">Food: </span>{(props.hut.food !== null) ? props.hut.food : "No info"}</ListGroup.Item>
+                        <ListGroup.Item>{(props.hut.description !== null) ? <ReadMore>{props.hut.description}</ReadMore> : "No description"}</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>
