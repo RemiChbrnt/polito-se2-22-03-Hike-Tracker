@@ -88,7 +88,7 @@ function LoginForm({ user, setUser }) {
                                 </Col>
                                 <Col md={2} xs={2}></Col>
                                 <Col md={6} xs={6}>
-                                    <Button type="submit" variant='success' size='lg'>Log-In</Button>
+                                    <Button id='log-in-button' type="submit" variant='success' size='lg'>Log-In</Button>
                                 </Col>
                             </Row>
                             {loginError && <span>Error: email or password not correct</span>}
