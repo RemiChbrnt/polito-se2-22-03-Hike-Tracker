@@ -9,30 +9,39 @@ const router = express.Router()
 
 const { query, body, param, validationResult } = require('express-validator');
 
-router.get('/hikes', [
-    query('minLength').optional().isFloat({ min: 0 }),
-    query('maxLength').optional().isFloat({ min: 0 }),
-    query('minAscent').optional().isFloat({ min: 0 }),
-    query('maxAscent').optional().isFloat({ min: 0 }),
-    query('minTime').optional().isFloat({ min: 0 }),
-    query('maxTime').optional().isFloat({ min: 0 }),
-    query('difficulty').optional().isString().isIn(['tourist', 'hiker', 'pro']),
-    query('country').optional().isString(),
-    query('region').optional().isString(),
-    query('town').optional().isString(),
-    query('author').optional().isEmail()
-],
-    async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ error: errors.array() });
-        }
-        const data = await service.getHikes(req.query)
+router.get('/hikes/completed', isLoggedIn, async (req, res) => {
+        
+        const data = await service.getCompletedHikes(req.user.email)
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
         return res.status(data.status).end()
-    })
+})
+
+router.get('/hikes', [
+        query('minLength').optional().isFloat({ min: 0 }),
+        query('maxLength').optional().isFloat({ min: 0 }),
+        query('minAscent').optional().isFloat({ min: 0 }),
+        query('maxAscent').optional().isFloat({ min: 0 }),
+        query('minTime').optional().isFloat({ min: 0 }),
+        query('maxTime').optional().isFloat({ min: 0 }),
+        query('difficulty').optional().isString().isIn(['tourist', 'hiker', 'pro']),
+        query('country').optional().isString(),
+        query('region').optional().isString(),
+        query('town').optional().isString(),
+        query('author').optional().isEmail()
+    ],
+        async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ error: errors.array() });
+            }
+            const data = await service.getHikes(req.query)
+            if (data.ok) {
+                return res.status(data.status).json(data.body)
+            }
+            return res.status(data.status).end()
+})
 
 router.post('/hikes', isLoggedIn, [
     body('title').exists().isString(),
@@ -181,6 +190,55 @@ router.put('/hikes/:hikeId/status/:hutId', [
         }
         return res.status(data.status).end()
     }
-)
+);
+
+router.post('/start-hike', isLoggedIn, [
+    body('hikeId').exists().isNumeric()
+],
+    async (req, res) => {
+        if (req.user.role === "hiker") {
+            const response = await service.startHike(req.body.groupId, req.body.hikeId, req.user.email);
+            if (response.ok) {
+                return res.status(response.status).end();
+            }
+            else {
+                res.status(response.status).end();
+            }
+        } else {
+            return res.status(400).json({ error: "Unauthorized" });
+        }
+    });
+
+router.put('/terminate-hike', isLoggedIn, async (req, res) => {
+    if (req.user.role === "hiker") {
+        const response = await service.terminateHike(req.body.groupId, req.body.hikeId, req.user.email);
+        if (response.ok) {
+            return res.status(response.status).end();
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+});
+
+router.get('/current-group', isLoggedIn, async (req, res) => {
+    if (req.user.role === "hiker") {
+        const response = await service.getCurrentGroupId(req.user.email);
+        if (response.ok) {
+            if (response.status === 204) {
+                return res.status(response.status).end();
+            } else {
+                return res.status(response.status).json(response.body);
+            }
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+})
 
 module.exports = router

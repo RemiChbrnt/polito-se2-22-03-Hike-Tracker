@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Image, Card, Col, Container, Row, ListGroup } from 'react-bootstrap';
+import { Col, Container, Row, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
+import { Carousel } from "./carousel/Carousel.js";
 import API from '../API.js';
 
 const HutDetail = ({ user, props, setProps }) => {
 
     const [hut, setHut] = useState("");
+    const [photos, setPhotos] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
     const params = useParams();
@@ -14,10 +16,25 @@ const HutDetail = ({ user, props, setProps }) => {
         API.getHutById(params.hutId)
             .then(hut => {
                 setHut(hut);
-                setIsLoading(false);
+                try {
+                    if (hut.photos !== undefined && hut.photos.length !== 0) {
+                        let data = [];
+                        hut.photos.forEach((p) => {
+                            data.push(require("../photos/" + p.fileName));
+                        })
+                        setPhotos(data);
+                    }
+                    setIsLoading(false);
+                    return;
+                } catch (e) {
+                    return;
+                }
             })
             .catch(error => console.log(error));
+
+        setIsLoading(false);
     }, [])
+
 
     return (
         <Container>
@@ -26,56 +43,100 @@ const HutDetail = ({ user, props, setProps }) => {
                     <h5>Loading...</h5>
                 </Container>
                 :
-                <Container>
-                    <ListGroup variant="flush">
-                        <ListGroup.Item><h1>Hut "{hut.name}"</h1></ListGroup.Item>
-                        <ul></ul>
+                <Container className="container-hut">
+                    <Row><h2 style={{ textAlign: "center" }}>{hut.name}</h2></Row>
+                    <ul></ul>
+                    <Row>
+                        <HutInfo hut={hut} />
 
-                        <ListGroup horizontal>
-                            <ListGroup.Item style={{ width: "33%" }}><span className="fw-bold">Number of beds: </span>{(hut.numberOfBeds !== null) ? hut.numberOfBeds : "No information available"}</ListGroup.Item>
-                            <ListGroup.Item style={{ width: "33%" }}><span className="fw-bold">Cost: </span>{(hut.cost !== null) ? hut.cost : "No information available"}</ListGroup.Item>
-                            <ListGroup.Item style={{ width: "33%" }}><span className="fw-bold">Food: </span>{(hut.food !== null) ? hut.food : "No information available"}</ListGroup.Item>
-                        </ListGroup>
-
-                        <ListGroup horizontal>
-                            <ListGroup.Item style={{ width: "50%" }}><span className="fw-bold">Opening time: </span>{(hut.openingTime !== null) ? hut.openingTime : "No information available"}</ListGroup.Item>
-                            <ListGroup.Item style={{ width: "50%" }}><span className="fw-bold">Closing time: </span>{(hut.closingTime !== null) ? hut.closingTime : "No information available"}</ListGroup.Item>
-                        </ListGroup>
-
-                        <ListGroup horizontal>
-                            <ListGroup.Item style={{ width: "50%" }}><span><span className="fw-bold">Location: </span>{(hut.address !== null) && (hut.address + ", ")} {hut.town}, {"(" + hut.region + ")"}, {hut.country}</span></ListGroup.Item>
-                            <ListGroup.Item style={{ width: "50%" }}><span className="fw-bold">Altitude: </span>{hut.altitude} m</ListGroup.Item>
-                        </ListGroup>
-                        <ListGroup>
-                            <ListGroup.Item>
-                                <h4 className="border-bottom">Description</h4>
-                                {(hut.description !== null) ? hut.description : "No description available"}
-                            </ListGroup.Item>
-                        </ListGroup>
-
-                        <Container fluid>
-                            <Row>
-                                {(hut.photos !== undefined) ?
-                                    hut.photos.map((p, i) => {
-                                        try {
-                                            require("../photos/" + p)
-                                            return <Card style={{ width: "33%" }} key={i}><img src={require("../photos/" + p)} /></Card>
-                                        } catch (e) {
-                                            return;
-                                        }
-
-                                    })
-                                    :
-                                    <span>No images available</span>
-                                }
-                            </Row>
-                        </Container>
-                        <ul></ul>
-                    </ListGroup>
+                        <HutPhotos photos={photos} />
+                    </Row>
                 </Container>
             }
         </Container>
     );
 }
 
-export default HutDetail;
+
+
+const HutInfo = (props) => {
+
+    const hut = props.hut;
+
+    return (
+        <Col>
+
+            <Row><h4>Description</h4></Row>
+            <ListGroup variant="flush">
+                <ListGroupItem>{hut.description}</ListGroupItem>
+            </ListGroup>
+            <ul></ul>
+
+            <Row><h4>General Info</h4></Row>
+            <ListGroup variant="flush">
+                <ListGroupItem><span><b>Opening Time: </b>{(hut.openingTime !== null) ? hut.openingTime : "No information available"}</span></ListGroupItem>
+                <ListGroupItem><span><b>Closing Time: </b>{(hut.closingTime !== null) ? hut.closingTime : "No information available"}</span></ListGroupItem>
+                <ListGroupItem><span><b>Number of beds: </b>{(hut.numberOfBeds !== null) ? hut.numberOfBeds : "No information available"}</span></ListGroupItem>
+                <ListGroupItem><span><b>Cost: </b>{(hut.cost !== null) ? hut.cost : "No information available"}</span></ListGroupItem>
+                <ListGroupItem><span><b>Food: </b>{(hut.food !== null) ? hut.food : "No information available"}</span></ListGroupItem>
+            </ListGroup>
+
+            <ul></ul>
+            <Row><h4>Position</h4></Row>
+            <ListGroup variant="flush">
+                <ListGroupItem><span><b>Altitude: </b>{(hut.altitude !== null) ? hut.altitude + " m" : "No information available"}</span></ListGroupItem>
+                <ListGroupItem><span><b>Address: </b>{(hut.address !== null) ? hut.address : "No information available"}</span></ListGroupItem>
+            </ListGroup>
+
+        </Col>
+    )
+}
+
+
+const HutPhotos = (props) => {
+
+    const photos = props.photos;
+    const captionStyle = {
+        fontSize: "2em",
+        fontWeight: "bold",
+    };
+    const slideNumberStyle = {
+        fontSize: "20px",
+        fontWeight: "bold",
+    };
+
+    return (
+        <Col style={{ textAlign: "center" }}>
+            <div style={{ padding: "0 20px", }}>
+                {(photos !== undefined && photos.length !== 0) && <Carousel
+                    data={photos}
+                    time={2000}
+                    width="800px"
+                    height="400px"
+                    captionStyle={captionStyle}
+                    radius="10px"
+                    slideNumber={true}
+                    slideNumberStyle={slideNumberStyle}
+                    captionPosition="bottom"
+                    automatic={false}
+                    dots={true}
+                    pauseIconColor="white"
+                    pauseIconSize="40px"
+                    slideBackgroundColor="darkgrey"
+                    slideImageFit="cover"
+                    thumbnails={true}
+                    thumbnailWidth="100px"
+                    showNavBtn={true}
+                    style={{
+                        textAlign: "center",
+                        maxWidth: "850px",
+                        margin: "40px auto",
+                    }}
+                />}
+            </div>
+        </Col>
+    );
+}
+
+
+export { HutDetail, HutInfo, HutPhotos };

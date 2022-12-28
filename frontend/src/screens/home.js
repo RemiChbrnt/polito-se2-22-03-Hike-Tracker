@@ -53,33 +53,6 @@ const Home = (props) => {
 
     return (
         <Container>
-            {/*<ul></ul>
-            {(props !== undefined && props.user !== undefined) && (
-
-                (props.user.role === "hutworker") &&
-                <Row>
-                    <h2>Hut Worker</h2>
-                    <HutWorker />
-                </Row>
-
-                ||
-
-                (props.user.role === "guide") &&
-                <Row>
-                    <h2>Local Guide</h2>
-                    <LocalGuide />
-                </Row>
-
-                ||
-
-                (props.user.role === "emergency") &&
-                <Row>
-                    <h2>Emergency Operator</h2>
-                    <EmergencyOperator />
-                </Row>
-            )}
-            <ul></ul>*/}
-
             <Row>
                 <Col md={8}>
                     <h1 id="title">Hike List</h1>
@@ -93,7 +66,7 @@ const Home = (props) => {
                 {
                     (props.user && props.user.role === "hiker") &&
                     <Col md={1}>
-                        <Button onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences===undefined}>{" "}Suggested hikes</Button>
+                        <Button onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
                     </Col>
                 }
             </Row>

@@ -4,7 +4,7 @@ import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
-import HutDetail from "../screens/hutDetail.js";
+import { HutDetail } from "../screens/hutDetail.js";
 import { AddHutForm } from "../components/addHutForm";
 import { AddHutPhotoForm } from "../components/addHutPhotoForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
@@ -12,7 +12,7 @@ import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
 import { UpdateHutStatus } from "../components/updateHutStatus.js";
 import RequestsPage from '../components/RequestsPage';
-
+import {CompletedHikes} from '../components/completedHikes'
 import { HutListPage } from "../screens/hutListPage";
 import Hiker from "../screens/hiker.js";
 
@@ -103,6 +103,13 @@ const routes = [
         key: "update-hut-status",
         screen: function (user, props, setProps) {
             return <UpdateHutStatus user={user} props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/completed-hikes",
+        key: "completed-hikes",
+        screen: function (user, props, setProps) {
+            return <CompletedHikes user={user} props={props} setProps={setProps} />
         }
     },
     {

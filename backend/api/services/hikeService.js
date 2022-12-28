@@ -5,9 +5,40 @@ class HikeService {
         this.dao = dao
     }
 
-    getHikes = async (query) => {
+    getHikes = async (email) => {
         try {
-            const hikes = await this.dao.getHikes(query)
+            const hikes = await this.dao.getHikes(email)
+            const message = hikes.map((r) => ({
+                id: r.id,
+                title: r.title,
+                length: r.length,
+                expTime: r.expTime,
+                ascent: r.ascent,
+                difficulty: r.difficulty,
+                startPt: r.startPt,
+                endPt: r.endPt,
+                description: r.description,
+                track: r.track,
+                author: r.author,
+                referencePoints: r.referencePoints,
+                statusList: r.statusList,
+            }))
+            return {
+                ok: true,
+                status: 200,
+                body: message
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+    getCompletedHikes= async (query) => {
+        try {
+            const hikes = await this.dao.getCompletedHikes(query)
             const message = hikes.map((r) => ({
                 id: r.id,
                 title: r.title,
@@ -35,7 +66,6 @@ class HikeService {
             }
         }
     }
-
     getHikeFromID = async (query) => {
         try {
             const hike = await this.dao.getHikeFromID(query)
@@ -99,7 +129,7 @@ class HikeService {
             }
         }
     }
-    
+
     addHikeReferencePoint = async (newReferencePoint) => {
         try {
             const res = await this.dao.addHikeReferencePoint(newReferencePoint)
@@ -149,6 +179,78 @@ class HikeService {
             return {
                 ok: false,
                 status: 400
+            }
+        }
+    }
+
+    startHike = async (groupId, hikeId, userId) => {
+        try {
+            const result = await this.dao.startHike(groupId, hikeId, userId);
+            if (result === true) {
+                return {
+                    ok: true,
+                    status: 201
+                }
+            } else {
+                return {
+                    ok: false,
+                    status: result
+                }
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+
+    terminateHike = async (groupId, hikeId, userId) => {
+        try {
+            const result = await this.dao.terminateHike(groupId, hikeId, userId);
+            if (result === true) {
+                return {
+                    ok: true,
+                    status: 201
+                }
+            } else {
+                return {
+                    ok: false,
+                    status: result
+                }
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: e
+            }
+        }
+    }
+
+    getCurrentGroupId = async (hikerId) => {
+        try {
+            const result = await this.dao.getCurrentGroupId(hikerId);
+            if (result === 503) {
+                return {
+                    ok: false,
+                    status: 503
+                }
+            } else if (result === false) {
+                return {
+                    ok: true,
+                    status: 204
+                }
+            } else {
+                return {
+                    ok: true,
+                    status: 200,
+                    body: result
+                }
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: e
             }
         }
     }
