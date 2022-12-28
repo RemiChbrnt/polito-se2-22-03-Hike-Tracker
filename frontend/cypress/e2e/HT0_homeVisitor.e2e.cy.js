@@ -3,7 +3,7 @@
 *
 * Package:         client
 * Module:          cypress/e2e
-* File:            home.cy.js
+* File:            HT0_homeVisitor.cy.js
 *
 * Copyright (c) 2022 - se2022-Team03
 * All rights reserved.

@@ -243,14 +243,14 @@ function AddHikeForm(props) {
         <Container style={{ flex: 1 }}>
             <Row>
                 <Row>
-                    <h1>Add new hike</h1>
+                    <h1 id='add-new-hike-title'>Add new hike</h1>
                 </Row>
                 <ul></ul>
                 <Row>
-                    <b> Upload a GPX Track for the hike </b>
+                    <b id='upload-gpx-title'> Upload a GPX Track for the hike </b>
                 </Row>
                 <Row>
-                    <input type="file" name="file" onChange={ev => handleFile(ev)} />
+                    <input id='upload-gpx-button' type="file" name="file" onChange={ev => handleFile(ev)} />
                     {invalidFileFormat && <h5 style={{ color: "#f00" }}>WARNING : Invalid format, try with a .gpx </h5>}
                 </Row>
             </Row>
@@ -259,36 +259,36 @@ function AddHikeForm(props) {
             <Row className="hike-form">
                 <Form onSubmit={handlerSubmit} className="mt-3">
                     <Col className="form-group">
-                        <Form.Label><b>Hike Title</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control type="text" placeholder="Enter title" required
+                        <Form.Label id='hike-title-label'><b>Hike Title</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Control id='hike-title-control' type="text" placeholder="Enter title" required
                             onChange={ev => { setTitle(ev.target.value); }}
                         />
 
                     </Col>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Length (km)</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="number" placeholder="Enter length" required
+                            <Form.Label id='length-label'><b>Length (km)</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control id='length-control' type="number" placeholder="Enter length" required
                                 onChange={ev => { setLength(ev.target.value); }}
                             />
                         </Col>
                         <Col>
-                            <Form.Label><b>Expected Time (hours)</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="number" placeholder="Enter expected time" required
+                            <Form.Label id='expected-time-label'><b>Expected Time (hours)</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control id='expected-time-control' type="number" placeholder="Enter expected time" required
                                 onChange={ev => { setExpTime(ev.target.value); }}
                             />
                         </Col>
                     </Row>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Ascent (m)</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="number" placeholder="Enter ascent" required
+                            <Form.Label id='ascent-label'><b>Ascent (m)</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control id='ascent-control' type="number" placeholder="Enter ascent" required
                                 onChange={ev => { setAscent(ev.target.value); }}
                             />
                         </Col>
                         <Col>
-                            <Form.Label><b>Difficulty</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Select required onChange={ev => { setDifficulty(ev.target.value); }}>
+                            <Form.Label id='difficulty-label'><b>Difficulty</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Select id='difficulty-select' required onChange={ev => { setDifficulty(ev.target.value); }}>
                                 <option value="tourist">Tourist</option>
                                 <option value="hiker">Hiker</option>
                                 <option value="pro">Professional Hiker</option>
@@ -297,8 +297,8 @@ function AddHikeForm(props) {
                     </Row>
                     <Row className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="hikeDescription">
-                            <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control as="textarea" rows={2}
+                            <Form.Label id='description-label'><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control id='description-control' as="textarea" rows={2}
                                 onChange={ev => { setDescription(ev.target.value); }}
                             />
                         </Form.Group>
@@ -307,13 +307,13 @@ function AddHikeForm(props) {
 
                     <Row className="form-group mt-3">
                         <Form.Group className="mb-3" controlId="hikeStartPt">
-                            <Form.Label><b>Start Point</b></Form.Label>
+                            <Form.Label id='start-point-label'><b>Start Point</b></Form.Label>
                             {// If a corresponding location already exists
                             (startMatchingLocations.length !== 0) ?
                             <Container>
                                 <h6> Matching Location(s) found for the given GPX file :</h6>
                                 <Form.Group>
-                                    <Form.Select value={startPoint}
+                                    <Form.Select id='start-point-select' value={startPoint}
                                         onChange={e => setStartPoint(e.target.value)}
                                         aria-label="region" size="md">
                                         <option value={undefined}>Select the Start Point</option>
@@ -584,7 +584,7 @@ function AddHikeForm(props) {
                     </Row>
                     <ul></ul>
                     <Row className="d-grid gap-2 mt-3">
-                        <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
+                        <Button id='confirm-button' type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
                     </Row>
                     <ul></ul>
                 </Form>

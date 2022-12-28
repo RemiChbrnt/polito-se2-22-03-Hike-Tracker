@@ -3,7 +3,7 @@
 *
 * Package:         client
 * Module:          cypress/e2e
-* File:            home.cy.js
+* File:            HT2_ addNewHikeDescription.cy.js
 *
 * Copyright (c) 2022 - se2022-Team03
 * All rights reserved.
@@ -21,6 +21,7 @@ describe('Get informations from hike', () => {
     cy.get('#email-input').type('antonio.fracassa@live.it');
     cy.get('#password').clear();
     cy.get('#password').type('testPassword2');
+    cy.wait(1000);
     cy.get('#log-in-button').click();
 
     //check for guide page informations
@@ -42,6 +43,50 @@ describe('Get informations from hike', () => {
     cy.get('#length').should('be.visible');
     cy.get('#ascent').should('be.visible');
     cy.get('#description').should('be.visible');
+  });
+
+  it('should show "add new hike" form', () => {
+    cy.get('#user-log-in-button').click();
+    cy.get('#email-input').clear();
+    cy.get('#email-input').type('antonio.fracassa@live.it');
+    cy.get('#password').clear();
+    cy.get('#password').type('testPassword2');
+    cy.wait(1000);
+    cy.get('#log-in-button').click();
+    cy.wait(1000);
+    cy.get('#add-new-hike-option').click();
+
+     //check for add new hike form
+    cy.get('#upload-gpx-title').should('be.visible');
+    cy.get('#upload-gpx-button').should('be.visible');
+    cy.get('#hike-title-label').should('be.visible');
+    cy.get('#hike-title-control').should('be.visible');
+    cy.get('#length-label').should('be.visible');
+    cy.get('#length-control').should('be.visible');
+    cy.get('#expected-time-label').should('be.visible');
+    cy.get('#expected-time-control').should('be.visible');
+    cy.get('#ascent-label').should('be.visible');
+    cy.get('#ascent-control').should('be.visible');
+    cy.get('#difficulty-label').should('be.visible');
+    cy.get('#difficulty-select').should('be.visible');
+    cy.get('#description-label').should('be.visible');
+    cy.get('#description-control').should('be.visible');
+    cy.get('#start-point-label').should('be.visible');
+    cy.get('#confirm-button').should('be.visible');
+  });
+
+  it('should "add new hike" form be editable', () => {
+    cy.get('#user-log-in-button').click();
+    cy.get('#email-input').clear();
+    cy.get('#email-input').type('antonio.fracassa@live.it');
+    cy.get('#password').clear();
+    cy.get('#password').type('testPassword2');
+    cy.wait(1000);
+    cy.get('#log-in-button').click();
+    cy.wait(1000);
+    cy.get('#add-new-hike-option').click();
+
+    //check that add new hike form is editable
   });
 
   /*it('should has hike title', () => {
