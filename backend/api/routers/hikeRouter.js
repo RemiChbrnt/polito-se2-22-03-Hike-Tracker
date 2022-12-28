@@ -197,7 +197,7 @@ router.post('/start-hike', isLoggedIn, [
 ],
     async (req, res) => {
         if (req.user.role === "hiker") {
-            const response = await service.startHike(req.body.groupId, req.body.hikeId, req.user.email);
+            const response = await service.startHike(req.body.hikeId, req.user.email);
             if (response.ok) {
                 return res.status(response.status).end();
             }
@@ -225,7 +225,7 @@ router.put('/terminate-hike', isLoggedIn, async (req, res) => {
 
 router.get('/current-group', isLoggedIn, async (req, res) => {
     if (req.user.role === "hiker") {
-        const response = await service.getCurrentGroupId(req.user.email);
+        const response = await service.getCurrentGroupDataByHikerId(req.user.email);
         if (response.ok) {
             if (response.status === 204) {
                 return res.status(response.status).end();

@@ -380,12 +380,11 @@ exports.addHikeReferencePoint = async (query) => {
  * @returns a Promise that resolves to true if the insertion is successful, to 404 if the user is currently performing a different hike, and to 503 otherwise
  */
 
-exports.startHike = async (groupId, hikeId, userId) => {
+exports.startHike = async (hikeId, userId) => {
     return new Promise((resolve, reject) => {
-        const sql1 = 'SELECT * FROM HikesHistory WHERE groupId = ? AND status = "ongoing"';
-        db.all(sql1, [groupId], function (err, rows) {
+        const sql1 = 'SELECT * FROM HikesHistory WHERE status = "ongoing" AND groupId IN (SELECT groupId FROM Participants WHERE hikerId = ?) ';
+        db.all(sql1, [userId], function (err, rows) {
             if (err) {
-                console.log(err);
                 reject(503);
             } else if (rows.length !== 0) {
                 reject(404);
@@ -393,7 +392,6 @@ exports.startHike = async (groupId, hikeId, userId) => {
                 const sql2 = 'INSERT INTO HikesHistory (hikeId, status, checkPoints) VALUES (?, "ongoing", NULL)';
                 db.run(sql2, [hikeId], function (err) {
                     if (err) {
-                        console.log(err);
                         reject(503);
                     }
                     else {
@@ -460,8 +458,8 @@ exports.terminateHike = async (groupId, hikeId, userId) => {
     })
 }
 
-/* TODO: finish */
-exports.getCurrentGroupId = async (hikerId) => {
+
+exports.getCurrentGroupDataByHikerId = async (hikerId) => {
     return new Promise((resolve, reject) => {
         const sql1 =
             `SELECT p.groupId, h.hikeId FROM Participants p, HikesHistory h

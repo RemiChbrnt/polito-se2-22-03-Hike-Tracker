@@ -183,9 +183,9 @@ class HikeService {
         }
     }
 
-    startHike = async (groupId, hikeId, userId) => {
+    startHike = async (hikeId, userId) => {
         try {
-            const result = await this.dao.startHike(groupId, hikeId, userId);
+            const result = await this.dao.startHike(hikeId, userId);
             if (result === true) {
                 return {
                     ok: true,
@@ -227,9 +227,9 @@ class HikeService {
         }
     }
 
-    getCurrentGroupId = async (hikerId) => {
+    getCurrentGroupDataByHikerId = async (hikerId) => {
         try {
-            const result = await this.dao.getCurrentGroupId(hikerId);
+            const result = await this.dao.getCurrentGroupDataByHikerId(hikerId);
             if (result === 503) {
                 return {
                     ok: false,
