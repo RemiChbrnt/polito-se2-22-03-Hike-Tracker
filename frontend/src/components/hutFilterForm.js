@@ -50,8 +50,9 @@ function HutFilterForm(props) {
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Form.Group>
-                        <h5>Name: </h5>
+                        <h5 id='name-label'>Name: </h5>
                         <Form.Control
+                            id='name-control'
                             value={name}
                             onChange={e => setName(e.target.value)}
                             type='text' placeholder="Name" size="lg" />

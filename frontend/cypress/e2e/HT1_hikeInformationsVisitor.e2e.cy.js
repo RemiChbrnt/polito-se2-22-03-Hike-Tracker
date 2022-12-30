@@ -21,7 +21,7 @@ describe('Get informations from hike', () => {
 
   it('should has hike title', () => {
     cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get('#hike-tilte').should('be.visible');
+    cy.get('#hike-title').should('be.visible');
   });
 
   it('should has home button', () => {
@@ -41,21 +41,22 @@ describe('Get informations from hike', () => {
 
   it('should click hike options', () => {
     cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get(':nth-child(1) > .form-check-input').uncheck();
-    cy.get(':nth-child(1) > .form-check-input').check();
 
-    cy.get(':nth-child(2) > .form-check-input').uncheck();
-    cy.get(':nth-child(2) > .form-check-input').check();
+    cy.get('[for="show-parkings"]').click();
+    cy.get('[for="show-parkings"]').click();
 
-    cy.get(':nth-child(3) > .form-check-input').uncheck();
-    cy.get(':nth-child(3) > .form-check-input').check();
+    cy.get('[for="show-huts"]').click();
+    cy.get('[for="show-huts"]').click();
+
+    cy.get('[for="show-points-interest"]').click();
+    cy.get('[for="show-points-interest"]').click();
 
     cy.get('[src="/static/media/start-marker.4695f435f603afe44323.png"]').should('be.visible'); //start point visible
     cy.get('[src="/static/media/finish-marker.bb578aa29fec8e99b251.png"]').should('be.visible'); //end point visible again
-    cy.get(':nth-child(4) > .form-check-input').uncheck();
+    cy.get('[for="show-start-arrival"]').click();
     //start point not more visible
     //end point not more visible
-    cy.get(':nth-child(4) > .form-check-input').check();
+    cy.get('[for="show-start-arrival"]').click();
     cy.get('[src="/static/media/start-marker.4695f435f603afe44323.png"]').should('be.visible'); //start point visible again
     cy.get('[src="/static/media/finish-marker.bb578aa29fec8e99b251.png"]').should('be.visible'); //end point visible again
 
@@ -65,5 +66,52 @@ describe('Get informations from hike', () => {
   it('should return to home', () => {
     cy.get(':nth-child(1) > .card > .card-body').click();
     cy.get('#home-button').click();
+  });
+
+  it('should has hike filter options', () => {
+    cy.get('#filter-button').click();
+
+    cy.get('#filter-on-map-button').should('be.visible');
+    cy.get('#difficulty-select').should('be.visible');
+    cy.get('#region-select').should('be.visible');
+    cy.get('#minimum-length-label').should('be.visible');
+    cy.get('#minimum-length-control').should('be.visible');
+    cy.get('#maximum-length-label').should('be.visible');
+    cy.get('#maximum-length-control').should('be.visible');
+    cy.get('#minimum-ascent-label').should('be.visible');
+    cy.get('#minimum-ascent-control').should('be.visible');
+    cy.get('#maximum-ascent-label').should('be.visible');
+    cy.get('#maximum-ascent-control').should('be.visible');
+    cy.get('#minimum-time-label').should('be.visible');
+    cy.get('#minimum-time-control').should('be.visible');
+    cy.get('#maximum-time-label').should('be.visible');
+    cy.get('#maximum-time-control').should('be.visible');
+    cy.get('#confirm-button').should('be.visible');
+  });
+
+  it('should has hike filter options editable', () => {
+    cy.get('#filter-button').click();
+
+    cy.get('#filter-on-map-button').click();
+    cy.get('#radius-label').should('be.visible');
+    cy.get('#radius-control').clear();
+    cy.get('#radius-control').type('10');
+    cy.get('#specific-filter-button').click();
+
+    cy.get('#difficulty-select').select('Tourist');
+    cy.get('#region-select').select('Apulia');
+    cy.get('#minimum-length-control').clear();
+    cy.get('#minimum-length-control').type('3');
+    cy.get('#maximum-length-control').clear();
+    cy.get('#maximum-length-control').type('4');
+    cy.get('#minimum-ascent-control').clear();
+    cy.get('#minimum-ascent-control').type('3');
+    cy.get('#maximum-ascent-control').clear();
+    cy.get('#maximum-ascent-control').type('4');
+    cy.get('#minimum-time-control').clear();
+    cy.get('#minimum-time-control').type('3');
+    cy.get('#maximum-time-control').clear();
+    cy.get('#maximum-time-control').type('4');
+    cy.get('#confirm-button').click();
   });
 });

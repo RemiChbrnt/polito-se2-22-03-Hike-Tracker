@@ -27,6 +27,8 @@ const HikeDetail = ({ user, props, setProps }) => {
     const navigate = useNavigate();
     const params = useParams();
 
+    console.log("HIKE ", hike)
+
     const buttonStyle = {
         width: "calc(22%)",
         margin: "calc(1%)"
@@ -104,13 +106,13 @@ const HikeDetail = ({ user, props, setProps }) => {
                 <Container style={{ width: windowSize.innerWidth / 1.1, height: windowSize.innerHeight / 1.2 }}>
 
                     <Row>
-                        <Col md={10}><h1>Hike "{hike.title}"</h1></Col>
+                        <Col md={10}><h1 id='hike-title'>Hike "{hike.title}"</h1></Col>
                         <Col>
                             <Row className="justify-content-end">
-                                <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
+                                <Button id='home-button' variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
                             </Row>
                         </Col>
-                        <Row>{hike.statusList.map(((status, i) => <Row key={i}><p style={alertStyle(status.status)}><i className="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}</Row>
+                        <Row>{hike.statusList.map(((status, i) => <Row key={i}><p id='hike-status' style={alertStyle(status.status)}><i className="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}</Row>
                     </Row>
                     <ul></ul>
                     <Row>
@@ -118,15 +120,15 @@ const HikeDetail = ({ user, props, setProps }) => {
                         <Col style={{ overflowY: "auto", height: "calc(100%)", minWidth: "300px" }}>
                             <Card style={{ maxHeight: windowSize.innerHeight / 1.2 }}>
                                 <ListGroup variant="flush">
-                                    <ListGroupItem><h3>Info</h3></ListGroupItem>
-                                    <ListGroupItem>
+                                    <ListGroupItem><h3 id='hike-info-title'>Info</h3></ListGroupItem>
+                                    <ListGroupItem id='hike-difficulty'>
                                         Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ? "Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge>
                                     </ListGroupItem>
-                                    <ListGroupItem>Expected time : {hike.expTime} hours</ListGroupItem>
-                                    <ListGroupItem>Length : {hike.length} km</ListGroupItem>
-                                    <ListGroupItem>Ascent : {hike.ascent} m</ListGroupItem>
+                                    <ListGroupItem id='hike-expected-time'>Expected time : {hike.expTime} hours</ListGroupItem>
+                                    <ListGroupItem id='hike-length'>Length : {hike.length} km</ListGroupItem>
+                                    <ListGroupItem id='hike-ascent'>Ascent : {hike.ascent} m</ListGroupItem>
 
-                                    <ListGroupItem>
+                                    <ListGroupItem id='hike-description'>
                                         <h5>Description</h5>
                                         {hike.description}
                                     </ListGroupItem>

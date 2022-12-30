@@ -78,7 +78,7 @@ const Home = (props) => {
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Filter Selection</Modal.Title>
+                    <Modal.Title id='filter-title'>Filter Selection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <HikeFilterForm setShow={setShow} setFilters={setFilters} setCoords={setCoordsFilter} setRadiusFilter={setRadiusFilter} />
