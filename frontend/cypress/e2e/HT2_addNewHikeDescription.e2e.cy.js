@@ -3,7 +3,7 @@
 *
 * Package:         client
 * Module:          cypress/e2e
-* File:            HT2_ addNewHikeDescription.cy.js
+* File:            HT2_addNewHikeDescription.cy.js
 *
 * Copyright (c) 2022 - se2022-Team03
 * All rights reserved.
@@ -21,7 +21,7 @@ describe('Get informations from hike', () => {
     cy.get('#email').type('antonio.fracassa@live.it');
     cy.get('#password').clear();
     cy.get('#password').type('testPassword2');
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('#log-in-button').click();
 
     //check for guide page informations

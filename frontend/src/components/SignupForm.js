@@ -83,32 +83,32 @@ function SignupForm({ user, setUser }) {
                 <ul></ul>
                 <Row className="justify-content-md-center">
                     <Col md="auto">
-                        <h2 className="text-center">Sign-Up</h2>
+                        <h2 id='sign-up-title' className="text-center">Sign-Up</h2>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group controlId="email">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Email" required={true}
+                            <Form.Group>
+                                <Form.Label id='email-label'>Email</Form.Label>
+                                <Form.Control id='email-control' type="email" placeholder="Email" required={true}
                                     onChange={ev => { setEmail(ev.target.value) }}
                                 />
                             </Form.Group>
 
-                            <Form.Group controlId="password">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" required={true}
+                            <Form.Group>
+                                <Form.Label id='password-label'>Password</Form.Label>
+                                <Form.Control id='password-control' type="password" placeholder="Password" required={true}
                                     onChange={ev => { setPassword(ev.target.value) }}
                                 />
                             </Form.Group>
 
-                            <Form.Group controlId="fullName">
-                                <Form.Label>FullName</Form.Label>
-                                <Form.Control type="text" placeholder="Full name" required={true}
+                            <Form.Group>
+                                <Form.Label id='full-name-label'>FullName</Form.Label>
+                                <Form.Control id='full-name-control' type="text" placeholder="Full name" required={true}
                                     onChange={ev => { setFullName(ev.target.value) }}
                                 />
                             </Form.Group>
 
-                            <Form.Group controlId="role">
-                                <Form.Label>Role</Form.Label>
-                                <Form.Select required={true}
+                            <Form.Group>
+                                <Form.Label id='role-label'>Role</Form.Label>
+                                <Form.Select id='role-select' required={true}
                                     onChange={ev => { setRole(ev.target.value) }}>
                                     <option value="hiker">Hiker</option>
                                     <option value="guide">Local Guide</option>
@@ -118,18 +118,19 @@ function SignupForm({ user, setUser }) {
                             </Form.Group>
 
                             {(role === "guide" || role === "hutworker") &&
-                                <Form.Group controlId="email">
-                                    <Form.Label>Phone number</Form.Label>
-                                    <Form.Control type="text" placeholder="Phone number" required={true}
+                                <Form.Group>
+                                    <Form.Label id='phone-number-label'>Phone number</Form.Label>
+                                    <Form.Control id='phone-number-control' type="text" placeholder="Phone number" required={true}
                                         onChange={ev => { setPhoneNumber(ev.target.value) }}
                                     />
                                 </Form.Group>
                             }
                             {
                                 role === "hutworker" &&
-                                <Form.Group controlId="hutlist">
-                                    <Form.Label>Select your hut</Form.Label>
+                                <Form.Group>
+                                    <Form.Label id='select-hut-label'>Select your hut</Form.Label>
                                     <Form.Select
+                                        id='select-hut-select'
                                         value={hut}
                                         onChange={event => {
                                             console.log('You selected hut: ' + event.target.value);
@@ -144,11 +145,11 @@ function SignupForm({ user, setUser }) {
                             <ul></ul>
                             <Row>
                                 <Col md={3} xs={3}>
-                                    <Button onClick={handleBack} variant='danger' size='lg'>Back</Button>{" "}
+                                    <Button id='back-button' onClick={handleBack} variant='danger' size='lg'>Back</Button>{" "}
                                 </Col>
                                 <Col md={2} xs={2}></Col>
                                 <Col md={7} xs={7}>
-                                    <Button type="submit" variant='success' size='lg'>Sign-Up</Button>
+                                    <Button id='confirm-button' type="submit" variant='success' size='lg'>Sign-Up</Button>
                                 </Col>
                             </Row>
                         </Form>

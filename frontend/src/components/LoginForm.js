@@ -84,7 +84,7 @@ function LoginForm({ user, setUser }) {
                             <ul></ul>
                             <Row>
                                 <Col>
-                                    <Button onClick={handleBack} variant='danger' size='lg'>Back</Button>
+                                    <Button id='back-button' onClick={handleBack} variant='danger' size='lg'>Back</Button>
                                 </Col>
                                 <Col className='d-flex justify-content-end'>
                                     <Button id='log-in-button' type="submit" variant='success' size='lg'>Log-In</Button>
@@ -100,7 +100,7 @@ function LoginForm({ user, setUser }) {
                         <h3 className="text-center">Are you new here? Create your account</h3>
                         <ul></ul>
                         <div className="d-grid gap-2">
-                            <Button onClick={() => { navigate('/signup') }} variant='outline-success' size='lg'>Sign-Up</Button>
+                            <Button id='sign-up-button' onClick={() => { navigate('/signup') }} variant='outline-success' size='lg'>Sign-Up</Button>
                         </div>
                     </Col>
                 </Row>
