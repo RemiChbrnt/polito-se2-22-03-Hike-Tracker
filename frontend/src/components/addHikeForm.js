@@ -110,9 +110,9 @@ function AddHikeForm(props) {
     const [locationList, setLocationList] = useState([]);
 
     useEffect(() => {
-        API.getLocations().then(locations => { setLocationList(locations) }).catch(error => console.log(error)); 
+        API.getLocations().then(locations => { setLocationList(locations) }).catch(error => console.log(error));
     }, [])
-    
+
 
     const handlerSubmit = async (e) => {
         e.preventDefault();
@@ -125,9 +125,9 @@ function AddHikeForm(props) {
                 startPtName, startPtType, startPtLatitude, startPtLongitude, startPtCountry, startPtregion, startPtTown, startPtAddress, startPtAltitude
             );
         }
-        if(identicalEndStart && startPtIndex !== undefined){
+        if (identicalEndStart && startPtIndex !== undefined) {
             endPtIndex = startPtIndex;
-        }else if (endPtIndex === undefined) {
+        } else if (endPtIndex === undefined) {
             endPtIndex = await handleLocationCreation(
                 endPtName, endPtType, endPtLatitude, endPtLongitude, endPtCountry, endPtregion, endPtTown, endPtAddress, endPtAltitude
             );
@@ -221,16 +221,16 @@ function AddHikeForm(props) {
     const findMatchingLocation = (coords) => {
         let matchingLocations = [];
         // Checking if a location exists close to the given
-        if(Array.isArray(locationList) && Array.isArray(coords)){
-            const minLat = coords[1]-0.001;
-            const maxLat = coords[1]+0.001;
-            const minLon = coords[0]-0.001;
-            const maxLon = coords[0]+0.001;
-            
+        if (Array.isArray(locationList) && Array.isArray(coords)) {
+            const minLat = coords[1] - 0.001;
+            const maxLat = coords[1] + 0.001;
+            const minLon = coords[0] - 0.001;
+            const maxLon = coords[0] + 0.001;
 
-            for(let i = 0; i<locationList.length; i++){
+
+            for (let i = 0; i < locationList.length; i++) {
                 // Checking all lat/long constraints
-                if((locationList[i].latitude > minLat) && (locationList[i].latitude < maxLat) && (locationList[i].longitude > minLon) && (locationList[i].longitude < maxLon)){
+                if ((locationList[i].latitude > minLat) && (locationList[i].latitude < maxLat) && (locationList[i].longitude > minLon) && (locationList[i].longitude < maxLon)) {
                     matchingLocations.push(i);
                 }
             }
@@ -296,7 +296,7 @@ function AddHikeForm(props) {
                         </Col>
                     </Row>
                     <Row className="form-group mt-3">
-                        <Form.Group className="mb-3" controlId="hikeDescription">
+                        <Form.Group className="mb-3">
                             <Form.Label id='description-label'><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
                             <Form.Control id='description-control' as="textarea" rows={2}
                                 onChange={ev => { setDescription(ev.target.value); }}
@@ -306,280 +306,290 @@ function AddHikeForm(props) {
                     <ul></ul>
 
                     <Row className="form-group mt-3">
-                        <Form.Group className="mb-3" controlId="hikeStartPt">
+                        <Form.Group className="mb-3">
                             <Form.Label id='start-point-label'><b>Start Point</b></Form.Label>
                             {// If a corresponding location already exists
-                            (startMatchingLocations.length !== 0) ?
-                            <Container>
-                                <h6> Matching Location(s) found for the given GPX file :</h6>
-                                <Form.Group>
-                                    <Form.Select id='start-point-select' value={startPoint}
-                                        onChange={e => setStartPoint(e.target.value)}
-                                        aria-label="region" size="md">
-                                        <option value={undefined}>Select the Start Point</option>
-                                        {locationList.map((location, index) => {return startMatchingLocations.includes(index) && 
-                                            <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>})}
-                                    </Form.Select>
-                                </Form.Group>
-                                <Col>
-                                    <Button onClick={() => setStartMatchingLocations([])}
-                                        size="sm"
-                                        style= {{ marginTop: 15, flex: 1, fontSize: 13, fontWeight:"bold", color: "#C70039", backgroundColor:"white", borderColor:"#C70039"}}>
-                                            Create a new Point anyway
-                                    </Button>
-                                </Col>
-                            </Container>
-                            :   
-                            <>
-                                <Row>
-                                    <Col>
-                                        <Button onClick={() => setOpenStart(true)}
-                                            aria-controls="example-collapse-text"
-                                            aria-expanded={openStart} variant="success" size="sm"
-                                            style= {!openStart? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
-                                                {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Choose the Start Point from existing points
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button onClick={() => setOpenStart(false)}
-                                            aria-controls="example-collapse-text"
-                                            aria-expanded={openStart} variant="success" size="sm"
-                                            style={openStart? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
-                                                {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Insert a new point as the Start Point
-                                        </Button>
-                                    </Col>
-                                    <Col/>
-                                </Row>
-                                {openStart && <Row className="hike-form-group">
-                                    <Collapse in={openStart}>
+                                (startMatchingLocations.length !== 0) ?
+                                    <Container>
+                                        <h6> Matching Location(s) found for the given GPX file :</h6>
                                         <Form.Group>
-                                            <Form.Select value={startPoint}
+                                            <Form.Select
+                                                value={startPoint}
                                                 onChange={e => setStartPoint(e.target.value)}
                                                 aria-label="region" size="md">
                                                 <option value={undefined}>Select the Start Point</option>
-                                                {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
+                                                {locationList.map((location, index) => {
+                                                    return startMatchingLocations.includes(index) &&
+                                                        <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>
+                                                })}
                                             </Form.Select>
                                         </Form.Group>
-                                    </Collapse>
-                                </Row>}
-                                {!openStart && <div>
-                                    <Row>
                                         <Col>
-                                            <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="text" placeholder="Enter start point name" required
-                                                onChange={ev => { setStartPtName(ev.target.value); }}
-                                            />
+                                            <Button onClick={() => setStartMatchingLocations([])}
+                                                size="sm"
+                                                style={{ marginTop: 15, flex: 1, fontSize: 13, fontWeight: "bold", color: "#C70039", backgroundColor: "white", borderColor: "#C70039" }}>
+                                                Create a new Point anyway
+                                            </Button>
                                         </Col>
-                                        <Col>
-                                            <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Select required onChange={ev => { setStartPtType(ev.target.value); }}>
-                                                <option value="generic">Generic</option>
-                                                <option value="parkinglot">Parking Lot</option>
-                                                <option value="hut">Hut</option>
-                                            </Form.Select>
-                                        </Col>
+                                    </Container>
+                                    :
+                                    <>
+                                        <Row>
+                                            <Col>
+                                                <Button onClick={() => setOpenStart(true)}
+                                                    aria-controls="example-collapse-text"
+                                                    aria-expanded={openStart} variant="success" size="sm"
+                                                    style={!openStart ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    Choose the Start Point from existing points
+                                                </Button>
+                                            </Col>
+                                            <Col>
+                                                <Button onClick={() => setOpenStart(false)}
+                                                    aria-controls="example-collapse-text"
+                                                    aria-expanded={openStart} variant="success" size="sm"
+                                                    style={openStart ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    Insert a new point as the Start Point
+                                                </Button>
+                                            </Col>
+                                            <Col />
+                                        </Row>
+                                        {openStart && <Row className="hike-form-group">
+                                            <Collapse in={openStart}>
+                                                <Form.Group>
+                                                    <Form.Select
+                                                        id='start-point-select'
+                                                        value={startPoint}
+                                                        onChange={e => setStartPoint(e.target.value)}
+                                                        aria-label="region" size="md">
+                                                        <option value={undefined}>Select the Start Point</option>
+                                                        {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
+                                                    </Form.Select>
+                                                </Form.Group>
+                                            </Collapse>
+                                        </Row>}
+                                        {!openStart && <div>
+                                            <Row>
+                                                <Col>
+                                                    <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control type="text" placeholder="Enter start point name" required
+                                                        onChange={ev => { setStartPtName(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Select required onChange={ev => { setStartPtType(ev.target.value); }}>
+                                                        <option value="generic">Generic</option>
+                                                        <option value="parkinglot">Parking Lot</option>
+                                                        <option value="hut">Hut</option>
+                                                    </Form.Select>
+                                                </Col>
 
-                                    </Row>
-                                    <Row>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Latitude<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="number" placeholder={startPtLatitude} required
-                                                value={startPtLatitude}
-                                                onChange={ev => { setStartPtLatitude(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Longitude <b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="number" placeholder={startPtLongitude} required
-                                                value={startPtLongitude}
-                                                onChange={ev => { setStartPtLongitude(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Altitude</Form.Label>
-                                            <Form.Control type="number" placeholder="Enter altitude"
-                                                onChange={ev => { setStartPtAltitude(ev.target.value); }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Address</Form.Label>
-                                            <Form.Control type="text" placeholder={startPtAddress}
-                                                value={startPtAddress}
-                                                onChange={ev => { setStartPtAddress(ev.target.value); }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Town/Hamlet/Village</Form.Label>
-                                            <Form.Control type="text" placeholder={startPtTown}
-                                                value={startPtTown}
-                                                onChange={ev => { setStartPtTown(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>region</Form.Label>
-                                            <Form.Control type="text" placeholder={startPtregion}
-                                                value={startPtregion}
-                                                onChange={ev => { setStartPtregion(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Country</Form.Label>
-                                            <Form.Control type="text" placeholder={startPtCountry}
-                                                value={startPtCountry}
-                                                onChange={ev => { setStartPtCountry(ev.target.value); }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </div>}
-                            </>}
+                                            </Row>
+                                            <Row>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Latitude<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control type="number" placeholder={startPtLatitude} required
+                                                        value={startPtLatitude}
+                                                        onChange={ev => { setStartPtLatitude(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Longitude <b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control type="number" placeholder={startPtLongitude} required
+                                                        value={startPtLongitude}
+                                                        onChange={ev => { setStartPtLongitude(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Altitude</Form.Label>
+                                                    <Form.Control type="number" placeholder="Enter altitude"
+                                                        onChange={ev => { setStartPtAltitude(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Address</Form.Label>
+                                                    <Form.Control type="text" placeholder={startPtAddress}
+                                                        value={startPtAddress}
+                                                        onChange={ev => { setStartPtAddress(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Town/Hamlet/Village</Form.Label>
+                                                    <Form.Control type="text" placeholder={startPtTown}
+                                                        value={startPtTown}
+                                                        onChange={ev => { setStartPtTown(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>region</Form.Label>
+                                                    <Form.Control type="text" placeholder={startPtregion}
+                                                        value={startPtregion}
+                                                        onChange={ev => { setStartPtregion(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Country</Form.Label>
+                                                    <Form.Control type="text" placeholder={startPtCountry}
+                                                        value={startPtCountry}
+                                                        onChange={ev => { setStartPtCountry(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </div>}
+                                    </>}
                         </Form.Group>
                     </Row>
                     <ul></ul>
                     <Row className="form-group mt-3">
-                        <Form.Group className="mb-3" controlId="hikeStartPt">
-                            <Form.Label><b>End Point</b></Form.Label>
-                                    <Button onClick={() => {setIdenticalEndStart(!identicalEndStart) }}
-                                        size="sm"
-                                        style= {identicalEndStart ? {marginLeft: 30, fontSize: 13, fontWeight:"bold", color: "white", backgroundColor:"#00706c", borderColor:"#00706c"}
-                                            : {marginLeft: 30, fontSize: 13, color: "#C70039", backgroundColor:"white", borderColor:"#C70039"}}>
-                                                {identicalEndStart ? "Identical Start and End points ?   ☑" : "Identical Start and End points ?   ☐"}
-                                    </Button>
+                        <Form.Group className="mb-3">
+                            <Form.Label id='end-point-label'><b>End Point</b></Form.Label>
+                            <Button onClick={() => { setIdenticalEndStart(!identicalEndStart) }}
+                                size="sm"
+                                style={identicalEndStart ? { marginLeft: 30, fontSize: 13, fontWeight: "bold", color: "white", backgroundColor: "#00706c", borderColor: "#00706c" }
+                                    : { marginLeft: 30, fontSize: 13, color: "#C70039", backgroundColor: "white", borderColor: "#C70039" }}>
+                                {identicalEndStart ? "Identical Start and End points ?   ☑" : "Identical Start and End points ?   ☐"}
+                            </Button>
                             {// If a corresponding location already exists and the start and end points are different
-                            !identicalEndStart && 
-                            ((endMatchingLocations.length !== 0) ?
-                            <Container>
-                                <h6> Matching Location(s) found for the given GPX file :</h6>
-                                <Form.Group>
-                                    <Form.Select value={endPoint}
-                                        onChange={e => setEndPoint(e.target.value)}
-                                        aria-label="region" size="md">
-                                        <option value={undefined}>Select the End Point</option>
-                                        {locationList.map((location, index) => {return endMatchingLocations.includes(index) && 
-                                            <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>})}
-                                    </Form.Select>
-                                </Form.Group>
-                                <Col>
-                                    <Button onClick={() => setStartMatchingLocations([])}
-                                        size="sm"
-                                        style= {{ marginTop: 15, flex: 1, fontSize: 13, fontWeight:"bold", color: "#C70039", backgroundColor:"white", borderColor:"#C70039"}}>
-                                            Create a new Point anyway
-                                    </Button>
-                                </Col>
-                            </Container>
-                            :   
-                            <>
-                                <Row>
-                                    <Col>
-                                        <Button onClick={() => setOpenEnd(true)}
-                                            aria-controls="example-collapse-text"
-                                            aria-expanded={openEnd} variant="success" size="sm"
-                                            style= {!openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
-                                                {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Choose the End Point from existing points
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button onClick={() => setOpenEnd(false)}
-                                            aria-controls="example-collapse-text"
-                                            aria-expanded={openEnd} variant="success" size="sm"
-                                            style={openEnd? {flex: 1, fontSize: 15, fontWeight:"bold", color: "#00706c", backgroundColor:"white"} : 
-                                                {flex: 1, fontSize: 15, fontWeight:"bold", color: "white", backgroundColor:"#00706c"}}>
-                                                Insert a new point as the End Point
-                                        </Button>
-                                    </Col>
-                                    <Col/>
-                                </Row>
-                                {openEnd && <Row className="hike-form-group">
-                                    <Collapse in={openEnd}>
+                                !identicalEndStart &&
+                                ((endMatchingLocations.length !== 0) ?
+                                    <Container>
+                                        <h6> Matching Location(s) found for the given GPX file :</h6>
                                         <Form.Group>
-                                            <Form.Select value={endPoint}
+                                            <Form.Select
+                                                value={endPoint}
                                                 onChange={e => setEndPoint(e.target.value)}
                                                 aria-label="region" size="md">
-                                                <option value={undefined}>Select the Arrival Point</option>
-                                                {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
+                                                <option value={undefined}>Select the End Point</option>
+                                                {locationList.map((location, index) => {
+                                                    return endMatchingLocations.includes(index) &&
+                                                        <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>
+                                                })}
                                             </Form.Select>
                                         </Form.Group>
-                                    </Collapse>
-                                </Row>}
-                                {!openEnd && <div>
-                                    <Row>
                                         <Col>
-                                            <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="text" placeholder="Enter end point name" required
-                                                onChange={ev => { setEndPtName(ev.target.value); }}
-                                            />
+                                            <Button onClick={() => setStartMatchingLocations([])}
+                                                size="sm"
+                                                style={{ marginTop: 15, flex: 1, fontSize: 13, fontWeight: "bold", color: "#C70039", backgroundColor: "white", borderColor: "#C70039" }}>
+                                                Create a new Point anyway
+                                            </Button>
                                         </Col>
-                                        <Col>
-                                            <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Select required onChange={ev => { setEndPtType(ev.target.value); }}>
-                                                <option value="generic">Generic</option>
-                                                <option value="parkinglot">Parking Lot</option>
-                                                <option value="hut">Hut</option>
-                                            </Form.Select>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Latitude<b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="number" placeholder={endPtLatitude} required
-                                                value={endPtLatitude}
-                                                onChange={ev => { setEndPtLatitude(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Longitude <b className="asterisk-required">*</b></Form.Label>
-                                            <Form.Control type="number" placeholder={endPtLongitude} required
-                                                value={endPtLongitude}
-                                                onChange={ev => { setEndPtLongitude(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Altitude</Form.Label>
-                                            <Form.Control type="number" placeholder="Enter altitude"
-                                                onChange={ev => { setEndPtAltitude(ev.target.value); }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Address</Form.Label>
-                                            <Form.Control type="text" placeholder={endPtAddress}
-                                                value={endPtAddress}
-                                                onChange={ev => { setEndPtAddress(ev.target.value); }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Town/Hamlet/Village</Form.Label>
-                                            <Form.Control type="text" placeholder={endPtTown}
-                                                value={endPtTown}
-                                                onChange={ev => { setEndPtTown(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>region</Form.Label>
-                                            <Form.Control type="text" placeholder={endPtregion}
-                                                value={endPtregion}
-                                                onChange={ev => { setEndPtregion(ev.target.value); }}
-                                            />
-                                        </Col>
-                                        <Col className="form-group mt-3">
-                                            <Form.Label>Country</Form.Label>
-                                            <Form.Control type="text" placeholder={endPtCountry}
-                                                value={endPtCountry}
-                                                onChange={ev => { setEndPtCountry(ev.target.value); }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </div>}
-                            </>)}
+                                    </Container>
+                                    :
+                                    <>
+                                        <Row>
+                                            <Col>
+                                                <Button onClick={() => setOpenEnd(true)}
+                                                    aria-controls="example-collapse-text"
+                                                    aria-expanded={openEnd} variant="success" size="sm"
+                                                    style={!openEnd ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    Choose the End Point from existing points
+                                                </Button>
+                                            </Col>
+                                            <Col>
+                                                <Button onClick={() => setOpenEnd(false)}
+                                                    aria-controls="example-collapse-text"
+                                                    aria-expanded={openEnd} variant="success" size="sm"
+                                                    style={openEnd ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    Insert a new point as the End Point
+                                                </Button>
+                                            </Col>
+                                            <Col />
+                                        </Row>
+                                        {openEnd && <Row className="hike-form-group">
+                                            <Collapse in={openEnd}>
+                                                <Form.Group>
+                                                    <Form.Select
+                                                        id='end-point-select'
+                                                        value={endPoint}
+                                                        onChange={e => setEndPoint(e.target.value)}
+                                                        aria-label="region" size="md">
+                                                        <option value={undefined}>Select the Arrival Point</option>
+                                                        {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
+                                                    </Form.Select>
+                                                </Form.Group>
+                                            </Collapse>
+                                        </Row>}
+                                        {!openEnd && <div>
+                                            <Row>
+                                                <Col>
+                                                    <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control type="text" placeholder="Enter end point name" required
+                                                        onChange={ev => { setEndPtName(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Select required onChange={ev => { setEndPtType(ev.target.value); }}>
+                                                        <option value="generic">Generic</option>
+                                                        <option value="parkinglot">Parking Lot</option>
+                                                        <option value="hut">Hut</option>
+                                                    </Form.Select>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Latitude<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control type="number" placeholder={endPtLatitude} required
+                                                        value={endPtLatitude}
+                                                        onChange={ev => { setEndPtLatitude(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Longitude <b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control type="number" placeholder={endPtLongitude} required
+                                                        value={endPtLongitude}
+                                                        onChange={ev => { setEndPtLongitude(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Altitude</Form.Label>
+                                                    <Form.Control type="number" placeholder="Enter altitude"
+                                                        onChange={ev => { setEndPtAltitude(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Address</Form.Label>
+                                                    <Form.Control type="text" placeholder={endPtAddress}
+                                                        value={endPtAddress}
+                                                        onChange={ev => { setEndPtAddress(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Town/Hamlet/Village</Form.Label>
+                                                    <Form.Control type="text" placeholder={endPtTown}
+                                                        value={endPtTown}
+                                                        onChange={ev => { setEndPtTown(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>region</Form.Label>
+                                                    <Form.Control type="text" placeholder={endPtregion}
+                                                        value={endPtregion}
+                                                        onChange={ev => { setEndPtregion(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                                <Col className="form-group mt-3">
+                                                    <Form.Label>Country</Form.Label>
+                                                    <Form.Control type="text" placeholder={endPtCountry}
+                                                        value={endPtCountry}
+                                                        onChange={ev => { setEndPtCountry(ev.target.value); }}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </div>}
+                                    </>)}
                         </Form.Group>
                     </Row>
                     <ul></ul>

@@ -17,8 +17,8 @@ describe('Get informations from hike', () => {
 
   it('should log-in as a local guide', () => {
     cy.get('#user-log-in-button').click();
-    cy.get('#email-input').clear();
-    cy.get('#email-input').type('antonio.fracassa@live.it');
+    cy.get('#email').clear();
+    cy.get('#email').type('antonio.fracassa@live.it');
     cy.get('#password').clear();
     cy.get('#password').type('testPassword2');
     cy.wait(1000);
@@ -47,16 +47,16 @@ describe('Get informations from hike', () => {
 
   it('should show "add new hike" form', () => {
     cy.get('#user-log-in-button').click();
-    cy.get('#email-input').clear();
-    cy.get('#email-input').type('antonio.fracassa@live.it');
+    cy.get('#email').clear();
+    cy.get('#email').type('antonio.fracassa@live.it');
     cy.get('#password').clear();
     cy.get('#password').type('testPassword2');
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('#log-in-button').click();
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('#add-new-hike-option').click();
 
-     //check for add new hike form
+    //check for add new hike form
     cy.get('#upload-gpx-title').should('be.visible');
     cy.get('#upload-gpx-button').should('be.visible');
     cy.get('#hike-title-label').should('be.visible');
@@ -77,63 +77,42 @@ describe('Get informations from hike', () => {
 
   it('should "add new hike" form be editable', () => {
     cy.get('#user-log-in-button').click();
-    cy.get('#email-input').clear();
-    cy.get('#email-input').type('antonio.fracassa@live.it');
+    cy.get('#email').clear();
+    cy.get('#email').type('antonio.fracassa@live.it');
     cy.get('#password').clear();
     cy.get('#password').type('testPassword2');
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('#log-in-button').click();
-    cy.wait(1000);
+    cy.wait(500);
     cy.get('#add-new-hike-option').click();
 
     //check that add new hike form is editable
+    cy.get('#hike-title-control').clear();
+    cy.get('#hike-title-control').type('Ciao');
+    cy.get('#length-control').clear();
+    cy.get('#length-control').type('2');
+    cy.get('#expected-time-control').clear();
+    cy.get('#expected-time-control').type('2');
+    cy.get('#ascent-control').clear();
+    cy.get('#ascent-control').type('2');
+    cy.get('#difficulty-select').select('pro');
+    cy.get('#description-control').clear();
+    cy.get('#description-control').type('Ciao');
+    cy.get('#start-point-select').select('14');
+    cy.get('#end-point-select').select('23');
   });
 
-  /*it('should has hike title', () => {
-    cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get('#hike-tilte').should('be.visible');
-  });
- 
-  it('should has home button', () => {
-    cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get('#home-button').contains(/Home/i).should('be.visible');
-  });
- 
-  it('should has hike informations', () => {
-    cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get('#hike-status').should('be.visible');
-    cy.get('#hike-difficulty').should('be.visible');
-    cy.get('#hike-expected-time').should('be.visible');
-    cy.get('#hike-length').should('be.visible');
-    cy.get('#hike-ascent').should('be.visible');
-    cy.get('#hike-description').should('be.visible');
-  });
- 
-  it('should click hike options', () => {
-    cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get(':nth-child(1) > .form-check-input').uncheck();
-    cy.get(':nth-child(1) > .form-check-input').check();
- 
-    cy.get(':nth-child(2) > .form-check-input').uncheck();
-    cy.get(':nth-child(2) > .form-check-input').check();
- 
-    cy.get(':nth-child(3) > .form-check-input').uncheck();
-    cy.get(':nth-child(3) > .form-check-input').check();
- 
-    cy.get('[src="/static/media/start-marker.4695f435f603afe44323.png"]').should('be.visible'); //start point visible
-    cy.get('[src="/static/media/finish-marker.bb578aa29fec8e99b251.png"]').should('be.visible'); //end point visible again
-    cy.get(':nth-child(4) > .form-check-input').uncheck();
-    //start point not more visible
-    //end point not more visible
-    cy.get(':nth-child(4) > .form-check-input').check();
-    cy.get('[src="/static/media/start-marker.4695f435f603afe44323.png"]').should('be.visible'); //start point visible again
-    cy.get('[src="/static/media/finish-marker.bb578aa29fec8e99b251.png"]').should('be.visible'); //end point visible again
- 
-    cy.get('[src="/static/media/hut-marker.ef90b5be5df7c426570e.png"]').should('be.visible'); //hut visible
-  });
- 
   it('should return to home', () => {
-    cy.get(':nth-child(1) > .card > .card-body').click();
-    cy.get('#home-button').click();
-  });*/
+    cy.get('#user-log-in-button').click();
+    cy.get('#email').clear();
+    cy.get('#email').type('antonio.fracassa@live.it');
+    cy.get('#password').clear();
+    cy.get('#password').type('testPassword2');
+    cy.wait(500);
+    cy.get('#log-in-button').click();
+    cy.wait(500);
+    cy.get('#add-new-hike-option').click();
+    cy.wait(500);
+    cy.get('#hike-list-option').click();
+  });
 });

@@ -18,11 +18,15 @@ const Home = (props) => {
     useEffect(() => {
         if(props.user !== undefined){
             async function getPrefs () {
-                const prefs = await API.getPreferences();
+                try {
+                    const prefs = await API.getPreferences();
                 if (Object.keys(prefs.body).length === 0)
                     setPreferences(undefined);
                 else
                     setPreferences(prefs.body);
+                } catch (err) {
+                    console.log(err);
+                }
             }
     
             /* Temporary patch to make the filters reset upon logout */

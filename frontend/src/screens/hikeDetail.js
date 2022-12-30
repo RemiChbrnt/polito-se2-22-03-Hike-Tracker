@@ -27,8 +27,6 @@ const HikeDetail = ({ user, props, setProps }) => {
     const navigate = useNavigate();
     const params = useParams();
 
-    console.log("HIKE ", hike)
-
     const buttonStyle = {
         width: "calc(22%)",
         margin: "calc(1%)"

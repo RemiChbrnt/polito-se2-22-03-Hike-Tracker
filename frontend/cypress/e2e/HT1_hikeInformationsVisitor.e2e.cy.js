@@ -89,7 +89,7 @@ describe('Get informations from hike', () => {
     cy.get('#confirm-button').should('be.visible');
   });
 
-  it('should has hike filter options editable', () => {
+  it('should hike filter be editable', () => {
     cy.get('#filter-button').click();
 
     cy.get('#filter-on-map-button').click();
