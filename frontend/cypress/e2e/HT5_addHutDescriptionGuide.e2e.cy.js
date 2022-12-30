@@ -3,7 +3,7 @@
 *
 * Package:         client
 * Module:          cypress/e2e
-* File:            HT2_addNewHikeDescription.cy.js
+* File:            HT2_addHutDescription.cy.js
 *
 * Copyright (c) 2022 - se2022-Team03
 * All rights reserved.
@@ -27,9 +27,9 @@ describe('Get informations from hike', () => {
     //check for guide page informations
     cy.get('#hike-list-option').should('be.visible');
     cy.get('#add-new-hike-option').should('be.visible');
-    cy.get('#add-hut-option').should('be.visible');
     cy.get('#add-parking-lot-option').should('be.visible');
     cy.get('#link-hut-to-hike-option').should('be.visible');
+    cy.get('#add-hut-option').should('be.visible');
     cy.get('#log-out-button').should('be.visible');
 
     //check for hike list
@@ -46,7 +46,7 @@ describe('Get informations from hike', () => {
     cy.get('#description').should('be.visible');
   });
 
-  it('should show "add new hike" form', () => {
+  it('should show "add new hut" form', () => {
     cy.get('#user-log-in-button').click();
     cy.get('#email').clear();
     cy.get('#email').type('antonio.fracassa@live.it');
@@ -55,28 +55,42 @@ describe('Get informations from hike', () => {
     cy.wait(500);
     cy.get('#log-in-button').click();
     cy.wait(500);
-    cy.get('#add-new-hike-option').click();
+    cy.get('#add-hut-option').click();
 
-    //check for add new hike form
-    cy.get('#upload-gpx-title').should('be.visible');
-    cy.get('#upload-gpx-button').should('be.visible');
-    cy.get('#hike-title-label').should('be.visible');
-    cy.get('#hike-title-control').should('be.visible');
-    cy.get('#length-label').should('be.visible');
-    cy.get('#length-control').should('be.visible');
-    cy.get('#expected-time-label').should('be.visible');
-    cy.get('#expected-time-control').should('be.visible');
-    cy.get('#ascent-label').should('be.visible');
-    cy.get('#ascent-control').should('be.visible');
-    cy.get('#difficulty-label').should('be.visible');
-    cy.get('#difficulty-select').should('be.visible');
+    //check for add hut form
+    cy.get('#add-hut-title').should('be.visible');
+    cy.get('#name-label').should('be.visible');
+    cy.get('#name-control').should('be.visible');
+    cy.get('#latitude-label').should('be.visible');
+    cy.get('#latitude-control').should('be.visible');
+    cy.get('#longitude-label').should('be.visible');
+    cy.get('#longitude-control').should('be.visible');
+    cy.get('#country-label').should('be.visible');
+    cy.get('#country-select').should('be.visible');
+    cy.get('#region-label').should('be.visible');
+    cy.get('#region-select').should('be.visible');
+    cy.get('#town-label').should('be.visible');
+    cy.get('#town-select').should('be.visible');
+    cy.get('#address-label').should('be.visible');
+    cy.get('#address-control').should('be.visible');
+    cy.get('#altitude-label').should('be.visible');
+    cy.get('#altitude-control').should('be.visible');
+    cy.get('#phone-number-label').should('be.visible');
+    cy.get('#phone-number-control').should('be.visible');
+    cy.get('#email-laber').should('be.visible');
+    cy.get('#email-control').should('be.visible');
+    cy.get('#number-of-beds-label').should('be.visible');
+    cy.get('#number-of-beds-control').should('be.visible');
+    cy.get('#food-supply-label').should('be.visible');
+    cy.get('#food-supply-select').should('be.visible');
     cy.get('#description-label').should('be.visible');
     cy.get('#description-control').should('be.visible');
-    cy.get('#start-point-label').should('be.visible');
+    cy.get('#website-label').should('be.visible');
+    cy.get('#website-control').should('be.visible');
     cy.get('#confirm-button').should('be.visible');
   });
 
-  it('should "add new hike" form be editable', () => {
+  it('should "add new hut" form be editable', () => {
     cy.get('#user-log-in-button').click();
     cy.get('#email').clear();
     cy.get('#email').type('antonio.fracassa@live.it');
@@ -85,22 +99,33 @@ describe('Get informations from hike', () => {
     cy.wait(500);
     cy.get('#log-in-button').click();
     cy.wait(500);
-    cy.get('#add-new-hike-option').click();
+    cy.get('#add-hut-option').click();
 
-    //check that add new hike form is editable
-    cy.get('#hike-title-control').clear();
-    cy.get('#hike-title-control').type('Ciao');
-    cy.get('#length-control').clear();
-    cy.get('#length-control').type('2');
-    cy.get('#expected-time-control').clear();
-    cy.get('#expected-time-control').type('2');
-    cy.get('#ascent-control').clear();
-    cy.get('#ascent-control').type('2');
-    cy.get('#difficulty-select').select('pro');
+    //check for add hut form editable
+    cy.get('#name-control').clear();
+    cy.get('#name-control').type('Try');
+    cy.get('#latitude-control').clear();
+    cy.get('#latitude-control').type('2');
+    cy.get('#longitude-control').clear();
+    cy.get('#longitude-control').type('2');
+    cy.get('#country-select').select('AF');
+    cy.get('#region-select').select('BDS');
+    cy.get('#town-select').select('Ashkāsham');
+    cy.get('#address-control').clear();
+    cy.get('#address-control').type('Try');
+    cy.get('#altitude-control').clear();
+    cy.get('#altitude-control').type('2');
+    cy.get('#phone-number-control').clear();
+    cy.get('#phone-number-control').type('1234567890');
+    cy.get('#email-control').clear();
+    cy.get('#email-control').type('Try');
+    cy.get('#number-of-beds-control').clear();
+    cy.get('#number-of-beds-control').type('2');
+    cy.get('#food-supply-select').select('buffet');
     cy.get('#description-control').clear();
-    cy.get('#description-control').type('Ciao');
-    cy.get('#start-point-select').select('14');
-    cy.get('#end-point-select').select('23');
+    cy.get('#description-control').type('Try');
+    cy.get('#website-control').clear();
+    cy.get('#website-control').type('Try');
   });
 
   it('should return to home and log-out', () => {
@@ -112,7 +137,7 @@ describe('Get informations from hike', () => {
     cy.wait(500);
     cy.get('#log-in-button').click();
     cy.wait(500);
-    cy.get('#add-new-hike-option').click();
+    cy.get('#add-hut-option').click();
     cy.wait(500);
     cy.get('#hike-list-option').click();
     cy.wait(500);
