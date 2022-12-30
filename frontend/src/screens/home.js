@@ -70,7 +70,7 @@ const Home = (props) => {
                 {
                     (props.user && props.user.role === "hiker") &&
                     <Col md={1}>
-                        <Button onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
+                        <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
                     </Col>
                 }
             </Row>

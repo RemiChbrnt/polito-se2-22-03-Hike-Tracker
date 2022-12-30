@@ -3,7 +3,7 @@
 *
 * Package:         client
 * Module:          cypress/e2e
-* File:            HT2_signUpVisitor.cy.js
+* File:            HT3_signUpVisitor.cy.js
 *
 * Copyright (c) 2022 - se2022-Team03
 * All rights reserved.

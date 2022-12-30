@@ -102,7 +102,7 @@ describe('Get informations from hike', () => {
     cy.get('#end-point-select').select('23');
   });
 
-  it('should return to home', () => {
+  it('should return to home and log-out', () => {
     cy.get('#user-log-in-button').click();
     cy.get('#email').clear();
     cy.get('#email').type('antonio.fracassa@live.it');
@@ -114,5 +114,7 @@ describe('Get informations from hike', () => {
     cy.get('#add-new-hike-option').click();
     cy.wait(500);
     cy.get('#hike-list-option').click();
+    cy.wait(500);
+    cy.get('#log-out-button').click();
   });
 });
