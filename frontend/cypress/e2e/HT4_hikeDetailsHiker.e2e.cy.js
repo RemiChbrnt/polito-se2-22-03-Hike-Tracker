@@ -94,6 +94,20 @@ describe('Sign-up', () => {
         cy.get('[src="/static/media/hut-marker.ef90b5be5df7c426570e.png"]').should('be.visible'); //hut visible        
     });
 
+    it('should has map informations', () => {
+        cy.get('#user-log-in-button').click();
+        cy.get('#email').clear();
+        cy.get('#email').type('maurizio.merluzzo@donkeykong.com');
+        cy.get('#password').clear();
+        cy.get('#password').type('testPassword1');
+        cy.wait(500);
+        cy.get('#log-in-button').click();
+        cy.wait(500);
+
+        cy.get(':nth-child(2) > .card > .card-body').click();
+        cy.get('#map').should('be.visible');
+    });
+
     it('should return to home and log-out', () => {
         cy.get('#user-log-in-button').click();
         cy.get('#email').clear();
@@ -111,5 +125,5 @@ describe('Sign-up', () => {
         cy.wait(500);
 
         cy.get('#log-out-button').click();
-        });
+    });
 });
