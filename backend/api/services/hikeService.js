@@ -5,9 +5,40 @@ class HikeService {
         this.dao = dao
     }
 
-    getHikes = async (email) => {
+    getHikes = async (query) => {
         try {
-            const hikes = await this.dao.getHikes(email)
+            const hikes = await this.dao.getHikes(query)
+            const message = hikes.map((r) => ({
+                id: r.id,
+                title: r.title,
+                length: r.length,
+                expTime: r.expTime,
+                ascent: r.ascent,
+                difficulty: r.difficulty,
+                startPt: r.startPt,
+                endPt: r.endPt,
+                description: r.description,
+                track: r.track,
+                author: r.author,
+                referencePoints: r.referencePoints,
+                statusList: r.statusList
+            }))
+            return {
+                ok: true,
+                status: 200,
+                body: message
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+    getCompletedHikes = async (query) => {
+        try {
+            const hikes = await this.dao.getCompletedHikes(query)
             const message = hikes.map((r) => ({
                 id: r.id,
                 title: r.title,
@@ -36,28 +67,13 @@ class HikeService {
         }
     }
 
-    getCompletedHikes= async (query) => {
+    getHikesCount = async (query) => {
         try {
-            const hikes = await this.dao.getCompletedHikes(query)
-            const message = hikes.map((r) => ({
-                id: r.id,
-                title: r.title,
-                length: r.length,
-                expTime: r.expTime,
-                ascent: r.ascent,
-                difficulty: r.difficulty,
-                startPt: r.startPt,
-                endPt: r.endPt,
-                description: r.description,
-                track: r.track,
-                author: r.author,
-                referencePoints: r.referencePoints,
-                statusList:r.statusList,
-            }))
+            const count = await this.dao.getHikesCount(query);
             return {
                 ok: true,
                 status: 200,
-                body: message
+                body: count
             }
         } catch (e) {
             return {
@@ -66,6 +82,8 @@ class HikeService {
             }
         }
     }
+
+
     getHikeFromID = async (query) => {
         try {
             const hike = await this.dao.getHikeFromID(query)

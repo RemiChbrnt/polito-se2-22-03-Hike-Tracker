@@ -1,4 +1,4 @@
-import { Card, Row, Col, ListGroup, Container, Badge } from 'react-bootstrap';
+import { Card, Row, Col, ListGroup, Container, Badge, Image, Pagination } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { isPointInDisk } from './coordsFromMap';
@@ -10,9 +10,25 @@ function HikeGrid(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [hikes, setHikes] = useState([]);
     const [hikesStored, setHikesStored] = useState([]);
+    const [page, setPage] = useState(0);
+    const [pages, setPages] = useState(0);
+    const [pagination, setPagination] = useState([]);
 
     useEffect(() => {
-        API.getAllHikes(props.filters).then(res => {
+        API.getHikesCount(props.filters).then(count => {
+            let pages = Math.ceil(count / 10);
+            setPages(pages);
+            setPage(0);
+            let pagination = [];
+            for (let i = 0; i < pages; i++)
+                pagination.push(i);
+
+            setPagination(pagination);
+        }).catch(error => console.log(error));
+    }, [props.filters]);
+
+    useEffect(() => {
+        API.getAllHikes(props.filters, page).then(res => {
             setHikes([]);
             setHikesStored([]);
             res.forEach((hike, index) => {
@@ -21,7 +37,7 @@ function HikeGrid(props) {
             });
             setIsLoading(false);
         }).catch(error => console.log(error));
-    }, [props.filters]);
+    }, [props.filters, page]);
 
     useEffect(() => {
         // Filtering with zone Coordinates on modification
@@ -40,6 +56,14 @@ function HikeGrid(props) {
                             }
                         </Row>
                     }
+                    <ul></ul>
+                    <Pagination className='justify-content-center'>
+                        <Pagination.First disabled={page === 0} onClick={() => { setPage(0) }} />
+                        <Pagination.Prev disabled={page === 0} onClick={() => { setPage(page - 1) }} />
+                        {pagination.map((p, i) => <Pagination.Item key={i} active={(page === i)} onClick={() => { setPage(i) }}>{i + 1}</Pagination.Item>)}
+                        <Pagination.Next disabled={page === pages - 1} onClick={() => { setPage(page + 1) }} />
+                        <Pagination.Last disabled={page === pages - 1} onClick={() => { setPage(pages - 1) }} />
+                    </Pagination>
                 </Container>}
             <ul></ul>
         </Container>
@@ -60,6 +84,8 @@ function HikeCard(props) {
             <Card style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
                 <Card.Body>
                     <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title>
+                    {(hike.photo !== undefined && hike.photo !== null) &&
+                        <Image fluid src={require("../photos/" + hike.photo)} />}
                     <ListGroup variant="flush">
 
                         <ListGroup.Item data-test-id="difficulty">

@@ -24,7 +24,8 @@ router.get('/huts', /*isLoggedIn,*/[
     query('minAltitude').optional({ nullable: true }).isFloat(),
     query('maxAltitude').optional({ nullable: true }).isFloat(),
     query('minNumberOfBeds').optional({ nullable: true }).isFloat(),
-    query('maxNumberOfBeds').optional({ nullable: true }).isFloat()
+    query('maxNumberOfBeds').optional({ nullable: true }).isFloat(),
+    query('page').isNumeric()
 ],
     async (req, res) => {
 
@@ -38,12 +39,20 @@ router.get('/huts', /*isLoggedIn,*/[
         }
 
         const data = await service.getHuts(req.query);
+        // console.log("data photo " + data.body[1].photo);
         if (data.ok)
             return res.status(data.status).json(data.body)
 
         return res.status(data.status).end()
     })
 
+router.get('/huts-count', async (req, res) => {
+    const data = await service.getHutsCount(req.query);
+    if (data.ok)
+        return res.status(data.status).json(data.body);
+
+    return res.status(data.status).end();
+})
 
 router.get('/hut-by-id', isLoggedIn, [query('id').exists()],
     async (req, res) => {
@@ -231,6 +240,7 @@ router.post("/hut-photo/:id", isLoggedIn, multer.uploadImg, [
     if (!errors.isEmpty())
         return res.status(422).json({ errors: errors.array() });
 
+    console.log("req.file " + JSON.stringify(req.file));
 
     const response = await service.addHutPhoto(req.params.id, req.file.filename)
     if (response.ok)
