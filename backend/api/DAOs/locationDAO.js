@@ -81,7 +81,6 @@ const getHutPhotos = async (id) => {
 
 exports.generateHutFilters = (query) => {
     let filters = " AND";
-    console.log("query.minNumberOfBeds " + query.minNumberOfBeds);
     if (query.name !== undefined) filters = filters + ` name LIKE '%${query.name}%' AND`
     if (query.latitude !== undefined) filters = filters + ` latitude = ${query.latitude} AND`
     if (query.longitude !== undefined) filters = filters + ` longitude = ${query.longitude} AND`
@@ -90,7 +89,7 @@ exports.generateHutFilters = (query) => {
     if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
     if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
     if (query.latitude !== undefined) filters = filters + ` latitude >= ${query.latitude - 10} AND latitude <= ${query.latitude + 10} AND`
-    if (query.longitude !== undefined) filters = filters + ` longitude >= ${query.latitude - 10} AND longitude <= ${query.latitude + 10} AND`
+    if (query.longitude !== undefined) filters = filters + ` longitude >= ${query.longitude - 10} AND longitude <= ${query.longitude + 10} AND`
     if (query.minAltitude !== undefined) filters = filters + ` altitude >= ${query.minAltitude} AND`
     if (query.maxAltitude !== undefined) filters = filters + ` altitude <= ${query.maxAltitude} AND`
     if (query.food !== undefined) filters = filters + ` food = '${query.food}' AND`

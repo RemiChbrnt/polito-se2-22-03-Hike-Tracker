@@ -519,4 +519,69 @@ describe('Testing starting and ending operations', function () {
             });
         invalidTermination.should.have.status(400);
     });
+
+    it('should return the list of completed hikes from the hiker\'s history', async () => {
+        const hikeId = 1;
+        await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+
+        const details = await agent
+            .get('/api/current-group');
+
+        await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: details.body.groupId,
+                groupId: details.body.groupId
+            });
+
+        const result = await agent
+            .get('/api/hikes/completed');
+        expect(result.body[0].id).equal(hikeId);
+        result.should.have.status(200);
+    });
+
+    it('should return [] if there are not completed hikes in the history', async () => {
+        const result = await agent
+            .get('/api/hikes/completed');
+        expect(result.body).deep.equal([]);
+        result.should.have.status(200);
+    });
+
+    it('should return [] if there are not completed hikes in the history, but there is an ongoing one', async () => {
+        const hikeId = 1;
+        await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+
+        const result = await agent
+            .get('/api/hikes/completed');
+            expect(result.body).deep.equal([]);
+            result.should.have.status(200);
+    });
+
+    it('should return 400 when getting the completed hikes as a user who is not a hiker', async () => {
+        await agent
+        .delete('/api/session/current');
+
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+        });
+
+        const result = await agent
+            .get('/api/hikes/completed');
+            result.should.have.status(403);
+    });
 })

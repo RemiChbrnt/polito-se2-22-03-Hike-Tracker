@@ -10,38 +10,40 @@ const router = express.Router()
 const { query, body, param, validationResult } = require('express-validator');
 
 router.get('/hikes/completed', isLoggedIn, async (req, res) => {
-        
-        const data = await service.getCompletedHikes(req.user.email)
+    if (req.user.role !== 'hiker')
+        return res.status(403).json({ errors: "Only hikers can access this feature" });
+
+    const data = await service.getCompletedHikes(req.user.email)
+    if (data.ok) {
+        return res.status(data.status).json(data.body)
+    }
+    return res.status(data.status).end()
+})
+
+router.get('/hikes', [
+    query('minLength').optional().isFloat({ min: 0 }),
+    query('maxLength').optional().isFloat({ min: 0 }),
+    query('minAscent').optional().isFloat({ min: 0 }),
+    query('maxAscent').optional().isFloat({ min: 0 }),
+    query('minTime').optional().isFloat({ min: 0 }),
+    query('maxTime').optional().isFloat({ min: 0 }),
+    query('difficulty').optional().isString().isIn(['tourist', 'hiker', 'pro']),
+    query('country').optional().isString(),
+    query('region').optional().isString(),
+    query('town').optional().isString(),
+    query('author').optional().isEmail()
+],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+        const data = await service.getHikes(req.query)
         if (data.ok) {
             return res.status(data.status).json(data.body)
         }
         return res.status(data.status).end()
-})
-
-router.get('/hikes', [
-        query('minLength').optional().isFloat({ min: 0 }),
-        query('maxLength').optional().isFloat({ min: 0 }),
-        query('minAscent').optional().isFloat({ min: 0 }),
-        query('maxAscent').optional().isFloat({ min: 0 }),
-        query('minTime').optional().isFloat({ min: 0 }),
-        query('maxTime').optional().isFloat({ min: 0 }),
-        query('difficulty').optional().isString().isIn(['tourist', 'hiker', 'pro']),
-        query('country').optional().isString(),
-        query('region').optional().isString(),
-        query('town').optional().isString(),
-        query('author').optional().isEmail()
-    ],
-        async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ error: errors.array() });
-            }
-            const data = await service.getHikes(req.query)
-            if (data.ok) {
-                return res.status(data.status).json(data.body)
-            }
-            return res.status(data.status).end()
-})
+    })
 
 router.post('/hikes', isLoggedIn, [
     body('title').exists().isString(),
