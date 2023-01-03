@@ -250,4 +250,23 @@ router.get('/current-group', isLoggedIn, async (req, res) => {
     }
 })
 
+router.post("/hike-photo/:id", isLoggedIn, multer.uploadImg, [
+    param('id').exists().isNumeric(),
+], async (req, res) => {
+
+    const data = await service.getHikeFromID(req.params);
+    if (data.body.author !== req.user.email)
+        return res.status(403).json({ errors: "You must be the author of the hike." })
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    const response = await service.addHikePhoto(req.params.id, req.file.filename)
+    if (response.ok)
+        return res.status(response.status).json(response.body)
+
+    return res.status(response.status).end();
+});
+
 module.exports = router

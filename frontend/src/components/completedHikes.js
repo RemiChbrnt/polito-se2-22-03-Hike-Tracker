@@ -9,28 +9,6 @@ function CompletedHikes(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [hikes, setHikes] = useState([]);
 
-    // useEffect(() => {
-    //     const checkAuth = async () => {
-    //       const user = await API.getUserInfo(); 
-    //       if (user){
-    //         setLoggedIn(true);
-    //       }
-    //       return user;
-    //     };
-    //     const getCompletedHikes = async()=>{
-    //       const h = await API.getCompletedHikes(); 
-    //       setHikes(JSON.stringify(h)); 
-    //     }
-
-    //     checkAuth().then(user=>{
-    //       if(user){
-    //         getCompletedHikes();
-    //         console.log(hikes)
-    //         setIsLoading(false);
-    //       }
-    //     });
-    //   }, [loggedIn, props.user]);
-
     useEffect(() => {
         API.getCompletedHikes().then(res => {
             setHikes([]);

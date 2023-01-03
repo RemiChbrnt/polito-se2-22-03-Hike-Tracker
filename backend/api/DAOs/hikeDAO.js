@@ -400,6 +400,20 @@ exports.addHikeReferencePoint = async (query) => {
     })
 }
 
+
+exports.addHikePhoto = async (id, photo) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET photo = ? WHERE id = ?`
+        db.run(sql, [photo, id], async (err) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+            } else
+                resolve(201);
+        })
+    })
+}
+
 /**
  * Function to start a new hike. The function creates an entry in the HikesHistory table with the specified group ID and hike ID. The status of
  * the hike is set to 'ongoing', as the function is intended to be used to signal that the hike is currently being performed. The checkPoints field

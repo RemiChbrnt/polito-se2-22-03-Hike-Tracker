@@ -651,6 +651,24 @@ async function addHutPhoto(id, formData) {
     }
 }
 
+/**
+ * Function to add a photo related to a hut
+ * @param {*} id  is the hike id
+ * @param {*} formData contains the attributes "id", the id of the hut, and "photo", the png/jpeg file converted into BLOB
+ * @returns true if succesfull, false otherwise
+ */
+async function addHikePhoto(id, formData) {
+    const response = await fetch(URL + '/hike-photo/' + id, {
+        method: "POST",
+        credentials: 'include',
+        body: formData
+    });
+    if (response.ok) {
+        return true;
+    } else {
+        throw false;
+    }
+}
 
 
 
@@ -731,7 +749,7 @@ async function getCompletedHikes() {
     }
 }
 
-const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto, getCurrentGroup, startHike, terminateHike, getCompletedHikes, getHikesCount, getHutsCount }
+const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto, getCurrentGroup, startHike, terminateHike, getCompletedHikes, getHikesCount, getHutsCount, addHikePhoto }
 
 
 export default API;

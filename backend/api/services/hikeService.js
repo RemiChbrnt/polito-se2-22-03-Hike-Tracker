@@ -21,7 +21,8 @@ class HikeService {
                 track: r.track,
                 author: r.author,
                 referencePoints: r.referencePoints,
-                statusList: r.statusList
+                statusList: r.statusList,
+                photo:r.photo
             }))
             return {
                 ok: true,
@@ -53,6 +54,7 @@ class HikeService {
                 author: r.author,
                 referencePoints: r.referencePoints,
                 statusList: r.statusList,
+                photo:r.photo
             }))
             return {
                 ok: true,
@@ -269,6 +271,22 @@ class HikeService {
             return {
                 ok: false,
                 status: e
+            }
+        }
+    }
+
+    addHikePhoto = async (id, fileName) => {
+        try {
+            const result = await this.dao.addHikePhoto(id, fileName);
+            return {
+                ok: true,
+                status: 201,
+                body: result
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
             }
         }
     }
