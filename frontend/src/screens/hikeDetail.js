@@ -104,11 +104,17 @@ const HikeDetail = ({ user, props, setProps }) => {
                 <Container style={{ width: windowSize.innerWidth / 1.1, height: windowSize.innerHeight / 1.2 }}>
 
                     <Row>
-                        <Col md={10}><h1 id='hike-title'>Hike "{hike.title}"</h1></Col>
-                        <Col>
-                            <Row className="justify-content-end">
-                                <Button id='home-button' variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
-                            </Row>
+                        <Col><h1 id='hike-title'>Hike "{hike.title}"</h1></Col>
+                        <Col style={{display:"flex", flexDirection:"row-reverse"}}>
+                            <Button id='home-button' variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
+                            {(user !== undefined) && (user.role === "guide") && !addNewReferencePoint && 
+                                <Button
+                                    variant="white"
+                                    style={{ backgroundColor: "#00706c", marginRight: 10}}
+                                    onClick={() => { setAddNewReferencePoint(true) }}>
+                                    <h4 className="text-white">Add a Reference Point</h4>
+                                </Button>
+                            }
                         </Col>
                         <Row>{hike.statusList.map(((status, i) => <Row key={i}><p id='hike-status' style={alertStyle(status.status)}><i className="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}</Row>
                     </Row>
@@ -116,22 +122,31 @@ const HikeDetail = ({ user, props, setProps }) => {
                     <Row>
 
                         <Col style={{ overflowY: "auto", height: "calc(100%)", minWidth: "300px" }}>
-                            <Card style={{ maxHeight: windowSize.innerHeight / 1.2 }}>
-                                <ListGroup variant="flush">
-                                    <ListGroupItem><h3 id='hike-info-title'>Info</h3></ListGroupItem>
-                                    <ListGroupItem id='hike-difficulty'>
-                                        Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ? "Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge>
-                                    </ListGroupItem>
-                                    <ListGroupItem id='hike-expected-time'>Expected time : {hike.expTime} hours</ListGroupItem>
-                                    <ListGroupItem id='hike-length'>Length : {hike.length} km</ListGroupItem>
-                                    <ListGroupItem id='hike-ascent'>Ascent : {hike.ascent} m</ListGroupItem>
+                            { !addNewReferencePoint ? 
+                                <Card style={{ maxHeight: windowSize.innerHeight / 1.2 }}>
+                                    <ListGroup variant="flush">
+                                        <ListGroupItem><h3 id='hike-info-title'>Info</h3></ListGroupItem>
+                                        <ListGroupItem id='hike-difficulty'>
+                                            Difficulty : <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ? "Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge>
+                                        </ListGroupItem>
+                                        <ListGroupItem id='hike-expected-time'>Expected time : {hike.expTime} hours</ListGroupItem>
+                                        <ListGroupItem id='hike-length'>Length : {hike.length} km</ListGroupItem>
+                                        <ListGroupItem id='hike-ascent'>Ascent : {hike.ascent} m</ListGroupItem>
 
-                                    <ListGroupItem id='hike-description'>
-                                        <h5>Description</h5>
-                                        {hike.description}
-                                    </ListGroupItem>
-                                </ListGroup>
-                            </Card>
+                                        <ListGroupItem id='hike-description'>
+                                            <h5>Description</h5>
+                                            {hike.description}
+                                        </ListGroupItem>
+                                    </ListGroup>
+                                </Card>
+                            :
+                                <AddReferencePointForm
+                                    hikeId={params.hikeId}
+                                    userEmail={user.email}
+                                    pointCoords={newReferencePointCoords}
+                                    setAddNewReferencePoint={setAddNewReferencePoint}
+                                />
+                            }
                             <ul></ul>
                         </Col>
                         <Col>
@@ -196,31 +211,6 @@ const HikeDetail = ({ user, props, setProps }) => {
                     {
                         (user !== undefined) &&
                         <Row>
-                            {
-                                (user.role === "guide") &&
-                                <Row className="justify-content-center">
-                                    {/* <Col style={{ marginTop: "2%", display: "flex", width: "100%", justifyContent: "flex-end", alignItems: "center" }}> */}
-                                    <Col>
-                                        <Button
-                                            variant="white"
-                                            style={{ backgroundColor: "#00706c" }}
-                                            onClick={() => { setAddNewReferencePoint(true) }}>
-                                            <h4 className="text-white">Add a Reference Point</h4>
-                                        </Button>
-                                    </Col>
-
-
-                                    {addNewReferencePoint &&
-                                        <AddReferencePointForm
-                                            hikeId={params.hikeId}
-                                            userEmail={user.email}
-                                            pointCoords={newReferencePointCoords}
-                                            setAddNewReferencePoint={setAddNewReferencePoint}
-                                        />
-                                    }
-                                    <Row style={{height:20}}/>
-                                </Row>
-                            }
                             {
                                 (user.role === "hiker" && startedHike === false && startedDifferentHike === false) &&
                                 <Row className="justify-content-center">
