@@ -137,7 +137,7 @@ async function getAllHikes(filters, page) {
         credentials: 'include',
     });
     const hikesJson = await response.json();
-    console.log(hikesJson)
+    //console.log(hikesJson)
     if (response.ok) {
         return hikesJson.map((r) => ({
             id: r.id,

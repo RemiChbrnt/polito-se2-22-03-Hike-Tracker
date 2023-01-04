@@ -43,7 +43,7 @@ const Map = (props) => {
     }
 
     return (
-        <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ minWidth: windowSize.innerWidth / 1.8, minHeight: windowSize.innerHeight / 1.5 }} >
+        <MapContainer id='map' center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ minWidth: windowSize.innerWidth / 1.8, minHeight: windowSize.innerHeight / 1.5 }} >
             {/* <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ width: "calc(100%)", height: "calc(100%)" }}> */}
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

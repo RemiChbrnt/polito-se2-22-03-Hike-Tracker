@@ -50,8 +50,9 @@ function HutFilterForm(props) {
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Form.Group>
-                        <h5>Name: </h5>
+                        <h5 id='name-label'>Name: </h5>
                         <Form.Control
+                            id='name-control'
                             value={name}
                             onChange={e => setName(e.target.value)}
                             type='text' placeholder="Name" size="lg" />
@@ -67,7 +68,7 @@ function HutFilterForm(props) {
                             label="Address"
                             name="group1"
                             type='radio'
-                            id='radio'
+                            id='address-check'
                             defaultChecked={true}
                             onClick={() => setLocation("address")}
                         />
@@ -78,7 +79,7 @@ function HutFilterForm(props) {
                             label="Coordinates"
                             name="group1"
                             type='radio'
-                            id='radio'
+                            id='coordinates-check'
                             onClick={() => setLocation("coordinates")}
                         />
                     </Col>
@@ -87,8 +88,8 @@ function HutFilterForm(props) {
                     <>
                         <Row>
                             <Form.Group>
-                                <h5>Country: </h5>
-                                <Form.Select
+                                <h5 id='country-label'>Country: </h5>
+                                <Form.Select id='country-select'
                                     onChange={e => {
                                         if (e.target.value === "")
                                             setCountry("");
@@ -106,8 +107,8 @@ function HutFilterForm(props) {
                         <ul></ul>
                         <Row>
                             <Form.Group>
-                                <h5>Region: </h5>
-                                <Form.Select
+                                <h5 id='region-label'>Region: </h5>
+                                <Form.Select id='region-select'
                                     onChange={e => setRegion(e.target.value)}
                                     aria-label="region" size="lg"
                                     disabled={country === ""}>
@@ -126,8 +127,8 @@ function HutFilterForm(props) {
                         <ul></ul>
                         <Row>
                             <Form.Group>
-                                <h5>Town: </h5>
-                                <Form.Control value={town}
+                                <h5 id='town-label'>Town: </h5>
+                                <Form.Control id='town-control' value={town}
                                     onChange={e => setTown(e.target.value)}
                                     type='text' placeholder="Town" size="lg" />
                             </Form.Group>
@@ -135,8 +136,8 @@ function HutFilterForm(props) {
                         <ul></ul>
                         <Row>
                             <Form.Group>
-                                <h5>Address: </h5>
-                                <Form.Control
+                                <h5 id='address-label'>Address: </h5>
+                                <Form.Control id='address-control'
                                     value={address}
                                     onChange={e => setAddress(e.target.value)}
                                     type='text' placeholder="Address" size="lg" />
@@ -149,8 +150,8 @@ function HutFilterForm(props) {
                         <>
                             <Row>
                                 <Form.Group>
-                                    <h5>Latitude: </h5>
-                                    <Form.Control
+                                    <h5 id='latitude-label'>Latitude: </h5>
+                                    <Form.Control id='latitude-control'
                                         value={latitude}
                                         onChange={e => setLatitude(e.target.value)}
                                         type='text' placeholder="Latitude" size="lg" />
@@ -160,8 +161,8 @@ function HutFilterForm(props) {
 
                             <Row>
                                 <Form.Group>
-                                    <h5>Longitude: </h5>
-                                    <Form.Control
+                                    <h5 id='longitude-label'>Longitude: </h5>
+                                    <Form.Control id='longitude-control'
                                         value={longitude}
                                         onChange={e => setLongitude(e.target.value)}
                                         type='text' placeholder="Longitude" size="lg" />
@@ -176,8 +177,8 @@ function HutFilterForm(props) {
                 <Row>
                     <Col>
                         <Form.Group>
-                            <h5>Minimum Cost (€): </h5>
-                            <Form.Control
+                            <h5 id='min-cost-label'>Minimum Cost (€): </h5>
+                            <Form.Control id='min-cost-control'
                                 value={minCost}
                                 onChange={e => setMinCost(e.target.value)}
                                 type='number' placeholder="MinimumCost" size="lg" />
@@ -186,8 +187,8 @@ function HutFilterForm(props) {
 
                     <Col>
                         <Form.Group>
-                            <h5>Maximum Cost (€): </h5>
-                            <Form.Control
+                            <h5 id='max-cost-label'>Maximum Cost (€): </h5>
+                            <Form.Control id='max-cost-control'
                                 value={maxCost}
                                 onChange={e => setMaxCost(e.target.value)}
                                 type='number' placeholder="MaximumCost" size="lg" />
@@ -198,8 +199,8 @@ function HutFilterForm(props) {
                 <Row>
                     <Col>
                         <Form.Group>
-                            <h5>Minimum Altitude (m): </h5>
-                            <Form.Control
+                            <h5 id='min-altitude-label'>Minimum Altitude (m): </h5>
+                            <Form.Control id='min-altitude-control'
                                 value={minAltitude}
                                 onChange={e => setMinAltitude(e.target.value)}
                                 type='number' placeholder="Minimum Altitude" size="lg" />
@@ -207,8 +208,8 @@ function HutFilterForm(props) {
                     </Col>
                     <Col>
                         <Form.Group>
-                            <h5>Maximum Altitude (m): </h5>
-                            <Form.Control
+                            <h5 id='max-altitude-label'>Maximum Altitude (m): </h5>
+                            <Form.Control id='max-altitude-control'
                                 value={maxAltitude}
                                 onChange={e => setMaxAltitude(e.target.value)}
                                 type='number' placeholder="Maximum Altitude" size="lg" />
@@ -218,8 +219,9 @@ function HutFilterForm(props) {
                 <ul></ul>
                 <Row>
                     <Form.Group>
-                        <h5>Food: </h5>
-                        <Form.Select value={food}
+                        <h5 id='food-label'>Food: </h5>
+                        <Form.Select id='food-select'
+                            value={food}
                             onChange={e => setFood(e.target.value)}
                             aria-label="food" size="lg">
                             <option>Select food type</option>
@@ -233,8 +235,8 @@ function HutFilterForm(props) {
                 <Row>
                     <Col>
                         <Form.Group>
-                            <h5>Number of beds:</h5>
-                            <Form.Control
+                            <h5 id='min-number-of-beds-label'>Number of beds:</h5>
+                            <Form.Control id='min-number-of-beds-control'
                                 onChange={e => setMinNumberOfBeds(e.target.value)}
                                 min={0}
                                 max={250}
@@ -243,8 +245,8 @@ function HutFilterForm(props) {
                     </Col>
                     <Col>
                         <Form.Group>
-                            <h5>Number of beds:</h5>
-                            <Form.Control
+                            <h5 id='max-number-of-beds-label'>Number of beds:</h5>
+                            <Form.Control id='max-number-of-beds-control'
                                 onChange={e => setMaxNumberOfBeds(e.target.value)}
                                 min={0}
                                 max={250}
@@ -255,12 +257,12 @@ function HutFilterForm(props) {
                 <ul></ul>
                 <Row>
                     <Col>
-                        <Button variant="danger" onClick={() => props.setShow(false)} size="lg">
+                        <Button id='back-button' variant="danger" onClick={() => props.setShow(false)} size="lg">
                             Back
                         </Button>
                     </Col>
                     <Col className='d-flex justify-content-end'>
-                        <Button variant="success" type="submit" size="lg">
+                        <Button id='confirm-button' variant="success" type="submit" size="lg">
                             Confirm
                         </Button>
                     </Col>

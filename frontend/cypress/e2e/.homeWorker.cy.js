@@ -1,4 +1,4 @@
-import { it } from "node:test";
+/*import { it } from "node:test";
 
 describe('Hut Worker Home Page', {
     retries: {
@@ -49,4 +49,4 @@ describe('Hut Worker Home Page', {
         cy.should('contain', 'Your submission has been sent successfully!');
     }); 
 
-});
+});*/

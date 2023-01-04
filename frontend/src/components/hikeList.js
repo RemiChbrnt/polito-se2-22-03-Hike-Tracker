@@ -81,22 +81,23 @@ function HikeCard(props) {
     return (
         <Col>
             <Card>
-            {(hike.photo !== undefined && hike.photo !== null) && 
-                        <Image fluid src={require("../photos/" + hike.photo)} />}
-                    {(hike.photo == undefined || hike.photo == null) && 
-                        <Nav.Link onClick={() => { props.user===undefined? navigate('/login'):navigate('/add-hike-cover-'+hike.id);}} active> <Image fluid src={require("../photos/cover_picture.png")} /> </Nav.Link>}
+                {(hike.photo !== undefined && hike.photo !== null) &&
+                    <Image fluid src={require("../photos/" + hike.photo)} />}
+                {(hike.photo == undefined || hike.photo == null) &&
+                    <Nav.Link onClick={() => { props.user === undefined ? navigate('/login') : navigate('/add-hike-cover-' + hike.id); }} active> <Image fluid src={require("../photos/cover_picture.png")} /> </Nav.Link>}
                 <Card.Body style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
                     <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title>
                     <ListGroup variant="flush">
-                        <ListGroup.Item data-test-id="difficulty">
+
+                        <ListGroup.Item id="difficulty">
                             <div className="d-flex justify-content-start">
                                 <i className="bi bi-activity"></i><span className="fw-bold">{"  "} Difficulty:  <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ? "Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></span>
                             </div>
                         </ListGroup.Item>
-                        <ListGroup.Item data-test-id="time"><i className="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
-                        <ListGroup.Item data-test-id="length"><i className="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
-                        <ListGroup.Item data-test-id="ascent"><i className="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
-                        <ListGroup.Item data-test-id="description"><ReadMore>{hike.description}</ReadMore></ListGroup.Item>
+                        <ListGroup.Item id="time"><i className="bi bi-clock-fill"></i> <span className="fw-bold">{"  "}Estimated Time : </span>{hike.expTime} hours</ListGroup.Item>
+                        <ListGroup.Item id="length"><i className="bi bi-signpost-split-fill"></i> <span className="fw-bold">{"  "}Length : </span>{hike.length} km</ListGroup.Item>
+                        <ListGroup.Item id="ascent"><i className="bi bi-arrow-up-right"></i> <span className="fw-bold">{"  "}Ascent : </span>{hike.ascent} m</ListGroup.Item>
+                        <ListGroup.Item id="description"><ReadMore>{hike.description}</ReadMore></ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
             </Card>
