@@ -12,13 +12,13 @@ function HutListPage(props) {
         <Container>
             <Row>
                 <Col md={8}>
-                    <h1>Hut List</h1>
+                    <h1 id='hut-list-title'>Hut List</h1>
                 </Col>
                 <Col md={2}>
-                    <Button id='filter-button' onClick={() => setFilters(JSON.stringify([]))} variant="light" size="lg">{" "}Reset filters</Button>
+                    <Button id='reset-filter-button' onClick={() => setFilters(JSON.stringify([]))} variant="light" size="lg">{" "}Reset filters</Button>
                 </Col>
                 <Col md={2}>
-                    <Button onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-search"></i>{" "}Search</Button>
+                    <Button id='search-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-search"></i>{" "}Search</Button>
                 </Col>
             </Row>
 

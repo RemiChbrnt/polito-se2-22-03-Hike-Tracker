@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------
 */
 
-describe('Sign-up', () => {
+describe('add a new hike with relative description', () => {
     beforeEach(() => {
         cy.visit('/');
     });

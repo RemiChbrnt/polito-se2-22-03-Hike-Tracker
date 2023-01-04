@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------
 */
 
-describe('Get informations from hike', () => {
+describe('add new hut with relative description', () => {
   beforeEach(() => {
     cy.visit('/');
   });

@@ -3,14 +3,14 @@
 *
 * Package:         client
 * Module:          cypress/e2e
-* File:            HT6_adescribeParking.cy.js
+* File:            HT6_describeParking.cy.js
 *
 * Copyright (c) 2022 - se2022-Team03
 * All rights reserved.
 * --------------------------------------------------------------------
 */
 
-describe('Get informations from hike', () => {
+describe('add a new parking lot with relative description', () => {
     beforeEach(() => {
       cy.visit('/');
     });

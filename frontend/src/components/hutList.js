@@ -53,21 +53,21 @@ function HutCard(props) {
         <Col>
             <Card style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
                 <Card.Body>
-                    <Card.Title><h3 className="fw-bold">{props.hut.name}</h3></Card.Title>
+                    <Card.Title><h3 id='hut-title' className="fw-bold">{props.hut.name}</h3></Card.Title>
                     <ListGroup variant="flush">
-                        <ListGroup.Item><span className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.region + ")"}, {props.hut.country}</ListGroup.Item>
-                        <ListGroup.Item><span className="fw-bold">Altitude: </span>{(props.hut.altitude !== null) ? props.hut.altitude : "No info"}</ListGroup.Item>
+                        <ListGroup.Item><span id='address' className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.region + ")"}, {props.hut.country}</ListGroup.Item>
+                        <ListGroup.Item><span id='altitude' className="fw-bold">Altitude: </span>{(props.hut.altitude !== null) ? props.hut.altitude : "No info"}</ListGroup.Item>
                         <ListGroup.Item style={{ display: "flex", justifyContent: "space-between" }}>
-                            <span><span className="fw-bold">Number of beds: </span>{(props.hut.numberOfBeds !== null) ? props.hut.numberOfBeds : "No info"}</span>
-                            <span><span className="fw-bold">Cost: </span>{(props.hut.numberOfBeds !== null) ? props.hut.numberOfBeds : "No info"}</span>
+                            <span><span id='number-of-beds' className="fw-bold">Number of beds: </span>{(props.hut.numberOfBeds !== null) ? props.hut.numberOfBeds : "No info"}</span>
+                            <span><span id='cost' className="fw-bold">Cost: </span>{(props.hut.numberOfBeds !== null) ? props.hut.numberOfBeds : "No info"}</span>
                         </ListGroup.Item>
                         <ListGroup variant="flush">
                             <ListGroup.Item style={{ display: "flex", justifyContent: "space-between" }}>
-                                <span><span className="fw-bold">Opening Time: </span>{(props.hut.openingTime !== null) ? props.hut.openingTime : "No info"}</span>
-                                <span><span className="fw-bold">Closing Time: </span>{(props.hut.closingTime !== null) ? props.hut.closingTime : "No info"}</span>
+                                <span><span id='opening-time' className="fw-bold">Opening Time: </span>{(props.hut.openingTime !== null) ? props.hut.openingTime : "No info"}</span>
+                                <span><span id='closing-time' className="fw-bold">Closing Time: </span>{(props.hut.closingTime !== null) ? props.hut.closingTime : "No info"}</span>
                             </ListGroup.Item>
                         </ListGroup>
-                        <ListGroup.Item><span className="fw-bold">Food: </span>{(props.hut.food !== null) ? props.hut.food : "No info"}</ListGroup.Item>
+                        <ListGroup.Item><span id='food' className="fw-bold">Food: </span>{(props.hut.food !== null) ? props.hut.food : "No info"}</ListGroup.Item>
                         <ListGroup.Item>{(props.hut.description !== null) ? <ReadMore>{props.hut.description}</ReadMore> : "No description"}</ListGroup.Item>
                     </ListGroup>
                 </Card.Body>
