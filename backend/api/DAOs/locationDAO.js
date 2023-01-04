@@ -9,10 +9,12 @@ getHutbyWorkerId to workers intead
 exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
         let sql =
-            `SELECT * FROM Locations
-            LEFT JOIN Huts ON Locations.id = Huts.locationId
+            `SELECT Locations.id, Locations.name, Locations.type, Locations.latitude, Locations.longitude, Locations.country, Locations.region, Locations.town, Locations.address, Locations.altitude, Locations.author, Huts.numberOfBeds, Huts.food, Huts.description, Huts.openingTime, Huts.closingTime, Huts.cost, Huts.phone, Huts.email, Huts.website, HutsPhotos.fileName
+            FROM Locations LEFT JOIN Huts ON Locations.id = Huts.locationId
             LEFT JOIN HutsPhotos ON Locations.id = HutsPhotos.hutId            
             WHERE type="hut"`
+
+            //remove this comment when merging: if we don't list all fields we end up with duplicates like [id, locationId, id, hutId]
 
         let filters = "";
 
@@ -25,8 +27,7 @@ exports.getHuts = async (query) => {
                 reject(400);
                 return;
             }
-            else
-                resolve(rows);
+            resolve(rows);
         })
     })
 }

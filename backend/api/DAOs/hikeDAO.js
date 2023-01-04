@@ -413,12 +413,19 @@ exports.addHikeReferencePoint = async (query) => {
 exports.addHikePhoto = async (id, photo) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE Hikes SET photo = ? WHERE id = ?`
-        db.run(sql, [photo, id], async (err) => {
+        db.run(sql, [photo, id], async function (err) {
             if (err) {
                 console.log(err);
                 reject(400);
-            } else
-                resolve(201);
+                return
+            }
+            console.log("teststst")
+            console.log(this.changes)
+            if (this.changes == 0) {
+                reject(404);
+                return
+            }
+            resolve(201);
         })
     })
 }
