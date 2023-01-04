@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const { INTERNAL } = require('sqlite3')
-const { resetHikes, resetLocations } = require('../db/dbreset.js')
+const { resetHikes, resetLocations, resetGroups, resetHistory } = require('../db/dbreset.js')
 chai.use(chaiHttp)
 chai.should()
 
@@ -295,4 +295,293 @@ describe('Testing the status of hikes', function () {
         result.should.have.status(422)
     });
 
+})
+
+describe('Testing starting and ending operations', function () {
+    beforeEach(async () => {
+        await agent
+        .post('/api/login')
+        .set('content-type', 'application/json')
+        .send({
+            email: 'maurizio.merluzzo@donkeykong.com',
+            password: 'testPassword1'
+        });
+    await resetGroups();
+    await resetHistory();
+    });
+
+
+    it('should allow a hiker to start a hike, returning 201', async () => {
+        const hikeId = 1;
+        const result = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        result.should.have.status(201);
+    });
+
+    it('should return 400 when the user trying to start a hike is not a hiker', async () => {
+        const hikeId = 1;
+        await agent
+            .delete('/api/session/current');
+
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+            });
+        const result = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        result.should.have.status(400);
+    });
+
+    it('should return 404 when the user tries to start a hike while already in a hike', async () => {
+        const hikeId = 1;
+        const startResult = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        startResult.should.have.status(201);
+        const result = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        result.should.have.status(404);
+    });
+
+    it('should retrieve the ID of the group the user is currently in', async () => {
+        const hikeId = 1;
+        const startResult = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+        });
+        startResult.should.have.status(201);
+        const result = await agent
+            .get('/api/current-group');
+        expect(result.body).to.have.property('groupId').that.equals(1);
+        expect(result.body).to.have.property('hikeId').that.equals(1);
+    });
+
+    it('should return 204 if the user is not in a group currently in an ongoing hike', async () => {
+            const result = await agent
+                .get('/api/current-group');
+            result.should.have.status(204);
+    });
+
+    it('should return 400 when retrieving the current group while not logged in as a hiker', async () => {
+        await agent
+        .delete('/api/session/current');
+
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+        });
+
+        const result = await agent
+                .get('/api/current-group');
+            result.should.have.status(400);
+    });
+
+    it('should allow the user to terminate a hike they\'re currently in', async () => {
+        const hikeId = 1;
+        const startResult = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        startResult.should.have.status(201);
+        const details = await agent
+            .get('/api/current-group');
+        
+        const terminationResult = await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: details.body.hikeId,
+                groupId: details.body.groupId
+            });
+        terminationResult.should.have.status(201);
+    });
+
+    it('should return 400 when trying to terminate a hike while not logged in as a hiker', async () => {
+        await agent
+        .delete('/api/session/current');
+
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+        });
+        
+        const terminationResult = await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: 0,
+                groupId: 0
+            });
+        terminationResult.should.have.status(400);
+    });
+
+    it('should return 403 when the user tries to terminate a hike the\'re not in (wrong group)', async () => {
+        const hikeId = 1;
+        const startResult = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        startResult.should.have.status(201);
+
+        const details = await agent
+        .get('/api/current-group');
+
+        const terminationResult = await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: details.body.hikeId,
+                groupId: 2
+            });
+        terminationResult.should.have.status(403);
+    });
+
+    it('should return 404 when the user tries to terminate a hike they\'re not in (wrong hikeId)', async () => {
+        const hikeId = 1;
+        const startResult = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        startResult.should.have.status(201);
+
+        const details = await agent
+        .get('/api/current-group');
+
+        const terminationResult = await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: 2,
+                groupId: details.body.groupId
+            });
+        terminationResult.should.have.status(404);
+    });
+
+    it('should return 400 when the user tries to terminate a hike they are in, but that is not ongoing', async () => {
+        const hikeId = 1;
+        const startResult = await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+        startResult.should.have.status(201);
+
+        const details = await agent
+        .get('/api/current-group');
+
+        const correctTermination = await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: details.body.groupId,
+                groupId: details.body.groupId
+            });
+        correctTermination.should.have.status(201);
+        const invalidTermination = await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: details.body.groupId,
+                groupId: details.body.groupId
+            });
+        invalidTermination.should.have.status(400);
+    });
+
+    it('should return the list of completed hikes from the hiker\'s history', async () => {
+        const hikeId = 1;
+        await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+
+        const details = await agent
+            .get('/api/current-group');
+
+        await agent
+            .put('/api/terminate-hike')
+            .set('content-type', 'application/json')
+            .send({
+                hikeId: details.body.groupId,
+                groupId: details.body.groupId
+            });
+
+        const result = await agent
+            .get('/api/hikes/completed');
+        expect(result.body[0].id).equal(hikeId);
+        result.should.have.status(200);
+    });
+
+    it('should return [] if there are not completed hikes in the history', async () => {
+        const result = await agent
+            .get('/api/hikes/completed');
+        expect(result.body).deep.equal([]);
+        result.should.have.status(200);
+    });
+
+    it('should return [] if there are not completed hikes in the history, but there is an ongoing one', async () => {
+        const hikeId = 1;
+        await agent
+            .post('/api/start-hike')
+            .set('content-type', "application/json")
+            .send({
+                hikeId: hikeId
+            });
+
+        const result = await agent
+            .get('/api/hikes/completed');
+            expect(result.body).deep.equal([]);
+            result.should.have.status(200);
+    });
+
+    it('should return 400 when getting the completed hikes as a user who is not a hiker', async () => {
+        await agent
+        .delete('/api/session/current');
+
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+        });
+
+        const result = await agent
+            .get('/api/hikes/completed');
+            result.should.have.status(403);
+    });
 })

@@ -15,6 +15,33 @@ const resetHikes = async function () {
     })
 }
 
+const resetGroups = async function () {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM Participants"
+        db.all(sql, [], async (err) => {
+            if (err)
+                reject(err);
+            else
+                resolve("Success");
+        });
+
+    })
+}
+
+const resetHistory = async function () {
+    return new Promise((resolve, reject) => {
+        const sql = "DELETE FROM HikesHistory"
+        db.all(sql, [], async (err) => {
+            if (err)
+                reject(err);
+            else
+                resolve("Success");
+        });
+
+    })
+}
+
+
 const resetUsers = async function () {
     return new Promise((resolve, reject) => {
         const sql1 = "DELETE FROM Users WHERE email!='maurizio.merluzzo@donkeykong.com' AND email!='antonio.fracassa@live.it' \
@@ -121,4 +148,4 @@ const resetLocations = async function () {
 
     })
 }
-module.exports = { resetHikes, resetUsers, resetLocations, resetDeclinedUser1, resetDeclinedUser2 }
+module.exports = { resetHikes, resetUsers, resetLocations, resetDeclinedUser1, resetDeclinedUser2, resetGroups, resetHistory }

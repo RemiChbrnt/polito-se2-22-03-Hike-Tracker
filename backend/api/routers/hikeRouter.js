@@ -3,11 +3,23 @@ const express = require('express');
 const HikeService = require('../services/hikeService');
 const HikeDao = require('../DAOs/hikeDAO');
 const isLoggedIn = require("../middleware/authentication");
+const multer = require("../middleware/storage");
 const service = new HikeService(HikeDao)
 
 const router = express.Router()
 
 const { query, body, param, validationResult } = require('express-validator');
+
+router.get('/hikes/completed', isLoggedIn, async (req, res) => {
+    if (req.user.role !== 'hiker')
+        return res.status(403).json({ errors: "Only hikers can access this feature" });
+
+    const data = await service.getCompletedHikes(req.user.email)
+    if (data.ok) {
+        return res.status(data.status).json(data.body)
+    }
+    return res.status(data.status).end()
+})
 
 router.get('/hikes', [
     query('minLength').optional().isFloat({ min: 0 }),
@@ -20,7 +32,8 @@ router.get('/hikes', [
     query('country').optional().isString(),
     query('region').optional().isString(),
     query('town').optional().isString(),
-    query('author').optional().isEmail()
+    query('author').optional().isEmail(),
+    query('page').isNumeric()
 ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -34,7 +47,7 @@ router.get('/hikes', [
         return res.status(data.status).end()
     })
 
-router.post('/hikes', isLoggedIn, [
+router.post('/hikes', isLoggedIn, multer.uploadImg, [
     body('title').exists().isString(),
     body('length').exists().isFloat({ min: 0 }),
     body('expTime').exists().isFloat({ min: 0 }),
@@ -53,13 +66,20 @@ router.post('/hikes', isLoggedIn, [
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
-
     const newHike = req.body
     const hikeId = await service.createHike(newHike)
     if (hikeId.ok) {
         return res.status(hikeId.status).json(hikeId.body)
     }
     return res.status(hikeId.status).end()
+})
+
+router.get('/hikes-count', async (req, res) => {
+    const data = await service.getHikesCount(req.query);
+    if (data.ok)
+        return res.status(data.status).json(data.body);
+
+    return res.status(data.status).end();
 })
 
 router.get('/hikeFromID', [query('id').exists()],
@@ -181,6 +201,74 @@ router.put('/hikes/:hikeId/status/:hutId', [
         }
         return res.status(data.status).end()
     }
-)
+);
+
+router.post('/start-hike', isLoggedIn, [
+    body('hikeId').exists().isNumeric()
+],
+    async (req, res) => {
+        if (req.user.role === "hiker") {
+            const response = await service.startHike(req.body.hikeId, req.user.email);
+            if (response.ok) {
+                return res.status(response.status).end();
+            }
+            else {
+                res.status(response.status).end();
+            }
+        } else {
+            return res.status(400).json({ error: "Unauthorized" });
+        }
+    });
+
+router.put('/terminate-hike', isLoggedIn, async (req, res) => {
+    if (req.user.role === "hiker") {
+        const response = await service.terminateHike(req.body.groupId, req.body.hikeId, req.user.email);
+        if (response.ok) {
+            return res.status(response.status).end();
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+});
+
+router.get('/current-group', isLoggedIn, async (req, res) => {
+    if (req.user.role === "hiker") {
+        const response = await service.getCurrentGroupDataByHikerId(req.user.email);
+        if (response.ok) {
+            if (response.status === 204) {
+                return res.status(response.status).end();
+            } else {
+                return res.status(response.status).json(response.body);
+            }
+        }
+        else {
+            res.status(response.status).end();
+        }
+    } else {
+        return res.status(400).json({ error: "Unauthorized" });
+    }
+})
+
+router.post("/hike-photo/:id", isLoggedIn, multer.uploadImg, [
+    param('id').exists().isNumeric(),
+], async (req, res) => {
+
+    const data = await service.getHikeFromID(req.params);
+    if (data.body.author !== req.user.email)
+        return res.status(403).json({ errors: "You must be the author of the hike." })
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
+
+    const response = await service.addHikePhoto(req.params.id, req.file.filename)
+    if (response.ok)
+        return res.status(response.status).json(response.body)
+
+    return res.status(response.status).end();
+});
 
 module.exports = router

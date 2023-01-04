@@ -1,19 +1,18 @@
-import {useState} from "react";
-import { MapContainer, TileLayer, useMap, Marker, Popup} from 'react-leaflet';
+import { useState } from "react";
+import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import * as L from 'leaflet';
 import GPXTrack from "./GPXTrack";
-import { HikeGrid } from "./hikeList";
 
 const Map = (props) => {
     const startPt = JSON.parse(props.startPt);
     const endPt = JSON.parse(props.endPt);
     const referencePoints = JSON.parse(props.referencePoints);
     const [windowSize, setWindowSize] = useState(getWindowSize());
-    
+
     function getWindowSize() {
-        const {innerWidth, innerHeight} = window;
-        return {innerWidth, innerHeight};
-      }
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
 
 
     const hutIcon = new L.Icon({
@@ -38,13 +37,14 @@ const Map = (props) => {
         iconSize: [104, 158]
     });
 
-    const center={
-        latitude: (endPt.latitude + startPt.latitude)/2,
-        longitude: (endPt.longitude + startPt.longitude)/2
+    const center = {
+        latitude: (endPt.latitude + startPt.latitude) / 2,
+        longitude: (endPt.longitude + startPt.longitude) / 2
     }
-   
+
     return (
-        <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{width: windowSize.innerWidth/1.5, height: windowSize.innerHeight/2.5}} >
+        <MapContainer id='map' center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ minWidth: windowSize.innerWidth / 1.8, minHeight: windowSize.innerHeight / 1.5 }} >
+            {/* <MapContainer center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ width: "calc(100%)", height: "calc(100%)" }}> */}
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

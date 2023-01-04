@@ -61,35 +61,35 @@ function ActiveForm(props) {
 
     return (
         <Container>
-            <Row><h2>Add a new Parking Lot !</h2></Row>
+            <Row><h2 id='add-parking-title'>Add a new Parking Lot !</h2></Row>
             <ul></ul>
             <Row className="hike-form">
                 <Form onSubmit={handlerSubmit} className="mt-3">
                     <Col className="form-group">
-                        <Form.Label><b>Title</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control type="text" placeholder="Enter title" required
+                        <Form.Label id='title-label'><b>Title</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Control id='title-control' type="text" placeholder="Enter title" required
                             onChange={ev => { setTitle(ev.target.value); }}
                         />
                     </Col>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Latitude</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="text" placeholder="Enter latitude" required
+                            <Form.Label id='latitude-label'><b>Latitude</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control id='latitude-control' type="text" placeholder="Enter latitude" required
                                 onChange={ev => { setLatitude(ev.target.value); }}
                             />
                         </Col>
                         <Col>
                                
-                            <Form.Label><b>Longitude</b> <b className="asterisk-required">*</b></Form.Label>
-                            <Form.Control type="text" placeholder="Enter Longitude" required
+                            <Form.Label id='longitude-label'><b>Longitude</b> <b className="asterisk-required">*</b></Form.Label>
+                            <Form.Control id='longitude-control' type="text" placeholder="Enter Longitude" required
                                 onChange={ev => { setLongitude(ev.target.value); }}
                             />
                         </Col>
                     </Row>
                     <Row className="form-group mt-3">
                         <Col>
-                            <Form.Label><b>Country</b></Form.Label>
-                                <Form.Select className='country-input' value={countryCode} onChange={(ev) => { 
+                            <Form.Label id='country-label'><b>Country</b></Form.Label>
+                                <Form.Select id='country-select' className='country-input' value={countryCode} onChange={(ev) => { 
                                     if(ev.target.value!==''){
                                         setCountryCode(ev.target.value);
                                         setCountry(Country.getAllCountries().filter(c => c.isoCode === ev.target.value)[0].name);
@@ -101,8 +101,8 @@ function ActiveForm(props) {
                         </Col>
                         <Col>
                                 
-                            <Form.Label><b>Region</b></Form.Label>
-                            <Form.Select className='region-input' value={regionCode} disabled={countryCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => { 
+                            <Form.Label id='region-label'><b>Region</b></Form.Label>
+                            <Form.Select id='region-select' className='region-input' value={regionCode} disabled={countryCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => { 
                                 if(ev.target.value!==''){
                                     setRegionCode(ev.target.value);
                                     setRegion(State.getStatesOfCountry(countryCode).filter(r=>r.isoCode===ev.target.value)[0].name);
@@ -118,40 +118,40 @@ function ActiveForm(props) {
                     <Row className="form-group mt-3">
                         <Col>
                                
-                            <Form.Label><b>Town</b></Form.Label>
-                            <Form.Select className='town-input' disabled={regionCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => {setTown(ev.target.value);}}>
+                            <Form.Label id='town-label'><b>Town</b></Form.Label>
+                            <Form.Select id='town-select' className='town-input' disabled={regionCode ? false : true} style={{ cursor: "pointer" }} onChange={ev => {setTown(ev.target.value);}}>
                                 <option key={'None'} value={''}>{'Select a town'}</option>
                                 {City.getCitiesOfState(countryCode, regionCode).map((t,m)=><option key={m} value={t.name}>{t.name}</option>)}
                             </Form.Select>
                         </Col>
                         <Col>
                                 
-                            <Form.Label><b>Address</b></Form.Label>
-                            <Form.Control type="text" placeholder="Enter an address"
+                            <Form.Label id='address-label'><b>Address</b></Form.Label>
+                            <Form.Control id='address-control' type="text" placeholder="Enter an address"
                                 onChange={ev => { setAddress(ev.target.value); }}
                             />
                         </Col>
                     </Row>
                     <Col className="form-group mt-3">
-                        <Form.Label><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control type="number" placeholder="Enter Altitude" required
+                        <Form.Label id='altitude-label'><b>Altitude</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Control id='altitude-control' type="number" placeholder="Enter Altitude" required
                             onChange={ev => { setAltitude(ev.target.value); }}
                         />
                     </Col>
                     <Col className="form-group mt-3">
-                        <Form.Label><b>N. Lots</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control type="number" placeholder="Enter number of lots"
+                        <Form.Label id='number-of-lots-label'><b>N. Lots</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Control id='number-of-lots-control' type="number" placeholder="Enter number of lots"
                             onChange={ev => { setLotsNumber(ev.target.value); }}
                         />
                     </Col>
                     <Col className="form-group mt-3">
-                        <Form.Label><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
-                        <Form.Control as="textarea" rows={2}
+                        <Form.Label id='description-label' ><b>Description</b> <b className="asterisk-required">*</b></Form.Label>
+                        <Form.Control id='description-control' as="textarea" rows={2}
                             onChange={ev => { setDescription(ev.target.value); }}
                         />
                     </Col>
                     <Col className="d-grid gap-2 mt-3">
-                        <Button type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
+                        <Button id='confirm-button' type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
                     </Col>
                 </Form>
             </Row>

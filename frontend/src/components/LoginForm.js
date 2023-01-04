@@ -68,14 +68,14 @@ function LoginForm({ user, setUser }) {
                     <Col md="auto">
                         <h2 className="text-center">Log-In</h2>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group id='parent1' controlId="email">
+                            <Form.Group controlId="email">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control id="email-input" type="email" placeholder="Email" value={email} required={true}
+                                <Form.Control type="email" placeholder="Email" value={email} required={true}
                                     onChange={ev => { setEmail(ev.target.value) }}
                                 />
                             </Form.Group>
 
-                            <Form.Group id='parent1' controlId="password">
+                            <Form.Group controlId="password">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" value={password} required={true}
                                     onChange={ev => { setPassword(ev.target.value) }}
@@ -83,12 +83,11 @@ function LoginForm({ user, setUser }) {
                             </Form.Group>
                             <ul></ul>
                             <Row>
-                                <Col md={4} xs={4}>
-                                    <Button onClick={handleBack} variant='danger' size='lg'>Back</Button>{" "}
+                                <Col>
+                                    <Button id='back-button' onClick={handleBack} variant='danger' size='lg'>Back</Button>
                                 </Col>
-                                <Col md={2} xs={2}></Col>
-                                <Col md={6} xs={6}>
-                                    <Button type="submit" variant='success' size='lg'>Log-In</Button>
+                                <Col className='d-flex justify-content-end'>
+                                    <Button id='log-in-button' type="submit" variant='success' size='lg'>Log-In</Button>
                                 </Col>
                             </Row>
                             {loginError && <span>Error: email or password not correct</span>}
@@ -101,7 +100,7 @@ function LoginForm({ user, setUser }) {
                         <h3 className="text-center">Are you new here? Create your account</h3>
                         <ul></ul>
                         <div className="d-grid gap-2">
-                            <Button onClick={() => { navigate('/signup') }} variant='outline-success' size='lg'>Sign-Up</Button>
+                            <Button id='sign-up-button' onClick={() => { navigate('/signup') }} variant='outline-success' size='lg'>Sign-Up</Button>
                         </div>
                     </Col>
                 </Row>

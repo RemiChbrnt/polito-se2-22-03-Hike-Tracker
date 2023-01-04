@@ -16,18 +16,25 @@ const Home = (props) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function getPrefs () {
-            const prefs = await API.getPreferences();
-            if (Object.keys(prefs.body).length === 0)
-                setPreferences(undefined);
-            else
-                setPreferences(prefs.body);
+        if(props.user !== undefined){
+            async function getPrefs () {
+                try {
+                    const prefs = await API.getPreferences();
+                if (Object.keys(prefs.body).length === 0)
+                    setPreferences(undefined);
+                else
+                    setPreferences(prefs.body);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+    
+            /* Temporary patch to make the filters reset upon logout */
+            if(props.user === undefined)
+                resetFilters();
+            getPrefs();
         }
-
-        /* Temporary patch to make the filters reset upon logout */
-        if(props.user === undefined)
-            resetFilters();
-        getPrefs();
+        
     }, [props.user]);
 
     const suggestHikes = async () => {
@@ -50,39 +57,12 @@ const Home = (props) => {
 
     return (
         <Container>
-            {/*<ul></ul>
-            {(props !== undefined && props.user !== undefined) && (
-
-                (props.user.role === "hutworker") &&
-                <Row>
-                    <h2>Hut Worker</h2>
-                    <HutWorker />
-                </Row>
-
-                ||
-
-                (props.user.role === "guide") &&
-                <Row>
-                    <h2>Local Guide</h2>
-                    <LocalGuide />
-                </Row>
-
-                ||
-
-                (props.user.role === "emergency") &&
-                <Row>
-                    <h2>Emergency Operator</h2>
-                    <EmergencyOperator />
-                </Row>
-            )}
-            <ul></ul>*/}
-
             <Row>
                 <Col md={8}>
-                    <h1 data-test-id="title">Hike List</h1>
+                    <h1 id="title">Hike List</h1>
                 </Col>
                 <Col md={2}>
-                    <Button id='filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
+                    <Button id='reset-filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
                 </Col>
                 <Col md={2}>
                     <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
@@ -90,7 +70,7 @@ const Home = (props) => {
                 {
                     (props.user && props.user.role === "hiker") &&
                     <Col md={1}>
-                        <Button onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences===undefined}>{" "}Suggested hikes</Button>
+                        <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
                     </Col>
                 }
             </Row>
@@ -102,7 +82,7 @@ const Home = (props) => {
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Filter Selection</Modal.Title>
+                    <Modal.Title id='filter-title'>Filter Selection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <HikeFilterForm setShow={setShow} setFilters={setFilters} setCoords={setCoordsFilter} setRadiusFilter={setRadiusFilter} />

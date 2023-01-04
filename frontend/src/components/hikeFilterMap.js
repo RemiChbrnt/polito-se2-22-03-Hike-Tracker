@@ -9,13 +9,13 @@ const HikeFilterMap = ({setCoords, setRadiusFilter, setShow}) => {
 
     return (
         <Container>
-            <Form.Label><b>Radius (km)</b></Form.Label>
-            <Form.Control className="mb-2" type="number" value={radius}
+            <Form.Label id='radius-label'><b>Radius (km)</b></Form.Label>
+            <Form.Control id='radius-control' className="mb-2" type="number" value={radius}
                 onChange={ev => { setRadius(ev.target.value); setRadiusFilter(ev.target.value)}}
             />
             <CoordsFromMap center={center} radius={radius*1000} setCoords={setCoords}/>
             <Col style={{marginTop: "2%", display: "flex", width:"100%", justifyContent:"flex-end", alignItems:"center"}}>
-                <Button variant="success" size="lg" onClick={() => setShow(false)}>
+                <Button id='confirm-button' variant="success" size="lg" onClick={() => setShow(false)}>
                     Confirm
                 </Button>
             </Col>

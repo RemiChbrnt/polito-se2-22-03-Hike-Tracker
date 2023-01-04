@@ -26,7 +26,7 @@ function NavBar(props) {
                                 false
                                 :
                                 <Navbar.Text className="justify-content-end">
-                                    <h1 onClick={() => { navigate('/login') }} ><i className="bi bi-person-circle text-white" style={{ cursor: "pointer" }}></i>{" "}</h1>
+                                    <h1 id='user-log-in-button' onClick={() => { navigate('/login') }} ><i className="bi bi-person-circle text-white" style={{ cursor: "pointer" }}></i>{" "}</h1>
                                 </Navbar.Text>
                             :
                             <Row>
