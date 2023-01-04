@@ -3,10 +3,10 @@ const db = require('../../db/db');
 
 exports.getHikes = async (query) => {
     return new Promise((resolve, reject) => {
-        let sql = 'SELECT * from Hikes h'
+        let sql = 'SELECT * from Hikes h';
         const filters = this.generateFilters(query);
-        sql = sql + filters
-        db.all(sql, [], async (err, rows) => {
+        sql = sql + filters + " LIMIT 10 OFFSET ?";
+        db.all(sql, [(query.page * 10)], async (err, rows) => {
             if (err) {
                 console.log("err" + err)
                 reject()
@@ -32,6 +32,7 @@ exports.getHikes = async (query) => {
                         author: r.author,
                         referencePoints: refLocations,
                         statusList: statuses,
+                        photo: r.photo
                     }
                 })
             )
@@ -116,6 +117,34 @@ exports.getCompletedHikes = async (email) => {
         })
     })
 }
+
+exports.getHikesCount = async (query) => {
+    return new Promise((resolve, reject) => {
+        let sql = 'SELECT COUNT(Hikes.id) AS count FROM Hikes ';
+        const filters = this.generateFilters(query);
+
+        if (query.country !== undefined || query.region !== undefined || query.town !== undefined)
+            sql = sql + "JOIN Locations ON Hikes.startPt = Locations.id";
+
+        (filters !== "") ? sql += filters + " AND " : sql += " WHERE ";
+
+        if (query.country !== undefined) sql = sql + ` Locations.country = "${query.country}" COLLATE NOCASE AND `
+        if (query.region !== undefined) sql = sql + ` Locations.region = "${query.region}" COLLATE NOCASE AND `
+        if (query.town !== undefined) sql = sql + ` Locations.town = "${query.town}" COLLATE NOCASE AND `
+
+        sql = sql + " 1"
+
+        db.get(sql, [], async (err, row) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            else
+                resolve(row.count);
+        })
+    })
+}
+
 
 const getStatusList = async function (id) {
     return new Promise((resolve, reject) => {
@@ -376,6 +405,20 @@ exports.addHikeReferencePoint = async (query) => {
                 resolve(200);
                 return;
             }
+        })
+    })
+}
+
+
+exports.addHikePhoto = async (id, photo) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Hikes SET photo = ? WHERE id = ?`
+        db.run(sql, [photo, id], async (err) => {
+            if (err) {
+                console.log(err);
+                reject(400);
+            } else
+                resolve(201);
         })
     })
 }

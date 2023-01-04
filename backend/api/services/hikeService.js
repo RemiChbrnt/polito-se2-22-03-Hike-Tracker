@@ -5,9 +5,9 @@ class HikeService {
         this.dao = dao
     }
 
-    getHikes = async (email) => {
+    getHikes = async (query) => {
         try {
-            const hikes = await this.dao.getHikes(email)
+            const hikes = await this.dao.getHikes(query)
             const message = hikes.map((r) => ({
                 id: r.id,
                 title: r.title,
@@ -22,6 +22,7 @@ class HikeService {
                 author: r.author,
                 referencePoints: r.referencePoints,
                 statusList: r.statusList,
+                photo:r.photo
             }))
             return {
                 ok: true,
@@ -36,7 +37,7 @@ class HikeService {
         }
     }
 
-    getCompletedHikes= async (query) => {
+    getCompletedHikes = async (query) => {
         try {
             const hikes = await this.dao.getCompletedHikes(query)
             const message = hikes.map((r) => ({
@@ -52,7 +53,8 @@ class HikeService {
                 track: r.track,
                 author: r.author,
                 referencePoints: r.referencePoints,
-                statusList:r.statusList,
+                statusList: r.statusList,
+                photo:r.photo
             }))
             return {
                 ok: true,
@@ -66,6 +68,24 @@ class HikeService {
             }
         }
     }
+
+    getHikesCount = async (query) => {
+        try {
+            const count = await this.dao.getHikesCount(query);
+            return {
+                ok: true,
+                status: 200,
+                body: count
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
+
+
     getHikeFromID = async (query) => {
         try {
             const hike = await this.dao.getHikeFromID(query)
@@ -251,6 +271,22 @@ class HikeService {
             return {
                 ok: false,
                 status: e
+            }
+        }
+    }
+
+    addHikePhoto = async (id, fileName) => {
+        try {
+            const result = await this.dao.addHikePhoto(id, fileName);
+            return {
+                ok: true,
+                status: 201,
+                body: result
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
             }
         }
     }

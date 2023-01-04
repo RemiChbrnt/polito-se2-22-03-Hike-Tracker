@@ -9,15 +9,17 @@ getHutbyWorkerId to workers intead
 exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
         let sql =
-            `SELECT * from Locations
+            `SELECT * FROM Locations
             LEFT JOIN Huts ON Locations.id = Huts.locationId
+            LEFT JOIN HutsPhotos ON Locations.id = HutsPhotos.hutId            
             WHERE type="hut"`
+
         let filters = "";
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
-        sql = sql + filters;
-        db.all(sql, [], async (err, rows) => {
+        sql = sql + filters + " GROUP BY Locations.id LIMIT 10 OFFSET ?";
+        db.all(sql, [(query.page * 10)], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
@@ -25,6 +27,25 @@ exports.getHuts = async (query) => {
             }
             else
                 resolve(rows);
+        })
+    })
+}
+
+
+exports.getHutsCount = async (query) => {
+    return new Promise((resolve, reject) => {
+        let filters = "";
+        let sql = 'SELECT COUNT(id) AS count FROM Locations WHERE type="hut"'
+        if (Object.entries(query).length !== 0)
+            filters = this.generateHutFilters(query);
+        sql = sql + filters;
+        db.get(sql, [], async (err, row) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            else
+                resolve(row.count);
         })
     })
 }

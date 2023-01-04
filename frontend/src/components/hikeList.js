@@ -1,4 +1,4 @@
-import { Card, Row, Col, ListGroup, Container, Badge } from 'react-bootstrap';
+import { Card, Row, Col, ListGroup, Container, Badge, Image, Pagination, Nav } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { isPointInDisk } from './coordsFromMap';
@@ -10,9 +10,25 @@ function HikeGrid(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [hikes, setHikes] = useState([]);
     const [hikesStored, setHikesStored] = useState([]);
+    const [page, setPage] = useState(0);
+    const [pages, setPages] = useState(0);
+    const [pagination, setPagination] = useState([]);
 
     useEffect(() => {
-        API.getAllHikes(props.filters).then(res => {
+        API.getHikesCount(props.filters).then(count => {
+            let pages = Math.ceil(count / 10);
+            setPages(pages);
+            setPage(0);
+            let pagination = [];
+            for (let i = 0; i < pages; i++)
+                pagination.push(i);
+
+            setPagination(pagination);
+        }).catch(error => console.log(error));
+    }, [props.filters]);
+
+    useEffect(() => {
+        API.getAllHikes(props.filters, page).then(res => {
             setHikes([]);
             setHikesStored([]);
             res.forEach((hike, index) => {
@@ -21,13 +37,12 @@ function HikeGrid(props) {
             });
             setIsLoading(false);
         }).catch(error => console.log(error));
-    }, [props.filters]);
+    }, [props.filters, page]);
 
     useEffect(() => {
         // Filtering with zone Coordinates on modification
         setHikes(hikes => hikesStored.filter((hike) => isPointInDisk([JSON.parse(hike).startPt.latitude, JSON.parse(hike).startPt.longitude], props.coordsFilter, props.radiusFilter)));
     }, [props.coordsFilter, props.radiusFilter]);
-
     return (
         <Container fluid>
             {isLoading ?
@@ -40,6 +55,14 @@ function HikeGrid(props) {
                             }
                         </Row>
                     }
+                    <ul></ul>
+                    <Pagination className='justify-content-center'>
+                        <Pagination.First disabled={page === 0} onClick={() => { setPage(0) }} />
+                        <Pagination.Prev disabled={page === 0} onClick={() => { setPage(page - 1) }} />
+                        {pagination.map((p, i) => <Pagination.Item key={i} active={(page === i)} onClick={() => { setPage(i) }}>{i + 1}</Pagination.Item>)}
+                        <Pagination.Next disabled={page === pages - 1} onClick={() => { setPage(page + 1) }} />
+                        <Pagination.Last disabled={page === pages - 1} onClick={() => { setPage(pages - 1) }} />
+                    </Pagination>
                 </Container>}
             <ul></ul>
         </Container>
@@ -57,11 +80,14 @@ function HikeCard(props) {
     });
     return (
         <Col>
-            <Card style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
-                <Card.Body>
+            <Card>
+            {(hike.photo !== undefined && hike.photo !== null) && 
+                        <Image fluid src={require("../photos/" + hike.photo)} />}
+                    {(hike.photo == undefined || hike.photo == null) && 
+                        <Nav.Link onClick={() => { props.user===undefined? navigate('/login'):navigate('/add-hike-cover-'+hike.id);}} active> <Image fluid src={require("../photos/cover_picture.png")} /> </Nav.Link>}
+                <Card.Body style={{ cursor: "pointer" }} onClick={() => { showDetail() }}>
                     <Card.Title><h3 className="fw-bold">{hike.title}</h3></Card.Title>
                     <ListGroup variant="flush">
-
                         <ListGroup.Item data-test-id="difficulty">
                             <div className="d-flex justify-content-start">
                                 <i className="bi bi-activity"></i><span className="fw-bold">{"  "} Difficulty:  <Badge bg={(hike.difficulty === "tourist") ? "success" : (hike.difficulty === "hiker") ? "warning" : "danger"}>{(hike.difficulty === "tourist") ? "Tourist Friendly" : (hike.difficulty === "hiker") ? "Casual Hiker" : "Professional Hiker"}</Badge></span>

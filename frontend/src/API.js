@@ -123,7 +123,7 @@ async function declineUser(email, role) {
 
 /* hikes API */
 
-async function getAllHikes(filters) {
+async function getAllHikes(filters, page) {
     // call: GET /api/hikes
     let params = "";
     if (filters !== undefined) {
@@ -131,9 +131,9 @@ async function getAllHikes(filters) {
         JSON.parse(filters).forEach(filter => {
             params = params + filter.key + "=" + filter.value + "&";
         });
-        params = params.slice(0, params.length - 1);
+        // params = params.slice(0, params.length - 1);
     }
-    const response = await fetch(URL + '/hikes' + params, {
+    const response = await fetch(URL + '/hikes' + params + 'page=' + page, {
         credentials: 'include',
     });
     const hikesJson = await response.json();
@@ -153,10 +153,51 @@ async function getAllHikes(filters) {
             author: r.author,
             referencePoints: r.refLocations,
             statusList: r.statusList,
+            photo: r.photo
         }))
     } else {
         throw hikesJson;  // mi aspetto che sia un oggetto json fornito dal server che contiene l'errore
     }
+}
+
+async function getHikesCount(filters) {
+    let params = "";
+    if (filters !== undefined) {
+        params = "?";
+        JSON.parse(filters).forEach(filter => {
+            params = params + filter.key + "=" + filter.value + "&";
+        });
+        params = params.slice(0, params.length - 1);
+    }
+    const response = await fetch(URL + "/hikes-count" + params, {
+        credentials: "include"
+    });
+
+    const countJson = response.json();
+    if (response.ok)
+        return countJson;
+    else
+        throw countJson;
+}
+
+async function getHutsCount(filters) {
+    let params = "";
+    if (filters !== undefined) {
+        params = "?";
+        JSON.parse(filters).forEach(filter => {
+            params = params + filter.key + "=" + filter.value + "&";
+        });
+        params = params.slice(0, params.length - 1);
+    }
+    const response = await fetch(URL + "/huts-count" + params, {
+        credentials: "include"
+    });
+
+    const countJson = response.json();
+    if (response.ok)
+        return countJson;
+    else
+        throw countJson;
 }
 
 
@@ -304,7 +345,7 @@ async function setHikeEndPoint(id, endPt) {
  * @param {*} filters object containing the key-value pairs for filtering
  * @returns array of "hut" objects, containing the fields id, name, country, region, town, address, altitude
  */
-async function getHuts(filters) {
+async function getHuts(filters, page) {
     // call: GET /api/huts    
     let params = "";
     if (filters !== undefined) {
@@ -312,9 +353,8 @@ async function getHuts(filters) {
         JSON.parse(filters).forEach(filter => {
             params = params + filter.key + "=" + filter.value + "&";
         });
-        params = params.slice(0, params.length - 1);
     }
-    const response = await fetch(URL + '/huts' + params, {
+    const response = await fetch(URL + '/huts' + params + 'page=' + page, {
         credentials: 'include',
     });
     const hutsJson = await response.json();
@@ -335,7 +375,7 @@ async function getHuts(filters) {
             openingTime: r.openingTime,
             closingTime: r.closingTime,
             description: r.description,
-            photos: r.photos
+            photo: r.photo
         }))
     } else {
         throw hutsJson;
@@ -611,6 +651,24 @@ async function addHutPhoto(id, formData) {
     }
 }
 
+/**
+ * Function to add a photo related to a hut
+ * @param {*} id  is the hike id
+ * @param {*} formData contains the attributes "id", the id of the hut, and "photo", the png/jpeg file converted into BLOB
+ * @returns true if succesfull, false otherwise
+ */
+async function addHikePhoto(id, formData) {
+    const response = await fetch(URL + '/hike-photo/' + id, {
+        method: "POST",
+        credentials: 'include',
+        body: formData
+    });
+    if (response.ok) {
+        return true;
+    } else {
+        throw false;
+    }
+}
 
 
 
@@ -691,7 +749,7 @@ async function getCompletedHikes() {
     }
 }
 
-const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto, getCurrentGroup, startHike, terminateHike, getCompletedHikes }
+const API = { login, logOut, signup, getUserInfo, getPendingUsers, approveUser, declineUser, getAllHikes, getHikeFromID, getHikesList, createHike, addReferencePoint, setHikeStartPoint, setHikeEndPoint, getHuts, getHutById, getHutsAndParkingLots, getLocations, createLocation, getHutsByUserId, createPreferences, updatePreferences, getPreferences, deletePreferences, linkHut, getHikesByHutId, getHutIdByUserId, updateStatus, addHutPhoto, getCurrentGroup, startHike, terminateHike, getCompletedHikes, getHikesCount, getHutsCount, addHikePhoto }
 
 
 export default API;
