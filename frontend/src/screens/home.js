@@ -58,21 +58,19 @@ const Home = (props) => {
     return (
         <Container>
             <Row>
-                <Col md={8}>
+                <Col>
                     <h1 id="title">Hike List</h1>
                 </Col>
-                <Col md={2}>
-                    <Button id='reset-filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
+                <Col style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
+                        {
+                            (props.user && props.user.role === "hiker") &&
+                            <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="light" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
+                        }
+                        <Button id='reset-filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
+                        <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
+                   
                 </Col>
-                <Col md={2}>
-                    <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
-                </Col>
-                {
-                    (props.user && props.user.role === "hiker") &&
-                    <Col md={1}>
-                        <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
-                    </Col>
-                }
+                
             </Row>
 
             <ul></ul>
