@@ -79,6 +79,8 @@ function HutCard(props) {
                 <Card.Body>
                     <Card.Title><h3 id='hut-title' className="fw-bold">{props.hut.name}</h3></Card.Title>
                     <ListGroup variant="flush">
+                        {(props.hut.photo !== undefined && props.hut.photo !== null) &&
+                            <Image fluid src={require("../photos/" + props.hut.photo)} />}
                         <ListGroup.Item><span id='address' className="fw-bold">Address: </span>{props.hut.address}, {props.hut.town}, {"(" + props.hut.region + ")"}, {props.hut.country}</ListGroup.Item>
                         <ListGroup.Item><span id='altitude' className="fw-bold">Altitude: </span>{(props.hut.altitude !== null) ? props.hut.altitude : "No info"}</ListGroup.Item>
                         <ListGroup.Item style={{ display: "flex", justifyContent: "space-between" }}>
