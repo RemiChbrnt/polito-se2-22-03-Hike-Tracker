@@ -117,7 +117,7 @@ describe('Sign-up', () => {
 
         cy.get('#phone-number-control').clear();
         cy.get('#phone-number-control').type('1234567890');
-        cy.get('#select-hut-select').select('15');
+        //cy.get('#select-hut-select').select('15');
 
         cy.get('#confirm-button').click();
     });

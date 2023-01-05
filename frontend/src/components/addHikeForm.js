@@ -390,7 +390,7 @@ function AddHikeForm(props) {
                                             <Row>
                                                 <Col className="form-group mt-3">
                                                     <Form.Label id='start-point-latitude-label'>Latitude<b className="asterisk-required">*</b></Form.Label>
-                                                    <Form.Control id='start-point-longitude-control' type="number" placeholder={startPtLatitude} required
+                                                    <Form.Control id='start-point-latitude-control' type="number" placeholder={startPtLatitude} required
                                                         value={startPtLatitude}
                                                         onChange={ev => { setStartPtLatitude(ev.target.value); }}
                                                     />

@@ -28,7 +28,7 @@ describe('add a new hike with relative description', () => {
         cy.get('#hike-list-option').should('be.visible');
         cy.get('#hut-list-option').should('be.visible');
         cy.get('#completed-hike-option').should('be.visible');
-        cy.get('#personale-page-option').should('be.visible');
+        cy.get('#personal-page-option').should('be.visible');
         cy.get('#log-out-button').should('be.visible');
 
         //check for hike list
@@ -60,7 +60,7 @@ describe('add a new hike with relative description', () => {
         cy.get('#hike-list-option').should('be.visible');
         cy.get('#hut-list-option').should('be.visible');
         cy.get('#completed-hike-option').should('be.visible');
-        cy.get('#personale-page-option').should('be.visible');
+        cy.get('#personal-page-option').should('be.visible');
         cy.get('#log-out-button').should('be.visible');
 
         cy.get(':nth-child(1) > .card > .card-body').click();
