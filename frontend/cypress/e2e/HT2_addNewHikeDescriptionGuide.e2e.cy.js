@@ -46,7 +46,7 @@ describe('Get informations from hike', () => {
     cy.get('#description').should('be.visible');
   });
 
-  it('should show "add new hike" form', () => {
+  it('should has "add new hike" form', () => {
     cy.get('#user-log-in-button').click();
     cy.get('#email').clear();
     cy.get('#email').type('antonio.fracassa@live.it');
