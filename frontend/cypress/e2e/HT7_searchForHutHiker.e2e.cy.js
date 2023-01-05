@@ -24,7 +24,7 @@ describe('Search for hut from hut list', () => {
         cy.wait(500);
         cy.get('#log-in-button').click();
 
-        //check for guide page informations
+        //check for hike page informations
         cy.get('#hike-list-option').should('be.visible');
         cy.get('#hut-list-option').should('be.visible');
         cy.get('#completed-hike-option').should('be.visible');
