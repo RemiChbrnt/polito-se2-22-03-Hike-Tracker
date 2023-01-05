@@ -39,7 +39,6 @@ router.get('/huts', /*isLoggedIn,*/[
         }
 
         const data = await service.getHuts(req.query);
-        // console.log("data photo " + data.body[1].photo);
         if (data.ok)
             return res.status(data.status).json(data.body)
 

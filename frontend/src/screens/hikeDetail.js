@@ -12,7 +12,7 @@ const HikeDetail = ({ user, props, setProps }) => {
     const [showPointsOfInterest, setShowPointsOfInterest] = useState(true);
     const [showStartAndArrival, setShowStartAndArrival] = useState(true);
 
-    const [windowSize, setWindowSize] = useState(getWindowSize());
+    const [windowSize, _] = useState(getWindowSize());
 
     // Used to modify the display if a new reference point has to be added
     const [addNewReferencePoint, setAddNewReferencePoint] = useState(false);

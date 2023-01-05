@@ -7,7 +7,7 @@ const Map = (props) => {
     const startPt = JSON.parse(props.startPt);
     const endPt = JSON.parse(props.endPt);
     const referencePoints = JSON.parse(props.referencePoints);
-    const [windowSize, setWindowSize] = useState(getWindowSize());
+    const [windowSize, _] = useState(getWindowSize());
 
     function getWindowSize() {
         const { innerWidth, innerHeight } = window;

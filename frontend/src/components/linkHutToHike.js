@@ -143,7 +143,7 @@ function HutRow(props) {
 function LinkForm(props){
 
   const [hikeId, setHikeId]=useState(1); 
-  //----- TO DO -----
+
   const linkHut = async (hutId, hikeId) => {
       try {
           let params=({locationId:hutId, hikeId:hikeId})

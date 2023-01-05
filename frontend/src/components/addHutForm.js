@@ -36,7 +36,7 @@ function ActiveForm(props) {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [website, setWebsite] = useState(undefined);
-    //----- TO DO -----
+   
     const addHut = async (name, latitude, longitude, country, region, town, address, altitude, numberOfBeds, food, description, phone, email, website) => {
         try {
             let params = ({ name: name, type: "hut", latitude: latitude, longitude: longitude, country: country, region: region, town: town, address: address, altitude: altitude, numberOfBeds: numberOfBeds, food: food, description: description, phone: phone, email: email, website: website })

@@ -32,7 +32,7 @@ function ActiveForm(props) {
     const [altitude, setAltitude] = useState("");
     const [description, setDescription] = useState("");
     const [lotsNumber, setLotsNumber] = useState(0);
-    //----- TO DO -----
+ 
     const addParking = async (title, latitude, longitude, country, region, town, address, altitude, description, lotsNumber) => {
         try {
             let params = ({ name: title, type: "parkinglot", latitude: latitude, longitude: longitude, country: country, region: region, town: town, address: address, altitude: altitude, description: description, lotsNumber: lotsNumber });

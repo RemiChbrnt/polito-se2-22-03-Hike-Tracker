@@ -139,7 +139,7 @@ function StatusForm(props){
 
   const [condition, setCondition]=useState('open'); 
   const [description, setDescription]=useState(''); 
-  //----- TO DO -----
+ 
   const updateStatus = async (hutId, hikeId, condition, description) => {
       try {
           let params=({hutId:hutId, hikeId:hikeId, status:condition, description:description})
