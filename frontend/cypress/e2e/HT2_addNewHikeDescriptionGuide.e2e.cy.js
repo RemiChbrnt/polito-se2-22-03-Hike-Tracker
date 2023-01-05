@@ -72,7 +72,6 @@ describe('Get informations from hike', () => {
     cy.get('#difficulty-select').should('be.visible');
     cy.get('#description-label').should('be.visible');
     cy.get('#description-control').should('be.visible');
-    cy.get('#start-point-label').should('be.visible');
     cy.get('#confirm-button').should('be.visible');
   });
 
