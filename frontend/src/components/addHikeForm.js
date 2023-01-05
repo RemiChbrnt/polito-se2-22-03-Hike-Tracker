@@ -520,14 +520,14 @@ function AddHikeForm(props) {
                                         {!openEnd && <div>
                                             <Row>
                                                 <Col>
-                                                    <Form.Label>Name<b className="asterisk-required">*</b></Form.Label>
-                                                    <Form.Control type="text" placeholder="Enter end point name" required
+                                                    <Form.Label id='end-point-name-label'>Name<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control id='end-point-name-control' type="text" placeholder="Enter end point name" required
                                                         onChange={ev => { setEndPtName(ev.target.value); }}
                                                     />
                                                 </Col>
                                                 <Col>
-                                                    <Form.Label>Type<b className="asterisk-required">*</b></Form.Label>
-                                                    <Form.Select required onChange={ev => { setEndPtType(ev.target.value); }}>
+                                                    <Form.Label id='end-point-type-label'>Type<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Select id='end-point-type-select' required onChange={ev => { setEndPtType(ev.target.value); }}>
                                                         <option value="generic">Generic</option>
                                                         <option value="parkinglot">Parking Lot</option>
                                                         <option value="hut">Hut</option>
@@ -536,30 +536,30 @@ function AddHikeForm(props) {
                                             </Row>
                                             <Row>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>Latitude<b className="asterisk-required">*</b></Form.Label>
-                                                    <Form.Control type="number" placeholder={endPtLatitude} required
+                                                    <Form.Label id='end-point-latitude-label'>Latitude<b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control id='end-point-latitude-control' type="number" placeholder={endPtLatitude} required
                                                         value={endPtLatitude}
                                                         onChange={ev => { setEndPtLatitude(ev.target.value); }}
                                                     />
                                                 </Col>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>Longitude <b className="asterisk-required">*</b></Form.Label>
-                                                    <Form.Control type="number" placeholder={endPtLongitude} required
+                                                    <Form.Label id='end-point-longitude-label'>Longitude <b className="asterisk-required">*</b></Form.Label>
+                                                    <Form.Control id='end-point-longitude-control' type="number" placeholder={endPtLongitude} required
                                                         value={endPtLongitude}
                                                         onChange={ev => { setEndPtLongitude(ev.target.value); }}
                                                     />
                                                 </Col>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>Altitude</Form.Label>
-                                                    <Form.Control type="number" placeholder="Enter altitude"
+                                                    <Form.Label id='end-point-altitude-label'>Altitude</Form.Label>
+                                                    <Form.Control id='end-point-altitude-control' type="number" placeholder="Enter altitude"
                                                         onChange={ev => { setEndPtAltitude(ev.target.value); }}
                                                     />
                                                 </Col>
                                             </Row>
                                             <Row>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>Address</Form.Label>
-                                                    <Form.Control type="text" placeholder={endPtAddress}
+                                                    <Form.Label id='end-point-address-label'>Address</Form.Label>
+                                                    <Form.Control id='end-point-address-control' type="text" placeholder={endPtAddress}
                                                         value={endPtAddress}
                                                         onChange={ev => { setEndPtAddress(ev.target.value); }}
                                                     />
@@ -567,22 +567,22 @@ function AddHikeForm(props) {
                                             </Row>
                                             <Row>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>Town/Hamlet/Village</Form.Label>
-                                                    <Form.Control type="text" placeholder={endPtTown}
+                                                    <Form.Label id='end-point-town-label'>Town/Hamlet/Village</Form.Label>
+                                                    <Form.Control id='end-point-town-control' type="text" placeholder={endPtTown}
                                                         value={endPtTown}
                                                         onChange={ev => { setEndPtTown(ev.target.value); }}
                                                     />
                                                 </Col>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>region</Form.Label>
-                                                    <Form.Control type="text" placeholder={endPtregion}
+                                                    <Form.Label id='end-point-region-label'>region</Form.Label>
+                                                    <Form.Control id='end-point-region-control' type="text" placeholder={endPtregion}
                                                         value={endPtregion}
                                                         onChange={ev => { setEndPtregion(ev.target.value); }}
                                                     />
                                                 </Col>
                                                 <Col className="form-group mt-3">
-                                                    <Form.Label>Country</Form.Label>
-                                                    <Form.Control type="text" placeholder={endPtCountry}
+                                                    <Form.Label id='end-point-country-label'>Country</Form.Label>
+                                                    <Form.Control id='end-point-country-control' type="text" placeholder={endPtCountry}
                                                         value={endPtCountry}
                                                         onChange={ev => { setEndPtCountry(ev.target.value); }}
                                                     />
