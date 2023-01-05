@@ -347,14 +347,17 @@ async function setHikeEndPoint(id, endPt) {
  */
 async function getHuts(filters, page) {
     // call: GET /api/huts    
-    let params = "";
+    let params = "?";
     if (filters !== undefined) {
-        params = "?";
         JSON.parse(filters).forEach(filter => {
             params = params + filter.key + "=" + filter.value + "&";
         });
     }
-    const response = await fetch(URL + '/huts' + params + 'page=' + page, {
+    let pagination = ""
+    if(page!==undefined) 
+        pagination = "page="+page
+        
+    const response = await fetch(URL + '/huts' + params + pagination, {
         credentials: 'include',
     });
     const hutsJson = await response.json();

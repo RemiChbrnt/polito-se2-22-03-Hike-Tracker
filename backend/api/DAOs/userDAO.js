@@ -12,44 +12,44 @@ exports.login = async (email, password) => {
         db.get(sql, [email], async (err, row) => {
             if (err) {
                 reject(err);
+                return;
             }
-            else if (row === undefined) {
+            if (row === undefined) {
                 resolve(401); // User not found
                 return;
             }
-            else {
-                const user = {
-                    email: row.email,
-                    fullName: row.fullname,
-                    role: row.role,
-                    verified: row.verified
-                }
-
-                if (user.verified === 0) {
-                    resolve(412);
-                    return;
-                } else if (user.role !== "hiker" && user.verified === 1) {
-                    resolve(403);
-                    return;
-                }
-
-                if (user.role === "hutworker") {
-                    user.hut = await getHutId(email).catch((e) => reject(e));
-                }
-
-                /* User found. Now check whether the hash matches */
-                crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
-                    if (err)
-                        reject(err);
-
-                    if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))) {
-                        resolve(false); // Hash doesn't match, wrong password
-                    }
-                    else {
-                        resolve(user);
-                    }
-                });
+            const user = {
+                email: row.email,
+                fullName: row.fullname,
+                role: row.role,
+                verified: row.verified
             }
+
+            if (user.verified === 0) {
+                resolve(412);
+                return;
+            } 
+            if (user.role !== "hiker" && user.verified === 1) {
+                resolve(403);
+                return;
+            }
+            if (user.role === "hutworker") {
+                user.hut = await getHutId(email).catch((e) => reject(e));
+            }
+
+            /* User found. Now check whether the hash matches */
+            crypto.scrypt(password, row.salt, 128, function (err, hashedPassword) {
+                if (err)
+                    reject(err);
+
+                if (!crypto.timingSafeEqual(Buffer.from(row.password, 'base64'), Buffer.from(hashedPassword))) {
+                    resolve(false); // Hash doesn't match, wrong password
+                }
+                else {
+                    resolve(user);
+                }
+            });
+
         });
     });
 }

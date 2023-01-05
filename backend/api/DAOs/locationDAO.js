@@ -20,8 +20,10 @@ exports.getHuts = async (query) => {
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
-        sql = sql + filters + " GROUP BY Locations.id LIMIT 10 OFFSET ?";
-        db.all(sql, [(query.page * 10)], async (err, rows) => {
+        sql = sql + filters;
+        if(query.page !== undefined)
+        sql =`${sql} GROUP BY Locations.id LIMIT 10 OFFSET ${query.page*10}`;
+        db.all(sql, [], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
