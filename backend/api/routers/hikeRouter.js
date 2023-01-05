@@ -9,6 +9,7 @@ const service = new HikeService(HikeDao)
 const router = express.Router()
 
 const { query, body, param, validationResult } = require('express-validator');
+const { MulterError } = require('multer');
 
 router.get('/hikes/completed', isLoggedIn, async (req, res) => {
     if (req.user.role !== 'hiker')
@@ -254,16 +255,18 @@ router.get('/current-group', isLoggedIn, async (req, res) => {
 
 router.post("/hike-photo/:id", isLoggedIn, multer.uploadImg, [
     param('id').exists().isNumeric(),
-], async (req, res) => {
+], async (req, res, err) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return res.status(422).json({ errors: errors.array() });
 
     const data = await service.getHikeFromID(req.params);
     if (data.body.author !== req.user.email)
         return res.status(403).json({ errors: "You must be the author of the hike." })
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-        return res.status(422).json({ errors: errors.array() });
-
+    if(req.file === undefined) //sadly we were not able to return the error inside the multer middleware and had to check here
+        return res.status(418).json({ errors: errors.array() });
+    
     const response = await service.addHikePhoto(req.params.id, req.file.filename)
     if (response.ok)
         return res.status(response.status).json(response.body)

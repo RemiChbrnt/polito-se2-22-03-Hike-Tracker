@@ -353,7 +353,7 @@ describe('Testing operations on locations requiring a hiker', function () {
 
     it('GET /api/huts - invalid get Hut - not existing', async () => {
         const result = await agent
-            .get('/api/huts')
+            .get('/api/huts?page=0')
             .set('content-type', 'application/json')
             .query({
                 name: 'wrong testing',
@@ -370,7 +370,7 @@ describe('Testing operations on locations requiring a hiker', function () {
 
     it('GET /api/huts - invalid get Hut - wrong query', async () => {
         const result = await agent
-            .get('/api/huts')
+            .get('/api/huts?page=0')
             .set('content-type', 'application/json')
             .query({
                 name: 'Test',
