@@ -10,6 +10,7 @@ const GPXTrack = (props) => {
         style: {color: "#E9B00D"}
         }
     ).addTo(map);
+    map.panTo(new L.LatLng(parsedGeoJSon.features[0].geometry.coordinates[0][1], parsedGeoJSon.features[0].geometry.coordinates[0][0]));
     
     map.removeEventListener('click'); // Avoids creating multiple Event Listeners when the component refreshes.
     map.on('click', function(e) {

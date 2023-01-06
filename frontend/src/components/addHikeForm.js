@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toGeoJson from '@mapbox/togeojson'
 import { DOMParser } from 'xmldom'
+import Map from './map';
 
 import API from "../API";
 
@@ -593,6 +594,26 @@ function AddHikeForm(props) {
                         </Form.Group>
                     </Row>
                     <ul></ul>
+                    <h4>Preview (select a GPX file to see)</h4>
+                    <Map 
+                        startPt={JSON.stringify({
+                            name: startPtName,
+                            type: startPtType,
+                            latitude: startPtLatitude,
+                            longitude: startPtLongitude,
+                            address: startPtAddress
+                            })}
+                        endPt={JSON.stringify({
+                            name: endPtName,
+                            type: endPtType,
+                            latitude: endPtLatitude,
+                            longitude: endPtLongitude,
+                            address: endPtAddress
+                        })}
+                        file={gpxFile}
+                        displayPoints={[1,1,1,1]}
+                        referencePoints={JSON.stringify([])}
+                    />
                     <Row className="d-grid gap-2 mt-3">
                         <Button id='confirm-button' type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
                     </Row>
