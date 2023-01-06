@@ -107,7 +107,7 @@ const HikeDetail = ({ user, props, setProps }) => {
                         <Col><h1 id='hike-title'>Hike "{hike.title}"</h1></Col>
                         <Col style={{display:"flex", flexDirection:"row-reverse"}}>
                             <Button id='home-button' variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
-                            {(user !== undefined) && (user.role === "guide") && !addNewReferencePoint && 
+                            {(user !== undefined) && (user.role === "guide") && (user.email===hike.author) && !addNewReferencePoint && 
                                 <Button
                                     variant="white"
                                     style={{ backgroundColor: "#00706c", marginRight: 10}}
@@ -142,7 +142,6 @@ const HikeDetail = ({ user, props, setProps }) => {
                             :
                                 <AddReferencePointForm
                                     hikeId={params.hikeId}
-                                    userEmail={user.email}
                                     pointCoords={newReferencePointCoords}
                                     setAddNewReferencePoint={setAddNewReferencePoint}
                                 />

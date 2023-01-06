@@ -35,14 +35,13 @@ const handleReferencePointCreation = async (name, type, latitude, longitude, cou
 };
 
 //----- TO DO -----
-function AddReferencePointForm({hikeId, userEmail, pointCoords, setAddNewReferencePoint}) {
+function AddReferencePointForm({hikeId, pointCoords, setAddNewReferencePoint}) {
 
     const [completedWithSuccess, setCompletedWithSuccess] = useState(false);
 
     const [name, setName] = useState("");
     const [type, setType] = useState('generic');
     const [altitude, setAltitude] = useState("");
-    const author = userEmail;
 
     const [mustSelectPointOnTrack, setMustSelectPointOnTrack] = useState(false);
 

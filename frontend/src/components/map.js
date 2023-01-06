@@ -4,7 +4,6 @@ import * as L from 'leaflet';
 import GPXTrack from "./GPXTrack";
 
 const Map = (props) => {
-    console.log(props.endPt);
     const startPt = JSON.parse(props.startPt);
     const endPt = JSON.parse(props.endPt);
     const referencePoints = JSON.parse(props.referencePoints);
