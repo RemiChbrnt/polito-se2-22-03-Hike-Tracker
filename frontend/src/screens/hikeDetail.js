@@ -12,8 +12,6 @@ const HikeDetail = ({ user, props, setProps }) => {
     const [showPointsOfInterest, setShowPointsOfInterest] = useState(true);
     const [showStartAndArrival, setShowStartAndArrival] = useState(true);
 
-    const [windowSize, setWindowSize] = useState(getWindowSize());
-
     // Used to modify the display if a new reference point has to be added
     const [addNewReferencePoint, setAddNewReferencePoint] = useState(false);
     const [newReferencePointCoords, setNewReferencePointCoords] = useState(null);
@@ -27,14 +25,16 @@ const HikeDetail = ({ user, props, setProps }) => {
     const navigate = useNavigate();
     const params = useParams();
 
-    const buttonStyle = {
-        width: "calc(22%)",
-        margin: "calc(1%)"
-    }
-
+    const [windowSize, setWindowSize] = useState(getWindowSize());
     function getWindowSize() {
         const { innerWidth, innerHeight } = window;
         return { innerWidth, innerHeight };
+    }
+
+    const buttonStyle = {
+        width: "calc(22%)",
+        fontSize: (window.innerWidth<550)? 11:16,
+        margin: "calc(1%)"
     }
 
     useEffect(() => {
@@ -104,7 +104,11 @@ const HikeDetail = ({ user, props, setProps }) => {
                 <Container style={{ width: windowSize.innerWidth / 1.1, height: windowSize.innerHeight / 1.2 }}>
 
                     <Row>
-                        <Col><h1 id='hike-title'>Hike "{hike.title}"</h1></Col>
+                        <Col>
+                            {(windowSize.innerWidth > 550)?<h1 id='hike-title'>Hike "{hike.title}"</h1>
+                                :<h3 id='hike-title'>Hike "{hike.title}"</h3>
+                            }
+                        </Col>
                         <Col style={{display:"flex", flexDirection:"row-reverse"}}>
                             <Button id='home-button' variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate('/') }}><h4 className="text-white"> Home</h4></Button>
                             {(user !== undefined) && (user.role === "guide") && (user.email===hike.author) && !addNewReferencePoint && 

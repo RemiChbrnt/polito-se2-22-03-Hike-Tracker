@@ -15,6 +15,12 @@ const Home = (props) => {
     const [radiusFilter, setRadiusFilter] = useState(10); // km+
     const [preferences, setPreferences] = useState(undefined);
     const navigate = useNavigate();
+    
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
 
     useEffect(() => {
         if(props.user !== undefined){
@@ -66,7 +72,7 @@ const Home = (props) => {
                 }
                     
                 </Col>
-                <Col style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
+                <Col style={{display:"flex", flexDirection: (windowSize.innerWidth<550)?"column":"row", justifyContent:"flex-end"}}>
                         {
                             (props.user && props.user.role === "hiker") &&
                             <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="light" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
