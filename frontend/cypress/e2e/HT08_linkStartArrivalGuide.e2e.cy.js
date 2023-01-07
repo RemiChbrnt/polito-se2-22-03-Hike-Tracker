@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------
 */
 
-describe('Search for hut from hut list', () => {
+describe('Link start and arrival points to hike', () => {
     beforeEach(() => {
         cy.visit('/');
     });

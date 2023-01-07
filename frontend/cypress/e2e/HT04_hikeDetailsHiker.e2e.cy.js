@@ -10,7 +10,7 @@
 * --------------------------------------------------------------------
 */
 
-describe('add a new hike with relative description', () => {
+describe('Add a new hike with relative description', () => {
     beforeEach(() => {
         cy.visit('/');
     });
