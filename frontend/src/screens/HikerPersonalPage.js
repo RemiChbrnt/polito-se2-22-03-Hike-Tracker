@@ -57,7 +57,7 @@ const HikerPersonalPage = (props) => {
                             </Col>
                             <Col md={3}>
                                 {(startedHike !== "") &&
-                                    <Button variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate("/hike-detail-" + startedHike); }}><h4 className="text-white">Go To Started Hike</h4></Button>
+                                    <Button id='go-to-hike-button' variant="white" size="lg" style={{ backgroundColor: "#00706c" }} onClick={() => { navigate("/hike-detail-" + startedHike); }}><h4 className="text-white">Go To Started Hike</h4></Button>
                                 }
                             </Col>
                         </Row>
@@ -157,20 +157,20 @@ function PrefsCard(props) {
             <Row>
                 <Col>
                     <Row>
-                        <h4><span className="fw-bold">Duration: </span>{props.preferences.duration} hours</h4>
+                        <h4 id='duration'><span className="fw-bold">Duration: </span>{props.preferences.duration} hours</h4>
                     </Row>
                     <Row>
-                        <h4><span className="fw-bold">Ascent: </span>{props.preferences.ascent} m</h4>
+                        <h4 id='ascent'><span className="fw-bold">Ascent: </span>{props.preferences.ascent} m</h4>
                     </Row>
                 </Col>
                 {
                     props.showForm !== true ?
                         <Col>
-                            <Button variant='warning' onClick={() => { props.setShowForm(true); props.setOperation('edit'); }}>
+                            <Button id='edit-button' variant='warning' onClick={() => { props.setShowForm(true); props.setOperation('edit'); }}>
                                 <h5><i className="bi bi-pencil"></i> {' '}Edit</h5>
                             </Button>
                             {' '}
-                            <Button variant='danger' onClick={() => props.setShowDeleteConfirmation(true)}>
+                            <Button id='delete-button' variant='danger' onClick={() => props.setShowDeleteConfirmation(true)}>
                                 <h5><i class="bi bi-trash3"></i>{' '}Delete</h5>
                             </Button>
                         </Col>
@@ -227,26 +227,26 @@ function PreferencesForm(props) {
     }
 
     return <>
-        <h5>
+        <h5 id='edit-hike-title'>
             Edit hike
         </h5>
         <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="preferencesForm">
-                <Form.Label>Duration (hours)</Form.Label>
-                <Form.Control type="number" value={duration} required={true} onChange={(event) => { setDuration(event.target.value) }} />
+                <Form.Label id='duration-label'>Duration (hours)</Form.Label>
+                <Form.Control id='duration-control' type="number" value={duration} required={true} onChange={(event) => { setDuration(event.target.value) }} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="preferencesForm">
-                <Form.Label>Ascent (m)</Form.Label>
-                <Form.Control type="number" value={ascent} required={true} onChange={(event) => { setAscent(event.target.value) }} />
+                <Form.Label id='ascent-label'>Ascent (m)</Form.Label>
+                <Form.Control id='ascent-control' type="number" value={ascent} required={true} onChange={(event) => { setAscent(event.target.value) }} />
             </Form.Group>
 
-            <Button variant='danger' onClick={() => {
+            <Button id='cancel-button' variant='danger' onClick={() => {
                 setAscent(0);
                 setDuration(0);
                 props.setShowForm(false);
             }}><h5>Cancel</h5></Button>{' '}
-            <Button variant='success' type='submit'><h5>Confirm</h5></Button>
+            <Button id='confirm-button' variant='success' type='submit'><h5>Confirm</h5></Button>
         </Form>
     </>
 }
@@ -266,13 +266,13 @@ function DeleteConfirmation(props) {
     }
     return <>
         <ul></ul>
-        <h4>Are you sure you want to delete your preferences?</h4>
+        <h4 id='are-you-sure-title'>Are you sure you want to delete your preferences?</h4>
         <ul></ul>
-        <Button variant='danger' onClick={() => deletePrefs(props.userEmail, props.setSuccess, props.setError, props.setShowConfirm, props.setShowDeleteConfirmation)}>
+        <Button id='yes-sure-button' variant='danger' onClick={() => deletePrefs(props.userEmail, props.setSuccess, props.setError, props.setShowConfirm, props.setShowDeleteConfirmation)}>
             Yes, delete my preferences.
         </Button>
         {' '}
-        <Button variant='secondary' onClick={() => props.setShowDeleteConfirmation(false)}>
+        <Button id='no-button' variant='secondary' onClick={() => props.setShowDeleteConfirmation(false)}>
             No, keep my preferences.
         </Button>
         <ul></ul>
