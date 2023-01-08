@@ -152,8 +152,8 @@ First method: Download the docker-compose.yaml and run the following command on 
 
 Second method: run the following commands on the terminal
 
-- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:backend_v2
-- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:frontend_v2
+- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:backend_final
+- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:frontend_final
 - docker run --publish 3001:3001 `[backend image id]`
 - docker run --publish 3000:3000 `[frontend image id]`
 
