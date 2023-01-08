@@ -18,9 +18,15 @@ const CoordsFromMap = ({center, radius = 0, setCoords}) => {
         iconUrl: require('../images/pin-marker.png'),
         iconSize: [104, 158]
     });
+        
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
     
     return (
-        <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{width: 650, height: 400}} >
+        <MapContainer center={center} zoom={(windowSize.innerWidth<550)?10:11} scrollWheelZoom={false} style={{width: Math.min(windowSize.innerWidth/1.5, 650), height: 400}} >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

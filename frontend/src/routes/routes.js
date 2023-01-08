@@ -1,10 +1,11 @@
 // Route parameters for navigation
+
 import HikeDetail from "../screens/hikeDetail.js";
 import { LoginForm } from "../components/LoginForm.js";
 import { SignupForm } from "../components/SignupForm.js";
 import { AddHikeForm } from "../components/addHikeForm";
 import { AddParkingForm } from "../components/addParkingForm";
-import HutDetail from "../screens/hutDetail.js";
+import { HutDetail } from "../screens/hutDetail.js";
 import { AddHutForm } from "../components/addHutForm";
 import { AddHutPhotoForm } from "../components/addHutPhotoForm";
 import { LinkHutToHike } from "../components/linkHutToHike";
@@ -12,8 +13,9 @@ import HikerPersonalPage from "../screens/HikerPersonalPage";
 import { Container, Row, Col } from 'react-bootstrap';
 import { UpdateHutStatus } from "../components/updateHutStatus.js";
 import RequestsPage from '../components/RequestsPage';
-
+import {CompletedHikes} from '../components/completedHikes'
 import { HutListPage } from "../screens/hutListPage";
+import {AddHikeCoverForm} from "../components/addHikeCoverForm.js"
 import Hiker from "../screens/hiker.js";
 
 
@@ -78,6 +80,24 @@ const routes = [
         }
     },
     {
+
+        path: "/add-hike-cover-:hikeId",
+        key: "add-hike-cover",
+        screen: function (user, props, setProps) {
+            return (
+                <Container>
+                    <Row >
+                        <Col></Col>
+                        <Col>
+                            <AddHikeCoverForm user={user} props={props} setProps={setProps} />
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Container>
+            );
+        }
+    },
+    {
         path: "/add-parking-lot",
         key: "add-parking-lot",
         screen: function (user, props, setProps) {
@@ -103,6 +123,13 @@ const routes = [
         key: "update-hut-status",
         screen: function (user, props, setProps) {
             return <UpdateHutStatus user={user} props={props} setProps={setProps} />
+        }
+    },
+    {
+        path: "/completed-hikes",
+        key: "completed-hikes",
+        screen: function (user, props, setProps) {
+            return <CompletedHikes user={user} props={props} setProps={setProps} />
         }
     },
     {

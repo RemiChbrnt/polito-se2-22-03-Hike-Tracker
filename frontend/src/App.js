@@ -18,12 +18,22 @@ function App() {
     const [props, setProps] = useState([]);
 
     useEffect(() => {
-        async function getUserSession() {
-            const user = await API.getUserInfo();
+        API.getUserInfo().then((user)=>{
             setUser(user);
+        }).catch((err)=>{
+            console.log(err);
+            setUser(undefined);
+        })
+        /*const checkAuth = async () => {
+            try {
+                const user = await API.getUserInfo();
+                setUser(user);
+            }
+            catch(err) {
+                console.log(err);
+            }
         }
-
-        getUserSession();
+        checkAuth();*/
     }, [])
 
 

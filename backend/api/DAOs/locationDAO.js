@@ -9,44 +9,43 @@ getHutbyWorkerId to workers intead
 exports.getHuts = async (query) => {
     return new Promise((resolve, reject) => {
         let sql =
-            `SELECT * from Locations
+            `SELECT * FROM Locations
             LEFT JOIN Huts ON Locations.id = Huts.locationId
+            LEFT JOIN HutsPhotos ON Locations.id = HutsPhotos.hutId            
             WHERE type="hut"`
+
         let filters = "";
 
         if (Object.entries(query).length !== 0)    //check if the query has any parameters
             filters = this.generateHutFilters(query);
-        sql = sql + filters;
-        db.all(sql, [], async (err, rows) => {
+        sql = sql + filters + " GROUP BY Locations.id LIMIT 10 OFFSET ?";
+        db.all(sql, [(query.page * 10)], async (err, rows) => {
             if (err) {
                 console.log(err);
                 reject(400);
                 return;
             }
-            else {
-                const res = await Promise.all(
-                    rows.map(async (r) => {
-                        return {
-                            id: r.id,
-                            name: r.name,
-                            type: r.type,
-                            latitude: r.latitude,
-                            longitude: r.longitude,
-                            country: r.country,
-                            region: r.region,
-                            town: r.town,
-                            address: r.address,
-                            altitude: r.altitude,
-                            author: r.author,
-                            numberOfBeds: r.numberOfBeds,
-                            food: r.food,
-                            description: r.description,
-                            phone: r.phone,
-                        }
-                    })
-                )
-                resolve(res);
+            else
+                resolve(rows);
+        })
+    })
+}
+
+
+exports.getHutsCount = async (query) => {
+    return new Promise((resolve, reject) => {
+        let filters = "";
+        let sql = 'SELECT COUNT(id) AS count FROM Locations WHERE type="hut"'
+        if (Object.entries(query).length !== 0)
+            filters = this.generateHutFilters(query);
+        sql = sql + filters;
+        db.get(sql, [], async (err, row) => {
+            if (err) {
+                console.log(err);
+                reject(err);
             }
+            else
+                resolve(row.count);
         })
     })
 }
@@ -90,13 +89,9 @@ const getHutPhotos = async (id) => {
                 return;
             } else if (rows === undefined || rows.length === 0)
                 resolve();
-            else {
-                const res = await Promise.all(
-                    rows.map(async (r) => {
-                        return r.fileName;
-                    }))
-                resolve(res);
-            }
+            else
+                resolve(rows);
+
         })
     })
 }
@@ -110,12 +105,17 @@ exports.generateHutFilters = (query) => {
     if (query.name !== undefined) filters = filters + ` name LIKE '%${query.name}%' AND`
     if (query.latitude !== undefined) filters = filters + ` latitude = ${query.latitude} AND`
     if (query.longitude !== undefined) filters = filters + ` longitude = ${query.longitude} AND`
-    if (query.country !== undefined) filters = filters + ` country = '${query.country}' AND`
-    if (query.region !== undefined) filters = filters + ` region   = '${query.region}' AND`
+    if (query.country !== undefined) filters = filters + ` country = '${query.country}'COLLATE NOCASE AND`
+    if (query.region !== undefined) filters = filters + ` region = '${query.region}' COLLATE NOCASE AND`
     if (query.town !== undefined) filters = filters + ` town LIKE '%${query.town}%' AND`
     if (query.address !== undefined) filters = filters + ` address LIKE '%${query.address}%' AND`
+    if (query.latitude !== undefined) filters = filters + ` latitude >= ${query.latitude - 10} AND latitude <= ${query.latitude + 10} AND`
+    if (query.longitude !== undefined) filters = filters + ` longitude >= ${query.longitude - 10} AND longitude <= ${query.longitude + 10} AND`
     if (query.minAltitude !== undefined) filters = filters + ` altitude >= ${query.minAltitude} AND`
     if (query.maxAltitude !== undefined) filters = filters + ` altitude <= ${query.maxAltitude} AND`
+    if (query.food !== undefined) filters = filters + ` food = '${query.food}' AND`
+    if (query.minNumberOfBeds !== undefined) filters = filters + ` numberOfBeds >= ${query.minNumberOfBeds} AND`
+    if (query.maxNumberOfBeds !== undefined) filters = filters + ` numberOfBeds <= ${query.maxNumberOfBeds} AND`
     filters = filters + " 1"
     return filters;
 }

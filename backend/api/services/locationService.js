@@ -10,6 +10,7 @@ class LocationService {
             const huts = await this.dao.getHuts(query);
 
             const message = huts.map((r) => ({
+                count: r.count,
                 id: r.id,
                 name: r.name,
                 latitude: r.latitude,
@@ -27,7 +28,8 @@ class LocationService {
                 cost: r.cost,
                 phone: r.phone,
                 email: r.email,
-                website: r.website
+                website: r.website,
+                photo: r.fileName
             }))
             return {
                 ok: true,
@@ -42,6 +44,21 @@ class LocationService {
         }
     }
 
+    getHutsCount = async (query) => {
+        try {
+            const count = await this.dao.getHutsCount(query);
+            return {
+                ok: true,
+                status: 200,
+                body: count
+            }
+        } catch (e) {
+            return {
+                ok: false,
+                status: 500
+            }
+        }
+    }
 
     getHutById = async (id) => {
         try {

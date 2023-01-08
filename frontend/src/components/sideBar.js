@@ -50,17 +50,17 @@ function SideBar(props) {
                             <Offcanvas.Body>
                                 <Nav className="justify-content-end flex-grow-1 pe-3">
 
-                                    <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hike list</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5 id='hike-list-option'>{' '}Hike list</h5></Nav.Link>
 
-                                    <Nav.Link onClick={() => { navigate('/add-hike-description') }} onMouseOver={() => { setOver('add-hike-description') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hike-description' || over === 'add-hike-description') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add new hike</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/add-hike-description') }} onMouseOver={() => { setOver('add-hike-description') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hike-description' || over === 'add-hike-description') ? hoverButtonStyle : normalButtonStyle}><h5 id='add-new-hike-option'>{' '}Add new hike</h5></Nav.Link>
 
-                                    <Nav.Link onClick={() => { navigate('/add-parking-lot') }} onMouseOver={() => { setOver('add-parking-lot') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-parking-lot' || over === 'add-parking-lot') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add parking lot</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/add-parking-lot') }} onMouseOver={() => { setOver('add-parking-lot') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-parking-lot' || over === 'add-parking-lot') ? hoverButtonStyle : normalButtonStyle}><h5 id='add-parking-lot-option'>{' '}Add parking lot</h5></Nav.Link>
 
-                                    <Nav.Link onClick={() => { navigate('/add-hut') }} onMouseOver={() => { setOver('add-hut') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hut' || over === 'add-hut') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Add hut</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/add-hut') }} onMouseOver={() => { setOver('add-hut') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/add-hut' || over === 'add-hut') ? hoverButtonStyle : normalButtonStyle}><h5 id='add-hut-option'>{' '}Add hut</h5></Nav.Link>
 
-                                    <Nav.Link onClick={() => { navigate('/link-hut-to-hike') }} onMouseOver={() => { setOver('link-hut-to-hike') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/link-hut-to-hike' || over === 'link-hut-to-hike') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Link hut to hike</h5></Nav.Link>
+                                    <Nav.Link onClick={() => { navigate('/link-hut-to-hike') }} onMouseOver={() => { setOver('link-hut-to-hike') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/link-hut-to-hike' || over === 'link-hut-to-hike') ? hoverButtonStyle : normalButtonStyle}><h5 id='link-hut-to-hike-option'>{' '}Link hut to hike</h5></Nav.Link>
                                     <ul></ul>
-                                    <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                    <Button id='log-out-button' onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                 </Nav>
                             </Offcanvas.Body>
                             :
@@ -97,13 +97,13 @@ function SideBar(props) {
                                             <Offcanvas.Body> {/*HIKER*/}
                                                 <Nav className="justify-content-end flex-grow-1 pe-3">
 
-                                                    <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hike list</h5></Nav.Link>
+                                                    <Nav.Link onClick={() => { navigate('/') }} onMouseOver={() => { setOver('hike-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/' || over === 'hike-list') ? hoverButtonStyle : normalButtonStyle}><h5 id='hike-list-option'>{' '}Hike list</h5></Nav.Link>
 
-                                                    <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Hut list</h5></Nav.Link>
+                                                    <Nav.Link onClick={() => { navigate('/hut-list') }} onMouseOver={() => { setOver('hut-list') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hut-list' || over === 'hut-list') ? hoverButtonStyle : normalButtonStyle}><h5 id='hut-list-option'>{' '}Hut list</h5></Nav.Link>
+                                                    <Nav.Link onClick={() => { navigate('/completed-hikes') }} onMouseOver={() => { setOver('completed-hikes') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/completed-hikes' || over === 'completed-hikes') ? hoverButtonStyle : normalButtonStyle}><h5 id='completed-hike-option'>{' '}Completed Hikes</h5></Nav.Link>
+                                                    <Nav.Link onClick={() => { navigate('/hiker/personal-page') }} onMouseOver={() => { setOver('personal-page') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/hiker/personal-page' || over === 'personal-page') ? hoverButtonStyle : normalButtonStyle}><h5 id='personal-page-option'>{' '}Personal Page</h5></Nav.Link>
 
-                                                    <Nav.Link onClick={() => { navigate('/hiker/personal-page') }} onMouseOver={() => { setOver('personal-page') }} onMouseLeave={() => { setOver('') }} style={(location.pathname === '/personal-page' || over === 'personal-page') ? hoverButtonStyle : normalButtonStyle}><h5>{' '}Preferences</h5></Nav.Link>
-
-                                                    <Button onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
+                                                    <Button id='log-out-button' onClick={handleLogOut} variant='danger'><i className="bi bi-box-arrow-in-right"></i> Log-Out{" "}</Button>
                                                 </Nav>
                                             </Offcanvas.Body>
                                             : false
