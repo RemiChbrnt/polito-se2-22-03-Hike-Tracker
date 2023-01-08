@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toGeoJson from '@mapbox/togeojson'
 import { DOMParser } from 'xmldom'
+import Map from './map';
 
 import API from "../API";
 
@@ -62,6 +63,12 @@ const handleLocationCreation = async (name, type, latitude, longitude, country, 
 function AddHikeForm(props) {
 
     const navigate = useNavigate();
+
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
 
     //  Hike form params
     const [title, setTitle] = useState("");
@@ -339,8 +346,8 @@ function AddHikeForm(props) {
                                                 <Button onClick={() => setOpenStart(true)}
                                                     aria-controls="example-collapse-text"
                                                     aria-expanded={openStart} variant="success" size="sm"
-                                                    style={!openStart ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
-                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    style={!openStart ? { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
                                                     Choose the Start Point from existing points
                                                 </Button>
                                             </Col>
@@ -348,12 +355,11 @@ function AddHikeForm(props) {
                                                 <Button id='new-start-point-button' onClick={() => setOpenStart(false)}
                                                     aria-controls="example-collapse-text"
                                                     aria-expanded={openStart} variant="success" size="sm"
-                                                    style={openStart ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
-                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    style={openStart ? { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
                                                     Insert a new point as the Start Point
                                                 </Button>
                                             </Col>
-                                            <Col />
                                         </Row>
                                         {openStart && <Row className="hike-form-group">
                                             <Collapse in={openStart}>
@@ -451,8 +457,8 @@ function AddHikeForm(props) {
                             <Form.Label id='end-point-label'><b>End Point</b></Form.Label>
                             <Button id='identical-end-start-button' onClick={() => { setIdenticalEndStart(!identicalEndStart) }}
                                 size="sm"
-                                style={identicalEndStart ? { marginLeft: 30, fontSize: 13, fontWeight: "bold", color: "white", backgroundColor: "#00706c", borderColor: "#00706c" }
-                                    : { marginLeft: 30, fontSize: 13, color: "#C70039", backgroundColor: "white", borderColor: "#C70039" }}>
+                                style={identicalEndStart ? { marginLeft:(windowSize.innerWidth<550)?5:30, marginBottom:10, fontSize: 12, fontWeight: "bold", color: "white", backgroundColor: "#00706c", borderColor: "#00706c" }
+                                    : { marginLeft:(windowSize.innerWidth<550)?5:30, marginBottom:10, fontSize: 12, color: "#C70039", backgroundColor: "white", borderColor: "#C70039" }}>
                                 {identicalEndStart ? "Identical Start and End points ?   ☑" : "Identical Start and End points ?   ☐"}
                             </Button>
                             {// If a corresponding location already exists and the start and end points are different
@@ -487,8 +493,8 @@ function AddHikeForm(props) {
                                                 <Button onClick={() => setOpenEnd(true)}
                                                     aria-controls="example-collapse-text"
                                                     aria-expanded={openEnd} variant="success" size="sm"
-                                                    style={!openEnd ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
-                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    style={!openEnd ? { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
                                                     Choose the End Point from existing points
                                                 </Button>
                                             </Col>
@@ -496,12 +502,11 @@ function AddHikeForm(props) {
                                                 <Button id='new-end-point-button' onClick={() => setOpenEnd(false)}
                                                     aria-controls="example-collapse-text"
                                                     aria-expanded={openEnd} variant="success" size="sm"
-                                                    style={openEnd ? { flex: 1, fontSize: 15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
-                                                        { flex: 1, fontSize: 15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
+                                                    style={openEnd ? { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "#00706c", backgroundColor: "white" } :
+                                                        { flex: 1, fontSize: (windowSize.innerWidth<550)? 11:15, fontWeight: "bold", color: "white", backgroundColor: "#00706c" }}>
                                                     Insert a new point as the End Point
                                                 </Button>
                                             </Col>
-                                            <Col />
                                         </Row>
                                         {openEnd && <Row className="hike-form-group">
                                             <Collapse in={openEnd}>
@@ -593,6 +598,27 @@ function AddHikeForm(props) {
                         </Form.Group>
                     </Row>
                     <ul></ul>
+                    {(windowSize.innerWidth<550)?<h6>Preview (select a GPX file to see)</h6>:
+                        <h4>Preview (select a GPX file to see)</h4>}
+                    <Map 
+                        startPt={JSON.stringify({
+                            name: startPtName,
+                            type: startPtType,
+                            latitude: startPtLatitude,
+                            longitude: startPtLongitude,
+                            address: startPtAddress
+                            })}
+                        endPt={JSON.stringify({
+                            name: endPtName,
+                            type: endPtType,
+                            latitude: endPtLatitude,
+                            longitude: endPtLongitude,
+                            address: endPtAddress
+                        })}
+                        file={gpxFile}
+                        displayPoints={[1,1,1,1]}
+                        referencePoints={JSON.stringify([])}
+                    />
                     <Row className="d-grid gap-2 mt-3">
                         <Button id='confirm-button' type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
                     </Row>

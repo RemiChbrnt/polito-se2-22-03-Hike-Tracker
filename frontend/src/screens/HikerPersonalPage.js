@@ -171,7 +171,7 @@ function PrefsCard(props) {
                             </Button>
                             {' '}
                             <Button id='delete-button' variant='danger' onClick={() => props.setShowDeleteConfirmation(true)}>
-                                <h5><i class="bi bi-trash3"></i>{' '}Delete</h5>
+                                <h5><i className="bi bi-trash3"></i>{' '}Delete</h5>
                             </Button>
                         </Col>
                         : false

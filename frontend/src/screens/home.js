@@ -10,10 +10,17 @@ const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const [filters, setFilters] = useState("[]");
+    const [myHikesAuthor, setMyHikesAuthor] = useState("");
     const [coordsFilter, setCoordsFilter] = useState([45.116177, 7.742615]);
     const [radiusFilter, setRadiusFilter] = useState(10); // km+
     const [preferences, setPreferences] = useState(undefined);
     const navigate = useNavigate();
+    
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
 
     useEffect(() => {
         if(props.user !== undefined){
@@ -58,26 +65,37 @@ const Home = (props) => {
     return (
         <Container>
             <Row>
-                <Col md={8}>
+                <Col>
+                {myHikesAuthor === ""?
                     <h1 id="title">Hike List</h1>
-                </Col>
-                <Col md={2}>
-                    <Button id='reset-filter-button' onClick={() => resetFilters()} variant="light" size="lg">{" "}Reset filters</Button>
-                </Col>
-                <Col md={2}>
-                    <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
-                </Col>
-                {
-                    (props.user && props.user.role === "hiker") &&
-                    <Col md={1}>
-                        <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="success" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
-                    </Col>
+                    :<h1 id="title">Viewing your Hikes</h1>
                 }
+                    
+                </Col>
+                <Col style={{display:"flex", flexDirection: (windowSize.innerWidth<550)?"column":"row", justifyContent:"flex-end"}}>
+                        {
+                            (props.user && props.user.role === "hiker") &&
+                            <Button id='suggested-hike-button' onClick={() => suggestHikes()} variant="light" size="lg" disabled={preferences === undefined}>{" "}Suggested hikes</Button>
+                        }
+                        {
+                            (props.user && props.user.role === "guide") &&
+                            <Button id='my-hikes-button' 
+                                onClick={() => setMyHikesAuthor(auth => {
+                                    if(auth==="")return(props.user.email);
+                                    return("");
+                                })} 
+                                variant="light" size="lg">{" "}{myHikesAuthor!=="" ? "My Hikes ☑" : "My Hikes ☐"}</Button>
+                        }
+                        <Button id='reset-filter-button' onClick={() => {resetFilters(); setMyHikesAuthor("")}} variant="light" size="lg">{" "}Reset filters</Button>
+                        <Button id='filter-button' onClick={() => setShow(true)} variant="light" size="lg"><i className="bi bi-sliders"></i>{" "}Filter</Button>
+                   
+                </Col>
+                
             </Row>
 
             <ul></ul>
             <Row>
-                <HikeGrid filters={filters} coordsFilter={coordsFilter} radiusFilter={radiusFilter} user={props.user} setProps={props.setProps} />
+                <HikeGrid myHikesAuthor={myHikesAuthor} filters={filters} coordsFilter={coordsFilter} radiusFilter={radiusFilter} user={props.user} setProps={props.setProps} />
             </Row>
 
             <Modal show={show} onHide={() => setShow(false)} animation={false} size="lg">

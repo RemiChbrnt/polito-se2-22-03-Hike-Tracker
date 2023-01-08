@@ -62,7 +62,6 @@ function ActiveForm(props) {
     return (
         <Container>
             <Row><h2 id='add-parking-title'>Add a new Parking Lot !</h2></Row>
-            <ul></ul>
             <Row className="hike-form">
                 <Form onSubmit={handlerSubmit} className="mt-3">
                     <Col className="form-group">

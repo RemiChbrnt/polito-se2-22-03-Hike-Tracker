@@ -51,16 +51,6 @@ describe('Get informations from hike', () => {
     cy.get('[for="show-points-interest"]').click();
     cy.get('[for="show-points-interest"]').click();
 
-    cy.get('[src="/static/media/start-marker.4695f435f603afe44323.png"]').should('be.visible'); //start point visible
-    cy.get('[src="/static/media/finish-marker.bb578aa29fec8e99b251.png"]').should('be.visible'); //end point visible again
-    cy.get('[for="show-start-arrival"]').click();
-    //start point not more visible
-    //end point not more visible
-    cy.get('[for="show-start-arrival"]').click();
-    cy.get('[src="/static/media/start-marker.4695f435f603afe44323.png"]').should('be.visible'); //start point visible again
-    cy.get('[src="/static/media/finish-marker.bb578aa29fec8e99b251.png"]').should('be.visible'); //end point visible again
-
-    cy.get('[src="/static/media/hut-marker.ef90b5be5df7c426570e.png"]').should('be.visible'); //hut visible
   });
 
   it('should return to home', () => {

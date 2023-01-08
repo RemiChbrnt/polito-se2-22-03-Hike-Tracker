@@ -65,89 +65,107 @@ function LinkHutToHike(props) {
 }
 
 function HutsTable(props) {
-
-  return (
-    <Table hover className="table">
-      <thead className="tableHeader">
-        <tr>
-          <th id='hut-name-title' className="hutTableHeader" style={{ width: '14%' }}>NAME</th>
-          <th id='hut-latitude-title' className="hutTableHeader" style={{ width: '14%' }}>LATITUDE</th>
-          <th id='hut-longitude-title' className="hutTableHeader" style={{ width: '14%' }}>LONGITUDE</th>
-          <th id='hut-altitude-title' className="hutTableHeader" style={{ width: '10%' }}>ALTITUDE</th>
-          <th id='hut-country-title' className="hutTableHeader" style={{ width: '10%' }}>COUNTRY</th>
-          <th id='hut-region-title' className="hutTableHeader" style={{ width: '8%' }}>REGION</th>
-          <th id='hut-town-title' className="hutTableHeader" style={{ width: '12%' }}>TOWN</th>
-          <th id='hut-info-title' className="hutTableHeader" style={{ width: '7%' }}>INFO</th>
-          <th id='hut-link-title' className="hutTableHeader" style={{ width: '20%' }}>LINK A HIKE</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          props.huts.map((h, index) => { return <HutRow key={index} hut={h} setForm={props.setForm} setHutId={props.setHutId} /> })
-        }
-      </tbody>
-    </Table>
-  );
+  
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
+    
+    return (
+        <Table hover className="table">
+            <thead className="tableHeader">
+              <tr>
+                <th id='hut-name-title' className="hutTableHeader" style={{width:(windowSize.innerWidth>550)?'14%':'70%'}}>NAME</th>
+                {(windowSize.innerWidth>700) &&<th id='hut-latitude-title' className = "hutTableHeader" style={{width:'14%'}}>LATITUDE</th>}
+                {(windowSize.innerWidth>700) &&<th id='hut-longitude-title' className = "hutTableHeader" style={{width:'14%'}}>LONGITUDE</th>}
+                {(windowSize.innerWidth>700) &&<th id='hut-altitude-title' className = "hutTableHeader" style={{width:'10%'}}>ALTITUDE</th>}
+                {(windowSize.innerWidth>700) &&<th id='hut-country-title' className = "hutTableHeader" style={{width:'10%'}}>COUNTRY</th>}
+                {(windowSize.innerWidth>700) &&<th id='hut-region-title' className = "hutTableHeader" style={{width:'8%'}}>REGION</th>}
+                {(windowSize.innerWidth>700) &&<th  id='hut-town-title' className = "hutTableHeader" style={{width:'12%'}}>TOWN</th>}
+                {(windowSize.innerWidth>700) &&<th id='hut-info-title' className = "hutTableHeader" style={{width:'7%'}}>INFO</th>}
+                <th  id='hut-link-title' className = "hutTableHeader" style={{width:(windowSize.innerWidth>550)?'20%':'30%'}}>LINK A HIKE</th>
+              </tr>
+            </thead>
+            <tbody>
+                {
+                  props.huts.map((h, index) => {return <HutRow key={index} hut={h} setForm={props.setForm} setHutId={props.setHutId}/>})
+                }
+            </tbody>
+        </Table>
+    );
 }
 
 function HutRow(props) {
-  const [show, setShow] = useState(false);
-  return (
-    <>
-      <tr>
-        <HutData hut={props.hut} show={show} setShow={setShow} setForm={props.setForm} setHutId={props.setHutId} />
-      </tr>
-      <tr></tr>
-      <tr id={props.hut.id} className={show ? "infoVisible" : "infoHidden"}>
-        <td colSpan={10} className="extraInfo">
-          <p id='phone'><b>Phone: </b>{props.hut.phone}</p>
-          <p id='email'><b>Email: </b>{props.hut.email}</p>
-          <p id='website'><b>Website: </b>{props.hut.website ? props.hut.website : "No website available."}</p>
-          <p id='opening-time'><b>Opening Time: </b>{props.hut.openingTime ? props.hut.openingTime : "No information available yet."}</p>
-          <p id='closing-time'><b>Closing Time: </b>{props.hut.closingTime ? props.hut.closingTime : "No information available yet."}</p>
-          <p id='number-of-beds'><b>Number of beds: </b>{props.hut.numberOfBeds}</p>
-          <p id='food'><b>Food: </b>{props.hut.food ? props.hut.food : "No information available."}</p>
-          <h6 id='description-title'><b>Description</b></h6>
-          <p id='description'>{props.hut.description}</p>
-        </td>
-      </tr>
-    </>
-  );
-}
+    const [show, setShow] = useState(false);
+      return (
+        <>
+          <tr>
+              <HutData hut={props.hut} show={show} setShow={setShow} setForm={props.setForm} setHutId={props.setHutId}/>
+          </tr>
+          <tr></tr>
+          <tr id={props.hut.id} className={show? "infoVisible" : "infoHidden"}>
+          <td colSpan={10} className="extraInfo">
+            <p id='phone'><b>Phone: </b>{props.hut.phone}</p>
+            <p id='email'><b>Email: </b>{props.hut.email}</p>
+            <p id='website'><b>Website: </b>{props.hut.website ? props.hut.website : "No website available."}</p>
+            <p id='opening-time'><b>Opening Time: </b>{props.hut.openingTime ? props.hut.openingTime : "No information available yet."}</p>
+            <p id='closing-time'><b>Closing Time: </b>{props.hut.closingTime ? props.hut.closingTime : "No information available yet."}</p>
+            <p id='number-of-beds'><b>Number of beds: </b>{props.hut.numberOfBeds}</p>
+            <p id='food'><b>Food: </b>{props.hut.food ? props.hut.food : "No information available."}</p>
+            <h6 id='description-title'><b>Description</b></h6>
+            <p id='description'>{props.hut.description}</p>
+          </td>
+          </tr>
+        </>
+      );
+  }
 
-function HutData(props) {
+  function HutData(props) {
 
-  const activateForm = (hutId) => {
-    props.setForm(true);
-    props.setHutId(hutId);
-  };
+    const activateForm = (hutId) => {
+      props.setForm(true); 
+      props.setHutId(hutId);
+    };
 
-  return (
-    <>
-      <td id='hut-name' style={{ textAlign: 'center' }}>{props.hut.name}</td>
-      <td id='hut-latitude' style={{ textAlign: 'center' }}>{props.hut.latitude}</td>
-      <td id='hut-longitude' style={{ textAlign: 'center' }}>{props.hut.longitude}</td>
-      <td id='hut-altitude' style={{ textAlign: 'center' }}>{props.hut.altitude}</td>
-      <td id='hut-country' style={{ textAlign: 'center' }}>{props.hut.country}</td>
-      <td id='hut-region' style={{ textAlign: 'center' }}>{props.hut.region}</td>
-      <td id='hut-town' style={{ textAlign: 'center' }}>{props.hut.town}</td>
-      <td id='hut-info' style={{ textAlign: 'center' }}>
-        <button id='hut-info-button' className="btn" type="button" onClick={() => props.setShow(!props.show)}>
-          <i className="bi bi-info-circle"></i>
-        </button>
-      </td>
-      <td id='hut-link' style={{ textAlign: 'center' }}>
-        <button id='hut-link-button' className="btn" type="button" onClick={() => activateForm(props.hut.id)}>
-          <i className="icons-style bi bi-link"></i>
-        </button>
-      </td>
-    </>
-  );
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
+
+    return (
+        <>
+            <td id='hut-name' style={{textAlign:'center'}}>{props.hut.name}</td>
+            {(windowSize.innerWidth>700) &&<td id='hut-latitude' style={{textAlign:'center'}}>{props.hut.latitude}</td>}
+            {(windowSize.innerWidth>700) &&<td id='hut-longitude' style={{textAlign:'center'}}>{props.hut.longitude}</td>}
+            {(windowSize.innerWidth>700) &&<td id='hut-altitude' style={{textAlign:'center'}}>{props.hut.altitude}</td>}
+            {(windowSize.innerWidth>700) &&<td id='hut-country' style={{textAlign:'center'}}>{props.hut.country}</td>}
+            {(windowSize.innerWidth>700) &&<td id='hut-region' style={{textAlign:'center'}}>{props.hut.region}</td>}
+            {(windowSize.innerWidth>700) &&<td id='hut-town' style={{textAlign:'center'}}>{props.hut.town}</td>}
+            {(windowSize.innerWidth>700) &&<td id='hut-info' style={{textAlign:'center'}}>
+              <button id='hut-info-button' className="btn" type="button" onClick={() => props.setShow(!props.show)}>
+                <i className="bi bi-info-circle"></i>
+              </button>
+            </td>}
+            <td id='hut-link' style={{textAlign:'center'}}>
+              <button id='hut-link-button' className="btn" type="button" onClick={() => activateForm(props.hut.id)}>
+                <i className="icons-style bi bi-link"></i>
+              </button>
+            </td>
+        </>
+    );
 }
 
 function LinkForm(props) {
 
   const [hikeId, setHikeId] = useState(1);
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+  function getWindowSize() {
+      const { innerWidth, innerHeight } = window;
+      return { innerWidth, innerHeight };
+  }
+
   //----- TO DO -----
   const linkHut = async (hutId, hikeId) => {
     try {
@@ -179,29 +197,23 @@ function LinkForm(props) {
   return (
     <Container>
       <Row>
-        <Col></Col>
         <Col className="text-center"><h2 id='link-to-hike-title'>Link a Hut to a Hike!</h2></Col>
-        <Col></Col>
       </Row>
       <ul></ul>
-      <Row >
-        <Col></Col>
-        <Col>
-          <Form onSubmit={handlerSubmit} className="link-form">
-            <div className="hike-form-group">
-              <Form.Group className="mb-3" controlId="hutFood">
-                <Form.Label id='select-hike-label'><b>Select a hike to link</b> <b className="asterisk-required">*</b></Form.Label>
-                <Form.Select id='select-hike-select' required onChange={ev => { setHikeId(ev.target.value); }}>
-                  {props.hikes.map((h) => { return <option key={h.id} value={h.id}>{h.title}</option> })}
-                </Form.Select>
-              </Form.Group>
-              <div className="d-grid gap-2 mt-3">
-                <Button id='confirm-button' type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
-              </div>
+      <Row style={{alignItems:"center"}}>
+        <Form onSubmit={handlerSubmit} className="link-form" style={{width:(windowSize.innerWidth<550)?"80%":500}}>
+          <div className="hike-form-group">
+            <Form.Group className="mb-3" controlId="hutFood">
+              <Form.Label id='select-hike-label'><b>Select a hike to link</b> <b className="asterisk-required">*</b></Form.Label>
+              <Form.Select id='select-hike-select' required onChange={ev => { setHikeId(ev.target.value); }}>
+                {props.hikes.map((h) => { return <option key={h.id} value={h.id}>{h.title}</option> })}
+              </Form.Select>
+            </Form.Group>
+            <div className="d-grid gap-2 mt-3">
+              <Button id='confirm-button' type="submit" className="guideBtn" borderless="true">CONFIRM</Button>
             </div>
-          </Form>
-        </Col>
-        <Col></Col>
+          </div>
+        </Form>
       </Row>
     </Container>
   );
