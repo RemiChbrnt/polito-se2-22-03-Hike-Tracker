@@ -14,7 +14,6 @@ const Map = (props) => {
         return { innerWidth, innerHeight };
     }
 
-
     const hutIcon = new L.Icon({
         iconUrl: require('../images/hut-marker.png'),
         iconSize: [104, 158]
@@ -37,10 +36,7 @@ const Map = (props) => {
         iconSize: [104, 158]
     });
 
-    const center = {
-        latitude: (endPt.latitude + startPt.latitude) / 2,
-        longitude: (endPt.longitude + startPt.longitude) / 2
-    }
+    const center = {longitude: 7.6625, latitude: 45.07031} 
 
     return (
         <MapContainer id='map' center={[center.latitude, center.longitude]} zoom={13} scrollWheelZoom={false} style={{ minWidth: windowSize.innerWidth / 1.8, minHeight: windowSize.innerHeight / 1.5 }} >
@@ -49,51 +45,48 @@ const Map = (props) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {referencePoints.map(refPt => {
-                if ((props.displayPoints[0] && refPt.type === "parkinglot") ||
-                    (props.displayPoints[1] && refPt.type === "hut") ||
-                    (props.displayPoints[2] && refPt.type === "generic")) {
-                    return (<Marker
-                        key={refPt.id}
-                        position={[refPt.latitude, refPt.longitude]}
-                        icon={(refPt.type === "hut") ? hutIcon : (refPt.type === "parkinglot") ? parkinglotIcon : defaultMarker}>
-                        <Popup>
-                            {refPt.name}<br />
-                            {(refPt.address !== null) && refPt.address}
-                        </Popup>
-                    </Marker>);
-                }
-            }
-            )}
-            {(props.newReferencePointCoords !== null) &&
-                <Marker
-                    position={props.newReferencePointCoords}
+                {referencePoints.map(refPt => {
+                        if((props.displayPoints[0] && refPt.type==="parkinglot") || 
+                        (props.displayPoints[1] && refPt.type==="hut") || 
+                        (props.displayPoints[2] && refPt.type==="generic")){
+                            return (<Marker 
+                                key={refPt.id}
+                                position={[refPt.latitude, refPt.longitude]} 
+                                icon={(refPt.type==="hut")? hutIcon : (refPt.type==="parkinglot")? parkinglotIcon : defaultMarker}>
+                                <Popup>
+                                    {refPt.name}<br />
+                                    {(refPt.address !== null)&&refPt.address}
+                                </Popup>
+                            </Marker>);
+                        }
+                    }
+                )}
+                {(props.newReferencePointCoords !== null) && props.addNewReferencePoint &&
+                    <Marker 
+                    position={props.newReferencePointCoords} 
                     icon={defaultMarker}>
-                    <Popup>
-                        hi
-                    </Popup>
-                </Marker>
-            }
-            {props.displayPoints[3] &&
-                <Marker position={[startPt.latitude, startPt.longitude]} icon={startIcon}>
-                    <Popup>
-                        Starting point<br />
-                        {(startPt.address !== null) && startPt.address}
-                    </Popup>
-                </Marker>
-            }
-            {props.displayPoints[3] &&
-                <Marker position={[endPt.latitude, endPt.longitude]} icon={finishIcon}>
-                    <Popup>
-                        Arrival point<br />
-                        {(endPt.address !== null) && endPt.address}
-                    </Popup>
-                </Marker>
-            }
-            {(props.file !== undefined) && <GPXTrack
-                geoJsonFile={props.file}
-                setNewReferencePointCoords={props.setNewReferencePointCoords}
-                addNewReferencePoint={props.addNewReferencePoint} />}
+                    </Marker>
+                }
+                {props.displayPoints[3] &&
+                    <Marker position={[startPt.latitude, startPt.longitude]} icon={startIcon}>
+                        <Popup>
+                            Starting point<br />
+                            {(startPt.address !== null)&&startPt.address}
+                        </Popup>
+                    </Marker>
+                }
+                {props.displayPoints[3] &&
+                    <Marker position={[endPt.latitude, endPt.longitude]} icon={finishIcon}>
+                        <Popup>
+                            Arrival point<br />
+                            {(endPt.address !== null)&&endPt.address}
+                        </Popup>
+                    </Marker>
+                }
+                {(props.file !== undefined && props.file !== null) && <GPXTrack 
+                    geoJsonFile={props.file} 
+                    setNewReferencePointCoords={props.setNewReferencePointCoords}
+                 />}
         </MapContainer>
     );
 }

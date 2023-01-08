@@ -221,7 +221,7 @@ async function getHikeFromID(id) {
 
 async function getHikesList() {
     // call: GET /api/hikes
-    const response = await fetch(URL + '/hikes', {
+    const response = await fetch(URL + '/hikes?page=1', {
         credentials: 'include',
     });
     const hikesJson = await response.json();

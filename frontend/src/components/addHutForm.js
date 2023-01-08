@@ -66,7 +66,6 @@ function ActiveForm(props) {
     return (
         <Container style={{ flex: 1 }}>
             <Row><h2 id='add-hut-title'>Add a New Hut !</h2></Row>
-            <ul></ul>
             <Row className="hike-form">
                 <Form onSubmit={handlerSubmit} className="mt-3">
                     <Col className="form-group">

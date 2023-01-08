@@ -35,14 +35,13 @@ const handleReferencePointCreation = async (name, type, latitude, longitude, cou
 };
 
 //----- TO DO -----
-function AddReferencePointForm({hikeId, userEmail, pointCoords, setAddNewReferencePoint}) {
+function AddReferencePointForm({hikeId, pointCoords, setAddNewReferencePoint}) {
 
     const [completedWithSuccess, setCompletedWithSuccess] = useState(false);
 
     const [name, setName] = useState("");
     const [type, setType] = useState('generic');
     const [altitude, setAltitude] = useState("");
-    const author = userEmail;
 
     const [mustSelectPointOnTrack, setMustSelectPointOnTrack] = useState(false);
 
@@ -82,11 +81,11 @@ function AddReferencePointForm({hikeId, userEmail, pointCoords, setAddNewReferen
             {completedWithSuccess? 
             <div>
                 <h4>New reference point added with success !</h4>
-                <div className="d-grid gap-2 mt-3 mb-5">
+                <div className="d-grid gap-2 mb-5">
                     <Button style={{width:"20%"}} variant="success" onClick={() => setAddNewReferencePoint(false)}>OK</Button>
                 </div>
             </div>
-            :<Form onSubmit={handlerSubmit} className="hike-form mt-3">
+            :<Form onSubmit={handlerSubmit}>
                 <h4>Add a new Reference Point !</h4>
                 <h6>Click on the map to select a location</h6>
                 <Row>

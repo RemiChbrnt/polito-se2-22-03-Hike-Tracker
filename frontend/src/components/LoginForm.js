@@ -84,10 +84,10 @@ function LoginForm({ user, setUser }) {
                             <ul></ul>
                             <Row>
                                 <Col>
-                                    <Button id='back-button' onClick={handleBack} variant='danger' size='lg'>Back</Button>
+                                    <Button id='back-button' onClick={handleBack} variant='danger' size='md'>Back</Button>
                                 </Col>
                                 <Col className='d-flex justify-content-end'>
-                                    <Button id='log-in-button' type="submit" variant='success' size='lg'>Log-In</Button>
+                                    <Button id='log-in-button' type="submit" variant='success' size='md'>Log-In</Button>
                                 </Col>
                             </Row>
                             {loginError && <span>Error: email or password not correct</span>}
