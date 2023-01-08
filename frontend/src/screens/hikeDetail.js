@@ -119,13 +119,52 @@ const HikeDetail = ({ user, props, setProps }) => {
                                     <h4 className="text-white">Add a Reference Point</h4>
                                 </Button>
                             }
+                            {
+                                (user !== undefined) &&
+                                <Row>
+                                    {
+                                        (user.role === "hiker" && startedHike === false && startedDifferentHike === false) &&
+                                        <Row className="justify-content-center">
+                                            <Col>
+                                                <Button
+                                                    variant="white"
+                                                    style={{ backgroundColor: "#00706c" }}
+                                                    onClick={() => { startHike() }}>
+                                                    <h4 className="text-white">Start Hike</h4>
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    }
+                                    {
+
+                                        (user.role === "hiker" && startedHike === true) &&
+                                        <Row className="justify-content-center">
+
+                                            <Col>
+                                                <Button
+                                                    variant="white"
+                                                    style={{ backgroundColor: "#00706c" }}
+                                                    onClick={() => { terminateHike() }}>
+                                                    <h4 className="text-white">Terminate Hike</h4>
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    }
+                                    {
+                                        (user.role === "hiker" && startedDifferentHike === true) &&
+                                        <Row className="justify-content-center">
+                                            <h5>You have to terminate your currently initiated hike to initiate a different hike</h5>
+                                        </Row>
+                                    }
+                                </Row>
+                            }
                         </Col>
                         <Row>{hike.statusList.map(((status, i) => <Row key={i}><p id='hike-status' style={alertStyle(status.status)}><i className="bi bi-exclamation-triangle"></i> {status.name}: [{status.status}] {status.description}</p></Row>))}</Row>
                     </Row>
                     <ul></ul>
                     <Row>
 
-                        <Col style={{ overflowY: "auto", height: "calc(100%)", minWidth: "300px" }}>
+                        <Row style={{ overflowY: "auto", height: "calc(100%)", minWidth: "300px" }}>
                             { !addNewReferencePoint ? 
                                 <Card style={{ maxHeight: windowSize.innerHeight / 1.2 }}>
                                     <ListGroup variant="flush">
@@ -151,8 +190,8 @@ const HikeDetail = ({ user, props, setProps }) => {
                                 />
                             }
                             <ul></ul>
-                        </Col>
-                        <Col>
+                        </Row>
+                        <Row>
                             <Row>
                                 <Map
                                     displayPoints={[showParkings, showHuts, showPointsOfInterest, showStartAndArrival]}
@@ -208,48 +247,10 @@ const HikeDetail = ({ user, props, setProps }) => {
                                     </ToggleButton>
                                 </ButtonGroup>
                             </Row>
-                        </Col>
+                        </Row>
                     </Row>
                     <ul></ul>
-                    {
-                        (user !== undefined) &&
-                        <Row>
-                            {
-                                (user.role === "hiker" && startedHike === false && startedDifferentHike === false) &&
-                                <Row className="justify-content-center">
-                                    <Col>
-                                        <Button
-                                            variant="white"
-                                            style={{ backgroundColor: "#00706c" }}
-                                            onClick={() => { startHike() }}>
-                                            <h4 className="text-white">Start Hike</h4>
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            }
-                            {
-
-                                (user.role === "hiker" && startedHike === true) &&
-                                <Row className="justify-content-center">
-
-                                    <Col>
-                                        <Button
-                                            variant="white"
-                                            style={{ backgroundColor: "#00706c" }}
-                                            onClick={() => { terminateHike() }}>
-                                            <h4 className="text-white">Terminate Hike</h4>
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            }
-                            {
-                                (user.role === "hiker" && startedDifferentHike === true) &&
-                                <Row className="justify-content-center">
-                                    <h5>You have to terminate your currently initiated hike to initiate a different hike</h5>
-                                </Row>
-                            }
-                        </Row>
-                    }
+                    
                 </Container>
             }
             <ul></ul>
