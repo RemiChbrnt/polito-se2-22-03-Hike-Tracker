@@ -138,8 +138,8 @@ After completing the form, if the data is correct the reference point will be ad
 | -------------------------------- | ------------- | ---------------------------------------- |
 | maurizio.merluzzo@donkeykong.com | testPassword1 | Hiker                                    |
 | antonio.fracassa@live.it         | testPassword2 | Local Guide                              |
-| giulio.uzumaki@tokio.it          | testPassword3 | Manager (Not implemented yet)            |
-| jen.shiro@chiocciola.it          | testPassword4 | Hut Worker (Not implemented yet)         |
+| giulio.uzumaki@tokio.it          | testPassword3 | Manager                                  |
+| jen.shiro@chiocciola.it          | testPassword4 | Hut Worker                               |
 | tony.stark@libero.it             | testPassword5 | Emergency Operator (Not implemented yet) |
 
 
@@ -152,8 +152,8 @@ First method: Download the docker-compose.yaml and run the following command on 
 
 Second method: run the following commands on the terminal
 
-- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:backend_v1
-- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:frontend_v1
+- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:backend_v2
+- docker pull zhuxiaozhen/polito-se2-22-03-hike-tracker:frontend_v2
 - docker run --publish 3001:3001 `[backend image id]`
 - docker run --publish 3000:3000 `[frontend image id]`
 
