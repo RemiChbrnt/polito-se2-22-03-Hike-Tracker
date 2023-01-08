@@ -40,17 +40,17 @@ The hikes that are stored in the database are presented to the users as cards th
 By clicking on a hike card, the user opens the hike view which will show, in addition to the previously mentioned elements, a map with the hike's track, as well as markers for start, end and reference points. Some information concerning the hike's current state and weather may also be given.
 An example of hike detail can be seen in the following screenshot.
 
-![alt hike_detail](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/hike_detail.PNG?raw=true)
+![alt hike_detail](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/hike_detail.png?raw=true)
 
 #### Filtering the hikes
 
 The user can also filter the hikes that are displayed, by providing filters on the hikes' properties (by difficulty, region of the start point, and min/max length, ascent and expected time.
 
-![alt filter](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/filter.PNG?raw=true)
+![alt filter](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/filter.png?raw=true)
 
 It is also possible to filter the hikes with respect to their geographic localization, thanks to a map filter, which you can see in the following screenshot.
 
-![alt filter_map](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/filter_map.PNG?raw=true)
+![alt filter_map](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/filter_map.png?raw=true)
 
 
 ### 2. Signup/Login form
@@ -70,7 +70,7 @@ A list of registered users, with their role and passwords, is available in the A
 #### Viewing the Hut list
 In addition to the previously mentioned features, a hiker can also access the list of available huts. So far, the huts information include their coordinates, the country, region and town, an optional address and their altitude.
 
-![alt hut_list](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/hut_list.PNG?raw=true)
+![alt hut_list](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/hut_list.png?raw=true)
 
 A hiker can also search for specific huts via the search form.
 
@@ -79,7 +79,7 @@ A hiker can also search for specific huts via the search form.
 Another feature available to hikers is the possibility to input their preferences for hikes' duration and ascent. These are then used to suggest hikes to hikers on the Home page, via the **"Suggested Hikes"** button.
 In order to access their preferences, hikers have to navigate to their **"Personal Page"**. On the latter, a hiker will be able to view, input, delete or modify his preferences.
 
-![alt personal_page](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/personal_page.PNG?raw=true)
+![alt personal_page](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/personal_page.png?raw=true)
 
 #### Completing a Hike
 
@@ -87,13 +87,13 @@ A hiker can start any hike of his choice by simply clicking the **"Start Hike"**
 It is also possible for him to quickly navigate to the current hike from his personal page via the **"Go To Started Hike"** button in his personal page.
 The Hiker also has a page where he can see all his completed hikes, accessible with the button **"Completed Hikes"** in the NavBar. You can see this page in the following screenshot.
 
-![alt completed_hikes](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/completed_hikes.PNG?raw=true)
+![alt completed_hikes](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/completed_hikes.png?raw=true)
 
 ### 4. Local Guide homepage
 
 A local guide can access their specific features (in addition to the usual ones) via the buttons in the navbar or the hike detail.
 
-![alt local_guide_homepage](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/local_guide_homepage.PNG?raw=true)
+![alt local_guide_homepage](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/local_guide_homepage.png?raw=true)
 
 These features are:
 
@@ -116,13 +116,13 @@ A guide can add a hike via the form. In it, the guide is required to input all t
 
 To add a parking lot or hut, a guide can use the provided forms, which will ask to input all the required information for the two types of locations.
 
-![alt add_hut_form](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/add_hut_form.PNG?raw=true)
+![alt add_hut_form](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/add_hut_form.png?raw=true)
 
 #### Linking a hut to a hike
 
 To link a hut to a hike, the guide can click on the correspondent button in the navbar. This will take the user to the hut list, displaying all the information for each hut. For each entry in the list, the user can click on the link icon and select the hike to link the hut to it.
 
-![alt link_hut_hike](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/link_hut_hike.PNG?raw=true)
+![alt link_hut_hike](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/link_hut_hike.png?raw=true)
 
 #### Adding a reference point to a hike
 
@@ -130,7 +130,7 @@ In order to add a reference point to a hike, the local guide has to go on the de
 
 After completing the form, if the data is correct the reference point will be added to the hike and viewable by any user.
 
-![alt add_reference_point](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/add_reference_point.PNG?raw=true)
+![alt add_reference_point](https://github.com/RemiChbrnt/polito-se2-22-03-Hike-Tracker/blob/main/screenshots/add_reference_point.png?raw=true)
 
 ## Available users
 
