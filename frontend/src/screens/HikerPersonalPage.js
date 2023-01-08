@@ -149,7 +149,7 @@ function PrefsCard(props) {
                     <ListGroup.Item><span className="fw-bold">Duration: </span>{props.preferences.duration} hours</ListGroup.Item>
                     <ListGroup.Item><span className="fw-bold">Ascent: </span>{props.preferences.ascent} m</ListGroup.Item>
                 </ListGroup>
-                <Button variant='warning' onClick={() => { props.setShowForm(true); props.setOperation('edit') }}>
+                <Button variant='warning' style={{marginRight:15}} onClick={() => { props.setShowForm(true); props.setOperation('edit') }}>
                     Edit hike preferences
                 </Button>
                 <Button variant='danger' onClick={() => props.setShowDeleteConfirmation(true)}>
@@ -214,7 +214,7 @@ function PreferencesForm(props) {
                 <Form.Control type="number" value={ascent} required={true} onChange={(event) => { setAscent(event.target.value) }} />
             </Form.Group>
 
-            <Button variant='outline-secondary' onClick={() => {
+            <Button variant='outline-secondary' style={{marginRight:15}} onClick={() => {
                 setAscent(0);
                 setDuration(0);
                 props.setShowForm(false);
@@ -241,7 +241,7 @@ function DeleteConfirmation(props) {
         <Card>
             <Card.Body>
                 <div>Are you sure you want to delete your preferences?</div>
-                <Button variant='danger' onClick={() => deletePrefs(props.userEmail, props.setSuccess, props.setError, props.setShowConfirm, props.setShowDeleteConfirmation)}>
+                <Button variant='danger' style={{marginRight:15}} onClick={() => deletePrefs(props.userEmail, props.setSuccess, props.setError, props.setShowConfirm, props.setShowDeleteConfirmation)}>
                     Yes, delete my preferences.
                 </Button>
                 <Button variant='outline-secondary' onClick={() => props.setShowDeleteConfirmation(false)}>

@@ -60,20 +60,26 @@ function LinkHutToHike(props) {
 }
 
 function HutsTable(props) {
+  
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
     
     return (
         <Table hover className="table">
             <thead className="tableHeader">
               <tr>
-                <th className = "hutTableHeader" style={{width:'14%'}}>NAME</th>
-                <th className = "hutTableHeader" style={{width:'14%'}}>LATITUDE</th>
-                <th className = "hutTableHeader" style={{width:'14%'}}>LONGITUDE</th>
-                <th className = "hutTableHeader" style={{width:'10%'}}>ALTITUDE</th>
-                <th className = "hutTableHeader" style={{width:'10%'}}>COUNTRY</th>
-                <th className = "hutTableHeader" style={{width:'8%'}}>REGION</th>
-                <th className = "hutTableHeader" style={{width:'12%'}}>TOWN</th>
-                <th className = "hutTableHeader" style={{width:'7%'}}>INFO</th>
-                <th className = "hutTableHeader" style={{width:'20%'}}>LINK A HIKE</th>
+                <th className = "hutTableHeader" style={{width:(windowSize.innerWidth>550)?'14%':'70%'}}>NAME</th>
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'14%'}}>LATITUDE</th>}
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'14%'}}>LONGITUDE</th>}
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'10%'}}>ALTITUDE</th>}
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'10%'}}>COUNTRY</th>}
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'8%'}}>REGION</th>}
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'12%'}}>TOWN</th>}
+                {(windowSize.innerWidth>700) &&<th className = "hutTableHeader" style={{width:'7%'}}>INFO</th>}
+                <th className = "hutTableHeader" style={{width:(windowSize.innerWidth>550)?'20%':'30%'}}>LINK A HIKE</th>
               </tr>
             </thead>
             <tbody>
@@ -117,20 +123,26 @@ function HutRow(props) {
       props.setHutId(hutId);
     };
 
+    const [windowSize, setWindowSize] = useState(getWindowSize());
+    function getWindowSize() {
+        const { innerWidth, innerHeight } = window;
+        return { innerWidth, innerHeight };
+    }
+
     return (
         <>
             <td style={{textAlign:'center'}}>{props.hut.name}</td>
-            <td style={{textAlign:'center'}}>{props.hut.latitude}</td>
-            <td style={{textAlign:'center'}}>{props.hut.longitude}</td>
-            <td style={{textAlign:'center'}}>{props.hut.altitude}</td>
-            <td style={{textAlign:'center'}}>{props.hut.country}</td>
-            <td style={{textAlign:'center'}}>{props.hut.region}</td>
-            <td style={{textAlign:'center'}}>{props.hut.town}</td>
-            <td style={{textAlign:'center'}}>
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>{props.hut.latitude}</td>}
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>{props.hut.longitude}</td>}
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>{props.hut.altitude}</td>}
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>{props.hut.country}</td>}
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>{props.hut.region}</td>}
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>{props.hut.town}</td>}
+            {(windowSize.innerWidth>700) &&<td style={{textAlign:'center'}}>
               <button className="btn" type="button" onClick={() => props.setShow(!props.show)}>
                 <i className="bi bi-info-circle"></i>
               </button>
-            </td>
+            </td>}
             <td style={{textAlign:'center'}}>
               <button className="btn" type="button" onClick={() => activateForm(props.hut.id)}>
                 <i className="icons-style bi bi-link"></i>
@@ -141,6 +153,12 @@ function HutRow(props) {
 }
   
 function LinkForm(props){
+
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+  function getWindowSize() {
+      const { innerWidth, innerHeight } = window;
+      return { innerWidth, innerHeight };
+  }
 
   const [hikeId, setHikeId]=useState(1); 
   //----- TO DO -----
@@ -173,16 +191,11 @@ function LinkForm(props){
 
   return(
     <Container>
-      <Row>
-        <Col></Col>
-        <Col className="text-center"><h2>Link a Hut to a Hike!</h2></Col>
-        <Col></Col>
-      </Row>
-            <ul></ul>
+      <h2>Link a Hut to a Hike!</h2>
+      <ul></ul>
       <Row >
-          <Col></Col>
           <Col>
-            <Form onSubmit={handlerSubmit} className="link-form">
+            <Form onSubmit={handlerSubmit} className="link-form" style={{width:(windowSize.innerWidth<550)?"80%":500}}>
               <div className="hike-form-group">
                   <Form.Group className="mb-3" controlId="hutFood">
                       <Form.Label><b>Select a hike to link</b> <b className="asterisk-required">*</b></Form.Label>
@@ -195,8 +208,7 @@ function LinkForm(props){
                   </div>
               </div>
             </Form>
-            </Col>
-            <Col></Col>
+          </Col>
       </Row>
     </Container>
   );
