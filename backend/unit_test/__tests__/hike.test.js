@@ -40,7 +40,7 @@ describe('Hikes Unit tests', () => {
         };
 
         await HikeDao.createHike(newHike);
-        const hikes = await HikeDao.getHikes({});
+        const hikes = await HikeDao.getHikes({page:0});
         return expect(hikes.length).toBe(2);
     })
 
@@ -76,6 +76,31 @@ describe('Hikes Unit tests', () => {
             return expect(e).toBe(404);
         });
     })
+
+    test('addHikePhoto should update the entry in the Db and return status 201', async () => {
+        const newHike = {
+            "title": "Sentiero per il Rocciamelone",
+            "length": 1273.2,
+            "expTime": 10.2,
+            "ascent": 1000.0,
+            "difficulty": "pro",
+            "startPt": 1,
+            "endPt": 2,
+            "description": "test description",
+            "author": "maurizio.merluzzo@donkeykong.com"
+        };
+        const id = await HikeDao.createHike(newHike);
+
+        const res = await HikeDao.addHikePhoto(id.id, "MountainTops.nft")
+        return expect(res).toBe(201)
+    });
+
+    test('addHikePhoto should fail to update the entry in the Db when the hike doesn\'t exist and return status 400', async () => {
+        await HikeDao.addHikePhoto(3, "MountainTops.nft").catch(e=>{
+            return expect(e).toBe(404)
+        })
+       return false
+    });
 })
 
 describe('Hike groups Unit tests', () => {

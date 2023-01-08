@@ -76,7 +76,7 @@ describe('Testing all the operations on hikes', function () {
         expect(result.body.id).not.equal(undefined)
 
         const resultGET = await agent
-            .get('/api/hikes')
+            .get('/api/hikes?page=0')
         expect(result.body.id).deep.equal(resultGET.body[1].id)
         hikeId = result.body.id;
     })
@@ -295,6 +295,51 @@ describe('Testing the status of hikes', function () {
         result.should.have.status(422)
     });
 
+
+    it('POST api/hike-photo/:id when user is not the author', async () => {
+        await agent
+            .delete('/api/session/current');
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'maurizio.merluzzo@donkeykong.com',
+                password: 'testPassword1'
+            });
+        const result = await agent
+            .post('/api/hike-photo/1')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(403)
+    });
+
+
+    it('POST api/hike-photo/:id inexisting id', async () => {
+        const result = await agent
+            .post('/api/hike-photo/acab')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(422)
+    });
+
+
+    it('POST api/hike-photo/:id without an actual photo', async () => {
+        await agent
+            .delete('/api/session/current');
+        await agent
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send({
+                email: 'antonio.fracassa@live.it',
+                password: 'testPassword2'
+            });
+
+        const result = await agent
+            .post('/api/hike-photo/1')
+            .set('content-type', 'application/json');
+
+        result.should.have.status(418)
+    });
 })
 
 describe('Testing starting and ending operations', function () {

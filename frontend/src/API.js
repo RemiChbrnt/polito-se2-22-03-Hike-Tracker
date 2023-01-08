@@ -131,13 +131,11 @@ async function getAllHikes(filters, page) {
         JSON.parse(filters).forEach(filter => {
             params = params + filter.key + "=" + filter.value + "&";
         });
-        // params = params.slice(0, params.length - 1);
     }
     const response = await fetch(URL + '/hikes' + params + 'page=' + page, {
         credentials: 'include',
     });
     const hikesJson = await response.json();
-    //console.log(hikesJson)
     if (response.ok) {
         return hikesJson.map((r) => ({
             id: r.id,
@@ -347,14 +345,17 @@ async function setHikeEndPoint(id, endPt) {
  */
 async function getHuts(filters, page) {
     // call: GET /api/huts    
-    let params = "";
+    let params = "?";
     if (filters !== undefined) {
-        params = "?";
         JSON.parse(filters).forEach(filter => {
             params = params + filter.key + "=" + filter.value + "&";
         });
     }
-    const response = await fetch(URL + '/huts' + params + 'page=' + page, {
+    let pagination = ""
+    if(page!==undefined) 
+        pagination = "page="+page
+
+    const response = await fetch(URL + '/huts' + params + pagination, {
         credentials: 'include',
     });
     const hutsJson = await response.json();
@@ -561,10 +562,8 @@ async function deletePreferences(userEmail) {
     const response = await fetch(URL + '/preferences', {
         method: "DELETE",
         credentials: 'include',
-        //body: JSON.stringify(userEmail)
     });
     console.log(`RESPONSE: ${JSON.stringify(response)}`);
-    //let res = await response;
     if (response.ok)
         return true;
     else

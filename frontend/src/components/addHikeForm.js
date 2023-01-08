@@ -327,7 +327,7 @@ function AddHikeForm(props) {
                                                 <option value={undefined}>Select the Start Point</option>
                                                 {locationList.map((location, index) => {
                                                     return startMatchingLocations.includes(index) &&
-                                                        <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>
+                                                        <option value={location.id} key={location.id}>{location.name}     | Address : {location.address}</option>
                                                 })}
                                             </Form.Select>
                                         </Form.Group>
@@ -370,7 +370,7 @@ function AddHikeForm(props) {
                                                         onChange={e => setStartPoint(e.target.value)}
                                                         aria-label="region" size="md">
                                                         <option value={undefined}>Select the Start Point</option>
-                                                        {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
+                                                        {locationList.map((location, index) => <option value={location.id} key={location.id}>{location.name}</option>)}
                                                     </Form.Select>
                                                 </Form.Group>
                                             </Collapse>
@@ -474,7 +474,7 @@ function AddHikeForm(props) {
                                                 <option value={undefined}>Select the End Point</option>
                                                 {locationList.map((location, index) => {
                                                     return endMatchingLocations.includes(index) &&
-                                                        <option value={location.id} key={index}>{location.name}     | Address : {location.address}</option>
+                                                        <option value={location.id} key={location.id}>{location.name}     | Address : {location.address}</option>
                                                 })}
                                             </Form.Select>
                                         </Form.Group>
@@ -517,7 +517,7 @@ function AddHikeForm(props) {
                                                         onChange={e => setEndPoint(e.target.value)}
                                                         aria-label="region" size="md">
                                                         <option value={undefined}>Select the Arrival Point</option>
-                                                        {locationList.map((location, index) => <option value={location.id} key={index}>{location.name}</option>)}
+                                                        {locationList.map((location, index) => <option value={location.id} key={location.id}>{location.name}</option>)}
                                                     </Form.Select>
                                                 </Form.Group>
                                             </Collapse>

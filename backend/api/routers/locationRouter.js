@@ -25,7 +25,7 @@ router.get('/huts', /*isLoggedIn,*/[
     query('maxAltitude').optional({ nullable: true }).isFloat(),
     query('minNumberOfBeds').optional({ nullable: true }).isFloat(),
     query('maxNumberOfBeds').optional({ nullable: true }).isFloat(),
-    query('page').isNumeric()
+    query('page').optional({ nullable: true }).isNumeric()
 ],
     async (req, res) => {
 
@@ -39,7 +39,6 @@ router.get('/huts', /*isLoggedIn,*/[
         }
 
         const data = await service.getHuts(req.query);
-        // console.log("data photo " + data.body[1].photo);
         if (data.ok)
             return res.status(data.status).json(data.body)
 

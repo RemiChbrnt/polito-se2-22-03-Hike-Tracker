@@ -51,16 +51,16 @@ exports.getCompletedHikes = async (email) => {
                 console.log("err" + err)
                 reject()
                 return
-            } if (rows.length == 0) {
+            }
+            if (rows.length == 0) {
                 resolve([])
                 return
             }
-            var groupIdArray = [];
+            let groupIdArray = [];
             for (let i = 0; i < rows.length; i++) {
                 groupIdArray.push(rows[i].groupId.toString());
             }
-            var ids = groupIdArray.map(function (a) {
-                // return "'" + a.replace("'", "''") + "'"; }).join();   --> replace() is useless here
+            const ids = groupIdArray.map(function (a) {
                 return "'" + a + "'";
             }).join();
             let sql2 = 'SELECT hikeId FROM HikesHistory p WHERE status="completed" AND groupId IN (' + ids + ')'
@@ -69,22 +69,24 @@ exports.getCompletedHikes = async (email) => {
                     console.log("err" + err)
                     reject()
                     return
-                } if (rows.length == 0) {
+                }
+                if (rows.length == 0) {
                     resolve([])
                     return
                 }
-                var hikesIdArray = [];
+                let hikesIdArray = [];
                 for (let i = 0; i < rows.length; i++) {
                     hikesIdArray.push(rows[i].hikeId.toString());
                 }
-                var ids = hikesIdArray.map(function (a) { return "'" + a + "'"; }).join();;
+                const ids = hikesIdArray.map(function (a) { return "'" + a + "'"; }).join();;
                 let sql3 = 'SELECT * FROM Hikes p WHERE id IN (' + ids + ')'
                 db.all(sql3, async (err, rows) => {
                     if (err) {
                         console.log("err" + err)
                         reject()
                         return
-                    } if (rows.length == 0) {
+                    }
+                    if (rows.length == 0) {
                         resolve([])
                         return
                     }
@@ -413,12 +415,19 @@ exports.addHikeReferencePoint = async (query) => {
 exports.addHikePhoto = async (id, photo) => {
     return new Promise((resolve, reject) => {
         const sql = `UPDATE Hikes SET photo = ? WHERE id = ?`
-        db.run(sql, [photo, id], async (err) => {
+        db.run(sql, [photo, id], async function (err) {
             if (err) {
                 console.log(err);
                 reject(400);
-            } else
-                resolve(201);
+                return
+            }
+            console.log("teststst")
+            console.log(this.changes)
+            if (this.changes == 0) {
+                reject(404);
+                return
+            }
+            resolve(201);
         })
     })
 }
@@ -480,30 +489,35 @@ exports.terminateHike = async (groupId, hikeId, userId) => {
         db.all(sql1, [groupId, userId], (err, rows) => {
             if (err) {
                 reject(503);
+                return;
             } else if (rows.length === 0) {
                 /* User is not performing the selected Hike, cannot terminate it */
                 reject(403);
+                return;
             } else {
                 const sql2 = 'SELECT * FROM HikesHistory WHERE groupId = ? AND hikeId = ?';
                 db.all(sql2, [groupId, hikeId], (err, rows) => {
                     if (err) {
                         reject(503);
+                        return;
                     } else if (rows.length === 0) {
                         reject(404);
+                        return;
                     } else if (rows[0].status !== "ongoing") {
                         reject(400);
-                    } else {
-                        const sql3 = 'UPDATE HikesHistory SET status = "completed" WHERE groupId = ? AND hikeId = ?';
-                        db.run(sql3, [groupId, hikeId], (err) => {
-                            if (err) {
-                                reject(503);
-                            } else if (this.changes === 0) {
-                                reject(404); // Hike already completed
-                            } else {
-                                resolve(true);
-                            }
-                        })
+                        return;
                     }
+                    const sql3 = 'UPDATE HikesHistory SET status = "completed" WHERE groupId = ? AND hikeId = ?';
+                    db.run(sql3, [groupId, hikeId], (err) => {
+                        if (err) {
+                            reject(503);
+                            return;
+                        } else {
+                            resolve(true);
+                            return;
+                        }
+                    })
+
                 })
             }
         })

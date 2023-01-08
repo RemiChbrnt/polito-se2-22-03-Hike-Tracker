@@ -86,7 +86,7 @@ describe("Hut tests", () => {
 
     test('Valid get all valid huts', async () => {
 
-        const result = await LocationDao.getHuts({}, "antonio.fracassa@live.it");
+        const result = await LocationDao.getHuts({page:0});
 
         return expect(result.length).toEqual(1);
     });
@@ -94,14 +94,14 @@ describe("Hut tests", () => {
     test('Valid get valid hut 1', async () => {
         const result1 = await LocationDao.addLocation(validHuts[0], "antonio.fracassa@live.it");
         expect(result1).toEqual(validHuts[0]);
-        const result = await LocationDao.getHuts(validHuts[0], "antonio.fracassa@live.it");
+        const result = await LocationDao.getHuts({...validHuts[0], page:0}, "antonio.fracassa@live.it");
         return expect(result[0]).toEqual(expect.objectContaining(validHuts[0]), "antonio.fracassa@live.it");
     });
 
     test('Valid get valid hut 2', async () => {
         const result1 = await LocationDao.addLocation(validHuts[1], "antonio.fracassa@live.it");
         expect(result1).toEqual(validHuts[1]);
-        const result = await LocationDao.getHuts(validHuts[1], "antonio.fracassa@live.it");
+        const result = await LocationDao.getHuts({...validHuts[1], page:0}, "antonio.fracassa@live.it");
         return expect(result[0]).toEqual(expect.objectContaining(validHuts[1]), "antonio.fracassa@live.it");
     });
 
